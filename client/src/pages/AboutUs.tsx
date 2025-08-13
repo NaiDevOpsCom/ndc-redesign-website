@@ -43,7 +43,7 @@ const objectivesData = [
 
 
   export default function AboutUs() {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  // const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -379,22 +379,22 @@ const objectivesData = [
                      </p>
                      <div className="flex space-x-2 md:space-x-3">
                        {member.twitter && (
-                         <a href={member.twitter} className="text-gray-400 hover:text-blue-500 transition-colors" target="_blank" rel="noopener noreferrer">
+                         <a href={member.twitter} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
                            <X className="h-3 w-3 md:h-4 md:w-4" />
                          </a>
                        )}
                        {member.linkedin && (
-                         <a href={member.linkedin} className="text-gray-400 hover:text-blue-500 transition-colors" target="_blank" rel="noopener noreferrer">
+                         <a href={member.linkedin} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
                            <Linkedin className="h-3 w-3 md:h-4 md:w-4" />
                          </a>
                        )}
                        {member.instagram && (
-                         <a href={member.instagram} className="text-gray-400 hover:text-blue-500 transition-colors" target="_blank" rel="noopener noreferrer">
+                         <a href={member.instagram} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
                            <Instagram className="h-3 w-3 md:h-4 md:w-4" />
                          </a>
                        )}
                        {member.website && (
-                         <a href={member.website} className="text-gray-400 hover:text-blue-500 transition-colors" target="_blank" rel="noopener noreferrer">
+                         <a href={member.website} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
                            <Globe className="h-3 w-3 md:h-4 md:w-4" />
                          </a>
                        )}

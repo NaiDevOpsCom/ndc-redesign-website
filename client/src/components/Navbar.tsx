@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
+    { href: "#about", label: "About Us" },
     { href: "#events", label: "Events" },
     { href: "#blog", label: "Blog" },
     { href: "#community", label: "Community" },
@@ -29,7 +29,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-[#F5F5F580] border-b border-border sticky top-0 z-50 transition-colors duration-300">
+    <header className="bg-[#F5F5F580] border-b text-black border-border sticky top-0 z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
@@ -46,7 +46,7 @@ export default function Navbar() {
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-black hover:text-primary focus:text-primary transition-colors"
               >
                 {link.label}
               </button>
@@ -91,7 +91,7 @@ export default function Navbar() {
                     <button
                       key={link.href}
                       onClick={() => handleNavClick(link.href)}
-                      className="text-left text-muted-foreground hover:text-primary transition-colors py-2"
+                      className="text-left text-black hover:text-primary focus:text-primary transition-colors py-2"
                     >
                       {link.label}
                     </button>
