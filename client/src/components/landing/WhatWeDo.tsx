@@ -4,22 +4,25 @@ import useEmblaCarousel from 'embla-carousel-react';
 import React, { useEffect, useCallback, useState } from 'react';
 
 export default function WhatWeDo() {
+  // Use embla with default options; we'll control slide widths with CSS so it's responsive
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
-    slidesToScroll: 3,
+    skipSnaps: false,
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
-  // Autoplay functionality
+  // Autoplay functionality with pause-on-hover
   useEffect(() => {
     if (!emblaApi) return;
+    if (isHovered) return; // pause autoplay while hovered
     const autoplay = setInterval(() => {
       emblaApi.scrollNext();
     }, 4500);
     return () => clearInterval(autoplay);
-  }, [emblaApi]);
+  }, [emblaApi, isHovered]);
 
   // Update active index on slide change
   useEffect(() => {
@@ -34,11 +37,7 @@ export default function WhatWeDo() {
     };
   }, [emblaApi]);
 
-  // Group cards into triplets
-  const cardTriplets = [];
-  for (let i = 0; i < whatWeDoData.length; i += 3) {
-    cardTriplets.push(whatWeDoData.slice(i, i + 3));
-  }
+  // For embla we'll render one card per slide; responsive layout will control visible cards
 
   return (
     <section className="py-16 bg-[#18465a] dark:bg-[hsla(0,0%,0%,0.8)] transition-colors duration-300">
@@ -51,33 +50,65 @@ export default function WhatWeDo() {
         </div>
         
         {/* carousel  */}
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
-            {cardTriplets.map((triplet, idx) => (
-              <div key={idx} className="flex min-w-full gap-8 justify-center">
-                {triplet.map((service, index) => (
-                  <Card key={index} className="bg-[#e6f0fa] rounded-lg shadow-md border-0 w-full max-w-md">
-                    <CardContent className="p-8 text-center flex flex-col items-center">
-                      <div className="w-10 h-10 mb-4 flex items-center justify-center">
-                        <service.icon className="text-[#2563eb] h-10 w-10" />
-                      </div>
-                      <h3 className="text-xl font-bold text-[#023047] mb-2">{service.title}</h3>
-                      <p className="text-base text-[#22223b] leading-relaxed">
-                        {service.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ))}
+        <div className="relative">
+          <div
+            className="overflow-hidden"
+            ref={emblaRef}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div className="flex gap-6 will-change-transform">
+              {whatWeDoData.map((service, index) => (
+                <div
+                  key={index}
+                  className="embla__slide flex-shrink-0 px-2 w-full sm:w-1/2 md:w-1/3"
+                >
+                  <div className="mx-auto max-w-[360px] h-full">
+                    <Card className="bg-[#e6f0fa] rounded-lg shadow-md border-0 w-full h-full">
+                      <CardContent className="p-6 md:p-8 text-center flex flex-col items-center h-full">
+                        <div className="flex-shrink-0 w-12 h-12 mb-4 flex items-center justify-center">
+                          <service.icon className="text-[#2563eb] h-12 w-12" />
+                        </div>
+                        <h3 className="text-lg md:text-xl font-bold text-[#023047] mb-2">{service.title}</h3>
+                        <p className="text-sm md:text-base text-[#22223b] leading-relaxed mt-2 flex-1">
+                          {service.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Prev / Next controls */}
+          <div className="absolute inset-y-1/2 left-2 transform -translate-y-1/2">
+            <button
+              aria-label="Previous"
+              onClick={() => emblaApi && emblaApi.scrollPrev()}
+              className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-md"
+            >
+              ‹
+            </button>
+          </div>
+          <div className="absolute inset-y-1/2 right-2 transform -translate-y-1/2">
+            <button
+              aria-label="Next"
+              onClick={() => emblaApi && emblaApi.scrollNext()}
+              className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-md"
+            >
+              ›
+            </button>
           </div>
         </div>
         {/* Dot indicator for carousel/pagination */}
-        <div className="flex justify-center mt-8 space-x-2">
-          {cardTriplets.map((_, idx) => (
-            <span
+        <div className="flex justify-center mt-6 space-x-3">
+          {whatWeDoData.map((_, idx) => (
+            <button
               key={idx}
-              className={`w-3 h-3 rounded-full inline-block transition-colors duration-300 ${
+              aria-label={`Go to slide ${idx + 1}`}
+              onClick={() => emblaApi && emblaApi.scrollTo(idx)}
+              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${
                 idx === activeIndex ? 'bg-[#2563eb]' : 'bg-white/40'
               }`}
             />
