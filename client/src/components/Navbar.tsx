@@ -35,7 +35,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <a href="/">
-                <img src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png" alt="Nairobi DevOps" className="w-20 h-20 object-contain" />
+                <img src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png" alt="Nairobi DevOps" className="w-32 object-contain" />
               </a>
             </div>
             
