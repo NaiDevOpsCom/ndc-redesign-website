@@ -7,6 +7,9 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Home from "@/pages/Home";
 import AboutUs from "@/pages/AboutUs";
 import FAQPage from "@/pages/FAQPage";
+import CodeOfConduct from "@/docs/code_of_conduct";
+import TermsAndConditions from "@/docs/terms_and_conditions";
+import PrivacyPolicy from "@/docs/privacy_policy";
 
 import NotFound from "@/pages/not-found";
 
@@ -20,6 +23,12 @@ function Router() {
       <Route path="/about" component={AboutUs} />
 
       <Route path="/faqpage" component={FAQPage} />
+
+      <Route path="/code-of-conduct" component={CodeOfConduct} />
+
+      <Route path="/terms" component={TermsAndConditions} />
+
+      <Route path="/privacy" component={PrivacyPolicy} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -32,7 +41,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
-           <Analytics />
+          <Analytics />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
