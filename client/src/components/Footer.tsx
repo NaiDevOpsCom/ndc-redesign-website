@@ -1,4 +1,4 @@
-import { Send, MapPin, Phone, Mail, Linkedin, Instagram, Youtube, Facebook } from "lucide-react";
+import { MapPin, Phone, Mail, Linkedin, Instagram, Youtube, Facebook, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "wouter";
@@ -104,6 +104,15 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Floating Back to Top Button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-[#219EBC] text-white shadow-lg hover:bg-[#023047] hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
+      >
+        <ArrowUp className="h-5 w-5" />
+      </button>
     </footer>
   );
 }
