@@ -80,9 +80,27 @@ export default function Footer() {
             &copy; 2023–{currentYear} Nairobi DevOps Community. Powered by the Community.
           </div>
           <div className="flex gap-4">
-            <Link href="/code-of-conduct" className="hover:underline">Code of Conduct</Link>
-            <Link href="/terms" className="hover:underline">Terms & Conditions</Link>
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link
+              href="/code-of-conduct"
+              className="hover:underline"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              Code of Conduct
+            </Link>
+            <Link
+              href="/terms"
+              className="hover:underline"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              Terms & Conditions
+            </Link>
+            <Link
+              href="/privacy"
+              className="hover:underline"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>
