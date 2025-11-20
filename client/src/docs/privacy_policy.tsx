@@ -1,15 +1,11 @@
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+// Removed unused imports to satisfy ESLint
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useLocation } from "wouter";
 
 export default function PrivacyPolicy() {
-    const [, setLocation] = useLocation();
-
-    const handleBackToHome = () => {
-        setLocation("/");
-    };
+    // eslint: keep useLocation destructuring as a placeholder for future navigation, prefix unused var
+    const [,_setLocation] = useLocation();
 
     return (
         <div className="min-h-screen bg-background">

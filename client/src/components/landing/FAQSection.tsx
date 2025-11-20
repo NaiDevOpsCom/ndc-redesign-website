@@ -1,7 +1,6 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useLocation } from "wouter";
 import faqImage from "@/assets/faq.png";
 
 const faqData = [
@@ -29,43 +28,36 @@ const faqData = [
 
 export default function FAQSection() {
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
-  const [, setLocation] = useLocation();
 
   const toggleItem = (index: number) => {
     setExpandedItems(prev => 
       prev.includes(index) 
-        ? prev.filter(item => item !== index) // Close the clicked item if it's already open
-        : [index] // Open only the clicked item, closing all others
+        ? prev.filter(item => item !== index)
+        : [index]
     );
   };
 
   const handleBrowseFAQs = () => {
-    setLocation("/faqpage");
+    window.location.href = "/faqpage";
   };
 
   return (
     <section 
       id="faq" 
-      className="py-20"
-      style={{
-        backgroundColor: 'var(--faq-bg)',
-        color: 'var(--faq-text)'
-      }}
+      className="py-20 bg-faq text-faq-text"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--faq-text)' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-faq-text">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--faq-text)' }}>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-faq-text">
             Answers to the questions you're most likely to have—whether you're new to DevOps or already deep in the game. 
             We're here to make things clear, simple, and welcoming.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - FAQ Image */}
           <div className="relative">
             <div className="relative w-full h-96 lg:h-[500px] flex items-center justify-center">
               <img 
@@ -76,28 +68,18 @@ export default function FAQSection() {
             </div>
           </div>
 
-          {/* Right Side - FAQ Cards */}
           <div className="space-y-4">
             {faqData.map((faq, index) => (
               <div 
                 key={index} 
-                className="rounded-lg shadow-sm border overflow-hidden"
-                style={{
-                  backgroundColor: 'var(--faq-bg)',
-                  borderColor: 'var(--faq-text)',
-                  opacity: 0.9
-                }}
+                className="rounded-lg shadow-sm border overflow-hidden bg-faq border-faq-text"
+                style={{ opacity: 0.9 }}
               >
-                {/* Question Card */}
                 <div 
-                  className="flex items-center justify-between px-6 py-4 cursor-pointer transition-colors"
-                  style={{
-                    backgroundColor: 'var(--faq-bg)',
-                    color: 'var(--faq-text)'
-                  }}
+                  className="flex items-center justify-between px-6 py-4 cursor-pointer transition-colors bg-faq text-faq-text"
                   onClick={() => toggleItem(index)}
                 >
-                  <span className="font-medium flex-1" style={{ color: 'var(--faq-text)' }}>
+                  <span className="font-medium flex-1 text-faq-text">
                     {faq.question}
                   </span>
                   <button 
@@ -115,10 +97,9 @@ export default function FAQSection() {
                   </button>
                 </div>
                 
-                {/* Answer Content */}
                 {expandedItems.includes(index) && (
-                  <div className="px-6 pb-4 border-t" style={{ borderColor: 'var(--faq-text)', opacity: 0.8 }}>
-                    <p className="leading-relaxed pt-4" style={{ color: 'var(--faq-text)' }}>
+                  <div className="px-6 pb-4 border-t border-faq-text" style={{ opacity: 0.8 }}>
+                    <p className="leading-relaxed pt-4 text-faq-text">
                       {faq.answer}
                     </p>
                   </div>
@@ -128,24 +109,10 @@ export default function FAQSection() {
           </div>
         </div>
 
-        {/* Browse Full FAQs Button */}
         <div className="text-center mt-16">
           <Button 
             size="lg" 
-            className="px-8 py-4 text-lg font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-white"
-            style={{
-              backgroundColor: '#3B82F6',
-              color: '#ffffff',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#2563EB';
-              e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#3B82F6';
-              e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
-            }}
+            className="px-8 py-4 text-lg font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-white bg-blue-600 hover:bg-blue-700"
             onClick={handleBrowseFAQs}
           >
             Browse Full FAQs
@@ -155,4 +122,3 @@ export default function FAQSection() {
     </section>
   );
 }
-

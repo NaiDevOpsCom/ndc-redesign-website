@@ -1,30 +1,20 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { whatWeDoData } from "@/data/whatWeDoData";
 import useEmblaCarousel from 'embla-carousel-react';
-import React, { useEffect, useCallback, useState } from 'react';
+import Autoplay from "embla-carousel-autoplay";
+import { useEffect, useState } from 'react';
 
 export default function WhatWeDo() {
-  // Use embla with default options; we'll control slide widths with CSS so it's responsive
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: 'start',
-    skipSnaps: false,
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: 'start',
+    },
+    [Autoplay({ delay: 4500, stopOnInteraction: true, stopOnMouseEnter: true })]
+  );
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
-  // Autoplay functionality with pause-on-hover
-  useEffect(() => {
-    if (!emblaApi) return;
-    if (isHovered) return; // pause autoplay while hovered
-    const autoplay = setInterval(() => {
-      emblaApi.scrollNext();
-    }, 4500);
-    return () => clearInterval(autoplay);
-  }, [emblaApi, isHovered]);
-
-  // Update active index on slide change
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => {
@@ -36,8 +26,6 @@ export default function WhatWeDo() {
       emblaApi.off('select', onSelect);
     };
   }, [emblaApi]);
-
-  // For embla we'll render one card per slide; responsive layout will control visible cards
 
   return (
     <section className="py-16 bg-[#18465a] dark:bg-[hsla(0,0%,0%,0.8)] transition-colors duration-300">
@@ -54,8 +42,6 @@ export default function WhatWeDo() {
           <div
             className="overflow-hidden"
             ref={emblaRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
             <div className="flex gap-6 will-change-transform">
               {whatWeDoData.map((service, index) => (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Code, Menu, X, Sun, Moon, Handshake } from "lucide-react";
+import { Menu, X, Sun, Moon, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -17,7 +17,10 @@ export default function Navbar() {
   ];
 
   const handleNavClick = (href: string) => {
-    if (href.startsWith('/')) {
+    const isExternal = href.startsWith('http');
+    if (isExternal) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+    } else if (href.startsWith('/')) {
       window.location.href = href;
     } else {
       const element = document.querySelector(href);
@@ -96,9 +99,6 @@ export default function Navbar() {
                       {link.label}
                     </button>
                   ))}
-                  <Button className="mt-4">
-                    Join Community
-                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>

@@ -1,15 +1,24 @@
-import { Users, Linkedin, X } from "lucide-react";
+import { Users, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function JoinCommunity() {
+  const handleJoinClick = () => {
+    window.location.href = "/join";
+  };
+
+  const handleLinkedInClick = () => {
+    window.open("https://www.linkedin.com/company/nairobidevops/", "_blank", "noopener,noreferrer");
+  };
+
+  const handleXClick = () => {
+    window.open("https://x.com/nairobidevops", "_blank", "noopener,noreferrer");
+  };
+
   return (
     <section 
-      className="relative py-20 overflow-hidden"
+      className="relative py-20 overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: "url('https://pbs.twimg.com/media/Gw1gwJhWsAAZcBo?format=jpg&name=large')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
       }}
     >
       <div className="absolute inset-0 bg-primary/80 dark:bg-primary/90"></div>
@@ -27,7 +36,7 @@ export default function JoinCommunity() {
           <Button
             size="lg"
             className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200 overflow-hidden"
-            onClick={() => { window.location.href = "/join"; }}
+            onClick={handleJoinClick}
           >
             <Users className="mr-3 h-5 w-5" />
             Join Our Community
@@ -36,7 +45,7 @@ export default function JoinCommunity() {
             size="lg"
             variant="outline"
             className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black overflow-hidden"
-            onClick={() => window.open("https://www.linkedin.com/company/nairobidevops/", "_blank", "noopener,noreferrer")}
+            onClick={handleLinkedInClick}
           >
             <Linkedin className="mr-3 h-5 w-5" />
             Connect On LinkedIn
@@ -45,9 +54,11 @@ export default function JoinCommunity() {
             size="lg"
             variant="outline"
             className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black overflow-hidden"
-            onClick={() => window.open("https://x.com/nairobidevops", "_blank", "noopener,noreferrer")}
+            onClick={handleXClick}
           >
-            <X className="mr-3 h-5 w-5" />
+            <svg className="mr-3 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.53 2.477h3.924l-8.56 9.85 10.09 13.196h-7.98l-6.25-8.19-7.16 8.19H.07l9.13-10.51L0 2.477h8.13l5.77 7.57zm-1.13 17.03h2.17L7.1 4.36H4.8z"/>
+            </svg>
             Follow On X
           </Button>
         </div>
