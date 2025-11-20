@@ -34,7 +34,7 @@ export default function Footer() {
             <ul className="space-y-1 text-sm">
               <li><a href="/learn" className="hover:text-[#219EBC] transition-colors">Learn with Us</a></li>
               <li><a href="/shop" className="hover:text-[#219EBC] transition-colors">Shop our Merchants</a></li>
-              <li><a href="/faq" className="hover:text-[#219EBC] transition-colors">FAQs</a></li>
+              <li><a href="/faqpage" className="hover:text-[#219EBC] transition-colors">FAQs</a></li>
               <li><a href="/partners" className="hover:text-[#219EBC] transition-colors">Partners & Sponsors</a></li>
             </ul>
           </div>
@@ -44,7 +44,9 @@ export default function Footer() {
             <div className="font-bold mb-2">Contact Us</div>
             <div className="flex items-center text-sm mb-2">
               <Phone className="h-4 w-4 text-[#219EBC] mr-2" />
-              <span>+254 798 654 321</span>
+              <a href="tel:+254796445130" className="hover:underline text-[#219EBC]">
+                +254 796 445130
+              </a>
             </div>
             <div className="flex items-center text-sm mb-2">
               <Mail className="h-4 w-4 text-[#219EBC] mr-2" />

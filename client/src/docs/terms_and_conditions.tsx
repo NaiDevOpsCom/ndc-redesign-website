@@ -1,8 +1,8 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar";   
 import Footer from "@/components/Footer";
 
 export default function TermsAndConditions() {
-    return (
+        return (
         <div className="min-h-screen bg-background">
             <Navbar />
 
@@ -220,10 +220,10 @@ export default function TermsAndConditions() {
                             <p>
                                 <span className="font-semibold text-foreground">Phone: </span>
                                 <a
-                                    href="tel:+254713099605"
+                                    href="tel:+254796445130"
                                     className="text-primary hover:underline"
                                 >
-                                    +254 713 099 605
+                                    +254 796 445130
                                 </a>
                             </p>
                             <p>

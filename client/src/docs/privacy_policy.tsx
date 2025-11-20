@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
                         Nairobi DevOps Community Privacy Policy
                     </h1>
                     <p className="text-sm text-muted-foreground mb-8 text-center">
-                        Last updated: July 12, 2025
+                        Last updated: {formattedLastUpdated}
                     </p>
                     <p className="text-lg text-muted-foreground leading-relaxed">
                         Your privacy and data protection are important to us. This Privacy Policy explains how Nairobi DevOps Community ("we," "our," or "the Community") collects, uses, shares, and protects your personal data across all platforms, events, and services we operate. We are committed to compliance with applicable data protection laws, including Kenya's Data Protection Act (2019), the GDPR (where applicable), and other relevant standards.
@@ -308,10 +308,10 @@ export default function PrivacyPolicy() {
                             <p>
                                 <span className="font-semibold text-foreground">Phone: </span>
                                 <a
-                                    href="tel:+254713099605"
+                                    href="tel:+254796445130"
                                     className="text-primary hover:underline"
                                 >
-                                    +254 713 099 605
+                                    +254 796 445130
                                 </a>
                             </p>
                             <p>
