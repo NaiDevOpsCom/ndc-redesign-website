@@ -36,7 +36,7 @@ export default function WhatWeDo() {
             We’re more than a meetup—we’re a movement. Nairobi DevOps Community exists to empower, connect, and grow the next generation of tech talent through:
           </p>
         </div>
-        
+
         {/* carousel  */}
         <div className="relative">
           <div
@@ -94,9 +94,8 @@ export default function WhatWeDo() {
               key={idx}
               aria-label={`Go to slide ${idx + 1}`}
               onClick={() => emblaApi && emblaApi.scrollTo(idx)}
-              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${
-                idx === activeIndex ? 'bg-[#2563eb]' : 'bg-white/40'
-              }`}
+              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${idx === activeIndex ? 'bg-[#2563eb]' : 'bg-white/40'
+                }`}
             />
           ))}
         </div>

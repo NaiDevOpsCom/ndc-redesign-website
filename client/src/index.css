@@ -16,6 +16,8 @@
   --border: hsl(214, 32%, 91%);
   --input: hsl(214, 32%, 91%);
   --primary: hsl(209, 95%, 45%);
+  --primary-light: #e6f0fa;
+  --primary-light-blue: #d1e2f2;
   --primary-foreground: hsl(0, 0%, 100%);
   --secondary: hsl(158, 64%, 52%);
   --secondary-foreground: hsl(0, 0%, 100%);
