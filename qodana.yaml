@@ -2,9 +2,63 @@
 # WARNING: Do not store sensitive information in this file, as its contents will be included in the Qodana report. #
 ####################################################################################################################
 
+
+# version: "1.0"
+# linter: jetbrains/qodana-js:2025.2
+# profile:
+#   name: qodana.recommended
+# bootstrap: npm install
+# include:
+#   - name: CheckDependencyLicenses
+
 version: "1.0"
+
+# Use the latest JavaScript/TypeScript Qodana linter
 linter: jetbrains/qodana-js:2025.2
+
 profile:
+  # Recommended profile includes JS + TS best practices
   name: qodana.recommended
+bootstrap: npm install
 include:
+  # Checks if your dependencies contain problematic licenses
   - name: CheckDependencyLicenses
+
+  # Detects repeated code blocks (useful for refactoring)
+  - name: QodanaDuplicatedCode
+
+  # Detects security issues in JS/TS code
+  - name: Security
+
+  # Detects insecure dependency versions
+  - name: CheckDependencySecurity
+
+  # Finds unused or partially implemented functions/vars
+  - name: JSUnusedGlobalSymbols
+
+  # Helps catch TS inconsistencies in large codebases
+  - name: TSInconsistentTypeChecking
+
+exclude:
+  # Ignore build artifacts
+  - name: GeneratedFiles
+    paths:
+      - node_modules
+      - dist
+      - build
+      - coverage
+      - .vite
+
+projectJDK: "17"
+
+# Optional: fail the workflow if severity is too high
+failThreshold: "Low"
+
+# Optional: Store the report output (CI/CD)
+report:
+  saveReport: true
+  showReportSummary: true
+
+# Enable Qodana Cloud if you plan to integrate with GitHub/GitLab Actions
+# cloud:
+#   token: "${QODANA_TOKEN}"

@@ -1,4 +1,5 @@
-// ESLint flat config for React + TypeScript + Vite
+// ESLint Flat Config for React + TypeScript + Vite
+
 import js from "@eslint/js";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -6,6 +7,7 @@ import security from "eslint-plugin-security";
 import tseslint from "typescript-eslint";
 
 export default [
+  // 1. Ignored files
   {
     ignores: [
       "node_modules",
@@ -13,43 +15,61 @@ export default [
       "build",
       "coverage",
       "**/.vite",
-      "**/dist",
-      "**/build",
     ],
   },
+
+  // 2. Base JS rules
   js.configs.recommended,
+
+  // 3. TypeScript recommended sets (strict mode included)
   ...tseslint.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylistic,
+
+  // 4. React recommended presets
+  react.configs.flat.recommended,
+  react.configs.flat["jsx-runtime"],
+
+  // 5. React Hooks recommended preset
   {
-    files: ["**/*.{ts,tsx}", "**/*.ts", "**/*.tsx"],
+    plugins: { "react-hooks": reactHooks },
+    rules: reactHooks.configs.recommended.rules,
+  },
+
+  // 6. Security recommended
+  security.configs.recommended,
+
+  // 7. Custom project rules
+  {
+    files: ["**/*.{ts,tsx}"],
+
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
         ecmaFeatures: { jsx: true },
+        projectService: true,
       },
     },
-    plugins: {
-      "@typescript-eslint": tseslint.plugin,
-      react,
-      "react-hooks": reactHooks,
-      security,
-    },
-    settings: {
-      react: { version: "detect" },
-    },
+
+    settings: { react: { version: "detect" } },
+
     rules: {
-      // React 17+ with automatic JSX runtime
+      // React 17+ JSX automatic runtime
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
-      // We don't use prop-types with TS
+
+      // Disable prop-types for TS
       "react/prop-types": "off",
-      // Common quality knobs
+
+      // Improve unused variable handling
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-      // This rule is noisy for typical React data access patterns
+
+      // Disabled due to React object access patterns
       "security/detect-object-injection": "off",
     },
   },
