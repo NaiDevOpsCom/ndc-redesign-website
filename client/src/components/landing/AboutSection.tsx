@@ -3,10 +3,15 @@ import { Users, Calendar, Handshake } from "lucide-react";
 
 export default function AboutSection() {
   const stats = [
-    { value: "3000+", label: "Community Member", color: "text-foreground", icon: Users },
-    { value: "100+", label: "Events", color: "text-foreground", icon: Calendar },
-    { value: "20+", label: "Partners", color: "text-foreground", icon: Handshake },
+    { value: "3000+", label: "Community Member", icon: Users },
+    { value: "100+", label: "Events", icon: Calendar },
+    { value: "20+", label: "Partners", icon: Handshake },
   ];
+
+  const handleKnowUsClick = () => {
+    window.location.href = '/about';
+  };
+
   return (
     <section id="about" className="py-20 bg-[#d3d3d3] dark:bg-[#000000E5] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,7 +48,7 @@ export default function AboutSection() {
                   <div key={index} className="flex flex-row items-center justify-center text-left gap-3">
                     <Icon className="h-8 w-8 text-primary flex-shrink-0" />
                     <div>
-                      <div className={`text-2xl md:text-3xl font-bold ${stat.color}`}>{stat.value}</div>
+                      <div className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</div>
                       <div className="text-xs md:text-sm text-muted-foreground dark:text-white">{stat.label}</div>
                     </div>
                   </div>
@@ -52,7 +57,7 @@ export default function AboutSection() {
             </div>
 
             <div className="flex items-center space-x-4 pt-4 ">
-              <Button size="lg" className="hover:bg-[#023047] transition-colors duration-200 " onClick={() => { window.location.href = '/about'; }}>
+              <Button size="lg" className="hover:bg-[#023047] transition-colors duration-200 " onClick={handleKnowUsClick}>
                 Get to Know Us
               </Button>
               

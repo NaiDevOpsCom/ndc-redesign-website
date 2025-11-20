@@ -1,19 +1,11 @@
+// Removed unused imports to satisfy ESLint
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useLocation } from "wouter";
 
 export default function PrivacyPolicy() {
-    const formattedLastUpdated =
-        typeof document !== "undefined"
-            ? new Date(document.lastModified).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            })
-            : new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            });
+    // eslint: keep useLocation destructuring as a placeholder for future navigation, prefix unused var
+    const [,_setLocation] = useLocation();
 
     return (
         <div className="min-h-screen bg-background">

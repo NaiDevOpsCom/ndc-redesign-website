@@ -31,8 +31,6 @@ export default function Gallery() {
         <div className="flex justify-end mt-4">
           <a
             href="/gallery"
-            target="_blank"
-            rel="noopener noreferrer"
             className="text-sm text-blue-700 hover:underline focus:underline transition-colors"
           >
             View All Our Images

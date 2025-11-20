@@ -1,4 +1,4 @@
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,6 @@ export default function Events() {
       title: "API Testing Best Practices & Automation",
       description: "Deep dive into comprehensive API testing strategies, tools, and automation frameworks with hands-on practical sessions.",
       buttonText: "Register Now",
-      buttonVariant: "default" as const,
       badgeColor: "bg-primary/10 text-primary",
     },
     {
@@ -22,8 +21,28 @@ export default function Events() {
       title: "API & Software Development",
       description: "Monthly networking meetup featuring lightning talks, project showcases, and collaborative discussions about the latest in DevOps trends.",
       buttonText: "Join Meetup",
-      buttonVariant: "secondary" as const,
       badgeColor: "bg-green-500/10 text-green-500",
+    },
+  ];
+
+  const upcomingEvents = [
+    {
+      title: "Automation Night",
+      description: "Online. Explore CI/CD pipelines and workflow hacks with guest engineers.",
+      date: "Thursday, August 1st 2025",
+      buttonText: "Join Us",
+    },
+    {
+      title: "Hands-On Workshop: Kubernetes Basics",
+      description: "JKUAT Innovation Centre. For beginners and curious minds – bring your laptop and dive in.",
+      date: "Saturday, August 10th 2025",
+      buttonText: "Sign Up",
+    },
+    {
+      title: "DevOps Social Hour",
+      description: "The Alchemist, Westlands. Casual meetup, tech banter, and a chance to grow your network. Find us on us",
+      date: "Friday, August 15th 2025",
+      buttonText: "RSVP",
     },
   ];
 
@@ -64,7 +83,7 @@ export default function Events() {
                 <p className="text-muted-foreground mb-4">
                   {event.description}
                 </p>
-                <Button variant={event.buttonVariant}>
+                <Button>
                   {event.buttonText}
                 </Button>
               </CardContent>
@@ -79,65 +98,26 @@ export default function Events() {
           </h3>
           
           <div className="grid md:grid-cols-3 gap-6">
-            {/* Automation Night */}
-            <Card className="bg-[#d3d3d3] dark:bg-gray-800 hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <h4 className="text-xl font-semibold text-center mb-4 text-foreground">
-                  Automation Night
-                </h4>
-                <p className="text-muted-foreground text-sm text-center mb-4">
-                  Online. Explore CI/CD pipelines and workflow hacks with guest engineers.
-                </p>
-                <div className="text-center mb-4">
-                  <p className="font-semibold text-foreground">Thursday, August 1st 2025</p>
-                </div>
-                <div className="text-center">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                    Join Us
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Hands-On Workshop */}
-            <Card className="bg-[#d3d3d3] dark:bg-gray-800 hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <h4 className="text-xl font-semibold text-center mb-4 text-foreground">
-                  Hands-On Workshop: Kubernetes Basics
-                </h4>
-                <p className="text-muted-foreground text-sm text-center mb-4">
-                  JKUAT Innovation Centre. For beginners and curious minds – bring your laptop and dive in.
-                </p>
-                <div className="text-center mb-4">
-                  <p className="font-semibold text-foreground">Saturday, August 10th 2025</p>
-                </div>
-                <div className="text-center">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                    Sign Up
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* DevOps Social Hour */}
-            <Card className="bg-[#d3d3d3] dark:bg-gray-800 hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <h4 className="text-xl font-semibold text-center mb-4 text-foreground">
-                  DevOps Social Hour
-                </h4>
-                <p className="text-muted-foreground text-sm text-center mb-4">
-                  The Alchemist, Westlands. Casual meetup, tech banter, and a chance to grow your network. Find us on us
-                </p>
-                <div className="text-center mb-4">
-                  <p className="font-semibold text-foreground">Friday, August 15th 2025</p>
-                </div>
-                <div className="text-center">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                    RSVP
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {upcomingEvents.map((event, index) => (
+              <Card key={index} className="bg-[#d3d3d3] dark:bg-gray-800 hover:shadow-xl transition-shadow">
+                <CardContent className="p-6">
+                  <h4 className="text-xl font-semibold text-center mb-4 text-foreground">
+                    {event.title}
+                  </h4>
+                  <p className="text-muted-foreground text-sm text-center mb-4">
+                    {event.description}
+                  </p>
+                  <div className="text-center mb-4">
+                    <p className="font-semibold text-foreground">{event.date}</p>
+                  </div>
+                  <div className="text-center">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                      {event.buttonText}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
 

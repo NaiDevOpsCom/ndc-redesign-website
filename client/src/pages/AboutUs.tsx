@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { Play, Users, Calendar, Award, Target, Globe, Linkedin, X, Mail, Instagram } from "lucide-react";
+import { Globe, Linkedin, X, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ReactPlayer from "react-player";
 import { Image as UnpicImage } from "@unpic/react";
 import {
   teamData,
@@ -43,7 +41,6 @@ const objectivesData = [
 
 
   export default function AboutUs() {
-  // const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -213,7 +210,7 @@ const objectivesData = [
       <section className="py-20 bg-ndc-darkblue text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
-            {statisticsData.map((stat, index) => (
+            {statisticsData.map((stat) => (
               <div key={stat.id} className="space-y-2">
                 <div className="text-4xl md:text-5xl font-bold">{stat.number}</div>
                 <div className="text-sm md:text-base opacity-90">{stat.label}</div>
@@ -307,8 +304,8 @@ const objectivesData = [
               <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Objectives</h3>
                 <div className="space-y-4">
-                  {objectivesData.map((objective, index) => (
-                    <div key={index} className="flex gap-4">
+                  {objectivesData.map((objective) => (
+                    <div key={objective.number} className="flex gap-4">
                       <div className="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                         {objective.number}
                       </div>

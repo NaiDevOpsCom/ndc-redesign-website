@@ -6,7 +6,7 @@ import { Link } from "wouter";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-[#00000033] dark:bg-[#6B7280CC] text-[#22223B] pt-10 pb-4 px-2 md:px-0 border-t border-gray-300 transition-colors duration-300">
+    <footer className="bg-[#d1e2f2] dark:bg-[#6B7280CC] text-[#22223B] pt-10 pb-4 px-2 md:px-0 border-t border-gray-300 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Logo & Affiliates */}
