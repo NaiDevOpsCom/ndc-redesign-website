@@ -1,17 +1,8 @@
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar";   
 import Footer from "@/components/Footer";
-import { useLocation } from "wouter";
 
 export default function TermsAndConditions() {
-    const [, setLocation] = useLocation();
-
-    const handleBackToHome = () => {
-        setLocation("/");
-    };
-
-    return (
+        return (
         <div className="min-h-screen bg-background">
             <Navbar />
 
