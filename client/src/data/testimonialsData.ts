@@ -9,7 +9,7 @@ export const testimonials = [
   },
   {
     name: "Anne Apiyo",
-    title: "SOftware Developer",
+    title: "Software Developer",
     quote:
       "Nairobi DevOps Community has been instrumental in my tech journey. Engaging events, supportive network, and endless learning opportunities.",
     avatar: "AA",
