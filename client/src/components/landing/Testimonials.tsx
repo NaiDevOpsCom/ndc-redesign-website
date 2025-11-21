@@ -25,9 +25,9 @@ export default function Testimonials() {
           viewport={{ once: true, margin: "-50px" }}
           className="text-center max-w-3xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 border border-primary/30 text-primary rounded-full px-4 py-1 text-sm font-medium mb-4">
+          {/* <div className="inline-flex items-center gap-2 border border-primary/30 text-primary rounded-full px-4 py-1 text-sm font-medium mb-4">
             Testimonials
-          </div>
+          </div> */}
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">What our members say</h2>
           <p className="text-lg text-muted-foreground">
             Real stories from people building careers, shipping products, and creating impact through the Nairobi DevOps
