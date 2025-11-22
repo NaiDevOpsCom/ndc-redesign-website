@@ -19,17 +19,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Setup Qodana Cache
         uses: actions/cache@v3
         with:
           path: ~/.cache/qodana
           key: qodana-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
       - name: Run Qodana Scan
         uses: JetBrains/qodana-action@v2025.2
         with:
-          linter: jetbrains/qodana-js
           pr-mode: ${{ github.event_name == 'pull_request' }}
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1019507827 }}
