@@ -30,9 +30,6 @@ exclude:
 
 failThreshold: 1
 
-fixesStrategy: apply         # Apply all possible fixes automatically (can be 'none' or 'cleanup')
+fixesStrategy: apply # This is OK to keep
 
-push-fixes: pull-request     # Push fixes as a new pull request automatically when possible
-
-# cloud:
-#   token: "${QODANA_TOKEN}"  # optional, if using Qodana Cloud
+# push-fixes: pull-request # REMOVE or move logic to workflow
