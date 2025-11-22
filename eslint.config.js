@@ -1,76 +1,66 @@
 // ESLint Flat Config for React + TypeScript + Vite
-
 import js from "@eslint/js";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import security from "eslint-plugin-security";
-import tseslint from "typescript-eslint";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
+import securityPlugin from "eslint-plugin-security";
 
 export default [
-  // 1. Ignored files
+  // 1. Ignore generated files
   {
-    ignores: [
-      "node_modules",
-      "dist",
-      "build",
-      "coverage",
-      "**/.vite",
-    ],
+    ignores: ["node_modules", "dist", "build", "coverage", "**/.vite"],
   },
 
   // 2. Base JS rules
   js.configs.recommended,
 
-  // 3. TypeScript recommended sets (strict mode included)
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylistic,
-
-  // 4. React recommended presets
-  react.configs.flat.recommended,
-  react.configs.flat["jsx-runtime"],
-
-  // 5. React Hooks recommended preset
+  // 3. TypeScript rules
   {
-    plugins: { "react-hooks": reactHooks },
-    rules: reactHooks.configs.recommended.rules,
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: tsPlugin.configs.recommended.rules,
   },
 
-  // 6. Security recommended
-  security.configs.recommended,
+  // 4. React recommended rules
+  {
+    plugins: { react: reactPlugin },
+    rules: reactPlugin.configs.flat.recommended.rules,
+  },
 
-  // 7. Custom project rules
+  // 5. React Hooks
+  {
+    plugins: { "react-hooks": reactHooksPlugin },
+    rules: reactHooksPlugin.configs.recommended.rules,
+  },
+
+  // 6. Security plugin
+  {
+    plugins: { security: securityPlugin },
+    rules: securityPlugin.configs.recommended.rules,
+  },
+
+  // 7. Project-specific overrides for TS/React
   {
     files: ["**/*.{ts,tsx}"],
-
     languageOptions: {
-      parser: tseslint.parser,
+      parser: tsPlugin,
       parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: ["./tsconfig.json"],
         ecmaVersion: "latest",
         sourceType: "module",
         ecmaFeatures: { jsx: true },
-        projectService: true,
       },
     },
-
     settings: { react: { version: "detect" } },
-
     rules: {
-      // React 17+ JSX automatic runtime
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
-
-      // Disable prop-types for TS
       "react/prop-types": "off",
-
-      // Improve unused variable handling
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
       ],
-
-      // Disabled due to React object access patterns
-      "security/detect-object-injection": "off",
-    },
-  },
+      "security/detect-object-injection": "off"
+    }
+  }
 ];

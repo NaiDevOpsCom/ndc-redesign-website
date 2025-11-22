@@ -2,41 +2,27 @@
 # WARNING: Do not store sensitive information in this file, as its contents will be included in the Qodana report. #
 ####################################################################################################################
 
-
-# version: "1.0"
-# linter: jetbrains/qodana-js:2025.2
-# profile:
-#   name: qodana.recommended
-# bootstrap: npm install
-# include:
-#   - name: CheckDependencyLicenses
-
 version: "1.0"
 linter: jetbrains/qodana-js:2025.2
 profile:
   name: qodana.recommended
-bootstrap: npm install
+bootstrap: npm ci
 include:
   - name: CheckDependencyLicenses
   - name: QodanaDuplicatedCode
-  - name: Security
-  - name: CheckDependencySecurity
   - name: JSUnusedGlobalSymbols
   - name: TSInconsistentTypeChecking
+  - name: Security
+  - name: CheckDependencySecurity
 exclude:
   - name: GeneratedFiles
     paths:
       - node_modules
+      - node_modules/.vite
       - dist
       - build
       - coverage
       - .vite
-projectJDK: "17"
 failThreshold: 1
-report:
-  saveReport: true
-  showReportSummary: true
-
-# Enable Qodana Cloud if you plan to integrate with GitHub/GitLab Actions
 # cloud:
-#   token: "${QODANA_TOKEN}"
+#   token: "${QODANA_TOKEN}"  # optional, if using Qodana Cloud
