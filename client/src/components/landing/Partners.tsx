@@ -81,13 +81,10 @@ export default function Partners() {
         <div className="flex justify-center mt-8">
           <Button
             className="bg-primary text-white flex items-center justify-center hover:bg-[#023047] transition-colors duration-200"
-            style={{ width: '300px', height: '65px', borderRadius: '8px', gap: '10px' }}
-            onClick={() => window.open('/partners', '_self')}
+            onClick={() => window.open('/partners-sponsorship', '_self')}
           >
             <Handshake className="h-5 w-5 text-white" />
-            <span style={{ fontWeight: 700, fontSize: '20px', lineHeight: '32px' }}>
               Partner with us
-            </span>
           </Button>
         </div>
       </div>
