@@ -10,6 +10,7 @@ on:
 
 jobs:
   qodana:
+    name: Qodana Scan
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,10 +25,11 @@ jobs:
         with:
           path: ~/.cache/qodana
           key: qodana-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Run Qodana Scan
+      - name: Run Qodana Scan with Auto-Fix
         uses: JetBrains/qodana-action@v2025.2
         with:
           pr-mode: ${{ github.event_name == 'pull_request' }}
+          args: --apply-fixes
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1019507827 }}
           QODANA_ENDPOINT: https://qodana.cloud
