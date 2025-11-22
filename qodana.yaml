@@ -4,9 +4,12 @@
 
 version: "1.0"
 linter: jetbrains/qodana-js:2025.2
+
 profile:
   name: qodana.recommended
+
 bootstrap: npm ci
+
 include:
   - name: CheckDependencyLicenses
   - name: QodanaDuplicatedCode
@@ -14,6 +17,7 @@ include:
   - name: TSInconsistentTypeChecking
   - name: Security
   - name: CheckDependencySecurity
+
 exclude:
   - name: GeneratedFiles
     paths:
@@ -23,6 +27,9 @@ exclude:
       - build
       - coverage
       - .vite
+
 failThreshold: 1
-# cloud:
-#   token: "${QODANA_TOKEN}"  # optional, if using Qodana Cloud
+
+fixesStrategy: apply # This is OK to keep
+
+# push-fixes: pull-request # REMOVE or move logic to workflow
