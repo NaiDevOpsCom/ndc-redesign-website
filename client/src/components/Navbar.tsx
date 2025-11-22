@@ -60,7 +60,7 @@ export default function Navbar() {
             
             <Button
               className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
-              onClick={() => window.open('/partners-sponsorship', '_blank', 'noopener,noreferrer')}
+              onClick={() => window.open('/partners-sponsorship', '_self')}
             >
               <Handshake className="mr-2 h-5 w-5" />
               Partner With Us
