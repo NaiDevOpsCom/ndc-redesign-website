@@ -12,7 +12,6 @@ import { Link } from "wouter";
 
 // --- Types ---
 type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
-type Speaker = { name: string; title: string; image: string };
 
 // --- Helper components ---
 function FeaturedEventCard({ e }: { e: FeaturedEvent }) {
@@ -44,37 +43,7 @@ function FeaturedEventCard({ e }: { e: FeaturedEvent }) {
     );
 }
 
-function ScheduleList({ items }: { items: { time: string; title: string }[] }) {
-    return (
-        <div className="space-y-4">
-            {items.map((s, idx) => (
-                <div key={idx} className="flex items-start gap-4 md:gap-6">
-                    <div className="flex-shrink-0 w-20 text-sm font-semibold text-primary text-right">{s.time}</div>
-                    <div className="flex-1 bg-muted rounded-lg p-4">
-                        <h4 className="font-semibold">{s.title}</h4>
-                        <p className="text-sm text-muted-foreground mt-1">Details and session description go here.</p>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function SpeakersList({ speakers }: { speakers: Speaker[] }) {
-    return (
-        <div className="space-y-6">
-            {speakers.map((sp, idx) => (
-                <div key={idx} className="flex items-center gap-4">
-                    <img src={sp.image} alt={sp.name} className="h-14 w-14 rounded-full object-cover" loading="lazy" />
-                    <div>
-                        <h4 className="font-semibold">{sp.name}</h4>
-                        <p className="text-sm text-muted-foreground">{sp.title}</p>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-}
+// Removed unused ScheduleList and SpeakersList components to keep code lean
 
 function PastEventsGrid({ items }: { items: PastEvent[] }) {
     const [start, setStart] = useState(0);
@@ -143,19 +112,6 @@ function PastEventsGrid({ items }: { items: PastEvent[] }) {
 // --- Main Page Component ---
 export default function Eventspage() {
     // --- Data ---
-    const schedule = [
-        { time: "09:00", title: "Registration & Coffee" },
-        { time: "10:00", title: "Keynote: State of DevOps" },
-        { time: "11:00", title: "Breakout Sessions" },
-        { time: "13:00", title: "Lunch & Networking" },
-        { time: "14:00", title: "Hands-on Labs" },
-    ];
-
-    const speakers: Speaker[] = [
-        { name: "Amina Mwangi", title: "Senior SRE @ Acme", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-        { name: "Peter Otieno", title: "DevOps Engineer @ CloudCo", image: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-        { name: "Grace Njeri", title: "Platform Engineer @ NetSys", image: "https://images.unsplash.com/photo-1545996124-1d58f3a1c2b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-    ];
 
     const reasons = [
         { icon: Cloud, title: "Explore cloud and DevOps" },
