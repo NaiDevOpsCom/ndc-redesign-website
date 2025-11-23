@@ -7,21 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, MapPin, Cloud, Wrench, Award, Rocket, Handshake, ChevronLeft, ChevronRight } from "lucide-react";
 import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
+import { featuredEvents, FeaturedEvent } from "@/data/eventsData";
 
 // --- Types ---
-type FeaturedEvent = {
-    id: number;
-    title: string;
-    type: string;
-    date: string;
-    time: string;
-    location: string;
-    description: string;
-    image: string;
-    cta: string;
-    badgeColor?: string;
-};
-
 type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
 type Speaker = { name: string; title: string; image: string };
 
@@ -154,33 +142,6 @@ function PastEventsGrid({ items }: { items: PastEvent[] }) {
 // --- Main Page Component ---
 export default function Eventspage() {
     // --- Data ---
-    const featuredEvents: FeaturedEvent[] = [
-        {
-            id: 1,
-            title: "Kubernetes for Beginners",
-            type: "Workshop",
-            date: "Oct 12, 2025",
-            time: "10:00 AM - 2:00 PM",
-            location: "JKUAT Innovation Centre",
-            description: "Hands-on Kubernetes workshop: pods, deployments, services and an intro to Helm. Bring a laptop.",
-            image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-            cta: "Register",
-            badgeColor: "bg-primary/10 text-primary",
-        },
-        {
-            id: 2,
-            title: "DevOps Career Night",
-            type: "Meetup",
-            date: "Nov 08, 2025",
-            time: "6:00 PM - 9:00 PM",
-            location: "The Alchemist, Westlands",
-            description: "Panel talks and lightning demos from local engineers about career growth, interviewing and mentorship.",
-            image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-            cta: "Join Us",
-            badgeColor: "bg-green-500/10 text-green-500",
-        },
-    ];
-
     const schedule = [
         { time: "09:00", title: "Registration & Coffee" },
         { time: "10:00", title: "Keynote: State of DevOps" },
