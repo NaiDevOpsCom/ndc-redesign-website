@@ -3,11 +3,13 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { Menu, X, Sun, Moon, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link, useLocation } from "wouter";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(() => window.location.pathname + window.location.hash);
+  const [, setLocation] = useLocation();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -22,7 +24,10 @@ export default function Navbar() {
     if (isExternal) {
       window.open(href, '_blank', 'noopener,noreferrer');
     } else if (href.startsWith('/')) {
-      window.location.href = href;
+      // Client-side navigation via wouter router
+      setLocation(href);
+      // Manually update current location for active link highlighting
+      setCurrentLocation(href);
     } else {
       const element = document.querySelector(href);
       if (element) {
@@ -76,9 +81,9 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <a href="/">
-                <img src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png" alt="Nairobi DevOps" className="w-36 object-contain" />
-              </a>
+              <Link href="/">
+                <img src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png" alt="Nairobi DevOps" className="w-36 object-contain cursor-pointer" />
+              </Link>
             </div>
 
           </div>
@@ -99,7 +104,7 @@ export default function Navbar() {
 
             <Button
               className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
-              onClick={() => window.open('/partners-sponsorship', '_self')}
+              onClick={() => setLocation('/partners-sponsorship')}
             >
               <Handshake className="mr-2 h-5 w-5" />
               Partner With Us
