@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Menu, X, Sun, Moon, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(() => window.location.pathname + window.location.hash);
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -31,6 +32,33 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
+  // update active link when navigation occurs (hash change / history)
+  useEffect(() => {
+    const handleChange = () => setCurrentLocation(window.location.pathname + window.location.hash);
+    window.addEventListener('popstate', handleChange);
+    window.addEventListener('hashchange', handleChange);
+    return () => {
+      window.removeEventListener('popstate', handleChange);
+      window.removeEventListener('hashchange', handleChange);
+    };
+  }, []);
+
+  const isActive = (href: string) => {
+    if (href.startsWith('/')) {
+      // normalize trailing slash
+      const a = currentLocation.split('#')[0].replace(/\/$/, '') || '/';
+      const b = href.replace(/\/$/, '') || '/';
+      return a === b;
+    }
+    if (href.startsWith('#')) {
+      return currentLocation.includes(href);
+    }
+    if (href.startsWith('http')) {
+      return currentLocation.startsWith(href);
+    }
+    return false;
+  };
+
   return (
     <header className="bg-[#F5F5F580] border-b text-black border-border sticky top-0 z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +77,7 @@ export default function Navbar() {
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-black hover:text-primary focus:text-primary transition-colors"
+                className={`${isActive(link.href) ? 'text-primary' : 'text-black'} hover:text-primary focus:text-primary transition-colors`}
               >
                 {link.label}
               </button>
@@ -94,7 +122,7 @@ export default function Navbar() {
                     <button
                       key={link.href}
                       onClick={() => handleNavClick(link.href)}
-                      className="text-left text-black hover:text-primary focus:text-primary transition-colors py-2"
+                      className={`${isActive(link.href) ? 'text-primary' : 'text-black'} text-left hover:text-primary focus:text-primary transition-colors py-2`}
                     >
                       {link.label}
                     </button>
