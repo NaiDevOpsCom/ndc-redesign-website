@@ -8,6 +8,7 @@ import { Calendar, Clock, MapPin, Cloud, Wrench, Award, Rocket, Handshake, Chevr
 import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
 import { featuredEvents, FeaturedEvent } from "@/data/eventsData";
+import { Link } from "wouter";
 
 // --- Types ---
 type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
@@ -265,13 +266,14 @@ export default function Eventspage() {
                     <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                         We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you'd like to host a session or collaborate, reach out below.
                     </p>
-                    <Button
-                        size="lg"
-                        className="bg-primary hover:bg-[#023047] text-white px-8 py-4 text-lg"
-                        onClick={() => window.open('/partners-sponsorship')}
-                    >
-                        Partner with Us
-                    </Button>
+                    <Link href="/partners-sponsorship">
+                        <Button
+                            size="lg"
+                            className="bg-primary hover:bg-[#023047] text-white px-8 py-4 text-lg"
+                        >
+                            Partner with Us
+                        </Button>
+                    </Link>
                 </div>
             </section>
 
