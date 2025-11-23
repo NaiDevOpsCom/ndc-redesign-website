@@ -10,8 +10,8 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "#about", label: "About Us" },
-    { href: "#events", label: "Events" },
+    { href: "/about", label: "About Us" },
+    { href: "/events", label: "Events" },
     { href: "#blog", label: "Blog" },
     { href: "#community", label: "Community" },
   ];
@@ -41,9 +41,9 @@ export default function Navbar() {
                 <img src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png" alt="Nairobi DevOps" className="w-36 object-contain" />
               </a>
             </div>
-            
+
           </div>
-          
+
           <nav className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
               <button
@@ -55,9 +55,9 @@ export default function Navbar() {
               </button>
             ))}
           </nav>
-          
+
           <div className="flex items-center space-x-4">
-            
+
             <Button
               className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
               onClick={() => window.open('/partners-sponsorship', '_self')}

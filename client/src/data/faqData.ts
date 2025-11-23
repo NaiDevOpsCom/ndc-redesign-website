@@ -82,8 +82,12 @@ export const faqDataByCategory: FAQData = [
                 answer: "We host monthly technical meetups, themed workshops (e.g., CI/CD, IaC, Kubernetes), DevOps bootcamps, DevOpsDays Nairobi, and the annual Africa DevOps Summit."
             },
             {
+                question: "Do I need to bring a laptop?",
+                answer: "For hands-on workshops we recommend bringing a laptop. For talks and panels, it is optional."
+            },
+            {
                 question: "Are your events free?",
-                answer: "Yes. Most of our events are completely free and open to all, thanks to our community sponsors and partners."
+                answer: "Many of our meetups are free; some workshops may require a small fee to cover materials and logistics."
             },
             {
                 question: "Can I propose a talk or workshop?",
@@ -92,6 +96,10 @@ export const faqDataByCategory: FAQData = [
             {
                 question: "Where can I find your event schedule?",
                 answer: "All upcoming events are listed on our Events Page and shared across our social platforms."
+            },
+            {
+                question: "Can I sponsor an event?",
+                answer: "Yes — please reach out via our partners page to discuss sponsorship and collaboration."
             }
         ]
     },

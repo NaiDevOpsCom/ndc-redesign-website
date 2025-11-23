@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Home from "@/pages/Home";
 import AboutUs from "@/pages/AboutUs";
 import FAQPage from "@/pages/FAQPage";
+import Eventspage from "@/pages/Eventspage";
 import CodeOfConduct from "@/docs/code_of_conduct";
 import TermsAndConditions from "@/docs/terms_and_conditions";
 import PrivacyPolicy from "@/docs/privacy_policy";
@@ -28,6 +29,8 @@ function Router() {
       <Route path="/" component={Home} />
 
       <Route path="/about" component={AboutUs} />
+
+      <Route path="/events" component={Eventspage} />
 
       <Route path="/faqpage" component={FAQPage} />
 
