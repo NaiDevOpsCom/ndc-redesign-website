@@ -1,0 +1,403 @@
+import React, { useCallback, useState, useEffect, useRef } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, MapPin, Cloud, Wrench, Award, Rocket, Handshake, ChevronLeft, ChevronRight } from "lucide-react";
+import { Image as UnpicImage } from "@unpic/react";
+import { getFAQsByCategory } from "@/data/faqData";
+
+// --- Types ---
+type FeaturedEvent = {
+    id: number;
+    title: string;
+    type: string;
+    date: string;
+    time: string;
+    location: string;
+    description: string;
+    image: string;
+    cta: string;
+    badgeColor?: string;
+};
+
+type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
+type Speaker = { name: string; title: string; image: string };
+
+// --- Helper components ---
+function FeaturedEventCard({ e }: { e: FeaturedEvent }) {
+    return (
+        <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out">
+            <UnpicImage src={e.image} alt={e.title} className="w-full h-56 object-cover" width={1200} height={560} loading="lazy" layout="constrained" />
+            <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4 flex-wrap">
+                    <Badge className={e.badgeColor}>{e.type}</Badge>
+                    <div className="text-sm text-muted-foreground flex items-center gap-3">
+                        <Calendar className="h-4 w-4" />
+                        <span>{e.date}</span>
+                        <Clock className="h-4 w-4 ml-2" />
+                        <span>{e.time}</span>
+                    </div>
+                </div>
+
+                <h3 className="text-xl font-semibold mb-2">{e.title}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{e.description}</p>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4" />
+                        <span>{e.location}</span>
+                    </div>
+                    <Button onClick={() => window.alert("Register flow coming soon")}>{e.cta}</Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+function ScheduleList({ items }: { items: { time: string; title: string }[] }) {
+    return (
+        <div className="space-y-4">
+            {items.map((s, idx) => (
+                <div key={idx} className="flex items-start gap-4 md:gap-6">
+                    <div className="flex-shrink-0 w-20 text-sm font-semibold text-primary text-right">{s.time}</div>
+                    <div className="flex-1 bg-muted rounded-lg p-4">
+                        <h4 className="font-semibold">{s.title}</h4>
+                        <p className="text-sm text-muted-foreground mt-1">Details and session description go here.</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function SpeakersList({ speakers }: { speakers: Speaker[] }) {
+    return (
+        <div className="space-y-6">
+            {speakers.map((sp, idx) => (
+                <div key={idx} className="flex items-center gap-4">
+                    <img src={sp.image} alt={sp.name} className="h-14 w-14 rounded-full object-cover" loading="lazy" />
+                    <div>
+                        <h4 className="font-semibold">{sp.name}</h4>
+                        <p className="text-sm text-muted-foreground">{sp.title}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function PastEventsGrid({ items }: { items: PastEvent[] }) {
+    const [start, setStart] = useState(0);
+    const perPage = 2;
+
+    const prev = useCallback(() => setStart((s) => (s - perPage + items.length) % items.length), [items.length]);
+    const next = useCallback(() => setStart((s) => (s + perPage) % items.length), [items.length]);
+
+    const handleKey = (e: React.KeyboardEvent) => {
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
+    };
+
+    let visible = items.slice(start, start + perPage);
+    if (visible.length < perPage) visible = visible.concat(items.slice(0, perPage - visible.length));
+
+    return (
+        <div className="relative" tabIndex={0} onKeyDown={handleKey} aria-roledescription="carousel">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                {visible.map((item) => (
+                    <div key={item.id} className="text-center">
+                        <div className="rounded-xl overflow-hidden shadow-lg mx-auto max-w-[560px]">
+                            <UnpicImage src={item.image} alt={item.title} className="w-full h-56 object-cover" width={1200} height={560} loading="lazy" layout="constrained" />
+                        </div>
+                        <h3 className="mt-4 text-lg font-semibold text-gray-700 dark:text-gray-200">{item.date} Meetup</h3>
+                        <p className="text-lg text-gray-600 dark:text-gray-300">{item.title}</p>
+                        <div className="mt-3">
+                            <a href={item.recapUrl} className="text-primary underline">View Recap</a>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <button aria-label="Previous events" onClick={prev} className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
+                <ChevronLeft className="h-6 w-6 text-primary" />
+            </button>
+            <button aria-label="Next events" onClick={next} className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
+                <ChevronRight className="h-6 w-6 text-primary" />
+            </button>
+        </div>
+    );
+}
+
+// --- Main Page Component ---
+export default function Eventspage() {
+    // --- Data ---
+    const featuredEvents: FeaturedEvent[] = [
+        {
+            id: 1,
+            title: "Kubernetes for Beginners",
+            type: "Workshop",
+            date: "Oct 12, 2025",
+            time: "10:00 AM - 2:00 PM",
+            location: "JKUAT Innovation Centre",
+            description: "Hands-on Kubernetes workshop: pods, deployments, services and an intro to Helm. Bring a laptop.",
+            image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+            cta: "Register",
+            badgeColor: "bg-primary/10 text-primary",
+        },
+        {
+            id: 2,
+            title: "DevOps Career Night",
+            type: "Meetup",
+            date: "Nov 08, 2025",
+            time: "6:00 PM - 9:00 PM",
+            location: "The Alchemist, Westlands",
+            description: "Panel talks and lightning demos from local engineers about career growth, interviewing and mentorship.",
+            image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+            cta: "Join Us",
+            badgeColor: "bg-green-500/10 text-green-500",
+        },
+    ];
+
+    const schedule = [
+        { time: "09:00", title: "Registration & Coffee" },
+        { time: "10:00", title: "Keynote: State of DevOps" },
+        { time: "11:00", title: "Breakout Sessions" },
+        { time: "13:00", title: "Lunch & Networking" },
+        { time: "14:00", title: "Hands-on Labs" },
+    ];
+
+    const speakers: Speaker[] = [
+        { name: "Amina Mwangi", title: "Senior SRE @ Acme", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+        { name: "Peter Otieno", title: "DevOps Engineer @ CloudCo", image: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+        { name: "Grace Njeri", title: "Platform Engineer @ NetSys", image: "https://images.unsplash.com/photo-1545996124-1d58f3a1c2b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+    ];
+
+    const reasons = [
+        { icon: Cloud, title: "Explore cloud and DevOps" },
+        { icon: Wrench, title: "Spark practical learning and growth" },
+        { icon: Award, title: "Recognize and certify practical skills" },
+        { icon: Rocket, title: "Empower Kenya's future tech leaders" },
+        { icon: Handshake, title: "Host workshops and campus tours" },
+    ];
+
+    const pastEvents: PastEvent[] = [
+        { id: 1, date: "1st June 2025", title: "Cloud Confessions", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", recapUrl: "#" },
+        { id: 2, date: "1st June 2025", title: "Cloud Confessions", image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", recapUrl: "#" },
+        { id: 3, date: "15th May 2025", title: "Automation Night", image: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", recapUrl: "#" },
+    ];
+
+    // --- Render ---
+    return (
+        <div className="min-h-screen bg-background text-foreground">
+            <Navbar />
+
+            {/* Hero */}
+            <header className="relative min-h-[50vh] flex items-center justify-center text-center" style={{ backgroundImage: "url('https://ik.imagekit.io/nairobidevops/ndc-assets/PXL_20240601_141554232.jpg?updatedAt=1755152981738')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                <div className="absolute inset-0 bg-black/60" />
+                <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Events & Workshops</h1>
+                    <p className="text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8">Discover what’s happening, when, and why it matters. From casual meetups to hands-on workshops, our events are where DevOps ideas come to life—your voice included.</p>
+                    <div className="flex items-center justify-center gap-4">
+                        <Button size="lg" className="bg-primary hover:bg-[#023047] text-white" onClick={() => (window.location.hash = "#featured")}>View Featured Events</Button>
+                        {/* <Button size="lg" variant="outline" className="text-white border-white" onClick={() => (window.location.hash = "#register")}>Register</Button> */}
+                    </div>
+                </div>
+            </header>
+
+            {/* Why Our Events Matter */}
+            <section className="py-16 lg:py-24 bg-blue-50 dark:bg-slate-900">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                        <div className="order-2 lg:order-1">
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">Why Our Events Matter</h2>
+                            <ul className="space-y-6 max-w-xl">
+                                {reasons.map(({ icon: Icon, title }, idx) => (
+                                    <li key={idx} className="flex items-start gap-4">
+                                        <span className="flex-shrink-0 mt-1">
+                                            <span className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-white shadow text-primary">
+                                                <Icon className="h-5 w-5" aria-hidden />
+                                            </span>
+                                        </span>
+                                        <span className="text-base md:text-lg text-gray-800 dark:text-gray-200">{title}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="relative order-1 lg:order-2">
+                            <div className="rounded-2xl overflow-hidden shadow-2xl">
+                                <UnpicImage src="https://ik.imagekit.io/nairobidevops/ndc-assets/PXL_20240601_141554232.jpg?updatedAt=1755152981738" alt="Event group photo" className="w-full h-80 md:h-96 object-cover" width={1200} height={800} loading="lazy" layout="constrained" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Featured Events */}
+            <section id="featured" className="py-16 lg:py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4">Events & Meetups</h2>
+                        <h3 className="text-3xl md:text-4xl font-bold">Workshops, Talks & Real-World Collaboration</h3>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4">
+                            Join us for hands-on sessions, tech talks, and community meetups designed to sharpen your skills and grow your DevOps journey.
+                        </p>
+                    </div>
+                    <div className="text-center mb-6">
+                        <h3 className="text-l md:text-2xl font-bold">Featured Upcoming Events</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {featuredEvents.map((e) => (
+                            <FeaturedEventCard key={e.id} e={e} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Past Events Highlights */}
+            <section className="py-16 lg:py-24 bg-[#d1e2f2] dark:bg-slate-900">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold">Past Events Highlights</h2>
+                    </div>
+                    <PastEventsGrid items={pastEvents} />
+                </div>
+            </section>
+
+            {/* Events CTA */}
+            <section
+                className="min-h-screen flex items-center justify-center relative"
+                style={{
+                    backgroundImage: "url('https://pbs.twimg.com/media/GxreQk7XUAAMCLP?format=jpg&name=large')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat"
+                }}
+            >
+                <div className="absolute inset-0 bg-black/50"></div>
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+                    <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+                        Want Us to Visit Your Campus?
+                    </h2>
+                    <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                        We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you'd like to host a session or collaborate, reach out below.
+                    </p>
+                    <Button
+                        size="lg"
+                        className="bg-primary hover:bg-[#023047] text-white px-8 py-4 text-lg"
+                        onClick={() => window.open('/partners-sponsorship')}
+                    >
+                        Partner with Us
+                    </Button>
+                </div>
+            </section>
+
+            {/* FAQ (Events & Programs) - Carousel showing 3 cards per slide */}
+            <section className="py-16 lg:py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
+                        <p className="text-muted-foreground mt-2">Filtered to the "Events & Programs" category.</p>
+                    </div>
+
+                    {/* Carousel container */}
+                    <FAQCarousel />
+                </div>
+            </section>
+
+            <Footer />
+        </div>
+    );
+}
+
+// --- FAQ Carousel (Events & Programs) ---
+function FAQCarousel() {
+    const faqsForEvents = getFAQsByCategory("Events & Programs");
+    const perSlide = 3;
+    const slides: typeof faqsForEvents[] = [];
+    for (let i = 0; i < faqsForEvents.length; i += perSlide) {
+        slides.push(faqsForEvents.slice(i, i + perSlide));
+    }
+
+    const [slideIdx, setSlideIdx] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+    const intervalRef = useRef<number | null>(null);
+
+    const prev = useCallback(() => setSlideIdx((s) => (s - 1 + slides.length) % slides.length), [slides.length]);
+    const next = useCallback(() => setSlideIdx((s) => (s + 1) % slides.length), [slides.length]);
+
+    // Autoplay: advance every 5s when not paused
+    useEffect(() => {
+        // clear any existing interval
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+
+        if (!isPaused && slides.length > 1) {
+            intervalRef.current = window.setInterval(() => {
+                setSlideIdx((s) => (s + 1) % slides.length);
+            }, 5000);
+        }
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+    }, [isPaused, slides.length]);
+
+    const handleKey = (e: React.KeyboardEvent) => {
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
+    };
+
+    if (slides.length === 0) {
+        return <p className="text-center text-muted-foreground">No FAQs available for this category.</p>;
+    }
+
+    return (
+        <div
+            className="relative"
+            tabIndex={0}
+            onKeyDown={handleKey}
+            aria-roledescription="carousel"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onFocus={() => setIsPaused(true)}
+            onBlur={() => setIsPaused(false)}
+        >
+            {/* Slides */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {slides[slideIdx].map((f, idx) => (
+                    <div key={`${slideIdx}-${idx}-${f.question}`} className="bg-[#d1e2f2] rounded-lg p-6">
+                        <h3 className="font-semibold mb-3">{f.question}</h3>
+                        <p className="text-sm text-muted-foreground whitespace-pre-line">{f.answer}</p>
+                    </div>
+                ))}
+            </div>
+
+            {/* Nav buttons (visible on md+) */}
+            {/* <button aria-label="Previous FAQs" onClick={() => { prev(); setIsPaused(true); }} className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
+                <ChevronLeft className="h-6 w-6 text-primary" />
+            </button>
+            <button aria-label="Next FAQs" onClick={() => { next(); setIsPaused(true); }} className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
+                <ChevronRight className="h-6 w-6 text-primary" />
+            </button> */}
+
+            {/* Dots */}
+            <div className="flex items-center justify-center gap-2 mt-6">
+                {slides.map((_, i) => (
+                    <button
+                        key={`dot-${i}`}
+                        aria-label={`Go to slide ${i + 1}`}
+                        aria-current={i === slideIdx}
+                        onClick={() => { setSlideIdx(i); setIsPaused(true); }}
+                        className={`h-3 w-3 rounded-full ${i === slideIdx ? "bg-primary" : "bg-[#d1e2f2] dark:bg-slate-600"}`}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+}
