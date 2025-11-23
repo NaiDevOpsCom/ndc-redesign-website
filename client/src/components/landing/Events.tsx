@@ -42,7 +42,7 @@ export default function Events() {
         </div>
 
         <div className="text-center mt-16">
-          <Button size="lg">
+          <Button size="lg" onClick={() => { window.location.href = '/events'; }}>
             View All Events
           </Button>
         </div>

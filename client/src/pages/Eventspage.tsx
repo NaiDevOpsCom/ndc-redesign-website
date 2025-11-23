@@ -94,6 +94,28 @@ function PastEventsGrid({ items }: { items: PastEvent[] }) {
     const prev = useCallback(() => setStart((s) => (s - perPage + items.length) % items.length), [items.length]);
     const next = useCallback(() => setStart((s) => (s + perPage) % items.length), [items.length]);
 
+    // Touch swipe support (mobile): swipe left -> next, swipe right -> prev
+    const touchStartX = useRef<number | null>(null);
+    const SWIPE_THRESHOLD = 40; // px
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.touches[0]?.clientX ?? null;
+    };
+
+    const onTouchEnd = (e: React.TouchEvent) => {
+        if (touchStartX.current == null) return;
+        const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+        const deltaX = endX - touchStartX.current;
+        if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+            if (deltaX < 0) {
+                next();
+            } else {
+                prev();
+            }
+        }
+        touchStartX.current = null;
+    };
+
     const handleKey = (e: React.KeyboardEvent) => {
         if (e.key === "ArrowLeft") prev();
         if (e.key === "ArrowRight") next();
@@ -103,7 +125,7 @@ function PastEventsGrid({ items }: { items: PastEvent[] }) {
     if (visible.length < perPage) visible = visible.concat(items.slice(0, perPage - visible.length));
 
     return (
-        <div className="relative" tabIndex={0} onKeyDown={handleKey} aria-roledescription="carousel">
+        <div className="relative" tabIndex={0} onKeyDown={handleKey} aria-roledescription="carousel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                 {visible.map((item) => (
                     <div key={item.id} className="text-center">
@@ -119,10 +141,10 @@ function PastEventsGrid({ items }: { items: PastEvent[] }) {
                 ))}
             </div>
 
-            <button aria-label="Previous events" onClick={prev} className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
+            <button aria-label="Previous events" onClick={prev} className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10">
                 <ChevronLeft className="h-6 w-6 text-primary" />
             </button>
-            <button aria-label="Next events" onClick={next} className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
+            <button aria-label="Next events" onClick={next} className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10">
                 <ChevronRight className="h-6 w-6 text-primary" />
             </button>
         </div>

@@ -26,7 +26,18 @@ export default function Navbar() {
     } else {
       const element = document.querySelector(href);
       if (element) {
+        // Smooth scroll into view
         element.scrollIntoView({ behavior: 'smooth' });
+        // Ensure the URL hash (and our state) reflects in-page navigation so active state can update
+        if (window.location.hash !== href) {
+          // Update the hash without causing a page reload
+          history.replaceState(null, '', href);
+          // replaceState does not emit a hashchange event; update state manually
+          setCurrentLocation(window.location.pathname + href);
+        } else {
+          // If the hash is the same, hashchange won't fire; update state manually
+          setCurrentLocation(window.location.pathname + href);
+        }
       }
     }
     setIsOpen(false);
