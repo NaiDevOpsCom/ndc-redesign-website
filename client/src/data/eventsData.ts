@@ -57,7 +57,7 @@ export const upcomingEvents: UpcomingEvent[] = [
   {
     title: "Hands-On Workshop: Kubernetes Basics",
     description: "JKUAT Innovation Centre. For beginners and curious minds – bring your laptop and dive in.",
-      date: "Sunday, August 10th 2025",
+    date: "Sunday, August 10th 2025",
     buttonText: "Sign Up",
   },
   {
