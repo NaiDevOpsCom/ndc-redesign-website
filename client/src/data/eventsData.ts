@@ -51,7 +51,7 @@ export const upcomingEvents: UpcomingEvent[] = [
   {
     title: "Automation Night",
     description: "Online. Explore CI/CD pipelines and workflow hacks with guest engineers.",
-    date: "Thursday, August 1st 2025",
+    date: "Friday, August 1st 2025",
     buttonText: "Join Us",
   },
   {
