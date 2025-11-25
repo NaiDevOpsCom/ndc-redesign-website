@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Users, Calendar, Handshake } from "lucide-react";
+import { allData } from "@/data/whatWeDoData";
 
 export default function AboutSection() {
-  const stats = [
-    { value: "3000+", label: "Community Member", icon: Users },
-    { value: "100+", label: "Events", icon: Calendar },
-    { value: "20+", label: "Partners", icon: Handshake },
-  ];
-
   const handleKnowUsClick = () => {
     window.location.href = '/about';
   };
@@ -41,15 +35,15 @@ export default function AboutSection() {
             As part of Nairobi’s growing tech ecosystem, we’re fostering inclusive learning, collaboration, and innovation among DevOps engineers, developers, designers, students, and tech enthusiasts across Kenya and beyond.
             </p>
             
-            <div className="mt-6 grid grid-cols-3 gap-6 dark:bg-[#FFFFFF99] rounded-xl p-4">
-              {stats.map((stat, index) => {
+            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 dark:bg-[#FFFFFF99] rounded-xl p-4">
+              {allData.whatDefinesUs.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
-                  <div key={index} className="flex flex-row items-center justify-center text-left gap-3">
+                  <div key={index} className="flex flex-col items-center justify-center text-center gap-3">
                     <Icon className="h-8 w-8 text-primary flex-shrink-0" />
                     <div>
-                      <div className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</div>
-                      <div className="text-xs md:text-sm text-muted-foreground dark:text-white">{stat.label}</div>
+                      <div className="text-xl md:text-2xl font-bold text-foreground">{stat.title}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground dark:text-white">{stat.description}</div>
                     </div>
                   </div>
                 );

@@ -16,7 +16,7 @@ export default function Navbar() {
     { href: "/about", label: "About Us" },
     { href: "/events", label: "Events" },
     { href: "#blog", label: "Blog" },
-    { href: "#community", label: "Community" },
+    { href: "/community", label: "Community" },
   ];
 
   const handleNavClick = (href: string) => {

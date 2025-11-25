@@ -29,6 +29,8 @@ export default function Partners() {
     };
   }, [emblaApi]);
 
+  const allPartners = [...partnersData.communityPartners, ...partnersData.campusTour];
+
   return (
     <section className="py-16 bg-white dark:bg-[#023047] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +43,7 @@ export default function Partners() {
           ref={emblaRef}
         >
           <div className="flex">
-            {partnersData.map((partner, idx) => (
+            {allPartners.map((partner, idx) => (
               <Card
                 key={idx}
                 className="w-44 h-44 flex-shrink-0 flex items-center justify-center p-4 border-0 mx-6 transition-all duration-500 hover:scale-105 hover:shadow-xl group cursor-pointer"
@@ -69,7 +71,7 @@ export default function Partners() {
         </div>
         {/* Dot indicator for carousel/pagination */}
         <div className="flex justify-center mt-8 space-x-2">
-          {partnersData.map((_, idx) => (
+          {allPartners.map((_, idx) => (
             <span
               key={idx}
               className={`w-3 h-3 rounded-full inline-block transition-colors duration-300 ${
