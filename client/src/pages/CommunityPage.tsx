@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { galleryImages } from "@/data/galleryData";
-import { LogoCloud } from "@/components/ui/logo-cloud-2";
+import { LogoCloud } from "@/components/ui/ndcCampusLogos.tsx";
 import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake } from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
 import { events, projects, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
@@ -152,19 +152,26 @@ function HeroGallery() {
 
 // --- What Defines Us Section Component ---
 const WhatDefinesUsSection: React.FC = () => (
-  <section className="py-16 bg-sky-100">
-    <div className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold text-center mb-12">What Defines Us</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <section className="py-16 md:py-20 lg:py-24 bg-sky-50">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">What Defines Us</h2>
+        <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
         {allData.whatDefinesUs.map((item, idx) => {
           const Icon = item.icon;
           return (
-            <div key={idx} className="text-center p-6 hover:shadow-lg rounded-lg transition-shadow">
-              <div className="inline-flex items-center justify-center h-14 w-14 rounded-md bg-white shadow text-primary mx-auto mb-4">
-                <Icon className="h-7 w-7 text-primary" />
+            <div 
+              key={idx} 
+              className="group bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 flex flex-col items-center text-center"
+            >
+              <div className="inline-flex items-center justify-center h-16 w-16 rounded-lg bg-white shadow-md group-hover:shadow-lg group-hover:bg-primary/5 transition-all duration-300 mb-6">
+                <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">{item.title}</h3>
-              <p className="text-gray-600">{item.description}</p>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">{item.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{item.description}</p>
             </div>
           );
         })}
@@ -175,93 +182,104 @@ const WhatDefinesUsSection: React.FC = () => (
 
 // --- Empowering Community Section Component ---
 const EmpoweringCommunitySection: React.FC = () => (
-  <section className="py-20 bg-white dark:bg-slate-950" aria-labelledby="empowering-heading">
-    <div className="container mx-auto px-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+  <section className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-white dark:bg-slate-950" aria-labelledby="empowering-heading">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start">
         {/* Left: Image + Title, Copy, Stats + CTA */}
-        <div className="space-y-8">
-          <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="space-y-6 sm:space-y-8">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm group">
             <img
               src="https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/Maamun_Profile_Photo000_-_Maamun_Bwanakombo_npfvyl.png"
               alt="Smiling community leader standing in front of tiled wall"
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
               decoding="async"
             />
           </div>
-          <div>
-            <h2 id="empowering-heading" className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <div className="space-y-4">
+            <h2 
+              id="empowering-heading" 
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100"
+            >
               Empowering the Nairobi DevOps Community
             </h2>
-            <p className="mt-4 text-base md:text-lg text-slate-600 dark:text-slate-300 max-w-prose">
-              Maamun Bwanakombo’s vision and leadership continue to shape a thriving, inclusive tech ecosystem
+            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
+              Maamun Bwanakombo&apos;s vision and leadership continue to shape a thriving, inclusive tech ecosystem
               across Kenya and beyond.
             </p>
           </div>
+          
           {/* Stats */}
-          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-6" aria-label="Community impact statistics">
-            <div className="">
+          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6" aria-label="Community impact statistics">
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
               <dt className="sr-only">Members reached</dt>
-              <dd className="text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">3000+</dd>
-              <dd className="text-sm mt-1 text-slate-600 dark:text-slate-400">members reached</dd>
+              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">3000+</dd>
+              <dd className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400">members reached</dd>
             </div>
-            <div>
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
               <dt className="sr-only">Workshops hosted</dt>
-              <dd className="text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">50+</dd>
-              <dd className="text-sm mt-1 text-slate-600 dark:text-slate-400">workshops hosted</dd>
+              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">50+</dd>
+              <dd className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400">workshops hosted</dd>
             </div>
-            <div>
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
               <dt className="sr-only">Campuses engaged</dt>
-              <dd className="text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">10+</dd>
-              <dd className="text-sm mt-1 text-slate-600 dark:text-slate-400">campuses engaged</dd>
+              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">10+</dd>
+              <dd className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400">campuses engaged</dd>
             </div>
           </dl>
-          <div>
-            <Button className="inline-flex items-center gap-2">
-              <span aria-hidden>👥</span>
-              <span>Join the community</span>
+          
+          <div className="pt-2">
+
+            <Button size="lg" className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200">
+              <Users className="mr-2 h-5 w-5" />
+              Join Our Community
             </Button>
           </div>
         </div>
 
         {/* Right: Content blocks + Quote */}
-        <div className="space-y-8">
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">Championing DevOps Excellence</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-300">
-                Maamun has led workshops, curated technical content, and introduced best practices in automation, CI/CD,
-                and infrastructure as code. His expertise in Terraform, Jenkins, and Docker has empowered hundreds of engineers.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">Building Inclusive Spaces</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-300">
-                Through mentorship and outreach, Maamun has grown the community to over 3,000 members, ensuring representation
-                from students, startups, and professionals.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">Leading Conversations</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-300">
-                As a lead organizer of DevOpsDays Nairobi, Maamun has created platforms for dialogue and innovation through
-                meetups, Twitter Spaces, and panels.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">A Legacy of Impact</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-300">
-                Maamun’s work fosters a culture of empathy, shared success, and continuous improvement—where DevOps is
-                more than a methodology, it’s a mindset.
-              </p>
-            </div>
+        <div className="space-y-6 sm:space-y-8 lg:pt-4">
+          <div className="space-y-6 sm:space-y-8">
+            {[
+              {
+                title: "Championing DevOps Excellence",
+                content: "Maamun has led workshops, curated technical content, and introduced best practices in automation, CI/CD, and infrastructure as code. His expertise in Terraform, Jenkins, and Docker has empowered hundreds of engineers."
+              },
+              {
+                title: "Building Inclusive Spaces",
+                content: "Through mentorship and outreach, Maamun has grown the community to over 3,000 members, ensuring representation from students, startups, and professionals."
+              },
+              {
+                title: "Leading Conversations",
+                content: "As a lead organizer of DevOpsDays Nairobi, Maamun has created platforms for dialogue and innovation through meetups, Twitter Spaces, and panels."
+              },
+              {
+                title: "A Legacy of Impact",
+                content: "Maamun's work fosters a culture of empathy, shared success, and continuous improvement—where DevOps is more than a methodology, it's a mindset."
+              }
+            ].map((item, index) => (
+              <div key={index} className="group">
+                <div className="flex items-start gap-4">
+                  
+                  <div>
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {item.content}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+          
           {/* Quote card */}
-          <figure className="rounded-2xl bg-slate-900 text-slate-100 dark:bg-slate-800 p-6 md:p-8 shadow-lg">
-            <blockquote className="text-xl leading-relaxed">
-              “DevOps is about people first. Tools come second.”
+          <figure className="rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-slate-100 p-6 sm:p-8 shadow-xl transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+            <blockquote className="text-lg sm:text-xl leading-relaxed">
+              &ldquo;DevOps is about people first. Tools come second.&ldquo;
             </blockquote>
-            <figcaption className="mt-4 text-slate-300">— Maamun Bwanakombo</figcaption>
+            <figcaption className="mt-4 text-slate-300 font-medium">— Maamun Bwanakombo</figcaption>
           </figure>
         </div>
       </div>
@@ -271,77 +289,136 @@ const EmpoweringCommunitySection: React.FC = () => (
 
 // --- Campus Tour Section Component ---
 const CampusTourSection: React.FC = () => (
-  <section className="py-16 bg-ndc-darkblue text-white">
-    <div className="container mx-auto px-4">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Nairobi DevOps Community Campus Tour</h2>
-        <h3 className="text-l md:text-2xl lg:text-3xl font-bold text-white mb-6 leading-tight">
-          Bringing Real-World DevOps to Kenya’s Universities.
+  <section className="py-12 sm:py-16 lg:py-20 bg-ndc-darkblue text-white relative overflow-hidden">
+    {/* Decorative elements */}
+    <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+')]" />
+    </div>
+    
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="text-center max-w-4xl mx-auto mb-12 sm:mb-16">
+        <div className="inline-block mb-3 px-4 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/90">
+          Campus Initiative
+        </div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+          Nairobi DevOps Community Campus Tour
+        </h2>
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white/90 mb-6 leading-tight">
+          Bringing Real-World DevOps to Kenya&apos;s Universities.
         </h3>
-        <p className="text-xl max-w-4xl mx-auto">
-          The Campus Tour is our nationwide outreach initiative designed to equip students with practical DevOps and cloud computing skills—right on their campuses. We partner with leading tech groups to deliver hands-on sessions, expert talks, and career guidance that bridge the gap between classroom theory and industry demands.
+        <p className="text-lg sm:text-xl text-white/80 max-w-4xl mx-auto">
+          Our nationwide outreach initiative equips students with practical DevOps and cloud computing skills—right on their campuses. We partner with leading tech groups to deliver hands-on sessions, expert talks, and career guidance that bridge the gap between classroom theory and industry demands.
         </p>
       </div>
 
-      {/* Row 1: Mission (left) + Target Audience (right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10 items-start">
-        <Card className="bg-sky-100 text-slate-900 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl">Mission</CardTitle>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
+        {/* Mission Card */}
+        <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+          <CardHeader className="pb-3">
+            <div className="h-1.5 w-12 bg-sky-400 rounded-full mb-4"></div>
+            <CardTitle className="text-2xl md:text-3xl text-white">Our Mission</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-base">
+            <p className="text-lg text-white/90 leading-relaxed">
               Driving the future of DevOps in Kenya by delivering immersive, campus-based learning experiences that spark careers, build confidence, and connect students to industry.
             </p>
           </CardContent>
         </Card>
 
-        <div>
-          <h4 className="text-xl font-semibold mb-4">Target Audience</h4>
-          <ul className="space-y-3 text-gray-100 list-none pl-0">
-            <li>Students in tech fields</li>
-            <li>Tech club members</li>
-            <li>Final-year students</li>
-            <li>Faculty and academic staff</li>
-            <li>Beginner to intermediate learners</li>
+        {/* Target Audience */}
+        <div className="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10">
+          <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
+            <span className="mr-3">🎯</span>
+            <span>Target Audience</span>
+          </h4>
+          <ul className="space-y-3 sm:space-y-4">
+            {['Students in tech fields', 'Tech club members', 'Final-year students', 'Faculty and academic staff', 'Beginner to intermediate learners'].map((item, index) => (
+              <li key={index} className="flex items-start">
+                <Check className="h-5 w-5 text-sky-400 mt-0.5 mr-3 flex-shrink-0" />
+                <span className="text-white/90">{item}</span>
+              </li>
+            ))}
           </ul>
+        </div>
+
+        {/* Why Invite Us */}
+        <div className="lg:col-span-2">
+          <div className="bg-gradient-to-r from-sky-500/10 to-blue-600/10 p-6 sm:p-8 rounded-2xl border border-white/10">
+            <h4 className="text-xl sm:text-2xl font-bold text-white mb-6">Why Invite Us</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              {[
+                "Access to real-world DevOps and cloud experts",
+                "Learn in-demand skills for internships and jobs",
+                "Hands-on demos and guided activities",
+                "Discover career paths in DevOps, SRE, and Cloud Engineering"
+              ].map((item, index) => (
+                <div key={index} className="flex items-start">
+                  <div className="bg-sky-500/20 p-1.5 rounded-full mr-3 mt-0.5">
+                    <Check className="h-4 w-4 text-sky-400" />
+                  </div>
+                  <span className="text-white/90">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Row 2: Why Invite Us (left) + How It Works (right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 items-start">
-        <div>
-          <h4 className="text-xl font-semibold mb-4">Why Invite Us</h4>
-          <ul className="list-disc pl-5 space-y-3 text-gray-100">
-            <li>Access to real-world DevOps and cloud experts</li>
-            <li>Learn in-demand skills for internships and jobs</li>
-            <li>Hands-on demos and guided activities</li>
-            <li>Discover career paths in DevOps, SRE, and Cloud Engineering</li>
-            <li>All sessions are free and tailored to your university&apos;s needs</li>
-          </ul>
+      {/* How It Works */}
+      <div className="mt-12 sm:mt-16 max-w-4xl mx-auto">
+        <div className="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10">
+          <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
+            <span className="mr-3">🔄</span>
+            <span>How It Works</span>
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <p className="text-lg text-white/90 leading-relaxed mb-4">
+                We visit universities across Kenya, delivering interactive sessions on different areas. Each stop includes expert speakers, live demos, and networking opportunities with industry professionals.
+              </p>
+              <p className="text-white/80">
+                Sessions are tailored to the host university and can include workshops, talks, and hands-on labs.
+              </p>
+            </div>
+            <div className="bg-white/5 p-6 rounded-xl border border-white/10">
+              <h5 className="font-semibold text-white mb-3">What to Expect:</h5>
+              <ul className="space-y-2">
+                {[
+                  "Interactive workshops",
+                  "Expert-led sessions",
+                  "Networking opportunities",
+                  "Hands-on labs",
+                  "Career guidance"
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center">
+                    <div className="w-1.5 h-1.5 rounded-full bg-sky-400 mr-2"></div>
+                    <span className="text-white/90">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
-
-        <Card className="bg-sky-100 text-slate-900 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl">How It Works</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-base mb-3">
-              We visit universities across Kenya, delivering interactive sessions on different areas. Each stop includes expert speakers, live demos, and networking opportunities with industry professionals.
-            </p>
-            <p className="text-sm text-slate-700">Sessions are tailored to the host university and can include workshops, talks, and hands-on labs.</p>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Campus tour logos */}
-      <section className="relative mx-auto grid max-w-3xl py-10">
-        <LogoCloud />
-      </section>
+      <div className="mt-12 sm:mt-16 max-w-5xl mx-auto">
+        {/* <div className="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10"> */}
+          <div className="py-4">
+            <LogoCloud />
+          </div>
+        {/* </div> */}
+      </div>
 
-      <div className="flex justify-center mt-8">
-        <Button className="bg-primary text-white flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200">
+      <div className="mt-12 text-center">
+        <Button 
+          size="lg"
+          className="bg-sky-500 hover:bg-sky-600 text-white font-medium py-6 px-8 text-base md:text-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+        >
           Propose Your Campus
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
         </Button>
       </div>
     </div>
@@ -508,6 +585,9 @@ const EventsMeetupsSection: React.FC = () => (
         <p className="text-white max-w-2xl mx-auto">
           Join us for hands-on sessions, tech talks, and community meetups designed to sharpen your skills and grow your DevOps journey.
         </p>
+          <h3 className="text-3xl text-primary font-bold mb-4 mt-6">
+              Featured Events
+          </h3>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
