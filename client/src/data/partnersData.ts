@@ -58,39 +58,25 @@ export const partnersData = {
         website: "https://strathmore.edu/",
     },
     {
-        name: "University of Nairobi",
-        logo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        name: "Kabarak Univerity",
+        logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1764088817/Kabarak_University_i1ninu.png",
         website: "https://www.uonbi.ac.ke/"
     },
     {
-        name: "Kenyatta University",
-        logo: "https://images.unsplash.com/photo-1581373446460-3a0c2b4d1b1a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        website: "http://www.ku.ac.ke/"
+        name: "KCA University",
+        logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1764088801/KCAU_logo.svg_af3awk.png",
+        website: "http://www.kca.ac.ke/"
     },
     {
-        name: "Jomo Kenyatta University of Agriculture and Technology",
-        logo: "https://images.unsplash.com/photo-1600215799983-c34938a52992?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        website: "https://www.jkuat.ac.ke/"
+        name: "Egerton University",
+        logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1764088781/academicjobsEgertonUniversitylogo_n15kzo.webp",
+        website: "https://www.egerton.ac.ke/"
     },
     {
-        name: "bondo",
-        logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1752047932/7_qnw41y.svg",
-        website: "https://bondo.edu/",
+        name: "Zetech University",
+        logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1764088782/Zetech_University_Logo_Vert_RGB_dslv5x.png",
+        website: "https://zetech.ac.ke/",
     },
-    {
-        name: "kibabii",
-        logo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        website: "https://www.kibabii.ac.ke/"
-    },
-    {
-        name: "Mmust",
-        logo: "https://images.unsplash.com/photo-1581373446460-3a0c2b4d1b1a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        website: "http://www.must.ac.ke/"
-    },
-    {
-        name: "maseno",
-        logo: "https://images.unsplash.com/photo-1600215799983-c34938a52992?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        website: "https://www.masenot.ac.ke/"
-    },
+  
   ]
 };
