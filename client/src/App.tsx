@@ -12,6 +12,7 @@ import Eventspage from "@/pages/Eventspage";
 import CodeOfConduct from "@/docs/code_of_conduct";
 import TermsAndConditions from "@/docs/terms_and_conditions";
 import PrivacyPolicy from "@/docs/privacy_policy";
+import CommunityPage from "@/pages/CommunityPage";
 
 import NotFound from "@/pages/not-found";
 
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/terms" component={TermsAndConditions} />
 
       <Route path="/privacy" component={PrivacyPolicy} />
+      <Route path="/community" component={CommunityPage} />
       <Route component={NotFound} />
     </Switch>
   );

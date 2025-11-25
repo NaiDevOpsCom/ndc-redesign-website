@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { whatWeDoData } from "@/data/whatWeDoData";
+import { allData } from "@/data/whatWeDoData";
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ export default function WhatWeDo() {
             ref={emblaRef}
           >
             <div className="flex gap-6 will-change-transform">
-              {whatWeDoData.map((service, index) => (
+              {allData.whatWeDo.map((service, index) => (
                 <div
                   key={index}
                   className="embla__slide flex-shrink-0 px-2 w-full sm:w-1/2 md:w-1/3"
@@ -89,7 +89,7 @@ export default function WhatWeDo() {
         </div>
         {/* Dot indicator for carousel/pagination */}
         <div className="flex justify-center mt-6 space-x-3">
-          {whatWeDoData.map((_, idx) => (
+          {allData.whatWeDo.map((_, idx) => (
             <button
               key={idx}
               aria-label={`Go to slide ${idx + 1}`}
