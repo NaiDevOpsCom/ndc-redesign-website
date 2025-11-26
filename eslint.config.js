@@ -1,10 +1,10 @@
-// ESLint Flat Config for React + TypeScript + Vite
 import js from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import securityPlugin from "eslint-plugin-security";
+import globals from "globals";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -56,6 +56,7 @@ export default [
                 sourceType: "module",
                 ecmaFeatures: { jsx: true },
             },
+            globals: globals.browser,  // Add browser globals like window here
         },
         settings: { react: { version: "detect" } },
         rules: {
