@@ -24,7 +24,7 @@ export const events: CommunityEvent[] = [
     date: "15 Jan 2024",
     time: "10:00 AM - 12:00 PM",
     location: "Online",
-    image: "/images/events/devops-fundamentals.jpg",
+    image: "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=4096x4096",
   },
   {
     id: 2,
@@ -32,12 +32,11 @@ export const events: CommunityEvent[] = [
     date: "22 Jan 2024",
     time: "2:00 PM - 4:00 PM",
     location: "Nairobi Tech Hub",
-    image: "/images/events/cicd-workshop.jpg",
+    image: "https://pbs.twimg.com/media/F6r8agmXAAAwS48?format=jpg&name=large",
   },
 ];
 
 // Community projects displayed on the Community page.
-// Images intentionally use Unsplash URLs as requested in the design brief.
 export const projects: CommunityProject[] = [
   {
     id: 1,

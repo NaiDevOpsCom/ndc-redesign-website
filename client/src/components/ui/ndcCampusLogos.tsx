@@ -142,6 +142,10 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
+    // Track the pending timeout so we can cancel it on cleanup and avoid
+    // setting state after the component unmounts.
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
     const changeLogo = () => {
       let newLogo = currentLogo;
       if (allLogos.length > 1) {
@@ -153,7 +157,7 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
 
       setIsFading(true);
       // Wait for fade-out to complete before changing the logo and fading back in
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         setCurrentLogo(newLogo);
         setIsFading(false);
       }, 1000); // This duration should match the CSS transition
@@ -163,7 +167,12 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
     const randomInterval = Math.random() * 5000 + 5000;
     const intervalId = setInterval(changeLogo, randomInterval);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [currentLogo, allLogos]);
 
   return (
@@ -178,9 +187,9 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
       <img
         alt={currentLogo.alt}
         className="pointer-events-none h-20 select-none md:h-24 dark:brightness-0 dark:invert"
-        height={currentLogo.height || "auto"}
+        height={currentLogo.height}
         src={currentLogo.src}
-        width={currentLogo.width || "auto"}
+        width={currentLogo.width}
       />
       {children}
     </div>

@@ -46,21 +46,21 @@ export const partnersData = {
       website: "https://www.datacamp.com/",
     },
     {
-      name: "DevOsps Days",
+      name: "DevOps Days",
       logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1753592113/devopsdays_nespct.svg",
       website: "https://devopsdays.org/",
     },
   ],
   campusTour: [
     {
-        name: "Strathmore Univeristy",
+        name: "Strathmore University",
         logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1752047932/7_qnw41y.svg",
         website: "https://strathmore.edu/",
     },
     {
-        name: "Kabarak Univerity",
+        name: "Kabarak University",
         logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1764088817/Kabarak_University_i1ninu.png",
-        website: "https://www.uonbi.ac.ke/"
+        website: "https://www.kabarak.ac.ke/"
     },
     {
         name: "KCA University",
