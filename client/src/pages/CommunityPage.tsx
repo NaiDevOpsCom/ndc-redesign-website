@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import { Link } from "wouter"; // Keeping Link for potential future use or if it's used within extracted components
+import React, { useMemo } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
@@ -95,75 +95,16 @@ const DeliveryItem: React.FC<DeliveryItemProps> = ({ index, text }) => (
 
 // --- Hero Gallery Component ---
 function HeroGallery() {
-  // Build a selection pool where priority images are slightly more likely
-  const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
+  // Select a single random background from galleryImages (weighted by priority)
+  const { url: fullUrl, thumbnailUrl, alt } = useMemo(() => {
+    const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
+    if (!pool.length) return { url: "", thumbnailUrl: "", alt: "Community image" };
+    const idx = Math.floor(Math.random() * pool.length);
+    const picked = pool[idx];
+    return { url: picked.url, thumbnailUrl: picked.thumbnailUrl ?? "", alt: picked.alt || "Community image" };
+  }, []);
 
-  const pickRandomIndex = () => Math.floor(Math.random() * pool.length);
-
-  const [idx, setIdx] = useState<number>(() => pickRandomIndex());
-  const [bgUrl, setBgUrl] = useState<string>(() => pool[idx]?.thumbnailUrl || pool[idx]?.url || "");
-  const intervalRef = useRef<number | null>(null);
-
-  // Preload the full image for the current index then swap
-  useEffect(() => {
-    if (!pool[idx]) return;
-    const full = pool[idx].url;
-    type ImageCtor = new () => HTMLImageElement;
-    const ImgCtor = (globalThis as unknown as { Image?: ImageCtor }).Image;
-    if (!ImgCtor) return;
-    const img = new ImgCtor();
-    img.src = full;
-    img.onload = () => setBgUrl(full);
-    return () => {
-      img.onload = null;
-    };
-  }, [idx, pool]); // Added pool to dependency array
-
-  // Autoplay/random rotate every 30s
-  useEffect(() => {
-    const rotate = () => setIdx((currentIdx) => {
-      let next = pickRandomIndex();
-      // Avoid same image twice in a row when possible
-      if (pool.length > 1) {
-        while (next === currentIdx) {
-          next = pickRandomIndex();
-        }
-      }
-      return next;
-    });
-
-    intervalRef.current = globalThis.setInterval(rotate, 30000) as unknown as number;
-    return () => {
-      if (intervalRef.current) {
-        globalThis.clearInterval(intervalRef.current as unknown as number);
-        intervalRef.current = null;
-      }
-    };
-  }, []); // Added pool to dependency array
-
-  // Pause on hover/focus
-  const [paused, setPaused] = useState(false);
-  useEffect(() => {
-    if (paused) {
-      if (intervalRef.current) {
-        globalThis.clearInterval(intervalRef.current as unknown as number);
-        intervalRef.current = null;
-      }
-    } else if (!intervalRef.current) {
-      intervalRef.current = globalThis.setInterval(() => {
-        setIdx((currentIdx) => {
-          let next = pickRandomIndex();
-          if (pool.length > 1) {
-            while (next === currentIdx) next = pickRandomIndex();
-          }
-          return next;
-        });
-      }, 30000) as unknown as number;
-    }
-    return () => { };
-  }, [paused, pool]); // Added pool to dependency array
-
-  const currentAlt = pool[idx]?.alt || "Community image";
+  const bgUrl = fullUrl || thumbnailUrl || "";
 
   return (
     <section
@@ -173,11 +114,7 @@ function HeroGallery() {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-      aria-label={currentAlt}
+      aria-label={alt}
     >
       <div className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] flex items-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
@@ -522,7 +459,7 @@ const DevOpsCoursesSection: React.FC = () => (
       {/* Section intro */}
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
-          Devops Courses
+          DevOps Courses
         </h2>
         <p className="mt-4 text-sm md:text-base text-neutral-600 dark:text-neutral-300">
           Whether you’re just starting out or scaling your DevOps expertise, our curated courses—delivered in partnership
@@ -602,13 +539,13 @@ const EventsMeetupsSection: React.FC = () => (
           {
             title: "Professional Events",
             description: "Conferences, workshops, and training sessions with industry experts",
-            image: "/images/events/professional.jpg",
+            image: "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=4096x4096",
             link: "/events?type=professional"
           },
           {
             title: "Community Meetups",
             description: "Casual gatherings for networking and knowledge sharing",
-            image: "/images/events/meetup.jpg",
+            image: "https://pbs.twimg.com/media/F6r8agmXAAAwS48?format=jpg&name=large",
             link: "/events?type=meetup"
           }
         ].map((event, i) => (
@@ -753,7 +690,7 @@ const CollaborationCTASection: React.FC = () => {
       }}
     >
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">
+        <h2 className="text-3xl md:text-4xl text-primary font-bold mb-6">
           Collaboration That Drives Innovation
         </h2>
         <p className="text-xl mb-8 max-w-6xl mx-auto">
