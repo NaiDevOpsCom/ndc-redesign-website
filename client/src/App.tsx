@@ -13,6 +13,8 @@ import CodeOfConduct from "@/docs/code_of_conduct";
 import TermsAndConditions from "@/docs/terms_and_conditions";
 import PrivacyPolicy from "@/docs/privacy_policy";
 import CommunityPage from "@/pages/CommunityPage";
+import BlogPage from "@/pages/BlogPage";
+import BlogDetail from "@/pages/BlogDetail";
 
 import NotFound from "@/pages/not-found";
 
@@ -41,6 +43,8 @@ function Router() {
 
       <Route path="/privacy" component={PrivacyPolicy} />
       <Route path="/community" component={CommunityPage} />
+      <Route path="/blogs" component={BlogPage} />
+      <Route path="/blogs/:slug" component={BlogDetail} />
       <Route component={NotFound} />
     </Switch>
   );
