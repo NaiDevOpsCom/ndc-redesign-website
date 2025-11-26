@@ -193,8 +193,10 @@ const EmpoweringCommunitySection: React.FC = () => (
           <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6" aria-label="Community impact statistics">
             <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
               <dt className="sr-only">Members reached</dt>
-              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">3000+</dd>
-              <dd className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400">members reached</dd>
+                <dd>
+                          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400 block">3000+</span>
+                          <span className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400 block">members reached</span>
+                       </dd>
             </div>
             <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
               <dt className="sr-only">Workshops hosted</dt>
@@ -601,7 +603,6 @@ const CommunityProjectsSection: React.FC = () => (
           <article 
             key={project.id}
             className="group h-full flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
-            tabIndex={0}
           >
             <div className="relative aspect-[16/9] bg-gray-100 overflow-hidden">
               <img
