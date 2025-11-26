@@ -14,6 +14,7 @@ export interface CommunityProject {
   title: string;
   description: string;
   image: string;
+  date: string; // Displayed next to the title on the project card
 }
 
 export const events: CommunityEvent[] = [
@@ -35,23 +36,61 @@ export const events: CommunityEvent[] = [
   },
 ];
 
+// Community projects displayed on the Community page.
+// Images intentionally use Unsplash URLs as requested in the design brief.
 export const projects: CommunityProject[] = [
   {
     id: 1,
-    title: "Automated Deployment Pipeline",
-    description: "A CI/CD pipeline for automated testing and deployment",
-    image: "/images/projects/pipeline.jpg",
+    title: "Nairobi DevOps Website Redesign",
+    description:
+      "A community‑led initiative to improve storytelling, accessibility, and engagement.",
+    image:
+      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop",
+    date: "Oct 2024",
   },
   {
     id: 2,
-    title: "Infrastructure as Code",
-    description: "Terraform templates for cloud infrastructure",
-    image: "/images/projects/iac.jpg",
+    title: "Africa DevOps Summit Website Redesign",
+    description:
+      "An open‑source guide to CI/CD, cloud setup, and monitoring for early‑stage teams.",
+    image:
+      "https://images.unsplash.com/photo-1554941829-202a0b2403b1?q=80&w=1600&auto=format&fit=crop",
+    date: "Nov 2024",
   },
   {
     id: 3,
-    title: "Monitoring Dashboard",
-    description: "Real-time monitoring for DevOps metrics",
-    image: "/images/projects/monitoring.jpg",
+    title: "Inclusive Tech Glossary",
+    description:
+      "A living document defining key DevOps terms in simple, inclusive language.",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop",
+    date: "Dec 2024",
+  },
+  {
+    id: 4,
+    title: "Nairobi DevOps Website Redesign",
+    description:
+      "A community‑led initiative to improve storytelling, accessibility, and engagement.",
+    image:
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop",
+    date: "Jan 2025",
+  },
+  {
+    id: 5,
+    title: "Africa DevOps Summit Website Redesign",
+    description:
+      "An open‑source guide to CI/CD, cloud setup, and monitoring for early‑stage teams.",
+    image:
+      "https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=1600&auto=format&fit=crop",
+    date: "Feb 2025",
+  },
+  {
+    id: 6,
+    title: "Inclusive Tech Glossary",
+    description:
+      "A living document defining key DevOps terms in simple, inclusive language.",
+    image:
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1600&auto=format&fit=crop",
+    date: "Mar 2025",
   },
 ];

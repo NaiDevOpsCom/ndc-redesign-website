@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Link } from "wouter"; // Keeping Link for potential future use or if it's used within extracted components
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { galleryImages } from "@/data/galleryData";
-import { LogoCloud } from "@/components/ui/ndcCampusLogos.tsx";
+// Import without extension to avoid potential resolver issues in some environments
+import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake } from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
 import { events, projects, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
@@ -631,45 +632,92 @@ const EventsMeetupsSection: React.FC = () => (
 
 // --- Community Projects Section Component ---
 const CommunityProjectsSection: React.FC = () => (
-  <section className="py-16 bg-gray-50">
-    <div className="container mx-auto px-4">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">
+  <section 
+    className="py-12 sm:py-16 lg:py-20 bg-gray-50" 
+    aria-labelledby="community-projects-heading"
+  >
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="text-center mb-10 sm:mb-12 lg:mb-16 px-4">
+        <h2 
+          id="community-projects-heading" 
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4"
+        >
           Community Projects
         </h2>
-        <p className="mt-4 text-xl md:text-2xl font-semibold mb-6 leading-tight">
+        <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 leading-tight mb-3">
           Building Together, One Project at a Time
         </p>
-        <p className="max-w-2xl mx-auto">
-          We collaborate on tools, platforms, and experiments that solve real-world problems. Whether you&apos;re a designer, developer, or strategist—there’s a place for you here.
+        <p className="max-w-3xl mx-auto text-base sm:text-lg text-slate-600">
+          We collaborate on tools, platforms, and experiments that solve real-world problems. 
+          Whether you&apos;re a designer, developer, or strategist—there&apos;s a place for you here.
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {projects.map((project: CommunityProject) => (
-          <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="h-48 bg-gray-200">
+          <article 
+            key={project.id}
+            className="group h-full flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+            tabIndex={0}
+          >
+            <div className="relative aspect-[16/9] bg-gray-100 overflow-hidden">
               <img
                 src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover"
+                alt={`${project.title} project screenshot`}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
+                width={400}
+                height={225}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <CardHeader>
-              <CardTitle>{project.title}</CardTitle>
-              <CardDescription>{project.description}</CardDescription>
+            
+            <CardHeader className="flex-1 p-5 sm:p-6 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900 leading-tight">
+                  {project.title}
+                </CardTitle>
+                {(() => {
+                  // Safely compute an ISO date string if the provided date is parseable.
+                  // This prevents runtime errors from invalid Date parsing (e.g., "Oct 2024").
+                  const d = new Date(project.date);
+                  const iso = isNaN(d.getTime()) ? undefined : d.toISOString().split("T")[0];
+                  return (
+                    <time
+                      dateTime={iso}
+                      className="text-sm font-medium text-slate-500 whitespace-nowrap flex-shrink-0 sm:mt-0.5"
+                    >
+                      {project.date}
+                    </time>
+                  );
+                })()}
+              </div>
+              
+              <CardDescription className="text-sm sm:text-base text-slate-600 line-clamp-3">
+                {project.description}
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <Button variant="outline" className="w-full">View Project</Button>
-            </CardContent>
-          </Card>
+            
+            <CardFooter className="p-5 sm:p-6 pt-0">
+              <Button 
+                variant="outline" 
+                className="w-full group/button transition-all duration-200 hover:bg-blue-50 hover:border-blue-200"
+                aria-label={`View details for ${project.title} project`}
+              >
+                <span className="relative">
+                  View Project
+                  <span 
+                    className="absolute -right-5 opacity-0 group-hover/button:opacity-100 group-hover/button:translate-x-1.5 transition-all duration-200"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </span>
+              </Button>
+            </CardFooter>
+          </article>
         ))}
-      </div>
-
-      <div className="text-center mt-12">
-        <Button variant="outline">View All Projects</Button>
       </div>
     </div>
   </section>
