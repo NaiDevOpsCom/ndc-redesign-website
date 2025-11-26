@@ -320,7 +320,7 @@ const EmpoweringCommunitySection: React.FC = () => (
           {/* Quote card */}
           <figure className="rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-slate-100 p-6 sm:p-8 shadow-xl transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
             <blockquote className="text-lg sm:text-xl leading-relaxed">
-              &ldquo;DevOps is about people first. Tools come second.&ldquo;
+                &ldquo;DevOps is about people first. Tools come second.&rdquo;
             </blockquote>
             <figcaption className="mt-4 text-slate-300 font-medium">— Maamun Bwanakombo</figcaption>
           </figure>
@@ -742,7 +742,7 @@ const CollaborationCTASection: React.FC = () => {
 
   return (
     <section
-      className="relative py-20 text-white"
+      className="relative py-20 text-white bg-slate-900"
       style={{
         backgroundImage: ctaBgUrl
           ? `url("${ctaBgUrl}")`
