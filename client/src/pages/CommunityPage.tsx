@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Link } from "wouter"; // Keeping Link for potential future use or if it's used within extracted components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { galleryImages } from "@/data/galleryData";
@@ -17,6 +16,49 @@ interface OfferItemProps {
   title: string;
   iconBg?: string;
   variant?: "labs" | "coaching" | "tools";
+}
+
+const registrationSteps = [
+  { number: 1, label: "Explore\nCourses" },
+  { number: 2, label: "Select\nCourses" },
+  { number: 3, label: "Fill in your\ndetails" },
+  { number: 4, label: "Confirm\nRegistration" },
+]
+
+function RegistrationProgress() {
+  return (
+    <div className="flex items-center justify-center w-full max-w-4xl mx-auto px-4">
+      {registrationSteps.map((step, index) => (
+        <div key={step.number} className="flex items-center">
+          {/* Step Circle and Label */}
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#0066CC] flex items-center justify-center text-white font-bold text-xl md:text-2xl shadow-lg">
+              {step.number}
+            </div>
+            <p className="mt-3 text-xs md:text-sm text-center font-medium text-foreground whitespace-pre-line leading-tight">
+              {step.label}
+            </p>
+          </div>
+
+          {/* Connector Line */}
+          {index < registrationSteps.length - 1 && (
+            <div className="w-12 md:w-20 lg:w-28 h-1 bg-[#0066CC] mx-1 md:mx-2 -mt-6" />
+          )}
+        </div>
+      ))}
+
+      {/* Final connector to Done */}
+      <div className="w-12 md:w-20 lg:w-28 h-1 bg-[#B8D4E8] mx-1 md:mx-2 -mt-6" />
+
+      {/* Done Circle with Checkmark */}
+      <div className="flex flex-col items-center">
+        <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#D6E8F5] flex items-center justify-center shadow-lg">
+          <Check className="w-6 h-6 md:w-7 md:h-7 text-[#0066CC] stroke-[3]" />
+        </div>
+        <p className="mt-3 text-xs md:text-sm text-center font-medium text-foreground">Done</p>
+      </div>
+    </div>
+  )
 }
 
 const OfferItem: React.FC<OfferItemProps> = ({ title, iconBg = "bg-white", variant }) => {
@@ -489,7 +531,7 @@ const DevOpsCoursesSection: React.FC = () => (
       </div>
 
       {/* Upskill subheading */}
-      <div className="mt-12 max-w-2xl mx-auto text-center">
+      <div className="mt-12 max-w-2xl mx-auto text-center mb-6">
         <h3 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-white">
           Ready to Upskill?
         </h3>
@@ -501,48 +543,12 @@ const DevOpsCoursesSection: React.FC = () => (
         </p>
       </div>
 
-      {/* Stepper */}
-      <div className="relative mt-10 md:mt-12 max-w-4xl mx-auto">
-        {/* Track */}
-        <div className="absolute top-1/2 left-4 right-4 h-[6px] -translate-y-1/2 rounded-full bg-neutral-200 dark:bg-neutral-700" aria-hidden />
-        {/* Progress (4 of 5) */}
-        <div className="absolute top-1/2 left-4 right-[20%] h-[6px] -translate-y-1/2 rounded-full bg-blue-600" aria-hidden />
 
-        <ol className="relative z-10 grid grid-cols-5 gap-2">
-          {[
-            { label: "Explore\nCourses" },
-            { label: "Select\nCourses" },
-            { label: "Fill in your\ndetails" },
-            { label: "Confirm\nRegistration" },
-            { label: "Done" }
-          ].map((s, i) => {
-            const completed = i < 4;
-            const isLast = i === 4;
-            return (
-              <li key={i} className="flex flex-col items-center text-center px-2">
-                <div
-                  className={cn(
-                    "mb-2 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-bold",
-                    completed
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white text-blue-600 border-blue-600 dark:bg-neutral-900"
-                  )}
-                  aria-current={completed && !isLast ? "step" : undefined}
-                >
-                  {isLast ? <Check className="h-5 w-5" aria-hidden /> : i + 1}
-                </div>
-                <span className="whitespace-pre-line text-xs md:text-sm font-medium text-neutral-800 dark:text-neutral-200">
-                  {s.label}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
+      <RegistrationProgress />
 
       {/* Available Courses */}
       <div className="container mx-auto px-4 mt-6">
-        <h2 className="text-3xl font-bold text-center mb-12">Available Sessions</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Available Courses</h2>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {events.map((event: CommunityEvent) => (
