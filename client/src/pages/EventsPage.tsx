@@ -110,7 +110,7 @@ function PastEventsGrid({ items }: { items: PastEvent[] }) {
 }
 
 // --- Main Page Component ---
-export default function Eventspage() {
+export default function EventsPage() {
     // --- Data ---
 
     const reasons = [
