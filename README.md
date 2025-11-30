@@ -51,14 +51,26 @@ This platform empowers developers, automation experts, and tech enthusiasts to l
 ## Project Structure
 
 ```
-NairobiDevOps-1/
-  client/         # React frontend (src/, components/, pages/, contexts/, hooks/, etc.)
-  client/src/data/ # Static data files (testimonials, gallery images, partners, etc.)
-  components.json # UI config
-  tailwind.config.ts # Tailwind CSS config
-  tsconfig.json   # TypeScript config
-  vite.config.ts  # Vite config
-  package.json    # Project dependencies and scripts
+ndc-redesign-website/
+├── client/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── data/
+│   │   ├── docs/
+│   │   ├── hooks/
+│   │   ├── lib/
+│   │   ├── pages/
+│   │   └── security/
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.html
+├── .gitignore
+├── package.json
+├── tailwind.config.ts
+├── tsconfig.json
+└── vite.config.ts
 ```
 
 ---
