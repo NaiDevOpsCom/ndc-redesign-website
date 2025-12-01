@@ -1,9 +1,6 @@
 {
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -11,7 +8,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://vercel.live 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://www.googletagmanager.com https://gql.hashnode.com https://api.hashnode.com; img-src 'self' https://res.cloudinary.com https://pbs.twimg.com https://ik.imagekit.io data: https:; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com; media-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://*.googlevideo.com;"
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://vercel.live; connect-src 'self' https://www.googletagmanager.com https://gql.hashnode.com https://api.hashnode.com; img-src 'self' https://res.cloudinary.com https://pbs.twimg.com https://ik.imagekit.io data: https:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com; media-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://*.googlevideo.com;"
         }
       ]
     }
