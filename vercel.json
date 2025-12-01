@@ -7,10 +7,6 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'nonce-__RANDOM_NONCE__' 'sha256-uygWRuYHdcUasUrUKvmm3fDRZK21I5Fy2+SXombw8lg=' https://www.googletagmanager.com https://vercel.live https://luma.com; connect-src 'self' https://www.googletagmanager.com https://gql.hashnode.com https://api.hashnode.com https://api2.luma.com; img-src 'self' https://res.cloudinary.com https://pbs.twimg.com https://ik.imagekit.io https://luma.com data: https:; style-src 'self' https://fonts.googleapis.com https://luma.com; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com https://luma.com; media-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://*.googlevideo.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
-        },
-        {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
         },
