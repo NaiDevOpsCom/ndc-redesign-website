@@ -1,9 +1,6 @@
-// Note: 'framer-motion' is required for this component to work.
-// Please install it by running: npm install framer-motion
-
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { heroSlidesData } from "../../../data/heroSlidesData.ts";
+import { heroSlidesData } from "@/data/heroSlidesData.ts";
 import HeroSlide from "./HeroSlide";
 
 const slideVariants = {
