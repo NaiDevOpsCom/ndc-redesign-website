@@ -45,8 +45,8 @@
   
   
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510"></script>
-    <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510" nonce="__RANDOM_NONCE__"></script>
+    <script nonce="__RANDOM_NONCE__">
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -56,6 +56,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <script typeof="module" src="./src/main.tsx" nonce="__RANDOM_NONCE__"></script>
   </body>
 </html>
