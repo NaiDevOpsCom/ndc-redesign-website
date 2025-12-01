@@ -220,7 +220,7 @@ export default function EventsPage() {
                         Want Us to Visit Your Campus?
                     </h2>
                     <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                        We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you'd like to host a session or collaborate, reach out below.
+                        We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you&apos;d like to host a session or collaborate, reach out below.
                     </p>
                     <Link href="/partners-sponsorship">
                         <Button
@@ -238,7 +238,7 @@ export default function EventsPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
-                        <p className="text-muted-foreground mt-2">Filtered to the "Events & Programs" category.</p>
+                        <p className="text-muted-foreground mt-2">Filtered to the &ldquo;Events & Programs&rdquo; category.</p>
                     </div>
 
                     {/* Carousel container */}

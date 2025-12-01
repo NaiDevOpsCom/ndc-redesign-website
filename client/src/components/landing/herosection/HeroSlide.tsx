@@ -1,6 +1,7 @@
 import { Users, Calendar, ArrowRight, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { HeroSlideData } from "../../../data/heroSlidesData.ts";
+import { HeroSlideData } from "@/data/heroSlidesData.ts";
+import React from "react";
 
 interface HeroSlideProps {
   slide: HeroSlideData;
