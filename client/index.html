@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1"
     />
     <title>Nairobi DevOps Community | DevOps in Kenya</title>
     <meta
-      name="description"
-      content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!"
+            name="description"
+            content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!"
     />
     <meta
-      name="keywords"
-      content="Nairobi DevOps, Africa DevOps Summit, DevOps Kenya, DevOps Community, DevOpsDays Nairobi, Africa DevOps Summit, Tech Community Nairobi, DevOps Events Kenya, DevOps Meetups, DevOps Workshops, Samuel Kadima, Lawrence Juma, NDC, Maamun BwanaKombo, Kevin Tuei"
+            name="keywords"
+            content="Nairobi DevOps, Africa DevOps Summit, DevOps Kenya, DevOps Community, DevOpsDays Nairobi, Africa DevOps Summit, Tech Community Nairobi, DevOps Events Kenya, DevOps Meetups, DevOps Workshops, Samuel Kadima, Lawrence Juma, NDC, Maamun BwanaKombo, Kevin Tuei"
     />
     <meta name="author" content="Nairobi DevOps Community" />
     <meta name="robots" content="index, follow" />
@@ -22,14 +22,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nairobidevops.org" />
     <meta
-      property="og:image"
-      content="https://res.cloudinary.com/nairobidevops/image/upload/v1752909744/ndc-favicon_iyxltg.svg"
+            property="og:image"
+            content="https://res.cloudinary.com/nairobidevops/image/upload/v1752909744/ndc-favicon_iyxltg.svg"
     />
     <meta property="og:site_name" content="Nairobi DevOps Community" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Nairobi DevOps Community | DevOps in Kenya" />
-    <meta name="twitter:description" content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!"
-    />
+    <meta name="twitter:description" content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!" />
     <meta name="twitter:image" content="https://res.cloudinary.com/nairobidevops/image/upload/v1752148496/35c51b621662f41a63a6219e4fdfb2a8_ril0ht.png" />
     <meta name="twitter:site" content="@nairobidevops" />
     <meta name="twitter:creator" content="@nairobidevops" />
@@ -41,21 +40,32 @@
     <meta name="contact:x" content="https://x.com/nairobidevops" />
     <meta name="contact:instagram" content="https://instagram.com/nairobidevops" />
     <meta name="contact:linkedin" content="https://linkedin.com/company/nairobidevops" />
-  
-  
-  
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'G-EKW7WYG510');
+    <!-- Google Analytics (Auto-disable on staging domains) -->
+    <script nonce="__RANDOM_NONCE__">
+        (function () {
+            const PROD_DOMAIN = "nairobidevops.org";
+            if (window.location.hostname !== PROD_DOMAIN) {
+                console.warn("Google Analytics disabled for domain:", window.location.hostname);
+                return;
+            }
+
+            const ga = document.createElement("script");
+            ga.async = true;
+            ga.src = "https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510";
+            document.head.appendChild(ga);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ window.dataLayer.push(arguments); }
+            window.gtag = gtag;
+
+            gtag("js", new Date());
+            gtag("config", "G-EKW7WYG510");
+        })();
     </script>
 </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<body>
+<div id="root"></div>
+<script type="module" src="src/main.tsx" nonce="__RANDOM_NONCE__"></script>
+</body>
 </html>
