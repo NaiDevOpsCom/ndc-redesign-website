@@ -1,18 +1,22 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { fileURLToPath } from "url";
 import javascriptObfuscator from "vite-plugin-javascript-obfuscator";
 import removeConsole from "vite-plugin-remove-console";
 import { visualizer } from "rollup-plugin-visualizer";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export default defineConfig(({ mode }) => ({
+    root: path.resolve(__dirname, "client"),
+
     plugins: [
         react(),
 
-        // Remove console/debug in production
         mode === "production" && removeConsole(),
 
-        // JS Obfuscation in production
         mode === "production" &&
         javascriptObfuscator({
             compact: true,
@@ -25,7 +29,6 @@ export default defineConfig(({ mode }) => ({
             simplify: true,
         }),
 
-        // Optional: visualize bundle
         mode === "production" &&
         visualizer({
             filename: "./dist/bundle-analysis.html",
@@ -35,21 +38,14 @@ export default defineConfig(({ mode }) => ({
         }),
     ],
 
-    // -----------------------------
-    // Aliases
-    // -----------------------------
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "client/src"),
-            "@shared": path.resolve(__dirname, "shared"),
-            "@assets": path.resolve(__dirname, "attached_assets"),
         },
     },
 
-    root: path.resolve(__dirname, "client"),
-
     build: {
-        outDir: path.resolve(__dirname, "dist"),
+        outDir: "dist", // outputs to client/dist
         emptyOutDir: true,
         minify: "terser",
         terserOptions: {
@@ -71,7 +67,6 @@ export default defineConfig(({ mode }) => ({
         },
     },
 
-    // Disable React DevTools in production
     define: {
         __DISABLE_REACT_DEVTOOLS__: mode === "production",
     },
