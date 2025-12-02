@@ -22,9 +22,12 @@ export default function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const slideDuration = 5000; // 5 seconds per slide
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+
+    const slideDuration = 5000; // 5 seconds per slide
 
   const nextSlide = () => {
     setDirection(1);
