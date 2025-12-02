@@ -1,25 +1,15 @@
 /* =====================================================================================
-   ADVANCED FRONTEND SECURITY MIDDLEWARE FOR REACT + VITE
-   Works in frontend-only apps (no backend required)
+   ADVANCED FRONTEND SECURITY MIDDLEWARE FOR REACT + VITE (CSP REMOVED)
+   Safe for Vercel deployment
    ===================================================================================== */
 
 export const isClient = typeof window !== "undefined";
 
 /* =====================================================================================
-   1. SECURITY EVENT LOGGER (works with your webhook or console)
+   1. SECURITY EVENT LOGGER
    ===================================================================================== */
-// export const logSecurityEvent = (type: string, data?: any): void => {
-//     console.warn(`[SECURITY] ${type}`, data || "");
-
-    export const logSecurityEvent = (type: string, data?: unknown): void => {
-        console.warn(`[SECURITY] ${type}`, data || "");
-
-    // OPTIONAL - send logs to webhook (if you have one)
-    // fetch("https://your-webhook.com/security", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ type, data, timestamp: Date.now() }),
-    // }).catch(() => {});
+export const logSecurityEvent = (type: string, data?: unknown): void => {
+    console.warn(`[SECURITY] ${type}`, data || "");
 };
 
 /* =====================================================================================
@@ -52,29 +42,20 @@ export const sanitizeURL = (url: string): string => {
 export const safeQueryParam = (param: string | null): string => {
     if (!param) return "";
     return sanitizeInput(param);
-
 };
 
 /* =====================================================================================
-   5. CSP META INJECTION (Prevents XSS & malicious scripts)
+   5. (REPLACED) – SAFE META TAG INJECTION (Non-CSP, Safe for Vercel)
    ===================================================================================== */
-export const injectCSP = (): void => {
+export const injectSecurityMeta = (): void => {
     if (!isClient) return;
 
-    const csp = document.createElement("meta");
-    csp.httpEquiv = "Content-Security-Policy";
+    // This is NOT CSP — it’s harmless and safe for Vercel.
+    const meta = document.createElement("meta");
+    meta.name = "referrer";
+    meta.content = "strict-origin-when-cross-origin";
 
-    csp.content = `
-    default-src 'self';
-    img-src 'self' https: data:;
-    script-src 'self';
-    style-src 'self' 'unsafe-inline';
-    connect-src 'self' https:;
-    object-src 'none';
-    frame-ancestors 'none';
-  `.replace(/\s+/g, " ");
-
-    document.head.appendChild(csp);
+    document.head.appendChild(meta);
 };
 
 /* =====================================================================================
@@ -95,8 +76,9 @@ export const preventIframeEmbedding = (): void => {
 export const disableReactDevTools = (): void => {
     if (!isClient) return;
 
-    const devtoolsHook = (window as unknown as { __REACT_DEVTOOLS_GLOBAL_HOOK__?: Record<string, unknown> })
-        .__REACT_DEVTOOLS_GLOBAL_HOOK__;
+    const devtoolsHook =
+        (window as unknown as { __REACT_DEVTOOLS_GLOBAL_HOOK__?: Record<string, unknown> })
+            .__REACT_DEVTOOLS_GLOBAL_HOOK__;
 
     if (typeof devtoolsHook === "object") {
         for (const key of Object.keys(devtoolsHook)) {
@@ -108,7 +90,7 @@ export const disableReactDevTools = (): void => {
 };
 
 /* =====================================================================================
-   8. DETECT DEVTOOLS OPEN (Notifies only)
+   8. DETECT DEVTOOLS OPEN (Notification only)
    ===================================================================================== */
 export const detectDevTools = (): void => {
     if (!isClient) return;
@@ -135,7 +117,7 @@ export const detectDevTools = (): void => {
 };
 
 /* =====================================================================================
-   9. DOM TAMPER DETECTION (Detects script/iframe injections)
+   9. DOM TAMPER DETECTION (Detect script/iframe injections)
    ===================================================================================== */
 export const enableDOMTamperDetection = (): void => {
     if (!isClient) return;
@@ -159,12 +141,10 @@ export const enableDOMTamperDetection = (): void => {
 };
 
 /* =====================================================================================
-   10. GLOBAL API INTERCEPTOR (Safe fetch wrapper)
+   10. GLOBAL API INTERCEPTOR
    ===================================================================================== */
 const ALLOWED_API_DOMAINS = [
     "https://", // allow any https API
-    // "https://api.example.com",
-    // "https://your-webhook.com",
 ];
 
 export const enableAPIInterceptor = (): void => {
@@ -196,11 +176,10 @@ export const enableAPIInterceptor = (): void => {
 };
 
 /* =====================================================================================
-   11. MASTER ENABLE FUNCTION
-   Call this in main.tsx (production only)
+   11. MASTER ENABLE FUNCTION (CSP Removed)
    ===================================================================================== */
 export const enableAdvancedSecurity = (): void => {
-    injectCSP();
+    injectSecurityMeta();     // <-- replaces CSP injection
     preventIframeEmbedding();
     disableReactDevTools();
     detectDevTools();
