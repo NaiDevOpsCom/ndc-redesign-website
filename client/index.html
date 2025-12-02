@@ -41,23 +41,20 @@
     <meta name="contact:instagram" content="https://instagram.com/nairobidevops" />
     <meta name="contact:linkedin" content="https://linkedin.com/company/nairobidevops" />
 
-    <!-- Google Analytics (Auto-disable on non-production domains) -->
+    <!-- Google Analytics (Auto-disable on staging domains) -->
     <script nonce="__RANDOM_NONCE__">
         (function () {
             const PROD_DOMAIN = "nairobidevops.org";
-
             if (window.location.hostname !== PROD_DOMAIN) {
                 console.warn("Google Analytics disabled for domain:", window.location.hostname);
                 return;
             }
 
-            // Load GA script dynamically
             const ga = document.createElement("script");
             ga.async = true;
             ga.src = "https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510";
             document.head.appendChild(ga);
 
-            // Initialize GA
             window.dataLayer = window.dataLayer || [];
             function gtag(){ window.dataLayer.push(arguments); }
             window.gtag = gtag;
