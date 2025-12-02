@@ -45,7 +45,7 @@ export default function HeroSlide({ slide }: HeroSlideProps) {
       <div className="absolute inset-0 bg-black/50 dark:bg-black/70"></div>
       <div className="relative z-10 max-w-7xl h-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center text-center">
         <div>
-          <h2 className="text-l md:text-2xl lg:text-3xl font-bold text-white mb-6 leading-tight">
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-6 leading-tight">
             {slide.headlineTop}
           </h2>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
