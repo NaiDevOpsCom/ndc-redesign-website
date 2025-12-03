@@ -100,6 +100,7 @@ export default function HeroCarousel() {
         <section
             id="home"
             className="relative min-h-screen flex items-center justify-center overflow-hidden"
+            tabIndex={0}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onFocus={() => setIsPaused(true)}
