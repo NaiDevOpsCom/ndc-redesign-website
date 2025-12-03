@@ -1,10 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { allData } from "@/data/whatWeDoData";
+import { statisticsData } from "@/data/ndcData";
+import { Users, Calendar, Handshake, GraduationCap, Award } from "lucide-react";
+import React from "react";
+
+const iconMap: { [key: string]: React.ElementType } = {
+  Users,
+  Calendar,
+  Handshake,
+  GraduationCap,
+  Award,
+};
 
 export default function AboutSection() {
   const handleKnowUsClick = () => {
     window.location.href = '/about';
   };
+
+  const displayedStats = statisticsData.filter(stat =>
+    ["Community Members", "Events", "Partners"].includes(stat.label)
+  );
 
   return (
     <section id="about" className="py-20 bg-[#d3d3d3] dark:bg-[#000000E5] transition-colors duration-300">
@@ -35,15 +49,15 @@ export default function AboutSection() {
             As part of Nairobi’s growing tech ecosystem, we’re fostering inclusive learning, collaboration, and innovation among DevOps engineers, developers, designers, students, and tech enthusiasts across Kenya and beyond.
             </p>
             
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 dark:bg-[#FFFFFF99] rounded-xl p-4">
-              {allData.whatDefinesUs.map((stat, index) => {
-                const Icon = stat.icon;
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 dark:bg-[#FFFFFF99] rounded-xl p-6">
+              {displayedStats.map((stat) => {
+                const Icon = stat.icon ? iconMap[stat.icon] : null;
                 return (
-                  <div key={index} className="flex flex-col items-center justify-center text-center gap-3">
-                    <Icon className="h-8 w-8 text-primary flex-shrink-0" />
-                    <div>
-                      <div className="text-xl md:text-2xl font-bold text-foreground">{stat.title}</div>
-                      <div className="text-xs md:text-sm text-muted-foreground dark:text-white">{stat.description}</div>
+                  <div key={stat.id} className="flex items-center gap-4">
+                    {Icon && <Icon className="h-10 w-10 text-primary flex-shrink-0" />}
+                    <div className="text-left">
+                      <div className="text-2xl font-bold text-foreground">{stat.number}</div>
+                      <div className="text-sm text-muted-foreground dark:text-white">{stat.label}</div>
                     </div>
                   </div>
                 );

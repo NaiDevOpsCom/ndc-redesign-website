@@ -31,7 +31,7 @@ export const statisticsData: Statistic[] = [
   },
   {
     id: "trained-learners",
-    number: "30+",
+    number: "200+",
     label: "Trained Learners",
     icon: "GraduationCap"
   },
