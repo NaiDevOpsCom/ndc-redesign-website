@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import HeroSlide from "./HeroSlide";
 import { heroSlidesData } from "@/data/heroSlidesData";
 
@@ -76,8 +76,8 @@ export default function HeroCarousel() {
 
     // Drag end handler
     const handleDragEnd = (
-        event: any,
-        info: { offset: { x: number }; velocity: { x: number } }
+        event: MouseEvent | TouchEvent | PointerEvent,
+        info: PanInfo
     ) => {
         const power = swipePower(info.offset.x, info.velocity.x);
         if (power > SWIPE_CONFIDENCE) {
