@@ -2,10 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HeroSlideData } from "@/data/heroSlidesData";
+import { useLocation } from "wouter";
+import { Users, Calendar, ArrowRight, Briefcase, Heart } from "lucide-react";
 
 interface HeroSlideProps {
     slide: HeroSlideData;
-    // small prop in case we want to tweak per-slide behavior later
 }
 
 const bgVariant = {
@@ -20,19 +21,38 @@ const contentVariant = {
     exit: { opacity: 0, y: -10 },
 };
 
+const iconMap = {
+    users: Users,
+    calendar: Calendar,
+    "arrow-right": ArrowRight,
+    briefcase: Briefcase,
+    heart: Heart,
+};
+
 const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
+    const [, navigate] = useLocation();
+
     const handlePrimaryClick = () => {
-        window.location.href = slide.ctaPrimary.link;
+        if (slide.ctaPrimary.link.startsWith("http")) {
+            window.open(slide.ctaPrimary.link, "_blank", "noopener");
+        } else {
+            navigate(slide.ctaPrimary.link);
+        }
     };
 
     const handleSecondaryClick = () => {
         if (slide.ctaSecondary.isScroll) {
             const el = document.getElementById(slide.ctaSecondary.link);
             if (el) el.scrollIntoView({ behavior: "smooth" });
+        } else if (slide.ctaSecondary.link.startsWith("http")) {
+            window.open(slide.ctaSecondary.link, "_blank", "noopener");
         } else {
-            window.location.href = slide.ctaSecondary.link;
+            navigate(slide.ctaSecondary.link);
         }
     };
+
+    const PrimaryIcon = slide.ctaPrimary.icon ? iconMap[slide.ctaPrimary.icon] : null;
+    const SecondaryIcon = slide.ctaSecondary.icon ? iconMap[slide.ctaSecondary.icon] : null;
 
     return (
         <div className="absolute inset-0 w-full h-full pointer-events-none">
@@ -111,6 +131,7 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
                             className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
                             onClick={handlePrimaryClick}
                         >
+                            {PrimaryIcon && <PrimaryIcon className="mr-2 h-5 w-5" />}
                             {slide.ctaPrimary.text}
                         </Button>
 
@@ -120,6 +141,7 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
                             className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black"
                             onClick={handleSecondaryClick}
                         >
+                            {SecondaryIcon && <SecondaryIcon className="mr-2 h-5 w-5" />}
                             {slide.ctaSecondary.text}
                         </Button>
                     </motion.div>

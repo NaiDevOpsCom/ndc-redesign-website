@@ -7,11 +7,13 @@ export interface HeroSlideData {
     ctaPrimary: {
         text: string;
         link: string;
+        icon?: 'users' | 'arrow-right' | 'briefcase';
     };
     ctaSecondary: {
         text: string;
         link: string;
         isScroll?: boolean;
+        icon?: 'calendar' | 'heart';
     };
 }
 
@@ -26,11 +28,13 @@ export const heroSlidesData: HeroSlideData[] = [
         ctaPrimary: {
             text: "Join Our Community",
             link: "/join",
+            icon: "users",
         },
         ctaSecondary: {
             text: "View Our Events",
             link: "events",
             isScroll: true,
+            icon: "calendar",
         },
     },
     {
@@ -44,12 +48,13 @@ export const heroSlidesData: HeroSlideData[] = [
         ctaPrimary: {
             text: "Start Learning",
             link: "/learn",
-
+            icon: "arrow-right",
         },
         ctaSecondary: {
             text: "View Our Events",
             link: "/events",
             isScroll: true,
+            icon: "calendar",
         },
     },
     {
@@ -62,11 +67,13 @@ export const heroSlidesData: HeroSlideData[] = [
         ctaPrimary: {
             text: "Visit the Shop",
             link: "/shop",
+            icon: "briefcase",
         },
         ctaSecondary: {
             text: "Support a Cause",
             link: "/donate",
             isScroll: true,
+            icon: "heart",
         },
     },
 ];
