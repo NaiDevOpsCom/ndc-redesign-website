@@ -10,7 +10,7 @@ export default function WhatWeDo() {
       loop: true,
       align: 'start',
     },
-    [Autoplay({ delay: 4500, stopOnInteraction: true, stopOnMouseEnter: true })]
+    [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -87,6 +87,7 @@ export default function WhatWeDo() {
             </button>
           </div>
         </div>
+
         {/* Dot indicator for carousel/pagination */}
         <div className="flex justify-center mt-6 space-x-3">
           {allData.whatWeDo.map((_, idx) => (
