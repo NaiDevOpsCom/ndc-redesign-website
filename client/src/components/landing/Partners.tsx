@@ -33,7 +33,7 @@ export default function Partners() {
     };
   }, [emblaApi, onSelect]);
 
-  const allPartners = [...partnersData.communityPartners, ...partnersData.communityPartners]; // Duplicate for a seamless loop
+  const allPartners = partnersData.communityPartners; // Use original array, rely on Embla's loop option
 
   return (
     <section className="py-16 bg-white dark:bg-[#023047] transition-colors duration-300">
@@ -51,9 +51,9 @@ export default function Partners() {
         {/* Carousel */}
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex gap-6">
-            {allPartners.map((partner, index) => (
+            {allPartners.map((partner) => (
               <Card
-                key={`${partner.name}-${index}`}
+                key={partner.id}
                 className="flex-shrink-0 w-40 h-40 flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 transition-transform duration-300 hover:scale-105 hover:shadow-lg group cursor-pointer"
                 onClick={() => window.open(partner.website, "_blank", "noopener noreferrer")}
               >
@@ -71,12 +71,12 @@ export default function Partners() {
 
         {/* Dot Indicators */}
         <div className="flex justify-center mt-8 space-x-2">
-          {Array.from({ length: Math.ceil(partnersData.communityPartners.length) }).map((_, idx) => (
+          {Array.from({ length: partnersData.communityPartners.length }).map((_, idx) => (
             <button
               key={idx}
               onClick={() => emblaApi?.scrollTo(idx)}
               className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                idx === activeIndex ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
+                idx === (activeIndex % partnersData.communityPartners.length) ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
