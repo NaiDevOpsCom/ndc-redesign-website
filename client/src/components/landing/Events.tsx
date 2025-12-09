@@ -5,9 +5,24 @@ import { FeaturedEventCard } from "@/components/events/FeaturedEventCard";
 import { UpcomingEventCard } from "@/components/events/UpcomingEventCard";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import React from "react";
+import Autoplay from "embla-carousel-autoplay";
+
 
 function LumaEventsList() {
   const { events, loading, error } = useLumaEvents();
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  )
 
   if (loading) {
     return (
@@ -41,39 +56,106 @@ function LumaEventsList() {
     );
   }
 
-  return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {events.map((event) => (
-        <div 
-          key={event.uid}
-          className="bg-card rounded-lg border border-border p-6 hover:shadow-md transition-shadow"
+  if (events.length > 3) {
+    return (
+      <Carousel
+        plugins={[plugin.current]}
+        className="w-full max-w-6xl mx-auto"
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+      >
+      <CarouselContent>
+        {events.map((event) => (
+          <CarouselItem  key={event.uid} className="md:basis-1/2 lg:basis-1/3">
+          <div className="p-1">
+          <Card 
+          className="max-w-sm bg-card rounded-lg border border-border p-6 hover:shadow-md transition-shadow"
         >
-          <h4 className="text-lg font-semibold mb-2">{event.title}</h4>
-          <div className="text-sm text-muted-foreground mb-4">
-            <p className="mb-1">
-              {format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}
-            </p>
-            <p className="mb-1">
-              {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
-            </p>
-            {event.location && <p className="mt-2">📍 {event.location}</p>}
-          </div>
-          {event.description && (
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-              {event.description}
-            </p>
-          )}
-          {event.url && (
-            <a 
-              href={event.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-block mt-2 text-primary hover:underline text-sm font-medium"
-            >
-              View Details →
-            </a>
-          )}
+          <CardContent className="flex flex-col items-start p-6">
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+                <Badge className="bg-primary/10 text-primary">Upcoming</Badge>
+                {event.categories?.slice(0, 2).map(category => (
+                    <Badge key={category} variant="secondary">{category}</Badge>
+                ))}
+            </div>
+            <h4 className="text-lg font-semibold mb-2 text-left">{event.title}</h4>
+            <div className="text-sm text-muted-foreground mb-4 text-left">
+              <p className="mb-1 flex items-center">
+                <span className="mr-2">🗓️</span>
+                {format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}
+              </p>
+              <p className="mb-1 flex items-center">
+                <span className="mr-2">⏰</span>
+                {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
+              </p>
+              {event.location && <p className="mt-2 flex items-center"><span className="mr-2">📍</span>{event.location}</p>}
+            </div>
+            {event.description && (
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-3 text-left">
+                {event.description}
+              </p>
+            )}
+            {event.url && (
+              <Button
+                className="w-full"
+                onClick={() => window.open(event.url, '_blank', 'noopener,noreferrer')}
+              >
+                View Details & Register
+              </Button>
+            )}
+          </CardContent>
+        </Card>
         </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+    );
+  }
+
+  return (
+    <div className="flex flex-wrap justify-center gap-6">
+      {events.map((event) => (
+        <Card 
+          key={event.uid}
+          className="max-w-sm bg-card rounded-lg border border-border p-6 hover:shadow-md transition-shadow"
+        >
+          <CardContent className="flex flex-col items-start p-6">
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+                <Badge className="bg-primary/10 text-primary">Upcoming</Badge>
+                {event.categories?.slice(0, 2).map(category => (
+                    <Badge key={category} variant="secondary">{category}</Badge>
+                ))}
+            </div>
+            <h4 className="text-lg font-semibold mb-2 text-left">{event.title}</h4>
+            <div className="text-sm text-muted-foreground mb-4 text-left">
+              <p className="mb-1 flex items-center">
+                <span className="mr-2">🗓️</span>
+                {format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}
+              </p>
+              <p className="mb-1 flex items-center">
+                <span className="mr-2">⏰</span>
+                {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
+              </p>
+              {event.location && <p className="mt-2 flex items-center"><span className="mr-2">📍</span>{event.location}</p>}
+            </div>
+            {event.description && (
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-3 text-left">
+                {event.description}
+              </p>
+            )}
+            {event.url && (
+              <Button
+                className="w-full"
+                onClick={() => window.open(event.url, '_blank', 'noopener,noreferrer')}
+              >
+                View Details & Register
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       ))}
     </div>
   );
