@@ -49,18 +49,88 @@ function FeaturedEventCard({ e }: { e: FeaturedEvent }) {
 
 import Autoplay from "embla-carousel-autoplay";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
 } from "@/components/ui/carousel";
+
+// Reusable Event Card Component for Events Page
+interface UpcomingEventCardProps {
+    event: {
+        uid: string;
+        title: string;
+        startDate: string;
+        endDate: string;
+        location?: string;
+        description?: string;
+        url?: string;
+        categories?: string[];
+    };
+}
+
+function UpcomingEventCard({ event }: UpcomingEventCardProps) {
+    return (
+        <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 max-w-sm flex flex-col h-full">
+            <CardContent className="flex flex-col items-start p-6 flex-grow">
+                <div className="flex items-center gap-3 mb-4 flex-wrap">
+                    <Badge className="bg-primary/10 text-primary">Upcoming</Badge>
+                    {event.categories?.slice(0, 2).map(category => (
+                        <Badge key={category} variant="secondary">{category}</Badge>
+                    ))}
+                </div>
+
+                <h3 className="text-xl font-semibold mb-3 text-left">{event.title}</h3>
+
+                <div className="space-y-2 mb-4 text-sm text-muted-foreground text-left">
+                    <div className="flex items-center gap-2">
+                        <span className="mr-2">🗓️</span>
+                        <span>{format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="mr-2">⏰</span>
+                        <span>
+                            {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
+                        </span>
+                    </div>
+                    {event.location && (
+                        <div className="flex items-center gap-2">
+                            <span className="mr-2">📍</span>
+                            <span>{event.location}</span>
+                        </div>
+                    )}
+                </div>
+
+                {event.description && (
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3 text-left">
+                        {event.description}
+                    </p>
+                )}
+
+                {/* Push button to bottom */}
+                <div className="mt-auto pt-4 w-full">
+                    <Button
+                        className="w-full bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
+                        onClick={() => {
+                            if (event.url) {
+                                window.open(event.url, '_blank', 'noopener,noreferrer');
+                            }
+                        }}
+                    >
+                        View Details & Register
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
 
 
 function UpcomingLumaEvents() {
     const { events, loading, error } = useLumaEvents();
     const plugin = React.useRef(
-      Autoplay({ delay: 2000, stopOnInteraction: true })
+        Autoplay({ delay: 2000, stopOnInteraction: true })
     )
 
     if (loading) {
@@ -96,112 +166,32 @@ function UpcomingLumaEvents() {
     }
 
     if (events.length > 3) {
-      return (
-        <Carousel
-        plugins={[plugin.current]}
-        className="w-full max-w-6xl mx-auto"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
-      >
-      <CarouselContent>
-        {events.map((event) => (
-          <CarouselItem  key={event.uid} className="md:basis-1/2 lg:basis-1/3">
-          <div className="p-1">
-          <Card 
-          className="max-w-sm bg-card rounded-lg border border-border p-6 hover:shadow-md transition-shadow"
-        >
-          <CardContent className="flex flex-col items-start p-6">
-            <div className="flex items-center gap-3 mb-4 flex-wrap">
-                <Badge className="bg-primary/10 text-primary">Upcoming</Badge>
-                {event.categories?.slice(0, 2).map(category => (
-                    <Badge key={category} variant="secondary">{category}</Badge>
-                ))}
-            </div>
-            <h4 className="text-lg font-semibold mb-2 text-left">{event.title}</h4>
-            <div className="text-sm text-muted-foreground mb-4 text-left">
-              <p className="mb-1 flex items-center">
-                <span className="mr-2">🗓️</span>
-                {format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}
-              </p>
-              <p className="mb-1 flex items-center">
-                <span className="mr-2">⏰</span>
-                {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
-              </p>
-              {event.location && <p className="mt-2 flex items-center"><span className="mr-2">📍</span>{event.location}</p>}
-            </div>
-            {event.description && (
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-3 text-left">
-                {event.description}
-              </p>
-            )}
-            {event.url && (
-              <Button
-                className="w-full"
-                onClick={() => window.open(event.url, '_blank', 'noopener,noreferrer')}
-              >
-                View Details & Register
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-        </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
-      )
+        return (
+            <Carousel
+                plugins={[plugin.current]}
+                className="w-full max-w-6xl mx-auto"
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+            >
+                <CarouselContent>
+                    {events.map((event) => (
+                        <CarouselItem key={event.uid} className="md:basis-1/2 lg:basis-1/3">
+                            <div className="p-1 h-full">
+                                <UpcomingEventCard event={event} />
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+            </Carousel>
+        );
     }
 
     return (
         <div className="flex flex-wrap justify-center gap-6">
             {events.map((event) => (
-                <Card key={event.uid} className="overflow-hidden hover:shadow-lg transition-shadow duration-300 max-w-sm">
-                    <CardContent className="flex flex-col items-start p-6">
-                        <div className="flex items-center gap-3 mb-4 flex-wrap">
-                            <Badge className="bg-primary/10 text-primary">Upcoming</Badge>
-                            {event.categories?.slice(0, 2).map(category => (
-                                <Badge key={category} variant="secondary">{category}</Badge>
-                            ))}
-                        </div>
-                        <h3 className="text-xl font-semibold mb-3 text-left">{event.title}</h3>
-
-                        <div className="space-y-2 mb-4 text-sm text-muted-foreground text-left">
-                            <div className="flex items-center gap-2">
-                                <span className="mr-2">🗓️</span>
-                                <span>{format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="mr-2">⏰</span>
-                                <span>
-                                    {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
-                                </span>
-                            </div>
-                            {event.location && (
-                                <div className="flex items-center gap-2">
-                                    <span className="mr-2">📍</span>
-                                    <span>{event.location}</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {event.description && (
-                            <p className="text-sm text-muted-foreground mb-4 line-clamp-3 text-left">
-                                {event.description}
-                            </p>
-                        )}
-
-                        {event.url && (
-                            <Button
-                                className="w-full"
-                                onClick={() => window.open(event.url, '_blank', 'noopener,noreferrer')}
-                            >
-                                View Details & Register
-                            </Button>
-                        )}
-                    </CardContent>
-                </Card>
+                <UpcomingEventCard key={event.uid} event={event} />
             ))}
         </div>
     );
