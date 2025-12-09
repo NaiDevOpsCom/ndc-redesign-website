@@ -21,17 +21,14 @@ include:
 exclude:
   - name: GeneratedFiles
     paths:
-      - node_modules
-      - node_modules/.vite
-      - dist
-      - build
-      - coverage
-      - .vite
-  - name: All
-    paths:
-      - client
-      - tailwind.config.ts
-      - vite.config.ts
+      - '**/node_modules/**'
+      - '**/dist/**'
+      - '**/build/**'
+      - '**/coverage/**'
+      - '**/.vite/**'
+      - '**/*.d.ts'
+      - '**/*.min.js'
+      - '**/*.bundle.js'
 
 failThreshold: 1
 
