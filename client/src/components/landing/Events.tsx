@@ -20,7 +20,7 @@ export default function Events() {
         {/* Featured Events */}
         <div className="mb-16">
           <h3 className="text-2xl md:text-3xl font-bold text-primary text-center mb-12">
-            Featured Events
+            Featured Events and Upcoming Events
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             {featuredEvents.map((event, index) => (
