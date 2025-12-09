@@ -27,6 +27,11 @@ exclude:
       - build
       - coverage
       - .vite
+  - name: All
+    paths:
+      - client
+      - tailwind.config.ts
+      - vite.config.ts
 
 failThreshold: 1
 
