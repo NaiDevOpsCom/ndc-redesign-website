@@ -8,6 +8,7 @@ export interface LumaEvent {
   location?: string;
   url?: string;
   uid: string;
+  categories?: string[];
 }
 
 // webcal://api.luma.com/ics/get?entity=calendar&id=cal-fFX28aaHRNQkThJ
@@ -37,6 +38,8 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
       const location = event.getFirstPropertyValue('location')?.toString();
       const url = event.getFirstPropertyValue('url')?.toString();
       const uid = event.getFirstPropertyValue('uid')?.toString() || Math.random().toString(36).substring(2, 9);
+      const categoriesProp = event.getFirstPropertyValue('categories');
+      const categories = categoriesProp ? categoriesProp.getValues().map((v: any) => v.toString()) : [];
 
       return {
         title: summary,
@@ -45,7 +48,8 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
         endDate: endDate?.toJSDate().toISOString() || startDate.toJSDate().toISOString(),
         location,
         url,
-        uid
+        uid,
+        categories,
       };
     }).filter((event: LumaEvent) => {
       // Only include future events or events from the last 30 days
