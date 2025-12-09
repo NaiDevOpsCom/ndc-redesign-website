@@ -9,6 +9,8 @@ import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
 import { featuredEvents, FeaturedEvent } from "@/data/eventsData";
 import { Link } from "wouter";
+import { useLumaEvents } from "@/hooks/useLumaEvents";
+import { format } from 'date-fns';
 
 // --- Types ---
 type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
@@ -44,6 +46,91 @@ function FeaturedEventCard({ e }: { e: FeaturedEvent }) {
 }
 
 // Removed unused ScheduleList and SpeakersList components to keep code lean
+
+function UpcomingLumaEvents() {
+    const { events, loading, error } = useLumaEvents();
+
+    if (loading) {
+        return (
+            <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Loading upcoming events...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="text-center py-12">
+                <p className="text-red-500 mb-4">Error loading events from Luma calendar.</p>
+                <Button
+                    variant="outline"
+                    onClick={() => window.location.reload()}
+                    className="mt-4"
+                >
+                    Retry
+                </Button>
+            </div>
+        );
+    }
+
+    if (events.length === 0) {
+        return (
+            <div className="text-center py-12">
+                <p className="text-muted-foreground">No upcoming events scheduled. Check back soon!</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
+                <Card key={event.uid} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <CardContent className="p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                            <Badge className="bg-primary/10 text-primary">Upcoming</Badge>
+                        </div>
+                        <h3 className="text-xl font-semibold mb-3">{event.title}</h3>
+
+                        <div className="space-y-2 mb-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                <span>{format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4" />
+                                <span>
+                                    {format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}
+                                </span>
+                            </div>
+                            {event.location && (
+                                <div className="flex items-center gap-2">
+                                    <MapPin className="h-4 w-4" />
+                                    <span>{event.location}</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {event.description && (
+                            <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                                {event.description}
+                            </p>
+                        )}
+
+                        {event.url && (
+                            <Button
+                                className="w-full"
+                                onClick={() => window.open(event.url, '_blank', 'noopener,noreferrer')}
+                            >
+                                View Details & Register
+                            </Button>
+                        )}
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    );
+}
 
 function PastEventsGrid({ items }: { items: PastEvent[] }) {
     const [start, setStart] = useState(0);
@@ -183,6 +270,14 @@ export default function Eventspage() {
                             Join us for hands-on sessions, tech talks, and community meetups designed to sharpen your skills and grow your DevOps journey.
                         </p>
                     </div>
+
+                    {/* Upcoming Events from Luma */}
+                    <div className="mb-16">
+                        <h3 className="text-2xl md:text-3xl font-bold text-primary text-center mb-8">Upcoming Events</h3>
+                        <UpcomingLumaEvents />
+                    </div>
+
+                    {/* Featured Events */}
                     <div className="text-center mb-6">
                         <h3 className="text-l md:text-2xl font-bold">Featured Upcoming Events</h3>
                     </div>

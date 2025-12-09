@@ -23,5 +23,13 @@ export default defineConfig({
       strict: true,
       deny: ["**/.*"],
     },
+    proxy: {
+      '/api/luma': {
+        target: 'https://api.luma.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/luma/, ''),
+        secure: false,
+      },
+    },
   },
 });
