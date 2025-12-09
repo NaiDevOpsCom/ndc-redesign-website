@@ -69,4 +69,4 @@ npm-debug.log*
 *.p12
 
 # Ignore local-only files
-*.local
+*.localqodana.sarif.json
