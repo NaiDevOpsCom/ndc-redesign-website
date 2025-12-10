@@ -61,9 +61,13 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
         const endDate = event.getFirstPropertyValue('dtend') as ICALTime | null;
         const location = event.getFirstPropertyValue('location')?.toString();
         let url = event.getFirstPropertyValue('url')?.toString();
-        const uid = event.getFirstPropertyValue('uid')?.toString() || Math.random().toString(36).substring(2, 9);
+        
+        // Use a deterministic fallback for the UID
+        const uid = event.getFirstPropertyValue('uid')?.toString() || `${summary}-${startDate.toJSDate().toISOString()}`;
+        
         const categoriesProp = event.getFirstPropertyValue('categories');
-        const categories = Array.isArray(categoriesProp) ? categoriesProp.map((v) => v.toString()) : [];
+        // Correctly parse categories using getValues()
+        const categories = categoriesProp ? categoriesProp.getValues().map((v: any) => v.toString()) : [];
 
         // If no URL field, try to extract from description
         if (!url && description) {
@@ -82,11 +86,10 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
         };
       })
       .filter((event: LumaEvent) => {
-        // Only include future events or events from the last 30 days
-        const eventDate = new Date(event.startDate);
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        return eventDate >= thirtyDaysAgo;
+        // Only include events that are currently active or in the future
+        const eventEndDate = new Date(event.endDate);
+        const now = new Date();
+        return eventEndDate >= now;
       })
       .sort((a: LumaEvent, b: LumaEvent) => {
         // Sort by date, soonest first
@@ -94,6 +97,7 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
       });
   } catch (error) {
     console.error('Error fetching Luma events:', error);
-    return [];
+    // Rethrow the error to be caught by the calling hook
+    throw error;
   }
 }

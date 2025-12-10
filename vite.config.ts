@@ -28,7 +28,7 @@ export default defineConfig({
         target: 'https://api.luma.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/luma/, ''),
-        secure: false,
+          secure: true,
       },
     },
   },
