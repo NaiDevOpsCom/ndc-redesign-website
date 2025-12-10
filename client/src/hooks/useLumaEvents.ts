@@ -50,7 +50,7 @@ export function useLumaEvents() {
 
   // Run fetch on mount
   useEffect(() => {
-    loadEvents();
+    void loadEvents();
 
     return () => {
       // Cleanup flag to prevent React warnings
@@ -58,8 +58,8 @@ export function useLumaEvents() {
     };
   }, [loadEvents]);
 
-  // Optional: Memoize returned object to keep referential stability
-  const result = useMemo(
+  // Memoize returned object to keep referential stability
+  return useMemo(
     () => ({
       events,
       loading,
@@ -68,6 +68,4 @@ export function useLumaEvents() {
     }),
     [events, loading, error, loadEvents]
   );
-
-  return result;
 }
