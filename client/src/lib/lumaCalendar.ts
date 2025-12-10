@@ -34,70 +34,66 @@ function extractUrlFromDescription(description: string): string | undefined {
   const lumaUrlMatch = description.match(/https:\/\/lu\.ma\/[a-zA-Z0-9-_]+/i);
   if (lumaUrlMatch) return lumaUrlMatch[0];
 
-  // Match generic URLs in description
-  const urlMatch = description.match(/https?:\/\/[^\s]+/i);
+  // Match generic URLs in description (using simplified regex)
+  const urlMatch = description.match(/https?:\/\/\S+/i);
   if (urlMatch) return urlMatch[0];
 
   return undefined;
 }
 
 export async function fetchLumaEvents(): Promise<LumaEvent[]> {
-  try {
-    const response = await fetch(LUMA_CALENDAR_URL);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch calendar: ${response.statusText}`);
-    }
-
-    const icsData = await response.text();
-    const jcalData = ICAL.parse(icsData);
-    const component = new ICAL.Component(jcalData);
-    const events = component.getAllSubcomponents('vevent');
-
-    return events
-      .map((event) => {
-        const summary = event.getFirstPropertyValue('summary')?.toString() || 'Untitled Event';
-        const description = event.getFirstPropertyValue('description')?.toString() || '';
-        const startDate = event.getFirstPropertyValue('dtstart') as ICALTime;
-        const endDate = event.getFirstPropertyValue('dtend') as ICALTime | null;
-        const location = event.getFirstPropertyValue('location')?.toString();
-        let url = event.getFirstPropertyValue('url')?.toString();
-        
-        // Use a deterministic fallback for the UID
-        const uid = event.getFirstPropertyValue('uid')?.toString() || `${summary}-${startDate.toJSDate().toISOString()}`;
-        
-        const categoriesProp = event.getFirstPropertyValue('categories');
-        // Correctly parse categories using getValues()
-        const categories = categoriesProp ? categoriesProp.getValues().map((v: any) => v.toString()) : [];
-
-        // If no URL field, try to extract from description
-        if (!url && description) {
-          url = extractUrlFromDescription(description);
-        }
-
-        return {
-          title: summary,
-          description,
-          startDate: startDate.toJSDate().toISOString(),
-          endDate: endDate?.toJSDate().toISOString() || startDate.toJSDate().toISOString(),
-          location,
-          url,
-          uid,
-          categories,
-        };
-      })
-      .filter((event: LumaEvent) => {
-        // Only include events that are currently active or in the future
-        const eventEndDate = new Date(event.endDate);
-        const now = new Date();
-        return eventEndDate >= now;
-      })
-      .sort((a: LumaEvent, b: LumaEvent) => {
-        // Sort by date, soonest first
-        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-      });
-  } catch (error) {
-    console.error('Error fetching Luma events:', error);
-    // Rethrow the error to be caught by the calling hook
-    throw error;
+  const response = await fetch(LUMA_CALENDAR_URL);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch calendar: ${response.statusText}`);
   }
+
+  const icsData = await response.text();
+  const jcalData = ICAL.parse(icsData);
+  const component = new ICAL.Component(jcalData);
+  const events = component.getAllSubcomponents('vevent');
+
+  return events
+    .map((event) => {
+      const summary = event.getFirstPropertyValue('summary')?.toString() || 'Untitled Event';
+      const description = event.getFirstPropertyValue('description')?.toString() || '';
+      const startDate = event.getFirstPropertyValue('dtstart') as ICALTime;
+      const endDate = event.getFirstPropertyValue('dtend') as ICALTime | null;
+      const location = event.getFirstPropertyValue('location')?.toString();
+      let url = event.getFirstPropertyValue('url')?.toString();
+      
+      // Use a deterministic fallback for the UID
+      const uid = event.getFirstPropertyValue('uid')?.toString() || `${summary}-${startDate.toJSDate().toISOString()}`;
+      
+      // Correctly get the ICAL.Property object to safely call getValues()
+      const categoriesProperty = event.getFirstProperty('categories');
+      const categories = categoriesProperty
+        ? categoriesProperty.getValues().map((v: unknown) => String(v))
+        : [];
+
+      // If no URL field, try to extract from description
+      if (!url && description) {
+        url = extractUrlFromDescription(description);
+      }
+
+      return {
+        title: summary,
+        description,
+        startDate: startDate.toJSDate().toISOString(),
+        endDate: endDate?.toJSDate().toISOString() || startDate.toJSDate().toISOString(),
+        location,
+        url,
+        uid,
+        categories,
+      };
+    })
+    .filter((event: LumaEvent) => {
+      // Only include events that are currently active or in the future
+      const eventEndDate = new Date(event.endDate);
+      const now = new Date();
+      return eventEndDate >= now;
+    })
+    .sort((a: LumaEvent, b: LumaEvent) => {
+      // Sort by date, soonest first
+      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
 }
