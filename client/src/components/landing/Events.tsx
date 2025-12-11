@@ -6,6 +6,7 @@ import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { PastEventsSection } from "@/components/events/PastEventsSection";
 import {
   Carousel,
   CarouselContent,
@@ -196,12 +197,7 @@ export default function Events() {
           <p className="text-center text-muted-foreground mb-8">
             Missed an event? Check out our recorded sessions below.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* You can add past events here or leave empty for now */}
-            <div className="text-center py-12 text-muted-foreground">
-              Past events will appear here
-            </div>
-          </div>
+          <PastEventsSection />
         </div>
 
         <div className="text-center mt-16">

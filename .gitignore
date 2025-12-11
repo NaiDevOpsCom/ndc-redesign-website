@@ -14,6 +14,7 @@ server/node_modules/
 
 # ===== Build / Output =====
 dist/
+client/dist
 dist-ssr/
 build/
 out/
@@ -59,7 +60,6 @@ playwright-report/
 .turbo/
 .pnp.cjs
 .pnp.js
-npm-debug.log*
 .yarn-integrity
 
 # Private keys, certs

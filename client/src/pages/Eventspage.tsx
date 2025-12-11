@@ -11,6 +11,7 @@ import { featuredEvents, FeaturedEvent } from "@/data/eventsData";
 import { Link } from "wouter";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
+import { PastEventsSection } from "@/components/events/PastEventsSection";
 
 // --- Types ---
 type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
@@ -359,8 +360,9 @@ export default function Eventspage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Past Events Highlights</h2>
+                        <p className="text-muted-foreground mt-2">Watch recordings from our previous events</p>
                     </div>
-                    <PastEventsGrid items={pastEvents} />
+                    <PastEventsSection />
                 </div>
             </section>
 
