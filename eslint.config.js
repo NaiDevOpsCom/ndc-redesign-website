@@ -17,34 +17,39 @@ export default [
         ignores: ["node_modules", "dist", "build", "coverage", "**/.vite"],
     },
 
-    // 2. Base JS rules
+    // 2. Tell ESLint what files to lint (Flat Config REQUIRED)
+    {
+        files: ["**/*.{js,jsx,ts,tsx}"],
+    },
+
+    // 3. Base JS rules
     js.configs.recommended,
 
-    // 3. TypeScript rules
+    // 4. TypeScript rules
     {
         plugins: { "@typescript-eslint": tsPlugin },
         rules: tsPlugin.configs.recommended.rules,
     },
 
-    // 4. React recommended rules
+    // 5. React recommended rules
     {
         plugins: { react: reactPlugin },
         rules: reactPlugin.configs.flat.recommended.rules,
     },
 
-    // 5. React Hooks
+    // 6. React Hooks
     {
         plugins: { "react-hooks": reactHooksPlugin },
         rules: reactHooksPlugin.configs.recommended.rules,
     },
 
-    // 6. Security plugin
+    // 7. Security plugin
     {
         plugins: { security: securityPlugin },
         rules: securityPlugin.configs.recommended.rules,
     },
 
-    // 7. Project-specific overrides for TS/React
+    // 8. TS/React project-specific overrides
     {
         files: ["**/*.{ts,tsx}"],
         languageOptions: {
@@ -56,7 +61,7 @@ export default [
                 sourceType: "module",
                 ecmaFeatures: { jsx: true },
             },
-            globals: globals.browser,  // Add browser globals like window here
+            globals: globals.browser,
         },
         settings: { react: { version: "detect" } },
         rules: {
