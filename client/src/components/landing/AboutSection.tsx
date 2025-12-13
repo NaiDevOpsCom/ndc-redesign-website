@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { statisticsData } from "@/data/ndcData";
 import { Users, Calendar, Handshake, GraduationCap, Award } from "lucide-react";
 import React from "react";
+import StatisticCounter from "../ui/StatisticCounter";
 
 const iconMap: { [key: string]: React.ElementType } = {
   Users,
@@ -56,7 +57,9 @@ export default function AboutSection() {
                   <div key={stat.id} className="flex items-center gap-4">
                     {Icon && <Icon className="h-10 w-10 text-primary flex-shrink-0" />}
                     <div className="text-left">
-                      <div className="text-2xl font-bold text-foreground">{stat.number}</div>
+                      <div className="text-2xl font-bold text-foreground">
+                        <StatisticCounter endValue={stat.number} />
+                      </div>
                       <div className="text-sm text-muted-foreground dark:text-white">{stat.label}</div>
                     </div>
                   </div>
