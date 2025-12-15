@@ -1,5 +1,6 @@
 import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -44,8 +45,9 @@ const objectivesData = [
 
 
 export default function AboutUs() {
-  const randomImage = galleryImages[Math.floor(Math.random() * galleryImages.length)];
+  const randomImage = useMemo(() => galleryImages[Math.floor(Math.random() * galleryImages.length)], []);
   const [featuredId, setFeaturedId] = useState<string | null>(null);
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     if (!teamData || teamData.length === 0) return;
@@ -67,7 +69,7 @@ export default function AboutUs() {
     };
   }, [featuredId]);
 
-  const teamMembers = useMemo(() => teamData, []);
+  const teamMembers = teamData;
 
   const showNextFeatured = () => {
     if (!teamMembers || teamMembers.length === 0) return;
@@ -81,6 +83,14 @@ export default function AboutUs() {
     const idx = teamMembers.findIndex((m) => m.id === featuredId);
     const prevIdx = idx === -1 ? 0 : (idx - 1 + teamMembers.length) % teamMembers.length;
     setFeaturedId(teamMembers[prevIdx].id);
+  };
+
+  const handleMemberKeyDown = (e: React.KeyboardEvent, id: string) => {
+    // Per WCAG, buttons should respond to Enter and Space
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar" || e.code === "Space") {
+      e.preventDefault();
+      setFeaturedId(id);
+    }
   };
 
   return (
@@ -135,7 +145,7 @@ export default function AboutUs() {
                   To be the leading DevOps community in East Africa, recognized for our commitment to knowledge sharing, skill development, and industry collaboration that drives digital transformation across the region.
                 </p>
               </div>
-              <Button className="bg-primary hover:bg-[#023047] text-white " onClick={() => window.location.href = "/join"}>
+              <Button className="bg-primary hover:bg-[#023047] text-white " onClick={() => navigate('/join')}>
                 See Us In Action
               </Button>
             </div>
@@ -202,7 +212,7 @@ export default function AboutUs() {
             {/* Paragraph on the right */}
             <div className="space-y-6">
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Founded in 2023, the Nairobi DevOps Community emerged from a simple observation: the need for a dedicated space where DevOps professionals, enthusiasts, and learners could connect, share knowledge, and grow together. What started as a small group of passionate individuals has evolved into a thriving community of over 3,000 members.
+                Founded in 2023, the Nairobi DevOps Community emerged from a simple observation: the need for a dedicated space where DevOps professionals, enthusiasts, and learners could connect, share knowledge, and grow together. What started as a small group of passionate individuals has evolved into a thriving community of over 4,000 members.
                 <br />
                 <br />
                 Our journey has been marked by countless meetups, workshops, and collaborative projects that have not only advanced individual careers but also contributed to the broader tech ecosystem in Nairobi and East Africa.
@@ -248,7 +258,7 @@ export default function AboutUs() {
                 <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 flex-1">
                   <UnpicImage
                     src="https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"
-                    alt="Nairobi DevOps Communiy"
+                    alt="Nairobi DevOps Community"
                     className="w-full h-full object-cover"
                     width={300}
                     height={300}
@@ -440,16 +450,16 @@ export default function AboutUs() {
                       role="button"
                       tabIndex={0}
                       onClick={() => setFeaturedId(member.id)}
-                      onKeyDown={(e) => { if (e.key === "Enter") setFeaturedId(member.id) }}
+                      onKeyDown={(e) => handleMemberKeyDown(e, member.id)}
                       className={`relative group ${member.id === featured?.id ? "ring-4 ring-white/20 rounded-2xl" : ""}`}
                     >
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${member.backgroundColor || "from-blue-400 to-cyan-400"} rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity`}
+                        className={`absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity`}
                       />
                       <img
                         src={member.image || "/placeholder.svg"}
                         alt={member.name}
-                        className={`relative w-full aspect-square object-cover rounded-2xl border-3 border-blue-400/50 bg-gradient-to-br ${member.backgroundColor || "from-blue-400 to-cyan-400"} ${member.id === featured?.id ? "scale-105" : ""}`}
+                        className={`relative w-full aspect-square object-cover rounded-2xl border-3 border-blue-400/50 bg-gradient-to-br from-blue-400 to-cyan-400 ${member.id === featured?.id ? "scale-105" : ""}`}
                       />
                     </div>
                     <p className="text-sm font-medium">{member.name}</p>
@@ -485,7 +495,7 @@ export default function AboutUs() {
           <Button
             size="lg"
             className="bg-primary hover:bg-[#023047] text-white px-8 py-4 text-lg"
-            onClick={() => window.open('/partners-sponsorship')}
+            onClick={() => navigate('/partners-sponsorship')}
           >
             Partner with Us
           </Button>

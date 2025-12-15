@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import faqImage from "@/assets/faq.png";
 import { faqDataByCategory } from "@/data/faqData";
 
@@ -10,6 +11,7 @@ export default function FAQSection() {
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     let fadeTimeout: ReturnType<typeof setTimeout>;
@@ -34,7 +36,7 @@ export default function FAQSection() {
 
 
   const handleBrowseFAQs = () => {
-    window.location.href = "/faqpage";
+    navigate('/faqpage');
   };
 
   const activeCategory = faqDataByCategory[activeCategoryIndex];
