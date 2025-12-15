@@ -59,7 +59,7 @@ export default function Footer() {
           </div>
 
           {/* Newsletter */}
-          <div>
+          <div id="newsletter">
             <div className="font-bold mb-2">Subscribe to our newsletter</div>
             <form className="flex flex-col gap-2">
               <Input

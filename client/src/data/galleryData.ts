@@ -7,47 +7,47 @@ export interface GalleryImage {
 
 export const galleryImages: GalleryImage[] = [
   {
-    url: "https://pbs.twimg.com/media/F6xiQyeW8AAgWr1?format=jpg&name=4096x4096",
-    thumbnailUrl: "https://pbs.twimg.com/media/F6xiQyeW8AAgWr1?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9574.jpg?updatedAt=1764488001154",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9574.jpg?updatedAt=1764488001154l",
     alt: "Community networking event",
     priority: true, // Above fold image
   },
   {
-    url: "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=4096x4096",
-    thumbnailUrl: "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9580.jpg?updatedAt=1764488001238",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9580.jpg?updatedAt=1764488001238",
     alt: "Tech conference presentation",
-    priority: true, 
+    priority: true,
   },
   {
-    url: "https://pbs.twimg.com/media/F6r8agmXAAAwS48?format=jpg&name=large",
-    thumbnailUrl: "https://pbs.twimg.com/media/F6r8agmXAAAwS48?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9872.jpg?updatedAt=1764488001358",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9872.jpg?updatedAt=1764488001358",
     alt: "Software development workspace",
-    priority: true, 
+    priority: true,
   },
   {
-    url: "https://pbs.twimg.com/media/F6eSsopWEAARhXy?format=jpg&name=large",
-    thumbnailUrl: "https://pbs.twimg.com/media/F6eSsopWEAARhXy?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_3858.jpg?updatedAt=1764488001289",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_3858.jpg?updatedAt=1764488001289l",
     alt: "Community networking event",
-    priority: true, 
+    priority: true,
   },
   {
-    url: "https://pbs.twimg.com/media/Ft2scU2XwAMRcx-?format=jpg&name=4096x4096",
-    thumbnailUrl: "https://pbs.twimg.com/media/Ft2scU2XwAMRcx-?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG-20250526-WA0091.jpg?updatedAt=1764488001167",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG-20250526-WA0091.jpg?updatedAt=1764488001167",
     alt: "Developer community meetup",
   },
   {
-    url: "https://pbs.twimg.com/media/GO_ZFMjW4AApaxV?format=jpg&name=large",
-    thumbnailUrl: "https://pbs.twimg.com/media/GO_ZFMjW4AApaxV?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247",
     alt: "Tech conference speakers",
   },
   {
-    url: "https://pbs.twimg.com/media/GO-tA-RWcAA0-eR?format=jpg&name=large",
-    thumbnailUrl: "https://pbs.twimg.com/media/GO-tA-RWcAA0-eR?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6919.jpg?updatedAt=1764488001281",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6919.jpg?updatedAt=1764488001281",
     alt: "Software development workspace",
   },
   {
-    url: "https://pbs.twimg.com/media/GvbPRszXUAAz3ew?format=jpg&name=small",
-    thumbnailUrl: "https://pbs.twimg.com/media/GvbPRszXUAAz3ew?format=jpg&name=small",
+    url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101030400.MP.jpg?updatedAt=1764488001426",
+    thumbnailUrl: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101030400.MP.jpg?updatedAt=1764488001426",
     alt: "Community networking event",
   },
 ]; 

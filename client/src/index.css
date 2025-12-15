@@ -29,6 +29,7 @@
   --nairobi-dark: #023047;
   --faq-bg: hsla(209, 56%, 88%, 1);
   --faq-text: #000000;
+  --black-overlay: rgba(0, 0, 0, 0.7);
 }
 
 .dark {
