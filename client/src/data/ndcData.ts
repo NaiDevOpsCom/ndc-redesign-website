@@ -6,10 +6,14 @@ export interface TeamMember {
   name: string;
   title: string;
   image: string;
-  linkedin: string;
-  twitter: string;
-  instagram?: string;
-  website?: string;
+  socials?: {
+    linkedin?: string;
+    twitter?: string;
+    instagram?: string;
+    website?: string;
+    email?: string;
+    phone?: string;
+  };
   bio?: string;
 }
 
@@ -25,34 +29,34 @@ export interface Statistic {
 export const statisticsData: Statistic[] = [
   {
     id: "community-members",
-    number: "3000+",
+    number: "4000+",
     label: "Community Members",
-    icon: "Users"
+    icon: "Users",
   },
   {
     id: "trained-learners",
-    number: "200+",
+    number: "300+",
     label: "Trained Learners",
-    icon: "GraduationCap"
+    icon: "GraduationCap",
   },
   {
     id: "trainers",
     number: "20+",
     label: "Trainers",
-    icon: "Award"
+    icon: "Award",
   },
   {
     id: "events",
-    number: "50+",
+    number: "60+",
     label: "Events",
-    icon: "Calendar"
+    icon: "Calendar",
   },
   {
     id: "partners",
-    number: "20+",
+    number: "25+",
     label: "Partners",
-    icon: "Handshake"
-  }
+    icon: "Handshake",
+  },
 ];
 
 // Team Data
@@ -61,70 +65,96 @@ export const teamData: TeamMember[] = [
     id: "maamun-bwanakombo",
     name: "Maamun Bwanakombo",
     title: "Director",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/Maamun_Profile_Photo000_-_Maamun_Bwanakombo_npfvyl.png",
-    linkedin: "https://linkedin.com/in/maamun-bwanakombo-58849b141",
-    twitter: "https://x.com/maamunb1",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/Maamun_Profile_Photo000_-_Maamun_Bwanakombo_npfvyl.png",
+    socials: {
+      linkedin: "https://linkedin.com/in/maamun-bwanakombo-58849b141",
+      twitter: "https://x.com/maamunb1",
+    },
+    bio: "Passionate DevOps leader with extensive experience in building communities and driving technological innovation in East Africa.",
   },
   {
     id: "kevin-tuei",
     name: "Kevin Tuei",
     title: "Assistant Director",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1751295296/IMG_20231219_222811_913_-_Kevin_Tuei_l49t4o.jpg",
-    linkedin: "https://linkedin.com/in/kevintuei",
-    twitter: "https://x.com/kevshakes",
-    instagram: "https://instagram.com/kevshakes",
-    website: "https://kevintuei.medium.com",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1751295296/IMG_20231219_222811_913_-_Kevin_Tuei_l49t4o.jpg",
+    socials: {
+      linkedin: "https://linkedin.com/in/kevintuei",
+      twitter: "https://x.com/kevshakes",
+      instagram: "https://instagram.com/kevshakes",
+      website: "https://kevintuei.medium.com",
+    },
+    bio: "My mission is to make the world a better place through technology. How? By training 100,000+ people on Cloud, AI/ML and Cybersecurity and leading 500+ projects in IT for Quality Education and Inclusion through Tech Communities and Mentorship.",
   },
   {
     id: "alvin-ndungu",
     name: "Alvin Ndungu",
     title: "Projects Lead",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/Screenshot_20250724_192455_Gallery_-_Alvin_Ndungu_kqemak.jpg",
-    linkedin: "https://linkedin.com/in/alvin-ndungu",
-    twitter: "https://x.com/alvin_kh",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/Screenshot_20250724_192455_Gallery_-_Alvin_Ndungu_kqemak.jpg",
+    socials: {
+      linkedin: "https://linkedin.com/in/alvin-ndungu",
+      twitter: "https://x.com/alvin_kh",
+    },
+    bio: "Project management expert focused on delivering impactful DevOps initiatives and community-driven solutions.",
   },
   {
     id: "ronald-kipchirchir",
     name: "Ronald Kipchirchir",
     title: "Events Coordinator",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/profile_-_Ronald_Kipchirchir_nj0zo2.jpg",
-    linkedin: "https://linkedin.com/in/ronald-kipchirchir-034983246/",
-    twitter: "https://x.com/Ronaah_254",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/profile_-_Ronald_Kipchirchir_nj0zo2.jpg",
+    socials: {
+      linkedin: "https://linkedin.com/in/ronald-kipchirchir-034983246/",
+      twitter: "https://x.com/Ronaah_254",
+    },
   },
   {
-    id: "mercyline-nyansarola",
-    name: "Mercyline Nyansarola",
-    title: "Community Outreach Manager",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/17efa17c-d20b-49a6-b1de-2675e00fc598_-_Mercyline_Nyansarola_vz4asn.jpg",
-    linkedin: "https://linkedin.com/in/mercyline-nyansarola",
-    twitter: "https://x.com/mercyline_m",
+    id: "moses-mbadi",
+    name: "Moses Mbadi",
+    title: "Head of IT",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1762225694/IMG_3815_-_Moses_Mbadi_nd5izk.jpg",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/moses-mbadi-0b8500198/",
+      twitter: "https://twitter.com/mosesmbadi",
+    },
   },
   {
     id: "tabitha-margaret-wangechi",
     name: "Tabitha Margaret Wangechi",
     title: "Graphic Designer/Community Manager",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1751329261/headshot_-_Tabitha_Wangechi_fuuwbv.jpg",
-    linkedin: "https://linkedin.com/in/tabitha-margaret771/",
-    twitter: "https://x.com/_mWangechi",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1751329261/headshot_-_Tabitha_Wangechi_fuuwbv.jpg",
+    socials: {
+      linkedin: "https://linkedin.com/in/tabitha-margaret771/",
+      twitter: "https://x.com/_mWangechi",
+    },
   },
   {
     id: "reyhana-cherop",
     name: "Reyhana Cherop",
     title: "Campus Tour Lead",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/20230820_101641_-_Reyhana_Cherop_nxgjnp.jpg",
-    linkedin: "https://linkedin.com/in/reyhana-cherop-77a584156/",
-    twitter: "https://x.com/reyhana_cherop",
-    website: "https://reyhanacynthia.wixsite.com/portfolio",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1754543466/20230820_101641_-_Reyhana_Cherop_nxgjnp.jpg",
+    socials: {
+      linkedin: "https://linkedin.com/in/reyhana-cherop-77a584156/",
+      twitter: "https://x.com/reyhana_cherop",
+      website: "https://reyhanacynthia.wixsite.com/portfolio",
+    },
   },
   {
     id: "lawrence-juma",
     name: "Lawrence Juma",
     title: "Program Manager/Communication Lead",
-    image: "https://res.cloudinary.com/nairobidevops/image/upload/v1751336808/IMG_3190_-_Lawrence_Juma_rrelx4.jpg",
-    linkedin: "https://linkedin.com/in/jumalaw98",
-    twitter: "https://x.com/jumalaw98",
-    instagram: "https://instagram.com/jumalaw98",
-    website: "https://lisagarcia.dev",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1751336808/IMG_3190_-_Lawrence_Juma_rrelx4.jpg",
+    socials: {
+      linkedin: "https://linkedin.com/in/jumalaw98",
+      twitter: "https://x.com/jumalaw98",
+      instagram: "https://instagram.com/jumalaw98",
+    },
   },
 ];
 
