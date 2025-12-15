@@ -1,9 +1,12 @@
 import { Users, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 
 export default function JoinCommunity() {
+  const [, navigate] = useLocation();
+
   const handleJoinClick = () => {
-    window.location.href = "/join";
+    navigate('/join');
   };
 
   const handleLinkedInClick = () => {

@@ -18,11 +18,20 @@ const StatisticCounter = ({
     threshold: 0.1,
   });
 
-  const { numericValue, suffix } = useMemo(() => {
+  const { numericValue, prefix, suffix } = useMemo(() => {
     const str = String(endValue);
+    // find the first numeric substring (handles decimals and commas)
+    const match = str.match(/[-+]?\d[\d,]*\.?\d*/);
+    if (!match) {
+      return { numericValue: NaN, prefix: "", suffix: str };
+    }
+    const numStr = match[0].replace(/,/g, "");
+    const prefix = str.slice(0, match.index ?? 0);
+    const suffix = str.slice((match.index ?? 0) + match[0].length);
     return {
-      numericValue: Number(str.replace(/[^\d.]/g, "")),
-      suffix: str.replace(/[\d.]/g, ""),
+      numericValue: Number(numStr),
+      prefix,
+      suffix,
     };
   }, [endValue]);
 
@@ -33,6 +42,7 @@ const StatisticCounter = ({
 
   return (
     <span ref={ref} className={className} aria-live="polite">
+      {prefix}
       {inView ? (
         <CountUp start={0} end={numericValue} duration={duration} />
       ) : (

@@ -3,6 +3,7 @@ import { statisticsData } from "@/data/ndcData";
 import { Users, Calendar, Handshake, GraduationCap, Award } from "lucide-react";
 import React from "react";
 import StatisticCounter from "../ui/StatisticCounter";
+import { useLocation } from "wouter";
 
 const iconMap: { [key: string]: React.ElementType } = {
   Users,
@@ -13,8 +14,10 @@ const iconMap: { [key: string]: React.ElementType } = {
 };
 
 export default function AboutSection() {
+  const [, navigate] = useLocation();
+
   const handleKnowUsClick = () => {
-    window.location.href = '/about';
+    navigate('/about');
   };
 
   const displayedStats = statisticsData.filter(stat =>
