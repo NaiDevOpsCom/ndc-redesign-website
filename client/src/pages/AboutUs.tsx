@@ -1,4 +1,5 @@
-import { Globe, Linkedin, X, Instagram } from "lucide-react";
+import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,6 +9,7 @@ import {
   statisticsData
 } from "@/data/ndcData";
 import StatisticCounter from "@/components/ui/StatisticCounter";
+import { galleryImages } from "@/data/galleryData";
 
 
 // Objectives data
@@ -42,6 +44,44 @@ const objectivesData = [
 
 
 export default function AboutUs() {
+  const randomImage = galleryImages[Math.floor(Math.random() * galleryImages.length)];
+  const [featuredId, setFeaturedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!teamData || teamData.length === 0) return;
+    const idx = Math.floor(Math.random() * teamData.length);
+    setFeaturedId(teamData[idx].id);
+  }, []);
+
+  const featured = useMemo(() => {
+    if (!featuredId) return null;
+    const m = teamData.find((t) => t.id === featuredId);
+    if (!m) return null;
+    return {
+      id: m.id,
+      name: m.name,
+      role: m.title,
+      bio: m.bio || "",
+      image: m.image,
+      socials: m.socials || {},
+    };
+  }, [featuredId]);
+
+  const teamMembers = useMemo(() => teamData, []);
+
+  const showNextFeatured = () => {
+    if (!teamMembers || teamMembers.length === 0) return;
+    const idx = teamMembers.findIndex((m) => m.id === featuredId);
+    const nextIdx = idx === -1 ? 0 : (idx + 1) % teamMembers.length;
+    setFeaturedId(teamMembers[nextIdx].id);
+  };
+
+  const showPrevFeatured = () => {
+    if (!teamMembers || teamMembers.length === 0) return;
+    const idx = teamMembers.findIndex((m) => m.id === featuredId);
+    const prevIdx = idx === -1 ? 0 : (idx - 1 + teamMembers.length) % teamMembers.length;
+    setFeaturedId(teamMembers[prevIdx].id);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -69,7 +109,7 @@ export default function AboutUs() {
       </section>
 
       {/* Our Purpose Section */}
-      <section className="py-20 bg-muted dark:bg-[#898E99]">
+      <section className="py-20 bg-[#E6E6E6] dark:bg-[#898E99]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
@@ -294,90 +334,138 @@ export default function AboutUs() {
         </div>
       </section>
 
-      {/* Meet the Team Section */}
-      <section className="py-20 bg-ndc-darkblue text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Meet the Team Powering
+      {/* Our Summit Team Section */}
+
+      <section className="py-16 md:py-24 bg-primary-light-blue text-black relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-cover bg-center" />
+        <div className="container mx-auto px-4 relative">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Meet the Team Powering <br></br> DevOps in Nairobi
               </h2>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
-                DevOps in Nairobi
-              </h2>
-            </div>
-
-
-            <div>
-              <p className="text-lg text-white leading-relaxed">
-                Behind every meetup, workshop, and idea is a group of passionate individuals who believe in the transformative power of collaboration. Our team blends technical brilliance with community heart - building a future where DevOps works for everyone.
+              
+            <div className="leading-relaxed lg:text-right lg:max-w-xl">
+              <p className="text-pretty">
+                 Behind every meetup, workshop, and idea is a group of passionate individuals who believe in the transformative power of collaboration. Our team blends technical brilliance with community heart - building a future where DevOps works for everyone.
               </p>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mt-16">
-            {teamData.map((member) => (
-              <div key={member.id} className="relative group">
-                {/* Team member image */}
-                <div className="relative overflow-hidden rounded-lg shadow-lg">
-                  <UnpicImage
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-72 md:h-80 object-cover transition-transform duration-300 peer hover:scale-105"
-                    width={300}
-                    height={300}
-                    loading="lazy"
-                    layout="constrained"
-                  />
-
-                  {/* Floating detail card overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-[#D1E2F2] dark:bg-gray-100 rounded-t-lg shadow-lg transform translate-y-4 peer-hover:translate-y-0 transition-transform duration-300 opacity-0 peer-hover:opacity-100 pointer-events-none">
-                    <div className="p-3 md:p-4">
-                      <h3 className="font-bold text-gray-900 text-base md:text-lg mb-1">
-                        {member.name}
-                      </h3>
-                      <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-3">
-                        {member.title}
-                      </p>
-                      <div className="flex space-x-2 md:space-x-3">
-                        {member.twitter && (
-                          <a href={member.twitter} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
-                            <X className="h-3 w-3 md:h-4 md:w-4" />
-                          </a>
-                        )}
-                        {member.linkedin && (
-                          <a href={member.linkedin} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
-                            <Linkedin className="h-3 w-3 md:h-4 md:w-4" />
-                          </a>
-                        )}
-                        {member.instagram && (
-                          <a href={member.instagram} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
-                            <Instagram className="h-3 w-3 md:h-4 md:w-4" />
-                          </a>
-                        )}
-                        {member.website && (
-                          <a href={member.website} className="text-gray-800 hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
-                            <Globe className="h-3 w-3 md:h-4 md:w-4" />
-                          </a>
-                        )}
+          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+            {/* Left Side - Featured Member */}
+            <div className="flex flex-col">
+              {featured && (
+                  <div className="flex-1 bg-ndc-darkblue backdrop-blur-sm rounded-3xl p-8 border-2 border-ndc-darkblue/30 shadow-2xl flex flex-col justify-between">
+                    <div>
+                      <div className="relative mb-6 mx-auto w-64 h-64">
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-600 rounded-3xl blur-xl opacity-50" />
+                        <img
+                          src={featured.image }
+                          alt={featured.name}
+                          className="relative w-full h-full object-cover rounded-3xl border-4"
+                        />
+                      </div>
+                      <div className="text-center space-y-4">
+                        <h3 className="text-2xl  text-white font-bold">{featured.name}</h3>
+                        <p className="text-blue-200 font-medium">{featured.role}</p>
+                        <div className="w-12 h-1 bg-primary mx-auto rounded-full" />
+                        <p className="text-blue-200 leading-relaxed text-pretty">{featured.bio}</p>
                       </div>
                     </div>
-                  </div>
+                    <div className="flex items-center justify-center gap-4 pt-6 mt-4">
+                      {featured.socials &&
+                        Object.entries(featured.socials as Record<string, string>).map(([key, value]) => {
+                          if (!value || typeof value !== "string") return null;
+                          const href = key === "phone" ? `tel:${value}` : key === "email" ? `mailto:${value}` : value;
+                          const Icon =
+                            key === "phone"
+                              ? Phone
+                              : key === "linkedin"
+                              ? Linkedin
+                              : key === "twitter"
+                              ? X
+                              : key === "instagram"
+                              ? Instagram
+                              : Globe;
+                          const baseClass =
+                            key === "phone"
+                              ? "w-12 h-12 rounded-full bg-primary hover:bg-white transition-colors flex items-center justify-center"
+                              : "w-12 h-12 rounded-full bg-blue-700/50 hover:bg-white transition-colors flex items-center justify-center";
 
-                </div>
+                          return (
+                            <a
+                              key={key}
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={baseClass}
+                              aria-label={key}
+                            >
+                              <Icon className="w-5 h-5" />
+                            </a>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
+            </div>
+            {/* Right Side - Team Grid */}
+            <div className="flex flex-col">
+              <div className="flex justify-end gap-3 mb-6">
+                <button
+                  type="button"
+                  onClick={showPrevFeatured}
+                  className="w-12 h-12 flex items-center justify-center bg-ndc-darkblue hover:bg-primary border-2 border-purple-400/50 transition-colors"
+                  style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+                  aria-label="Previous featured member"
+                  title="Previous"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={showNextFeatured}
+                  className="w-12 h-12 flex items-center justify-center bg-ndc-darkblue hover:bg-primary border-2 border-purple-400/50 transition-colors"
+                  style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+                  aria-label="Next featured member"
+                  title="Next"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
-            ))}
+              <div className="flex-1 grid grid-cols-3 gap-4 md:gap-6 content-start">
+                {teamMembers.map((member) => (
+                  <div key={member.id} className="text-center space-y-2">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setFeaturedId(member.id)}
+                      onKeyDown={(e) => { if (e.key === "Enter") setFeaturedId(member.id) }}
+                      className={`relative group ${member.id === featured?.id ? "ring-4 ring-white/20 rounded-2xl" : ""}`}
+                    >
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${member.backgroundColor || "from-blue-400 to-cyan-400"} rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity`}
+                      />
+                      <img
+                        src={member.image || "/placeholder.svg"}
+                        alt={member.name}
+                        className={`relative w-full aspect-square object-cover rounded-2xl border-3 border-blue-400/50 bg-gradient-to-br ${member.backgroundColor || "from-blue-400 to-cyan-400"} ${member.id === featured?.id ? "scale-105" : ""}`}
+                      />
+                    </div>
+                    <p className="text-sm font-medium">{member.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-
-      </section>
+      </section>      
 
       {/* Partner With Us Section */}
       <section
         className="min-h-screen flex items-center justify-center relative"
         style={{
-          backgroundImage: "url('https://pbs.twimg.com/media/GxreQk7XUAAMCLP?format=jpg&name=large')",
+          backgroundImage: `url('${randomImage.url}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat"

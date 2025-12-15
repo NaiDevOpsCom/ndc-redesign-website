@@ -37,6 +37,8 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
             window.open(slide.ctaPrimary.link, "_blank", "noopener");
         } else {
             navigate(slide.ctaPrimary.link);
+            // Ensure smooth scroll to top after client-side navigation
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 
@@ -48,6 +50,8 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
             window.open(slide.ctaSecondary.link, "_blank", "noopener");
         } else {
             navigate(slide.ctaSecondary.link);
+            // Smooth scroll to top on route change for consistent UX
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 

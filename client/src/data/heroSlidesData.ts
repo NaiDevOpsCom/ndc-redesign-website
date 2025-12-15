@@ -32,8 +32,8 @@ export const heroSlidesData: HeroSlideData[] = [
         },
         ctaSecondary: {
             text: "View Our Events",
-            link: "events",
-            isScroll: true,
+            link: "/events",
+            isScroll: false,
             icon: "calendar",
         },
     },
@@ -53,7 +53,7 @@ export const heroSlidesData: HeroSlideData[] = [
         ctaSecondary: {
             text: "View Our Events",
             link: "/events",
-            isScroll: true,
+            isScroll: false,
             icon: "calendar",
         },
     },
