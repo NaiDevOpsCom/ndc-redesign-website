@@ -23,7 +23,7 @@ permissions:
   contents: read
   issues: write
   pull-requests: write
-  statuses: read
+  statuses: write
 
 jobs:
   test:
@@ -38,19 +38,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: yarn
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}
+          cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: |
-          npm install --frozen-lockfile --non-interactive
+          # Use npm ci in CI for reproducible installs (uses package-lock.json)
+          npm ci --prefer-offline --no-audit --progress=false
 
       - name: Build project
         run: |
