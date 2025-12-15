@@ -50,6 +50,17 @@ jobs:
         run: |
           npm run build
 
+      - name: Verify build output
+        run: |
+          # Fail early if the expected build directory doesn't exist
+          if [ ! -d dist ]; then
+            echo "Build output directory 'dist' not found"
+            ls -la || true
+            exit 1
+          fi
+          echo "Build output directory 'dist' exists; contents:"
+          ls -la dist
+
       - name: Run Meticulous tests
         uses: alwaysmeticulous/report-diffs-action/upload-assets@v1
         with:
