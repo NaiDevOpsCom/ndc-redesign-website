@@ -48,7 +48,7 @@ jobs:
 
       - name: Build project
         run: |
-          npm build
+          npm run build
 
       - name: Run Meticulous tests
         uses: alwaysmeticulous/report-diffs-action/upload-assets@v1
