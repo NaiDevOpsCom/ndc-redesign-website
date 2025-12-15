@@ -93,3 +93,37 @@ export const projects: CommunityProject[] = [
     date: "Mar 2025",
   },
 ];
+
+export interface RecordedSession {
+  id: number;
+  title: string;
+  thumbnail: string;
+  videoUrl: string; // URL to the video (e.g., YouTube)
+}
+
+export const recordedSessions: RecordedSession[] = [
+  {
+    id: 1,
+    title: "Intro to Kubernetes for Beginners",
+    thumbnail: "https://img.youtube.com/vi/abc12345/maxresdefault.jpg", // Placeholder youtube thumb
+    videoUrl: "#",
+  },
+  {
+    id: 2,
+    title: "Scaling with Terraform on AWS",
+    thumbnail: "https://img.youtube.com/vi/xyz67890/maxresdefault.jpg",
+    videoUrl: "#",
+  },
+  {
+    id: 3,
+    title: "DevSecOps: Securing the CI/CD Pipeline",
+    thumbnail: "https://img.youtube.com/vi/def12345/maxresdefault.jpg",
+    videoUrl: "#",
+  },
+  {
+    id: 4,
+    title: "Monitoring & Observability with Prometheus",
+    thumbnail: "https://img.youtube.com/vi/ghi67890/maxresdefault.jpg",
+    videoUrl: "#",
+  },
+];

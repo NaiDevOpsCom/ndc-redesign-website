@@ -7,9 +7,9 @@ import Footer from "@/components/Footer";
 import { galleryImages } from "@/data/galleryData";
 // Import without extension to avoid potential resolver issues in some environments
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
-import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake } from "lucide-react";
+import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake, Cloud, Briefcase, Terminal, Compass, GraduationCap, Bell, Youtube } from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
-import { events, projects, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
+import { events, projects, recordedSessions, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
 
 // --- Component for "What We Offer" items ---
 interface OfferItemProps {
@@ -73,7 +73,7 @@ const OfferItem: React.FC<OfferItemProps> = ({ title, iconBg = "bg-white", varia
       <span className={`inline-flex items-center justify-center h-12 w-12 rounded-lg shadow ${iconBg}`}>
         {IconEl}
       </span>
-      <span className="text-lg font-medium text-slate-800">{title}</span>
+      <span className="text-lg font-medium text-slate-800 dark:text-white">{title}</span>
     </li>
   );
 };
@@ -132,25 +132,26 @@ function HeroGallery() {
 
 // --- What Defines Us Section Component ---
 const WhatDefinesUsSection: React.FC = () => (
-  <section className="py-16 md:py-20 lg:py-24 bg-sky-50">
+  <section className="py-16 md:py-20 lg:py-24 bg-primary-light-blue dark:bg-neutral-900">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">What Defines Us</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-black mb-4 dark:text-white">
+          What Defines Us</h2>
         <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
         {allData.whatDefinesUs.map((item, idx) => {
           const Icon = item.icon;
           return (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className="group bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 flex flex-col items-center text-center"
             >
               <div className="inline-flex items-center justify-center h-16 w-16 rounded-lg bg-white shadow-md group-hover:shadow-lg group-hover:bg-primary/5 transition-all duration-300 mb-6">
                 <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">{item.title}</h3>
+              <h3 className="text-xl font-semibold text-black mb-3">{item.title}</h3>
               <p className="text-gray-600 leading-relaxed">{item.description}</p>
             </div>
           );
@@ -162,7 +163,7 @@ const WhatDefinesUsSection: React.FC = () => (
 
 // --- Empowering Community Section Component ---
 const EmpoweringCommunitySection: React.FC = () => (
-  <section className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-white dark:bg-slate-950" aria-labelledby="empowering-heading">
+  <section className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-[#C2C2C2] dark:bg-[#000000]" aria-labelledby="empowering-heading">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start">
         {/* Left: Image + Title, Copy, Stats + CTA */}
@@ -177,39 +178,20 @@ const EmpoweringCommunitySection: React.FC = () => (
             />
           </div>
           <div className="space-y-4">
-            <h2 
-              id="empowering-heading" 
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100"
+            <h2
+              id="empowering-heading"
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-black dark:text-white"
             >
               Empowering the Nairobi DevOps Community
             </h2>
-            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
+            <p className="text-base sm:text-lg text-black dark:text-slate-300 max-w-2xl">
               Maamun Bwanakombo&apos;s vision and leadership continue to shape a thriving, inclusive tech ecosystem
               across Kenya and beyond.
             </p>
           </div>
-          
-          {/* Stats */}
-          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6" aria-label="Community impact statistics">
-            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
-              <dt className="sr-only">Members reached</dt>
-                <dd>
-                          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400 block">3000+</span>
-                          <span className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400 block">members reached</span>
-                       </dd>
-            </div>
-            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
-              <dt className="sr-only">Workshops hosted</dt>
-              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">50+</dd>
-              <dd className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400">workshops hosted</dd>
-            </div>
-            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
-              <dt className="sr-only">Campuses engaged</dt>
-              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-sky-600 dark:text-sky-400">10+</dd>
-              <dd className="text-xs sm:text-sm mt-1 text-slate-600 dark:text-slate-400">campuses engaged</dd>
-            </div>
-          </dl>
-          
+
+
+
           <div className="pt-2">
 
             <Button size="lg" className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200">
@@ -242,12 +224,12 @@ const EmpoweringCommunitySection: React.FC = () => (
             ].map((item, index) => (
               <div key={index} className="group">
                 <div className="flex items-start gap-4">
-                  
+
                   <div>
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-black dark:text-slate-100">
                       {item.title}
                     </h3>
-                    <p className="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <p className="mt-2 text-black dark:text-slate-300 leading-relaxed">
                       {item.content}
                     </p>
                   </div>
@@ -255,171 +237,151 @@ const EmpoweringCommunitySection: React.FC = () => (
               </div>
             ))}
           </div>
-          
+
+
+
+          {/* Stats */}
+          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6" aria-label="Community impact statistics">
+            <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
+              <dt className="sr-only">Members reached</dt>
+              <dd>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">3000+</span>
+                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">members reached</span>
+              </dd>
+            </div>
+            <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
+              <dt className="sr-only">Workshops hosted</dt>
+              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400">50+</dd>
+              <dd className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400">workshops hosted</dd>
+            </div>
+            <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
+              <dt className="sr-only">Campuses engaged</dt>
+              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400">10+</dd>
+              <dd className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400">campuses engaged</dd>
+            </div>
+          </dl>
+
           {/* Quote card */}
-          <figure className="rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-slate-100 p-6 sm:p-8 shadow-xl transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+          <figure className="rounded-2xl bg-black text-white p-6 sm:p-8 shadow-xl transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:bg-[#000000]">
             <blockquote className="text-lg sm:text-xl leading-relaxed">
-                &ldquo;DevOps is about people first. Tools come second.&rdquo;
+              &ldquo;DevOps is about people first. Tools come second.&rdquo;
             </blockquote>
             <figcaption className="mt-4 text-slate-300 font-medium">— Maamun Bwanakombo</figcaption>
           </figure>
         </div>
       </div>
     </div>
-  </section>
+  </section >
 );
 
 // --- Campus Tour Section Component ---
 const CampusTourSection: React.FC = () => (
-  <section className="py-12 sm:py-16 lg:py-20 bg-ndc-darkblue text-white relative overflow-hidden">
-    {/* Decorative elements */}
-    <div className="absolute inset-0 opacity-5">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+')]" />
-    </div>
-    
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div className="text-center max-w-4xl mx-auto mb-12 sm:mb-16">
-        <div className="inline-block mb-3 px-4 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/90">
-          Campus Initiative
-        </div>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+  <section className="py-16 md:py-24 bg-white text-black dark:bg-ndc-darkblue dark:text-white">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="text-center max-w-4xl mx-auto mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
           Nairobi DevOps Community Campus Tour
         </h2>
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white/90 mb-6 leading-tight">
-          Bringing Real-World DevOps to Kenya&apos;s Universities.
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-black dark:text-white mb-8 leading-tight">
+          Bringing Real-World DevOps to Kenya&apos;s Universities
         </h3>
-        <p className="text-lg sm:text-xl text-white/80 max-w-4xl mx-auto">
-          Our nationwide outreach initiative equips students with practical DevOps and cloud computing skills—right on their campuses. We partner with leading tech groups to deliver hands-on sessions, expert talks, and career guidance that bridge the gap between classroom theory and industry demands.
+        <p className="text-lg text-black dark:text-white max-w-4xl mx-auto leading-relaxed">
+          The Campus Tour is our nationwide outreach initiative designed to equip students with practical DevOps and cloud computing skills—right on their campuses. We partner with leading tech groups to deliver hands-on sessions, expert talks, and career guidance that bridge the gap between classroom theory and industry demands
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
-        {/* Mission Card */}
-        <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-          <CardHeader className="pb-3">
-            <div className="h-1.5 w-12 bg-sky-400 rounded-full mb-4"></div>
-            <CardTitle className="text-2xl md:text-3xl text-white">Our Mission</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg text-white/90 leading-relaxed">
-              Driving the future of DevOps in Kenya by delivering immersive, campus-based learning experiences that spark careers, build confidence, and connect students to industry.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Target Audience */}
-        <div className="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10">
-          <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
-            <span className="mr-3">🎯</span>
-            <span>Target Audience</span>
-          </h4>
-          <ul className="space-y-3 sm:space-y-4">
-            {['Students in tech fields', 'Tech club members', 'Final-year students', 'Faculty and academic staff', 'Beginner to intermediate learners'].map((item, index) => (
-              <li key={index} className="flex items-start">
-                <Check className="h-5 w-5 text-sky-400 mt-0.5 mr-3 flex-shrink-0" />
-                <span className="text-white/90">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 max-w-6xl mx-auto items-start">
         {/* Why Invite Us */}
-        <div className="lg:col-span-2">
-          <div className="bg-gradient-to-r from-sky-500/10 to-blue-600/10 p-6 sm:p-8 rounded-2xl border border-white/10">
-            <h4 className="text-xl sm:text-2xl font-bold text-white mb-6">Why Invite Us</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              {[
-                "Access to real-world DevOps and cloud experts",
-                "Learn in-demand skills for internships and jobs",
-                "Hands-on demos and guided activities",
-                "Discover career paths in DevOps, SRE, and Cloud Engineering"
-              ].map((item, index) => (
-                <div key={index} className="flex items-start">
-                  <div className="bg-sky-500/20 p-1.5 rounded-full mr-3 mt-0.5">
-                    <Check className="h-4 w-4 text-sky-400" />
-                  </div>
-                  <span className="text-white/90">{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* How It Works */}
-      <div className="mt-12 sm:mt-16 max-w-4xl mx-auto">
-        <div className="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10">
-          <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
-            <span className="mr-3">🔄</span>
-            <span>How It Works</span>
+        <div>
+          <h4 className="text-2xl font-bold text-black dark:text-white mb-8">
+            Why Invite Us
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <p className="text-lg text-white/90 leading-relaxed mb-4">
-                We visit universities across Kenya, delivering interactive sessions on different areas. Each stop includes expert speakers, live demos, and networking opportunities with industry professionals.
-              </p>
-              <p className="text-white/80">
-                Sessions are tailored to the host university and can include workshops, talks, and hands-on labs.
-              </p>
-            </div>
-            <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-              <h5 className="font-semibold text-white mb-3">What to Expect:</h5>
-              <ul className="space-y-2">
-                {[
-                  "Interactive workshops",
-                  "Expert-led sessions",
-                  "Networking opportunities",
-                  "Hands-on labs",
-                  "Career guidance"
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-sky-400 mr-2"></div>
-                    <span className="text-white/90">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="space-y-6">
+            {[
+              {
+                text: "Access to real-world DevOps and cloud experts",
+                icon: Cloud
+              },
+              {
+                text: "Learn in-demand skills for internships and jobs",
+                icon: Briefcase
+              },
+              {
+                text: "Hands-on demos and guided activities",
+                icon: Terminal
+              },
+              {
+                text: "Discover career paths in DevOps, SRE, and Cloud Engineering",
+                icon: Compass
+              },
+              {
+                text: "All sessions are free and tailored to your university's needs",
+                icon: GraduationCap
+              }
+            ].map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div key={index} className="flex items-start gap-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="w-10 h-10 rounded-full bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-sky-600 dark:text-sky-400" />
+                    </div>
+                  </div>
+                  <p className="text-lg text-black leading-relaxed dark:text-white pt-1.5">
+                    {item.text}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+
+        {/* How It Works */}
+        <div className="bg-[#DDEBF7] rounded-lg p-8 md:p-10">
+          <h4 className="text-2xl font-bold text-black mb-6">
+            How It Works
+          </h4>
+          <div className="space-y-6">
+            <p className="text-lg text-black font-medium leading-relaxed">
+              We visit universities across Kenya, delivering interactive sessions on different areas.
+            </p>
+            <p className="text-lg text-black font-medium leading-relaxed">
+              Each stop includes expert speakers, live demos, and networking opportunities with industry professionals.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Campus tour logos */}
-      <div className="mt-12 sm:mt-16 max-w-5xl mx-auto">
-        {/* <div className="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10"> */}
-          <div className="py-4">
-            <LogoCloud />
-          </div>
-        {/* </div> */}
+      <div className="mt-16 text-center">
+        <LogoCloud />
       </div>
 
       <div className="mt-12 text-center">
-        <Button 
+        <Button
           size="lg"
-          className="bg-sky-500 hover:bg-sky-600 text-white font-medium py-6 px-8 text-base md:text-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+          className="bg-primary hover:bg-sky-700 text-white font-medium py-6 px-10 text-lg transition-all duration-200 shadow-md hover:shadow-lg"
         >
           Propose Your Campus
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
         </Button>
       </div>
     </div>
-  </section>
+  </section >
 );
 
 // --- DevOps Culture Section Component ---
 const DevOpsCultureSection: React.FC = () => (
-  <section className="py-20 bg-sky-100">
+  <section className="py-20 bg-primary-light-blue dark:bg-black dark:text-white">
     <div className="container mx-auto px-4">
       {/* Heading + Subheading */}
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white">
           DevOps Culture for High-Impact Teams
         </h2>
-        <p className="mt-4 text-xl md:text-2xl font-semibold text-slate-800">
+        <p className="mt-4 text-xl md:text-2xl font-semibold text-black/80 dark:text-white">
           Empowering Teams to Build, Ship, and Scale with Confidence
         </p>
-        <p className="mt-8 text-base md:text-lg text-slate-700">
+        <p className="mt-8 text-base md:text-lg text-black/80 dark:text-white">
           At Nairobi DevOps Community, we believe that DevOps is more than just tools—it&apos;s a culture of
           collaboration, automation, and continuous improvement. Our corporate training programs are designed to
           help organizations transform their development and operations workflows, foster innovation, and
@@ -431,8 +393,8 @@ const DevOpsCultureSection: React.FC = () => (
       <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
         {/* Left: What We Offer */}
         <div>
-          <h3 className="text-2xl font-bold text-slate-900">What We Offer</h3>
-          <ul className="mt-8 space-y-8">
+          <h3 className="text-2xl font-bold text-black dark:text-white">What We Offer</h3>
+          <ul className="mt-8 space-y-8 dark:text-white">
             <OfferItem iconBg="bg-white" title="Customized Workshops" />
             <OfferItem iconBg="bg-white" title="Hands-On Labs" variant="labs" />
             <OfferItem iconBg="bg-white" title="DevOps Culture Coaching" variant="coaching" />
@@ -442,7 +404,7 @@ const DevOpsCultureSection: React.FC = () => (
 
         {/* Right: Delivery Formats card */}
         <div className="bg-white/80 backdrop-blur rounded-xl shadow-md p-8 border border-slate-200">
-          <h3 className="text-2xl font-bold text-slate-900">Delivery Formats</h3>
+          <h3 className="text-2xl font-bold text-black">Delivery Formats</h3>
           <ul className="mt-8 space-y-6">
             <DeliveryItem index={1} text="On-site or virtual sessions" />
             <DeliveryItem index={2} text="Half-day, full-day, or multi-week format" />
@@ -470,11 +432,12 @@ const DevOpsCoursesSection: React.FC = () => (
       </div>
 
       {/* Upskill subheading */}
-      <div className="mt-12 max-w-2xl mx-auto text-center mb-6">
+      <div className="mt-12 max-w-3xl mx-auto text-center mb-6">
         <h3 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-white">
           Ready to Upskill?
         </h3>
         <p className="mt-2 text-sm md:text-base text-neutral-600 dark:text-neutral-300">
+          {/* <p className="mt-8 text-base md:text-lg text-black/80 dark:text-white"></p> */}
           Our registration process is quick and simple. Follow the steps below to enroll in your preferred course.
         </p>
         <p className="mt-2 text-xs md:text-sm text-neutral-600 dark:text-neutral-300">
@@ -490,29 +453,60 @@ const DevOpsCoursesSection: React.FC = () => (
         <h2 className="text-3xl font-bold text-center mb-12">Available Courses</h2>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {events.map((event: CommunityEvent) => (
-            <Card key={event.id} className="overflow-hidden">
-              <div className="h-48 bg-gray-200">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <CardHeader>
-                <CardTitle>{event.title}</CardTitle>
-                <div className="space-y-2 mt-2">
-                  <p className="text-sm text-gray-600">📅 {event.date} • 🕒 {event.time}</p>
-                  <p className="text-sm text-gray-600">📍 {event.location}</p>
+          {events.length > 0 ? (
+            events.map((event: CommunityEvent) => (
+              <Card key={event.id} className="overflow-hidden">
+                <div className="h-48 bg-gray-200">
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full">Register Now</Button>
-              </CardContent>
-            </Card>
-          ))}
+                <CardHeader>
+                  <CardTitle>{event.title}</CardTitle>
+                  <div className="space-y-2 mt-2">
+                    <p className="text-sm text-gray-600">📅 {event.date} • 🕒 {event.time}</p>
+                    <p className="text-sm text-gray-600">📍 {event.location}</p>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Button className="w-full">Register Now</Button>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center text-center py-12 px-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
+              <div className="bg-sky-100 dark:bg-sky-900/30 p-4 rounded-full mb-6 relative">
+                <Bell className="w-10 h-10 text-sky-600 dark:text-sky-400" />
+                <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse border-2 border-white dark:border-gray-900"></span>
+              </div>
+
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                No upcoming courses right now
+              </h3>
+
+              <p className="text-gray-600 dark:text-gray-300 max-w-lg mb-8 leading-relaxed">
+                We&apos;re currently planning our next batch of DevOps courses and workshops.
+                Subscribe to our newsletter to get notified as soon as registration opens!
+              </p>
+
+              <Button
+                onClick={() => {
+                  const element = document.getElementById('newsletter');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="bg-primary hover:bg-sky-700 text-white font-medium px-8 py-2.5 rounded-lg flex items-center gap-2 group transition-all duration-200"
+              >
+                <span>Get Notified</span>
+                <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -528,48 +522,59 @@ const EventsMeetupsSection: React.FC = () => (
         <p className="mt-4 text-xl md:text-2xl font-semibold text-white mb-6 leading-tight">
           Workshops, Talks & Real-World Collaboration
         </p>
-        <p className="text-white max-w-2xl mx-auto">
-          Join us for hands-on sessions, tech talks, and community meetups designed to sharpen your skills and grow your DevOps journey.
+        <p className="text-white max-w-2xl mx-auto mb-10">
+          We host a variety of events catering to all skill levels. From deep-dive technical workshops and continuous learning series to casual meetups and industry expert panels. Our sessions are designed to be hands-on, bringing you practical knowledge you can apply immediately.
         </p>
-          <h3 className="text-3xl text-primary font-bold mb-4 mt-6">
-              Featured Events
-          </h3>
+
+        <h3 className="text-3xl text-primary font-bold mb-6 mt-16">
+          Previous Recorded Sessions
+        </h3>
+        <p className="text-gray-300 mb-8">Catch up on what you missed! Explore our library of past event recordings.</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {[
-          {
-            title: "Professional Events",
-            description: "Conferences, workshops, and training sessions with industry experts",
-            image: "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=4096x4096",
-            link: "/events?type=professional"
-          },
-          {
-            title: "Community Meetups",
-            description: "Casual gatherings for networking and knowledge sharing",
-            image: "https://pbs.twimg.com/media/F6r8agmXAAAwS48?format=jpg&name=large",
-            link: "/events?type=meetup"
-          }
-        ].map((event, i) => (
-          <div key={i} className="relative rounded-lg overflow-hidden group">
-            <div className="h-64 bg-gray-200">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        {recordedSessions.map((session) => (
+          <div key={session.id} className="group relative rounded-xl overflow-hidden shadow-xl bg-slate-800 border border-slate-700 hover:border-primary/50 transition-all duration-300">
+            {/* Thumbnail Container */}
+            <div className="aspect-video relative bg-slate-900 overflow-hidden">
               <img
-                src={event.image}
-                alt={event.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                src={session.thumbnail}
+                alt={session.title}
+                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                 loading="lazy"
-                decoding="async"
               />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300 border border-white/20">
+                  <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                </div>
+              </div>
+              {/* Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent opacity-60"></div>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
-              <h3 className="text-2xl font-bold text-white mb-2">{event.title}</h3>
-              <p className="text-gray-200 mb-4">{event.description}</p>
-              <Button asChild variant="outline" className="border-white text-white hover:bg-white/10">
-                <Link href={event.link} aria-label={`View all ${event.title.toLowerCase()}`}>View All</Link>
-              </Button>
+
+            <div className="p-5">
+              <h4 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">{session.title}</h4>
+              <div className="flex items-center text-sm text-gray-400 mt-3">
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                <span>Watch Recording</span>
+              </div>
             </div>
+
+            {/* Full Card Link overlay */}
+            <a href={session.videoUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10" aria-label={`Watch ${session.title}`}></a>
           </div>
         ))}
+      </div>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+        <Button asChild size="lg" className="bg-primary hover:bg-sky-500 text-white font-semibold px-8 py-6 text-lg rounded-full transition-all duration-300 shadow-lg hover:shadow-primary/50">
+          <Link href="/events">Explore All Events</Link>
+        </Button>
+        <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg rounded-full transition-all duration-300 shadow-lg">
+          <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+            <Youtube className="w-5 h-5" />
+            <span>Visit Channel Library</span>
+          </a>
+        </Button>
       </div>
     </div>
   </section>
@@ -577,14 +582,14 @@ const EventsMeetupsSection: React.FC = () => (
 
 // --- Community Projects Section Component ---
 const CommunityProjectsSection: React.FC = () => (
-  <section 
-    className="py-12 sm:py-16 lg:py-20 bg-gray-50" 
+  <section
+    className="py-12 sm:py-16 lg:py-20 bg-gray-50"
     aria-labelledby="community-projects-heading"
   >
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="text-center mb-10 sm:mb-12 lg:mb-16 px-4">
-        <h2 
-          id="community-projects-heading" 
+        <h2
+          id="community-projects-heading"
           className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4"
         >
           Community Projects
@@ -592,15 +597,15 @@ const CommunityProjectsSection: React.FC = () => (
         <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 leading-tight mb-3">
           Building Together, One Project at a Time
         </p>
-        <p className="max-w-3xl mx-auto text-base sm:text-lg text-slate-600">
-          We collaborate on tools, platforms, and experiments that solve real-world problems. 
+        <p className="max-w-3xl mx-auto text-base sm:text-lg text-black">
+          We collaborate on tools, platforms, and experiments that solve real-world problems.
           Whether you&apos;re a designer, developer, or strategist—there&apos;s a place for you here.
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {projects.map((project: CommunityProject) => (
-          <article 
+          <article
             key={project.id}
             className="group h-full flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
           >
@@ -616,7 +621,7 @@ const CommunityProjectsSection: React.FC = () => (
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            
+
             <CardHeader className="flex-1 p-5 sm:p-6 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                 <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900 leading-tight">
@@ -637,21 +642,21 @@ const CommunityProjectsSection: React.FC = () => (
                   );
                 })()}
               </div>
-              
-              <CardDescription className="text-sm sm:text-base text-slate-600 line-clamp-3">
+
+              <CardDescription className="text-sm sm:text-base text-black line-clamp-3">
                 {project.description}
               </CardDescription>
             </CardHeader>
-            
+
             <CardFooter className="p-5 sm:p-6 pt-0">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full group/button transition-all duration-200 hover:bg-blue-50 hover:border-blue-200"
                 aria-label={`View details for ${project.title} project`}
               >
                 <span className="relative">
                   View Project
-                  <span 
+                  <span
                     className="absolute -right-5 opacity-0 group-hover/button:opacity-100 group-hover/button:translate-x-1.5 transition-all duration-200"
                     aria-hidden="true"
                   >
@@ -680,10 +685,10 @@ const CollaborationCTASection: React.FC = () => {
 
   return (
     <section
-      className="relative py-20 text-white bg-slate-900"
+      className="relative py-20 text-white bg-black"
       style={{
         backgroundImage: ctaBgUrl
-          ? `url("${ctaBgUrl}")`
+          ? `linear-gradient(var(--black-overlay), var(--black-overlay)), url("${ctaBgUrl}")`
           : undefined,
         backgroundSize: ctaBgUrl ? "cover" : undefined,
         backgroundPosition: ctaBgUrl ? "center" : undefined,
