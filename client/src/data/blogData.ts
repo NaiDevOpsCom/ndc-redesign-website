@@ -31,7 +31,7 @@ export const blogPosts: BlogPost[] = [
     title: "Quant UX: The Future of Data‑Driven Design",
     excerpt:
       "How UX uses analytics and testing to shape smarter, user‑focused digital experiences.",
-    category: "Devop",
+    category: "DevOps",
     date: new Date().toISOString(),
     author: authorMercy,
     cover: {
@@ -64,7 +64,7 @@ export const blogPosts: BlogPost[] = [
     title: "The Future of DevOps: Platform Engineering in 2025",
     excerpt:
       "Explore how Platform Engineering is evolving DevOps, creating developer‑centric platforms for scalability and reliability.",
-    category: "Devop",
+    category: "DevOps",
     date: new Date().toISOString(),
     author: authorMercy,
     cover: {
