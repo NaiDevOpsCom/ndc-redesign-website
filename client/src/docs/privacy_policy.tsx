@@ -7,6 +7,9 @@ export default function PrivacyPolicy() {
     // eslint: keep useLocation destructuring as a placeholder for future navigation, prefix unused var
     const [,_setLocation] = useLocation();
 
+    // Static last updated date (set to project release date)
+    const formattedLastUpdated = "December 16, 2025";
+
     return (
         <div className="min-h-screen bg-background">
             <Navbar />
