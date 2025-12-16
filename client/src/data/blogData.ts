@@ -82,7 +82,7 @@ export const blogPosts: BlogPost[] = [
           "Platform Engineering streamlines delivery by providing paved roads, golden paths, and strong internal tooling.",
       },
       { type: "p", text: "This article surveys emerging patterns and pitfalls for 2025." },
-    ],
+    ] as Array<{ type: "p" | "h2" | "ul"; text?: string; items?: string[] }>,
   })),
 ];
 
