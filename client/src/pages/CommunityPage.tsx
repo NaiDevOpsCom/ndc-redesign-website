@@ -96,15 +96,15 @@ const DeliveryItem: React.FC<DeliveryItemProps> = ({ index, text }) => (
 // --- Hero Gallery Component ---
 function HeroGallery() {
   // Select a single random background from galleryImages (weighted by priority)
-  const { url: fullUrl, thumbnailUrl, alt } = useMemo(() => {
+  const { url: fullUrl, alt } = useMemo(() => {
     const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
-    if (!pool.length) return { url: "", thumbnailUrl: "", alt: "Community image" };
+    if (!pool.length) return { url: "", alt: "Community image" };
     const idx = Math.floor(Math.random() * pool.length);
     const picked = pool[idx];
-    return { url: picked.url, thumbnailUrl: picked.thumbnailUrl ?? "", alt: picked.alt || "Community image" };
+    return { url: picked.url, alt: picked.alt || "Community image" };
   }, []);
 
-  const bgUrl = fullUrl || thumbnailUrl || "";
+  const bgUrl = fullUrl || "";
 
   return (
     <section
@@ -251,13 +251,17 @@ const EmpoweringCommunitySection: React.FC = () => (
             </div>
             <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
               <dt className="sr-only">Workshops hosted</dt>
-              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400">50+</dd>
-              <dd className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400">workshops hosted</dd>
+              <dd>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">50+</span>
+                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">workshops hosted</span>
+              </dd>
             </div>
             <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
               <dt className="sr-only">Campuses engaged</dt>
-              <dd className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400">10+</dd>
-              <dd className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400">campuses engaged</dd>
+              <dd>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">10+</span>
+                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">campuses engaged</span>
+              </dd>
             </div>
           </dl>
 
@@ -680,7 +684,7 @@ const CollaborationCTASection: React.FC = () => {
     const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
     const idx = Math.floor(Math.random() * pool.length);
     // Prefer full-size for CTA; fallback to thumbnail
-    return pool[idx]?.url || pool[idx]?.thumbnailUrl || "";
+    return pool[idx]?.url || "";
   }, []);
 
   return (
