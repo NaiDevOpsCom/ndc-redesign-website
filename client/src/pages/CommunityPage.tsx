@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import RecordedVideoCard from "@/components/RecordedVideoCard";
 import { galleryImages } from "@/data/galleryData";
 // Import without extension to avoid potential resolver issues in some environments
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake, Cloud, Briefcase, Terminal, Compass, GraduationCap, Bell, Youtube } from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
-import { events, projects, recordedSessions, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
-import VideoThumbnail from "@/components/ui/video-thumbnail";
+import { events, projects, recordedSessions, CommunityEvent, CommunityProject } from "@/data/communityPageData";
 
 // --- Component for "What We Offer" items ---
 interface OfferItemProps {
@@ -538,35 +538,12 @@ const EventsMeetupsSection: React.FC = () => (
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {recordedSessions.map((session) => (
-          <div key={session.id} className="group relative rounded-xl overflow-hidden shadow-xl bg-slate-800 border border-slate-700 hover:border-primary/50 transition-all duration-300">
-            {/* Thumbnail Container */}
-            <div className="aspect-video relative bg-slate-900 overflow-hidden">
-              <VideoThumbnail
-                videoUrl={session.videoUrl}
-                alt={session.title}
-                quality="hqdefault"
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300 border border-white/20">
-                  <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                </div>
-              </div>
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent opacity-60"></div>
-            </div>
-
-            <div className="p-5">
-              <h4 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">{session.title}</h4>
-              <div className="flex items-center text-sm text-gray-400 mt-3">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                <span>Watch Recording</span>
-              </div>
-            </div>
-
-            {/* Full Card Link overlay */}
-            <a href={session.videoUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10" aria-label={`Watch ${session.title}`}></a>
-          </div>
+          <RecordedVideoCard
+            key={session.id}
+            id={session.id}
+            title={session.title}
+            videoUrl={session.videoUrl}
+          />
         ))}
       </div>
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
