@@ -1,7 +1,7 @@
 export interface GalleryImage {
   url: string;
   alt: string;
-  priority?: boolean; // For images that should be loaded first
+  priority?: boolean;
 }
 
 export const galleryImages: GalleryImage[] = [

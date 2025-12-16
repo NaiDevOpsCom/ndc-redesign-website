@@ -10,6 +10,7 @@ import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake, Cloud, Briefcase, Terminal, Compass, GraduationCap, Bell, Youtube } from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
 import { events, projects, recordedSessions, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
+import { getYouTubeThumbnail, YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG } from "@/lib/youtube";
 
 // --- Component for "What We Offer" items ---
 interface OfferItemProps {
@@ -441,7 +442,6 @@ const DevOpsCoursesSection: React.FC = () => (
           Ready to Upskill?
         </h3>
         <p className="mt-2 text-sm md:text-base text-neutral-600 dark:text-neutral-300">
-          {/* <p className="mt-8 text-base md:text-lg text-black/80 dark:text-white"></p> */}
           Our registration process is quick and simple. Follow the steps below to enroll in your preferred course.
         </p>
         <p className="mt-2 text-xs md:text-sm text-neutral-600 dark:text-neutral-300">
@@ -542,10 +542,15 @@ const EventsMeetupsSection: React.FC = () => (
             {/* Thumbnail Container */}
             <div className="aspect-video relative bg-slate-900 overflow-hidden">
               <img
-                src={session.thumbnail}
+                src={getYouTubeThumbnail(session.videoUrl)}
                 alt={session.title}
                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                 loading="lazy"
+                onError={(e) => {
+                  // Replace broken image with an inline placeholder SVG data URI
+                  const target = e.currentTarget as HTMLImageElement;
+                  if (target.src !== YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG) target.src = YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG;
+                }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300 border border-white/20">
