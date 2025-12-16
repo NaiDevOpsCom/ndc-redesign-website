@@ -10,7 +10,7 @@ import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake, Cloud, Briefcase, Terminal, Compass, GraduationCap, Bell, Youtube } from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
 import { events, projects, recordedSessions, CommunityEvent, CommunityProject } from "@/data/communityPageData"; // Import centralized data
-import { getYouTubeThumbnail, YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG } from "@/lib/youtube";
+import VideoThumbnail from "@/components/ui/video-thumbnail";
 
 // --- Component for "What We Offer" items ---
 interface OfferItemProps {
@@ -541,16 +541,11 @@ const EventsMeetupsSection: React.FC = () => (
           <div key={session.id} className="group relative rounded-xl overflow-hidden shadow-xl bg-slate-800 border border-slate-700 hover:border-primary/50 transition-all duration-300">
             {/* Thumbnail Container */}
             <div className="aspect-video relative bg-slate-900 overflow-hidden">
-              <img
-                src={getYouTubeThumbnail(session.videoUrl)}
+              <VideoThumbnail
+                videoUrl={session.videoUrl}
                 alt={session.title}
+                quality="hqdefault"
                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                loading="lazy"
-                onError={(e) => {
-                  // Replace broken image with an inline placeholder SVG data URI
-                  const target = e.currentTarget as HTMLImageElement;
-                  if (target.src !== YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG) target.src = YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG;
-                }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300 border border-white/20">
