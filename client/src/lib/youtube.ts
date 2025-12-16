@@ -14,10 +14,14 @@ export function extractYouTubeId(url?: string): string | undefined {
   try {
     // Try URL constructor parsing for robustness
     const u = new URL(url);
-    if (u.hostname.includes("youtube.com")) {
+    // Normalize hostname and whitelist allowed YouTube hostnames/subdomains.
+    const host = u.hostname.toLowerCase();
+    // Accept the root domain 'youtube.com' or any valid subdomain like 'www.youtube.com', 'm.youtube.com', etc.
+    if (host === "youtube.com" || host.endsWith(".youtube.com")) {
       return u.searchParams.get("v") || undefined;
     }
-    if (u.hostname === "youtu.be") {
+    // Shortened youtu.be links
+    if (host === "youtu.be") {
       const pathname = u.pathname;
       return pathname ? pathname.replace(/^\//, "") : undefined;
     }
