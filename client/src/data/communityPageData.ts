@@ -104,26 +104,50 @@ export interface RecordedSession {
 export const recordedSessions: RecordedSession[] = [
   {
     id: 1,
-    title: "Intro to Kubernetes for Beginners",
-    thumbnail: "https://img.youtube.com/vi/abc12345/maxresdefault.jpg", // Placeholder youtube thumb
-    videoUrl: "#",
+    title: "DevOps Career Talk by Brian Ndeva",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=UH5_VIztWDc",
   },
   {
     id: 2,
-    title: "Scaling with Terraform on AWS",
-    thumbnail: "https://img.youtube.com/vi/xyz67890/maxresdefault.jpg",
-    videoUrl: "#",
+    title: "Service Mesh(Introduction To Istio) by Gidraff Kamande",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=g8hNmDNJqUI",
   },
   {
     id: 3,
-    title: "DevSecOps: Securing the CI/CD Pipeline",
-    thumbnail: "https://img.youtube.com/vi/def12345/maxresdefault.jpg",
-    videoUrl: "#",
+    title: "CI/CD with Jenkins by Jennifer Kibiri",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=9fMFhWyZQ1E",
   },
   {
     id: 4,
-    title: "Monitoring & Observability with Prometheus",
-    thumbnail: "https://img.youtube.com/vi/ghi67890/maxresdefault.jpg",
-    videoUrl: "#",
+    title: "Multi Tenancy In Kubernetes Using Virtual Clusters By Ian Kiprotich",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=C7fk-tJngmI",
+  },
+  {
+    id: 5,
+    title: "Puppet As A DevOps Tool by Maamun Bwanakombo",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=xlxFr4oKyNg",
+  },
+  {
+    id: 6,
+    title: "How To Migrate From AWS To SERVERCORE(Step by step) By SERVERCORE CTO - Ivan Romanko",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=BjOYoU7QtT8",
+  },
+  {
+    id: 7,
+    title: "Dockerizing a Django App on GKE by Amdava Collins",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=APPfvvgd0WM",
+  },
+  {
+    id: 8,
+    title: "Automating Jenkins Configurations The IAC Way by Gerrard Ezeugwa",
+    thumbnail: "", // Placeholder youtube thumb
+    videoUrl: "https://www.youtube.com/watch?v=bdpWM1MdA9s",
   },
 ];
