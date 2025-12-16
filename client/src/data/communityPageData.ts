@@ -97,7 +97,6 @@ export const projects: CommunityProject[] = [
 export interface RecordedSession {
   id: number;
   title: string;
-  thumbnail: string;
   videoUrl: string; // URL to the video (e.g., YouTube)
 }
 
@@ -105,49 +104,41 @@ export const recordedSessions: RecordedSession[] = [
   {
     id: 1,
     title: "DevOps Career Talk by Brian Ndeva",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=UH5_VIztWDc",
   },
   {
     id: 2,
     title: "Service Mesh(Introduction To Istio) by Gidraff Kamande",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=g8hNmDNJqUI",
   },
   {
     id: 3,
     title: "CI/CD with Jenkins by Jennifer Kibiri",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=9fMFhWyZQ1E",
   },
   {
     id: 4,
     title: "Multi Tenancy In Kubernetes Using Virtual Clusters By Ian Kiprotich",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=C7fk-tJngmI",
   },
   {
     id: 5,
     title: "Puppet As A DevOps Tool by Maamun Bwanakombo",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=xlxFr4oKyNg",
   },
   {
     id: 6,
     title: "How To Migrate From AWS To SERVERCORE(Step by step) By SERVERCORE CTO - Ivan Romanko",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=BjOYoU7QtT8",
   },
   {
     id: 7,
     title: "Dockerizing a Django App on GKE by Amdava Collins",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=APPfvvgd0WM",
   },
   {
     id: 8,
     title: "Automating Jenkins Configurations The IAC Way by Gerrard Ezeugwa",
-    thumbnail: "", // Placeholder youtube thumb
     videoUrl: "https://www.youtube.com/watch?v=bdpWM1MdA9s",
   },
 ];
