@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/carousel";
 import React from "react";
 import Autoplay from "embla-carousel-autoplay";
+import RecordedVideoCard from "@/components/RecordedVideoCard.tsx";
+import { recordedSessions } from "@/data/communityPageData.ts";
 
 // Reusable Event Card Component
 interface EventCardProps {
@@ -154,7 +156,20 @@ function LumaEventsList() {
   );
 }
 
+// Pick N random items from an array without mutating the original (Fisher–Yates)
+function getRandomItems<T>(items: T[], count: number): T[] {
+  const arr = items.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr.slice(0, count);
+}
+
 export default function Events() {
+  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), [recordedSessions]);
   return (
     <section id="events" className="py-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,19 +190,6 @@ export default function Events() {
           <LumaEventsList />
         </div>
 
-
-        {/* Featured Events */}
-        <div className="mb-16">
-          <h3 className="text-2xl md:text-3xl font-bold text-primary text-center mb-12">
-            Featured Events
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {featuredEvents.map((event, index) => (
-              <FeaturedEventCard key={index} event={event} />
-            ))}
-          </div>
-        </div>
-
         {/* Past Events */}
         <div>
           <h3 className="text-2xl md:text-3xl font-bold text-primary text-center mb-12">
@@ -196,10 +198,17 @@ export default function Events() {
           <p className="text-center text-muted-foreground mb-8">
             Missed an event? Check out our recorded sessions below.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* You can add past events here or leave empty for now */}
-            <div className="text-center py-12 text-muted-foreground">
-              Past events will appear here
+
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:(grid-flow-row auto-cols-auto grid-cols-4 overflow-hidden)">
+              {randomRecorded.map((session) => (
+                <RecordedVideoCard
+                  key={session.id}
+                  id={session.id}
+                  title={session.title}
+                  videoUrl={session.videoUrl}
+                />
+              ))}
             </div>
           </div>
         </div>
