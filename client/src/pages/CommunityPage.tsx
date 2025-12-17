@@ -518,48 +518,67 @@ const DevOpsCoursesSection: React.FC = () => (
 );
 
 // --- Events & Meetups Section Component ---
-const EventsMeetupsSection: React.FC = () => (
-  <section className="py-16 bg-ndc-darkblue">
-    <div className="container mx-auto px-4">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl text-primary font-bold mb-4">Events & Meetups</h2>
-        <p className="mt-4 text-xl md:text-2xl font-semibold text-white mb-6 leading-tight">
-          Workshops, Talks & Real-World Collaboration
-        </p>
-        <p className="text-white max-w-2xl mx-auto mb-10">
-          We host a variety of events catering to all skill levels. From deep-dive technical workshops and continuous learning series to casual meetups and industry expert panels. Our sessions are designed to be hands-on, bringing you practical knowledge you can apply immediately.
-        </p>
+// Helper: pick N random items without mutating original (Fisher–Yates)
+function getRandomItems<T>(items: T[], count: number): T[] {
+  const arr = items.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr.slice(0, count);
+}
 
-        <h3 className="text-3xl text-primary font-bold mb-6 mt-16">
-          Previous Recorded Sessions
-        </h3>
-        <p className="text-gray-300 mb-8">Catch up on what you missed! Explore our library of past event recordings.</p>
-      </div>
+const EventsMeetupsSection: React.FC = () => {
+  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), [recordedSessions]);
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {recordedSessions.map((session) => (
-          <RecordedVideoCard
-            key={session.id}
-            id={session.id}
-            title={session.title}
-            videoUrl={session.videoUrl}
-          />
-        ))}
+  return (
+    <section className="py-16 bg-ndc-darkblue">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl text-primary font-bold mb-4">Events & Meetups</h2>
+          <p className="mt-4 text-xl md:text-2xl font-semibold text-white mb-6 leading-tight">
+            Workshops, Talks & Real-World Collaboration
+          </p>
+          <p className="text-white max-w-2xl mx-auto mb-10">
+            We host a variety of events catering to all skill levels. From deep-dive technical workshops and continuous learning series to casual meetups and industry expert panels. Our sessions are designed to be hands-on, bringing you practical knowledge you can apply immediately.
+          </p>
+
+          <h3 className="text-3xl text-primary font-bold mb-6 mt-16">
+            Previous Recorded Sessions
+          </h3>
+          <p className="text-gray-300 mb-8">Catch up on what you missed! Explore our library of past event recordings.</p>
+        </div>
+
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:(grid-flow-row auto-cols-auto grid-cols-4 overflow-hidden)">
+            {randomRecorded.map((session) => (
+              <RecordedVideoCard
+                key={session.id}
+                id={session.id}
+                title={session.title}
+                videoUrl={session.videoUrl}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+          <Button asChild size="lg" className="bg-primary hover:bg-sky-500 text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg hover:shadow-primary/50">
+            <Link href="/events">Explore All Events</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg">
+            <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              <Youtube className="w-5 h-5" />
+              <span>Visit Channel Library</span>
+            </a>
+          </Button>
+        </div>
       </div>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-        <Button asChild size="lg" className="bg-primary hover:bg-sky-500 text-white font-semibold px-8 py-6 text-lg rounded-full transition-all duration-300 shadow-lg hover:shadow-primary/50">
-          <Link href="/events">Explore All Events</Link>
-        </Button>
-        <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg rounded-full transition-all duration-300 shadow-lg">
-          <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-            <Youtube className="w-5 h-5" />
-            <span>Visit Channel Library</span>
-          </a>
-        </Button>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // --- Community Projects Section Component ---
 const CommunityProjectsSection: React.FC = () => (

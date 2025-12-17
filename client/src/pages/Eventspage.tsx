@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, Cloud, Wrench, Award, Rocket, Handshake, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Clock, MapPin, Cloud, Wrench, Award, Rocket, Handshake, ChevronLeft, ChevronRight, Youtube } from "lucide-react";
 import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
 import { featuredEvents, FeaturedEvent } from "@/data/eventsData";
@@ -55,6 +55,8 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
+import RecordedVideoCard from "@/components/RecordedVideoCard";
+import { recordedSessions } from "@/data/communityPageData";
 
 // Reusable Event Card Component for Events Page
 interface UpcomingEventCardProps {
@@ -342,15 +344,6 @@ export default function Eventspage() {
                         <UpcomingLumaEvents />
                     </div>
 
-                    {/* Featured Events */}
-                    <div className="text-center mb-6">
-                        <h3 className="text-l md:text-2xl font-bold">Featured Upcoming Events</h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                        {featuredEvents.map((e) => (
-                            <FeaturedEventCard key={e.id} e={e} />
-                        ))}
-                    </div>
                 </div>
             </section>
 
@@ -360,7 +353,31 @@ export default function Eventspage() {
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Past Events Highlights</h2>
                     </div>
-                    <PastEventsGrid items={pastEvents} />
+                    <p className="text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
+                        Explore our curated selection of past sessions — recordings, recaps, and highlights to help you catch up, learn, and revisit talks from our community events.
+                    </p>
+
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                    {recordedSessions.map((session) => (
+                        <RecordedVideoCard
+                            key={session.id}
+                            id={session.id}
+                            title={session.title}
+                            videoUrl={session.videoUrl}
+                        />
+                    ))}
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                    {/* hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200 */}
+
+                    <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg">
+                        <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                            <Youtube className="w-5 h-5" />
+                            <span>Visit Channel Library</span>
+                        </a>
+                    </Button>
                 </div>
             </section>
 
