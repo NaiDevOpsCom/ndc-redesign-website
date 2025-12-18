@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
+import React, { useCallback, useState, useEffect, useRef, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,17 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Cloud, Wrench, Award, Rocket, Handshake, Youtube } from "lucide-react";
 import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
-import { featuredEvents } from "@/data/eventsData";
-import { FeaturedEventCard } from "@/components/events/FeaturedEventCard";
 import { Link } from "wouter";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
-
-// --- Types ---
-// --- Helper components ---
-// Use the shared `FeaturedEventCard` component from `components/events` for consistency.
-
-// Removed unused ScheduleList and SpeakersList components to keep code lean
+import { galleryImages } from "@/data/galleryData";
 
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -133,8 +126,41 @@ function UpcomingLumaEvents() {
 
     if (events.length === 0) {
         return (
-            <div className="text-center py-12">
-                <p className="text-muted-foreground">No upcoming events scheduled. Check back soon!</p>
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+                {/* Calendar Icon with "0" Badge */}
+                <div className="relative mb-6">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+                        <Cloud className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 bg-white dark:bg-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-md border-2 border-gray-200 dark:border-gray-700">
+                        <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">0</span>
+                    </div>
+                </div>
+
+                {/* Headline */}
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-3">
+                    No Upcoming Events
+                </h3>
+
+                {/* Description */}
+                <p className="text-lg max-w-3xl text-muted-foreground text-center mb-6">
+                    We don't have any events scheduled at the moment, but we're always planning something exciting. Subscribe to our newsletter to be notified when new events are announced.
+                </p>
+
+
+                {/* CTA Button */}
+                <Button
+                    size="lg"
+                    className="bg-primary hover:bg-[#023047] text-white px-8 py-6 text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+                    onClick={() => {
+                        const newsletterSection = document.getElementById('newsletter');
+                        if (newsletterSection) {
+                            newsletterSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }}
+                >
+                    Be the First to Know
+                </Button>
             </div>
         );
     }
@@ -171,7 +197,6 @@ function UpcomingLumaEvents() {
     );
 }
 
-// NOTE: PastEventsGrid removed as it was unused; showing recorded sessions directly instead.
 
 // --- Main Page Component ---
 export default function Eventspage() {
@@ -185,7 +210,13 @@ export default function Eventspage() {
         { icon: Handshake, title: "Host workshops and campus tours" },
     ];
 
-    // Past events data removed — we render recorded sessions from `recordedSessions` instead.
+    // Random CTA background image from galleryData (weighted by priority)
+    const ctaBgImage = useMemo(() => {
+        const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
+        if (!pool.length) return { url: "", alt: "Community image" };
+        const idx = Math.floor(Math.random() * pool.length);
+        return pool[idx];
+    }, []);
 
     // --- Render ---
     return (
@@ -199,8 +230,7 @@ export default function Eventspage() {
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Events & Workshops</h1>
                     <p className="text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8">Discover what’s happening, when, and why it matters. From casual meetups to hands-on workshops, our events are where DevOps ideas come to life—your voice included.</p>
                     <div className="flex items-center justify-center gap-4">
-                        <Button size="lg" className="bg-primary hover:bg-[#023047] text-white" onClick={() => (window.location.hash = "#featured")}>View Featured Events</Button>
-                        {/* <Button size="lg" variant="outline" className="text-white border-white" onClick={() => (window.location.hash = "#register")}>Register</Button> */}
+                        <Button size="lg" className="bg-primary hover:bg-[#023047] text-white" onClick={() => (window.location.hash = "#meetup")}>Check our Events</Button>
                     </div>
                 </div>
             </header>
@@ -226,16 +256,16 @@ export default function Eventspage() {
                         </div>
                         <div className="relative order-1 lg:order-2">
                             <div className="rounded-2xl overflow-hidden shadow-2xl">
-                                <UnpicImage src="https://ik.imagekit.io/nairobidevops/ndc-assets/PXL_20240601_141554232.jpg?updatedAt=1755152981738" alt="Event group photo" className="w-full h-80 md:h-96 object-cover" width={1200} height={800} loading="lazy" layout="constrained" />
+                                <UnpicImage src="https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9864.jpg?updatedAt=1764488001283" alt="Event group photo" className="w-full h-80 md:h-96 object-cover" width={1200} height={800} loading="lazy" layout="constrained" />
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </section>
 
-            {/* Featured Events */}
-            <section id="featured" className="py-16 lg:py-24">
+            {/* Meetups */}
+            <section id="meetup" className="py-16 lg:py-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-2xl md:text-3xl font-bold mb-4">Events & Meetups</h2>
@@ -260,7 +290,7 @@ export default function Eventspage() {
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Past Events Highlights</h2>
                     </div>
-                    <p className="text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
+                    <p className="text-center text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
                         Explore our curated selection of past sessions — recordings, recaps, and highlights to help you catch up, learn, and revisit talks from our community events.
                     </p>
 
@@ -290,30 +320,65 @@ export default function Eventspage() {
 
             {/* Events CTA */}
             <section
-                className="min-h-screen flex items-center justify-center relative"
-                style={{
-                    backgroundImage: "url('https://pbs.twimg.com/media/GxreQk7XUAAMCLP?format=jpg&name=large')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat"
-                }}
+                className="min-h-screen flex items-center justify-center relative overflow-hidden"
             >
-                <div className="absolute inset-0 bg-black/50"></div>
+                {/* Background Image with optimized loading */}
+                <div className="absolute inset-0">
+                    {ctaBgImage.url && (
+                        <UnpicImage
+                            src={ctaBgImage.url}
+                            alt={ctaBgImage.alt}
+                            layout="fullWidth"
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            priority={false}
+                        />
+                    )}
+                </div>
+
+                {/* Dark overlay: 70% black */}
+                <div className="absolute inset-0 bg-black/70"></div>
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
                     <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                        Want Us to Visit Your Campus?
+                        Join the Movement
                     </h2>
-                    <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                        We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you&apos;d like to host a session or collaborate, reach out below.
+                    <p className="text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
+                        Whether you want to attend events, share your expertise as a speaker, host a campus session, or partner with us—there&apos;s a place for you in the Nairobi DevOps Community. Let&apos;s build the future of tech together.
                     </p>
-                    <Link href="/partners-sponsorship">
-                        <Button
-                            size="lg"
-                            className="bg-primary hover:bg-[#023047] text-white px-8 py-4 text-lg"
-                        >
-                            Partner with Us
-                        </Button>
-                    </Link>
+
+                    {/* Primary CTA */}
+                    <div className="mb-6">
+                        <Link href="/partners-sponsorship">
+                            <Button
+                                size="lg"
+                                className="bg-primary hover:bg-[#023047] text-white px-10 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                            >
+                                Partner with Us
+                            </Button>
+                        </Link>
+                    </div>
+
+                    {/* Secondary CTAs */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <Link href="/partners-sponsorship">
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-black px-8 py-4 text-base font-medium backdrop-blur-sm transition-all duration-300"
+                            >
+                                Become a Speaker
+                            </Button>
+                        </Link>
+                        <Link href="/community#campustour">
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-black px-8 py-4 text-base font-medium backdrop-blur-sm transition-all duration-300"
+                            >
+                                Learn About Campus Tour
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             </section>
 
@@ -321,7 +386,7 @@ export default function Eventspage() {
             <section className="py-16 lg:py-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-4">Frequently Asked Questions</h2>
                         <p className="text-muted-foreground mt-2">Filtered to the &ldquo;Events & Programs&rdquo; category.</p>
                     </div>
 
@@ -402,14 +467,6 @@ function FAQCarousel() {
                     </div>
                 ))}
             </div>
-
-            {/* Nav buttons (visible on md+) */}
-            {/* <button aria-label="Previous FAQs" onClick={() => { prev(); setIsPaused(true); }} className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
-                <ChevronLeft className="h-6 w-6 text-primary" />
-            </button>
-            <button aria-label="Next FAQs" onClick={() => { next(); setIsPaused(true); }} className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10 hidden md:block">
-                <ChevronRight className="h-6 w-6 text-primary" />
-            </button> */}
 
             {/* Dots */}
             <div className="flex items-center justify-center gap-2 mt-6">
