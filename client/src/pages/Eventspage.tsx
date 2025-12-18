@@ -144,7 +144,7 @@ function UpcomingLumaEvents() {
 
                 {/* Description */}
                 <p className="text-lg max-w-3xl text-muted-foreground text-center mb-6">
-                    We don't have any events scheduled at the moment, but we're always planning something exciting. Subscribe to our newsletter to be notified when new events are announced.
+                    We don&apos;t have any events scheduled at the moment, but we&apos;re always planning something exciting. Subscribe to our newsletter to be notified when new events are announced.
                 </p>
 
 
@@ -294,27 +294,26 @@ export default function Eventspage() {
                         Explore our curated selection of past sessions — recordings, recaps, and highlights to help you catch up, learn, and revisit talks from our community events.
                     </p>
 
-                </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {recordedSessions.map((session) => (
+                            <RecordedVideoCard
+                                key={session.id}
+                                id={session.id}
+                                title={session.title}
+                                videoUrl={session.videoUrl}
+                            />
+                        ))}
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                        {/* hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200 */}
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                    {recordedSessions.map((session) => (
-                        <RecordedVideoCard
-                            key={session.id}
-                            id={session.id}
-                            title={session.title}
-                            videoUrl={session.videoUrl}
-                        />
-                    ))}
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-                    {/* hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200 */}
-
-                    <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg">
-                        <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                            <Youtube className="w-5 h-5" />
-                            <span>Visit Channel Library</span>
-                        </a>
-                    </Button>
+                        <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg">
+                            <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                                <Youtube className="w-5 h-5" />
+                                <span>Visit Channel Library</span>
+                            </a>
+                        </Button>
+                    </div>
                 </div>
             </section>
 
