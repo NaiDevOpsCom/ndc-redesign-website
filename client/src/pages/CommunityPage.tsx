@@ -518,20 +518,10 @@ const DevOpsCoursesSection: React.FC = () => (
 );
 
 // --- Events & Meetups Section Component ---
-// Helper: pick N random items without mutating original (Fisher–Yates)
-function getRandomItems<T>(items: T[], count: number): T[] {
-  const arr = items.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-  }
-  return arr.slice(0, count);
-}
+import { getRandomItems } from "@/utils/getRandomItems";
 
 const EventsMeetupsSection: React.FC = () => {
-  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), [recordedSessions]);
+  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
 
   return (
     <section className="py-16 bg-ndc-darkblue">
@@ -552,7 +542,7 @@ const EventsMeetupsSection: React.FC = () => {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:(grid-flow-row auto-cols-auto grid-cols-4 overflow-hidden)">
+          <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:grid-flow-row lg:auto-cols-auto lg:grid-cols-4 lg:overflow-hidden">
             {randomRecorded.map((session) => (
               <RecordedVideoCard
                 key={session.id}
