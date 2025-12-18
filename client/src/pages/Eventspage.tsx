@@ -4,46 +4,18 @@ import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, Cloud, Wrench, Award, Rocket, Handshake, ChevronLeft, ChevronRight, Youtube } from "lucide-react";
+import { Cloud, Wrench, Award, Rocket, Handshake, Youtube } from "lucide-react";
 import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
-import { featuredEvents, FeaturedEvent } from "@/data/eventsData";
+import { featuredEvents } from "@/data/eventsData";
+import { FeaturedEventCard } from "@/components/events/FeaturedEventCard";
 import { Link } from "wouter";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
 
 // --- Types ---
-type PastEvent = { id: number; date: string; title: string; image: string; recapUrl: string };
-
 // --- Helper components ---
-function FeaturedEventCard({ e }: { e: FeaturedEvent }) {
-    return (
-        <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out">
-            <UnpicImage src={e.image} alt={e.title} className="w-full h-56 object-cover" width={1200} height={560} loading="lazy" layout="constrained" />
-            <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4 flex-wrap">
-                    <Badge className={e.badgeColor}>{e.type}</Badge>
-                    <div className="text-sm text-muted-foreground flex items-center gap-3">
-                        <Calendar className="h-4 w-4" />
-                        <span>{e.date}</span>
-                        <Clock className="h-4 w-4 ml-2" />
-                        <span>{e.time}</span>
-                    </div>
-                </div>
-
-                <h3 className="text-xl font-semibold mb-2">{e.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{e.description}</p>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4" />
-                        <span>{e.location}</span>
-                    </div>
-                    <Button onClick={() => window.alert("Register flow coming soon")}>{e.cta}</Button>
-                </div>
-            </CardContent>
-        </Card>
-    );
-}
+// Use the shared `FeaturedEventCard` component from `components/events` for consistency.
 
 // Removed unused ScheduleList and SpeakersList components to keep code lean
 
@@ -199,69 +171,7 @@ function UpcomingLumaEvents() {
     );
 }
 
-function PastEventsGrid({ items }: { items: PastEvent[] }) {
-    const [start, setStart] = useState(0);
-    const perPage = 2;
-
-    const prev = useCallback(() => setStart((s) => (s - perPage + items.length) % items.length), [items.length]);
-    const next = useCallback(() => setStart((s) => (s + perPage) % items.length), [items.length]);
-
-    // Touch swipe support (mobile): swipe left -> next, swipe right -> prev
-    const touchStartX = useRef<number | null>(null);
-    const SWIPE_THRESHOLD = 40; // px
-
-    const onTouchStart = (e: React.TouchEvent) => {
-        touchStartX.current = e.touches[0]?.clientX ?? null;
-    };
-
-    const onTouchEnd = (e: React.TouchEvent) => {
-        if (touchStartX.current == null) return;
-        const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
-        const deltaX = endX - touchStartX.current;
-        if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
-            if (deltaX < 0) {
-                next();
-            } else {
-                prev();
-            }
-        }
-        touchStartX.current = null;
-    };
-
-    const handleKey = (e: React.KeyboardEvent) => {
-        if (e.key === "ArrowLeft") prev();
-        if (e.key === "ArrowRight") next();
-    };
-
-    let visible = items.slice(start, start + perPage);
-    if (visible.length < perPage) visible = visible.concat(items.slice(0, perPage - visible.length));
-
-    return (
-        <div className="relative" tabIndex={0} onKeyDown={handleKey} aria-roledescription="carousel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                {visible.map((item) => (
-                    <div key={item.id} className="text-center">
-                        <div className="rounded-xl overflow-hidden shadow-lg mx-auto max-w-[560px]">
-                            <UnpicImage src={item.image} alt={item.title} className="w-full h-56 object-cover" width={1200} height={560} loading="lazy" layout="constrained" />
-                        </div>
-                        <h3 className="mt-4 text-lg font-semibold text-gray-700 dark:text-gray-200">{item.date} Meetup</h3>
-                        <p className="text-lg text-gray-600 dark:text-gray-300">{item.title}</p>
-                        <div className="mt-3">
-                            <a href={item.recapUrl} className="text-primary underline">View Recap</a>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            <button aria-label="Previous events" onClick={prev} className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10">
-                <ChevronLeft className="h-6 w-6 text-primary" />
-            </button>
-            <button aria-label="Next events" onClick={next} className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-slate-800 rounded-full p-2 shadow-md z-10">
-                <ChevronRight className="h-6 w-6 text-primary" />
-            </button>
-        </div>
-    );
-}
+// NOTE: PastEventsGrid removed as it was unused; showing recorded sessions directly instead.
 
 // --- Main Page Component ---
 export default function Eventspage() {
@@ -275,11 +185,7 @@ export default function Eventspage() {
         { icon: Handshake, title: "Host workshops and campus tours" },
     ];
 
-    const pastEvents: PastEvent[] = [
-        { id: 1, date: "1st June 2025", title: "Cloud Confessions", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", recapUrl: "#" },
-        { id: 2, date: "1st June 2025", title: "Cloud Confessions", image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", recapUrl: "#" },
-        { id: 3, date: "15th May 2025", title: "Automation Night", image: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", recapUrl: "#" },
-    ];
+    // Past events data removed — we render recorded sessions from `recordedSessions` instead.
 
     // --- Render ---
     return (
@@ -324,6 +230,7 @@ export default function Eventspage() {
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </section>
 
@@ -397,7 +304,7 @@ export default function Eventspage() {
                         Want Us to Visit Your Campus?
                     </h2>
                     <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                        We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you'd like to host a session or collaborate, reach out below.
+                        We partner with student clubs, faculty, and tech communities to deliver tailored DevOps experiences. If you&apos;d like to host a session or collaborate, reach out below.
                     </p>
                     <Link href="/partners-sponsorship">
                         <Button
@@ -415,7 +322,7 @@ export default function Eventspage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
-                        <p className="text-muted-foreground mt-2">Filtered to the "Events & Programs" category.</p>
+                        <p className="text-muted-foreground mt-2">Filtered to the &ldquo;Events & Programs&rdquo; category.</p>
                     </div>
 
                     {/* Carousel container */}

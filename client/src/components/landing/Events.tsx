@@ -1,7 +1,4 @@
-// src/components/landing/Events.tsx
 import { Button } from "@/components/ui/button";
-import { featuredEvents } from "@/data/eventsData";
-import { FeaturedEventCard } from "@/components/events/FeaturedEventCard";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
 import { Badge } from "@/components/ui/badge";
@@ -156,20 +153,10 @@ function LumaEventsList() {
   );
 }
 
-// Pick N random items from an array without mutating the original (Fisher–Yates)
-function getRandomItems<T>(items: T[], count: number): T[] {
-  const arr = items.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-  }
-  return arr.slice(0, count);
-}
+import { getRandomItems } from "@/utils/getRandomItems";
 
 export default function Events() {
-  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), [recordedSessions]);
+  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
   return (
     <section id="events" className="py-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -200,7 +187,7 @@ export default function Events() {
           </p>
 
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:(grid-flow-row auto-cols-auto grid-cols-4 overflow-hidden)">
+            <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:grid-flow-row lg:auto-cols-auto lg:grid-cols-4 lg:overflow-hidden">
               {randomRecorded.map((session) => (
                 <RecordedVideoCard
                   key={session.id}
