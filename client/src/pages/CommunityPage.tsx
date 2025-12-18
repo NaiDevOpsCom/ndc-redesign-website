@@ -281,7 +281,7 @@ const EmpoweringCommunitySection: React.FC = () => (
 
 // --- Campus Tour Section Component ---
 const CampusTourSection: React.FC = () => (
-  <section className="py-16 md:py-24 bg-white text-black dark:bg-ndc-darkblue dark:text-white">
+  <section id="campustour" className="py-16 md:py-24 bg-white text-black dark:bg-ndc-darkblue dark:text-white">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="text-center max-w-4xl mx-auto mb-16">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
