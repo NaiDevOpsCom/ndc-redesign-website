@@ -15,6 +15,7 @@ import PrivacyPolicy from "@/docs/privacy_policy";
 import CommunityPage from "@/pages/CommunityPage";
 import BlogPage from "@/pages/BlogPage";
 import BlogDetail from "@/pages/BlogDetail";
+import PartnershipPage from "@/pages/PartnershipPage";
 
 import NotFound from "@/pages/not-found";
 
@@ -43,6 +44,7 @@ function Router() {
 
       <Route path="/privacy" component={PrivacyPolicy} />
       <Route path="/community" component={CommunityPage} />
+      <Route path="/partners" component={PartnershipPage} />
       <Route path="/blogs" component={BlogPage} />
       <Route path="/blogs/:slug" component={BlogDetail} />
       <Route component={NotFound} />
