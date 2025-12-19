@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,42 +7,52 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import StatisticCounter from "@/components/ui/StatisticCounter";
 import { partnersData } from "@/data/partnersData";
+import { communityGallery } from "@/data/galleryData";
 import {
     Handshake,
     Target,
     Rocket,
     Award,
     Users,
-    TrendingUp,
     GraduationCap,
+    Calendar,
     CheckCircle2,
     Building2,
     Lightbulb,
     Globe,
     Mail,
     User,
-    MessageSquare
+    MessageSquare,
+    Heart
 } from "lucide-react";
-import CountUp from "react-countup";
-import { useInView } from "react-intersection-observer";
+import { statisticsData } from "@/data/ndcData";
 
 // Hero Section Component
 function HeroSection() {
+    const bgUrl = useMemo(() => {
+        if (!communityGallery?.length) return "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
+        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const idx = Math.floor(Math.random() * pool.length);
+        return pool[idx]?.url || "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
+    }, []);
+
     return (
         <section
             className="relative min-h-[60vh] flex items-center justify-center text-white"
             style={{
-                backgroundImage: `linear-gradient(rgba(2, 48, 71, 0.85), rgba(2, 48, 71, 0.85)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070')`,
+                backgroundImage: `url('${bgUrl}')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                filter: "brightness(0.6)"
             }}
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center py-20">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                     Together, We Build <span className="text-primary">Better</span>
                 </h1>
-                <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed">
                     Partner with us to empower the next generation of DevOps professionals and shape Kenya&apos;s tech future
                 </p>
             </div>
@@ -140,16 +150,19 @@ function PartnershipModelsSection() {
     ];
 
     return (
-        <section className="py-16 md:py-20 bg-background dark:bg-neutral-900">
+        <section className="py-16 md:py-20 bg-background dark:bg-neutral-900 dark:bg-background">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                    <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
                         Partnership Models
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <h3 className="text-2xl font-bold max-w-2xl mx-auto dark:text-white mb-4">
                         Choose Your Path to Impact
-                    </p>
+                    </h3>
                     <div className="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+                    <p className="text-md md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed dark:text-white">
+                    Whether you're a grassroots initiative, a global tech company, or an academic institution, Nairobi DevOps Community offers flexible partnership models designed to amplify your mission while driving real change in Kenya’s tech ecosystem.
+                    </p>                
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -194,42 +207,36 @@ function PartnershipModelsSection() {
 
 // Statistics/Impact Section
 function ImpactStatsSection() {
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.1,
-    });
+    const stats = statisticsData;
 
-    const stats = [
-        { icon: Building2, value: 15, suffix: "+", label: "Active Partners" },
-        { icon: Users, value: 3000, suffix: "+", label: "Community Members" },
-        { icon: TrendingUp, value: 50, suffix: "+", label: "Events Supported" },
-        { icon: GraduationCap, value: 1500, suffix: "+", label: "Students Reached" }
-    ];
+    const iconMap: Record<string, any> = {
+        Users,
+        GraduationCap,
+        Award,
+        Calendar,
+        Handshake
+    };
 
     return (
-        <section ref={ref} className="py-16 md:py-20 bg-ndc-darkblue dark:bg-background">
+        <section className="py-16 md:py-20 bg-ndc-darkblue dark:bg-background">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-white dark:text-foreground mb-4">
-                        Domain & Engagement
+                        Donate & Empower
                     </h2>
                     <p className="text-lg text-gray-200 dark:text-muted-foreground max-w-2xl mx-auto">
-                        Our partnerships create meaningful impact across Kenya&apos;s tech ecosystem
+                        Our partnerships create meaningful impact across Kenya&apos;s tech ecosystem. <strong>Your support helps us build inclusive digital tools, mentor emerging talent, and expand access to technology across local communities.</strong> Every contribution fuels real change—through workshops, platforms, and people-powered innovation.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {stats.map((stat, index) => {
-                        const Icon = stat.icon;
+                <div className="grid gap-6 grid-flow-row lg:grid-flow-col lg:auto-cols-fr overflow-x-auto lg:overflow-visible">
+                    {stats.map((stat) => {
+                        const Icon = iconMap[stat.icon as string] || Users;
                         return (
-                            <Card key={index} className="text-center bg-white/10 dark:bg-card/50 backdrop-blur border-white/20 dark:border-border">
+                            <Card key={stat.id} className="text-center bg-white/10 dark:bg-card/50 backdrop-blur border-white/20 dark:border-border w-full">
                                 <CardContent className="pt-8 pb-6">
-                                    <Icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                                    <div className="text-4xl md:text-5xl font-bold text-white dark:text-foreground mb-2">
-                                        {inView && (
-                                            <CountUp end={stat.value} duration={2.5} suffix={stat.suffix} />
-                                        )}
-                                    </div>
+                                    <Icon className="h-10 w-10 text-primary mx-auto mb-4" />
+                                    <StatisticCounter className="text-2xl md:text-4xl font-bold text-white dark:text-foreground mb-2" endValue={stat.number} />
                                     <p className="text-gray-200 dark:text-muted-foreground font-medium">
                                         {stat.label}
                                     </p>
@@ -237,6 +244,17 @@ function ImpactStatsSection() {
                             </Card>
                         );
                     })}
+                </div>
+
+                {/* CTA Buttons */}
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-4">
+                        <Link href="/donate">Support a course</Link>
+                        <Heart className="mr-2 h-5 w-5" />
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="px-8 py-4">
+                        <Link href="/donate">Donate a course</Link>
+                    </Button>
                 </div>
             </div>
         </section>
