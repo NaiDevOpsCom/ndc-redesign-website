@@ -10,7 +10,7 @@ import {
   statisticsData
 } from "@/data/ndcData";
 import StatisticCounter from "@/components/ui/StatisticCounter";
-import { galleryImages } from "@/data/galleryData";
+import { communityGallery } from "@/data/galleryData";
 
 
 // Objectives data
@@ -45,7 +45,7 @@ const objectivesData = [
 
 
 export default function AboutUs() {
-  const randomImage = useMemo(() => galleryImages[Math.floor(Math.random() * galleryImages.length)], []);
+  const randomImage = useMemo(() => communityGallery[Math.floor(Math.random() * communityGallery.length)], []);
   const [featuredId, setFeaturedId] = useState<string | null>(null);
   const [, navigate] = useLocation();
 

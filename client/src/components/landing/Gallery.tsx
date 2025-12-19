@@ -1,4 +1,4 @@
-import { galleryImages } from "@/data/galleryData";
+import { communityGallery } from "@/data/galleryData";
 
 export default function Gallery() {
   return (
@@ -12,7 +12,7 @@ export default function Gallery() {
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {galleryImages.map((image, index) => (
+          {communityGallery.map((image, index) => (
             <div 
               key={index}
               className="relative overflow-hidden rounded-xl shadow-lg hover-scale cursor-pointer group"
