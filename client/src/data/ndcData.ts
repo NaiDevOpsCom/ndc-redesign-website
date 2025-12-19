@@ -57,6 +57,12 @@ export const statisticsData: Statistic[] = [
     label: "Partners",
     icon: "Handshake",
   },
+  {
+    id: "Students Reached",
+    number: "2000+",
+    label: "Students Reached",
+    icon: "GraduationCap",
+  },
 ];
 
 // Team Data
