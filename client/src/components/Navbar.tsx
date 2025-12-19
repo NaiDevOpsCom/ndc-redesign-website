@@ -105,9 +105,8 @@ export default function Navbar() {
             <Button
               className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
               onClick={() => {
-                setLocation('/partners-sponsorship');
-                // Manually update current location for immediate active state sync (consistent with handleNavClick)
-                setCurrentLocation('/partners-sponsorship');
+                setLocation('/partners');
+                setCurrentLocation('/partners');
               }}
             >
               <Handshake className="mr-2 h-5 w-5" />
