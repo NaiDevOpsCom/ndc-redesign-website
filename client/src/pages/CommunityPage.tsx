@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RecordedVideoCard from "@/components/RecordedVideoCard";
-import { galleryImages } from "@/data/galleryData";
+import { communityGallery } from "@/data/galleryData";
 // Import without extension to avoid potential resolver issues in some environments
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake, Cloud, Briefcase, Terminal, Compass, GraduationCap, Bell, Youtube } from "lucide-react";
@@ -96,9 +96,9 @@ const DeliveryItem: React.FC<DeliveryItemProps> = ({ index, text }) => (
 
 // --- Hero Gallery Component ---
 function HeroGallery() {
-  // Select a single random background from galleryImages (weighted by priority)
+  // Select a single random background from communityGallery (weighted by priority)
   const { url: fullUrl, alt } = useMemo(() => {
-    const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
+    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
     if (!pool.length) return { url: "", alt: "Community image" };
     const idx = Math.floor(Math.random() * pool.length);
     const picked = pool[idx];
@@ -666,8 +666,8 @@ const CommunityProjectsSection: React.FC = () => (
 const CollaborationCTASection: React.FC = () => {
   // Random CTA background image from galleryData
   const ctaBgUrl = useMemo(() => {
-    if (!galleryImages?.length) return "";
-    const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
+    if (!communityGallery?.length) return "";
+    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
     const idx = Math.floor(Math.random() * pool.length);
     // Prefer full-size for CTA; fallback to thumbnail
     return pool[idx]?.url || "";
