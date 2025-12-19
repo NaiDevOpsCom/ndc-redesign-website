@@ -10,7 +10,7 @@ import { getFAQsByCategory } from "@/data/faqData";
 import { Link } from "wouter";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
 import { format } from 'date-fns';
-import { galleryImages } from "@/data/galleryData";
+import { communityGallery } from "@/data/galleryData";
 
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -212,7 +212,7 @@ export default function Eventspage() {
 
     // Random CTA background image from galleryData (weighted by priority)
     const ctaBgImage = useMemo(() => {
-        const pool = galleryImages.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
         if (!pool.length) return { url: "", alt: "Community image" };
         const idx = Math.floor(Math.random() * pool.length);
         return pool[idx];
