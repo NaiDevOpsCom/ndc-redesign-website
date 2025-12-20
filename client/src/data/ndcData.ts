@@ -58,7 +58,7 @@ export const statisticsData: Statistic[] = [
     icon: "Handshake",
   },
   {
-    id: "Students Reached",
+    id: "students-reached",
     number: "2000+",
     label: "Students Reached",
     icon: "GraduationCap",
