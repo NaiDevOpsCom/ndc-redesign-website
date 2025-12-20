@@ -1,6 +1,9 @@
 version = 1
 
-# ---- Analyzers ----
+# ------------------------
+# Analyzers
+# ------------------------
+
 [[analyzers]]
 name = "javascript"
 enabled = true
@@ -23,22 +26,29 @@ enabled = true
   [analyzers.meta]
   config_file = ".eslintrc.json"
 
-# ---- Test Coverage ----
-[[analyzers]]
+# ------------------------
+# Transformers (Coverage)
+# ------------------------
+
+[[transformers]]
 name = "test-coverage"
 enabled = true
 
-  [analyzers.meta]
+  [transformers.meta]
   runtime = "nodejs"
   coverage_file = "coverage/lcov.info"
 
-# ---- Ignore paths ----
+# ------------------------
+# Exclusions
+# ------------------------
+
 exclude_patterns = [
   "node_modules/**",
-  ".next/**",
   "dist/**",
   "build/**",
   "coverage/**",
+  "public/**",
   "**/*.config.js",
-  "**/*.config.ts"
+  "**/*.config.ts",
+  "vite.config.ts"
 ]
