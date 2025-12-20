@@ -13,9 +13,17 @@ export interface PartnerTestimonial {
   role?: string;
 }
 
+export interface SuccessStory {
+  partner: string;
+  logo: string;
+  quote: string;
+  impact: string;
+}
+
 export const testimonialsData: {
   community: CommunityTestimonial[];
   partners: PartnerTestimonial[];
+  successStories: SuccessStory[];
 } = {
   community: [
     {
@@ -74,6 +82,22 @@ export const testimonialsData: {
       author: "HR Director",
       organization: "Enterprise Software Company",
       role: "Recruitment Partner",
+    },
+  ],
+
+  // Success stories / case studies from partners
+  successStories: [
+    {
+      partner: "DEIMOS",
+      logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1753531298/12_rxpcu2.svg",
+      quote: "Through our partnership, we've successfully onboarded top DevOps talent and contributed to shaping Kenya's cloud infrastructure landscape.",
+      impact: "20+ students placed in DevOps roles",
+    },
+    {
+      partner: "Moringa School",
+      logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1754735307/moringa_jnpf1j.svg",
+      quote: "Collaborating with Nairobi DevOps Community has enhanced our curriculum with real-world DevOps practices.",
+      impact: "500+ students trained in DevOps fundamentals",
     },
   ],
 }; 
