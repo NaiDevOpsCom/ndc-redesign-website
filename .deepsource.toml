@@ -1,11 +1,44 @@
 version = 1
 
+# ---- Analyzers ----
 [[analyzers]]
 name = "javascript"
+enabled = true
 
   [analyzers.meta]
-  plugins = ["react"]
   environment = [
+    "browser",
     "nodejs",
-    "browser"
+    "jest"
   ]
+
+[[analyzers]]
+name = "typescript"
+enabled = true
+
+[[analyzers]]
+name = "eslint"
+enabled = true
+
+  [analyzers.meta]
+  config_file = ".eslintrc.json"
+
+# ---- Test Coverage ----
+[[analyzers]]
+name = "test-coverage"
+enabled = true
+
+  [analyzers.meta]
+  runtime = "nodejs"
+  coverage_file = "coverage/lcov.info"
+
+# ---- Ignore paths ----
+exclude_patterns = [
+  "node_modules/**",
+  ".next/**",
+  "dist/**",
+  "build/**",
+  "coverage/**",
+  "**/*.config.js",
+  "**/*.config.ts"
+]
