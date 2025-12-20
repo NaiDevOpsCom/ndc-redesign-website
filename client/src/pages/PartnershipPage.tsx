@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import StatisticCounter from "@/components/ui/StatisticCounter";
 import { partnersData } from "@/data/partnersData";
 import { communityGallery } from "@/data/galleryData";
+import type { GalleryImage } from "@/data/galleryData";
+import { testimonialsData } from "@/data/testimonialsData";
 import {
     Handshake,
     Target,
@@ -25,7 +27,6 @@ import {
     Mail,
     User,
     MessageSquare,
-    Heart
 } from "lucide-react";
 import { statisticsData } from "@/data/ndcData";
 
@@ -161,8 +162,8 @@ function PartnershipModelsSection() {
                     </h3>
                     <div className="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
                     <p className="text-md md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed dark:text-white">
-                    Whether you're a grassroots initiative, a global tech company, or an academic institution, Nairobi DevOps Community offers flexible partnership models designed to amplify your mission while driving real change in Kenya’s tech ecosystem.
-                    </p>                
+                        Whether you&apos;re a grassroots initiative, a global tech company, or an academic institution, Nairobi DevOps Community offers flexible partnership models designed to amplify your mission while driving real change in Kenya’s tech ecosystem.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -224,6 +225,7 @@ function ImpactStatsSection() {
                     <h2 className="text-3xl md:text-4xl font-bold text-white dark:text-foreground mb-4">
                         Donate & Empower
                     </h2>
+                    <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
                     <p className="text-lg text-gray-200 dark:text-muted-foreground max-w-2xl mx-auto">
                         Our partnerships create meaningful impact across Kenya&apos;s tech ecosystem. <strong>Your support helps us build inclusive digital tools, mentor emerging talent, and expand access to technology across local communities.</strong> Every contribution fuels real change—through workshops, platforms, and people-powered innovation.
                     </p>
@@ -248,13 +250,22 @@ function ImpactStatsSection() {
 
                 {/* CTA Buttons */}
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-4">
+                    <Button asChild size="lg" className="bg-primary hover:bg-[#023047] text-white px-8 py-4">
+                        {/* <Handshake className="mr-2 h-5 w-5" />?\ */}
                         <Link href="/donate">Support a course</Link>
-                        <Heart className="mr-2 h-5 w-5" />
+
                     </Button>
-                    <Button asChild variant="outline" size="lg" className="px-8 py-4">
-                        <Link href="/donate">Donate a course</Link>
-                    </Button>
+
+                    {/* <Button
+              className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
+              onClick={() => {
+                setLocation('/partners');
+                setCurrentLocation('/partners');
+              }}
+            >
+              <Handshake className="mr-2 h-5 w-5" />
+              Partner With Us
+            </Button> */}
                 </div>
             </div>
         </section>
@@ -279,18 +290,21 @@ function SuccessStoriesSection() {
     ];
 
     return (
-        <section className="py-16 md:py-20 bg-background dark:bg-neutral-900">
+        <section className="py-16 md:py-20 bg-background dark:bg-ndc-darkblue">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                         Success Stories That Inspire Collaboration
                     </h2>
-                    <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+                    <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-2"></div>
+                    <p className="text-lg dark:text-muted-foreground max-w-2xl mx-auto">
+                        Real stories from real partners and volunteers driving change across Kenya. These moments reflect the heart of Nairobi DevOps: practical tech, community empowerment, and shared growth.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {stories.map((story, index) => (
-                        <Card key={index} className="relative overflow-hidden hover:shadow-xl transition-all duration-300">
+                        <Card key={index} className="relative overflow-hidden bg-primary-light-blue hover:shadow-xl transition-all duration-300">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full"></div>
                             <CardHeader className="pb-4">
                                 <div className="flex items-center gap-4 mb-4">
@@ -300,7 +314,7 @@ function SuccessStoriesSection() {
                                         className="h-12 w-auto object-contain"
                                     />
                                 </div>
-                                <blockquote className="text-lg text-muted-foreground italic leading-relaxed">
+                                <blockquote className="text-lg text-black italic leading-relaxed">
                                     &ldquo;{story.quote}&rdquo;
                                 </blockquote>
                             </CardHeader>
@@ -320,46 +334,36 @@ function SuccessStoriesSection() {
 
 // Testimonials Section
 function TestimonialsSection() {
-    const testimonials = [
-        {
-            quote: "The Nairobi DevOps Community has been instrumental in helping us connect with passionate tech talent. Their events are always well-organized and impactful.",
-            author: "Tech Lead",
-            organization: "Leading Cloud Provider",
-            role: "Strategic Partner"
-        },
-        {
-            quote: "Supporting this community has given us direct access to emerging DevOps professionals. It's a win-win partnership that drives real innovation.",
-            author: "HR Director",
-            organization: "Enterprise Software Company",
-            role: "Recruitment Partner"
-        }
-    ];
+    const testimonials = testimonialsData.partners;
 
     return (
-        <section className="py-16 md:py-20 bg-ndc-darkblue dark:bg-background">
+        <section className="py-16 md:py-20 bg-primary-light-blue dark:bg-background">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white dark:text-foreground mb-4">
+                    <h2 className="text-3xl md:text-4xl font-bold dark:mb-4">
                         What Our Partners Say
                     </h2>
-                    <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+                    <div className=" mt-2 mb-2 w-20 h-1 bg-primary mx-auto rounded-full"></div>
+                    <p className="dark:text-muted-foreground max-w-2xl mx-auto">
+                        Our partners help us turn ideas into impact. Through mentorship, funding, and collaboration, they’ve empowered local tech talent and supported inclusive solutions that serve real community needs. Here’s what they have to say.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {testimonials.map((testimonial, index) => (
-                        <Card key={index} className="bg-white/95 dark:bg-card">
+                        <Card key={index} className="bg-ndc-darkblue">
                             <CardContent className="pt-6">
                                 <div className="mb-6">
                                     <svg className="h-10 w-10 text-primary/20" fill="currentColor" viewBox="0 0 32 32">
                                         <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
                                     </svg>
                                 </div>
-                                <p className="text-lg text-foreground mb-6 leading-relaxed italic">
+                                <p className="text-lg text-white mb-6 leading-relaxed italic">
                                     {testimonial.quote}
                                 </p>
                                 <div className="border-t border-border pt-4">
-                                    <p className="font-semibold text-foreground">{testimonial.author}</p>
-                                    <p className="text-sm text-muted-foreground">{testimonial.organization}</p>
+                                    <p className="font-semibold text-white">{testimonial.author}</p>
+                                    <p className="text-sm text-white">{testimonial.organization}</p>
                                     <p className="text-sm text-primary mt-1">{testimonial.role}</p>
                                 </div>
                             </CardContent>
@@ -372,6 +376,19 @@ function TestimonialsSection() {
 }
 
 // CTA Section with Contact Form
+const DEFAULT_CTA_BG = "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
+function useRandomGalleryImage(images: GalleryImage[] | undefined, fallback = DEFAULT_CTA_BG) {
+    return useMemo(() => {
+        if (!images || images.length === 0) return fallback;
+        const pool = images.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const idx = Math.floor(Math.random() * pool.length);
+        return pool[idx]?.url || fallback;
+    }, [images, fallback]);
+}
+
+// const CTA_HEADING = "Partner with the community to multiply impact";
+// const CTA_LEAD = "Collaborate with trusted organizations to build long-term skills, mentor talent, and co-create programs that deliver measurable outcomes and lasting impact.";
+
 function CTASection() {
     const [formData, setFormData] = useState({
         organization: "",
@@ -381,9 +398,11 @@ function CTASection() {
         message: ""
     });
 
+    const bgUrl = useRandomGalleryImage(communityGallery, DEFAULT_CTA_BG);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Create mailto link with form data
+        // Create mailto link with form data (behavior preserved)
         const subject = `Partnership Inquiry - ${formData.organization}`;
         const body = `
 Organization: ${formData.organization}
@@ -395,7 +414,7 @@ Message:
 ${formData.message}
     `.trim();
 
-        window.location.href = `mailto:hello@nairobidevops.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:info@nairobidevops.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -406,132 +425,147 @@ ${formData.message}
     };
 
     return (
-        <section className="py-16 md:py-20 bg-background dark:bg-neutral-900">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                        Become a Partner
-                    </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Let&apos;s collaborate to empower the next generation of DevOps professionals
-                    </p>
-                    <div className="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+        <section
+            className="py-16 md:py-20 relative overflow-hidden"
+            style={{ backgroundImage: `url('${bgUrl}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+            {/* overlay for readability */}
+            <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+
+            <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    {/* Left: Text only (clear hierarchy, reusable text constants) */}
+                    <div className="text-white">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                            Let’s Build the Future Together
+                        </h2>
+                        <p className="text-lg text-white/90 max-w-xl">
+                            {/* {CTA_LEAD} */}
+                            We’re always looking for passionate collaborators who believe in the power of community, education, and innovation. Whether you&apos;re a tech company, educator, or changemaker, we’d love to hear from you.
+                        </p>
+                        <div className="w-20 h-1 bg-primary mt-6 rounded-full mb-6" />
+                        {/* <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="lg"
+                                            asChild
+                                            className="px-8 py-6 text-lg"
+                                        >
+                                            <Link href="/community">
+                                                <Users className="mr-2 h-5 w-5" />
+                                                Join the Community
+                                            </Link>
+                                        </Button> */}
+                    </div>
+
+                    {/* Right: Form (structure, validation, and behavior preserved) */}
+                    <div>
+                        <Card className="border-2">
+                            <CardContent className="pt-6">
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    <h3 className="text-2xl font-bold text-primary mb-2">Become a Partner</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="organization" className="flex items-center gap-2">
+                                                <Building2 className="h-4 w-4 text-primary" />
+                                                Organization Name *
+                                            </Label>
+                                            <Input
+                                                id="organization"
+                                                name="organization"
+                                                required
+                                                value={formData.organization}
+                                                onChange={handleChange}
+                                                placeholder="Your organization"
+                                                className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="name" className="flex items-center gap-2">
+                                                <User className="h-4 w-4 text-primary" />
+                                                Contact Person *
+                                            </Label>
+                                            <Input
+                                                id="name"
+                                                name="name"
+                                                required
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                placeholder="Your name"
+                                                className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="email" className="flex items-center gap-2">
+                                                <Mail className="h-4 w-4 text-primary" />
+                                                Email Address *
+                                            </Label>
+                                            <Input
+                                                id="email"
+                                                name="email"
+                                                type="email"
+                                                required
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                placeholder="email@example.com"
+                                                className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="interest" className="flex items-center gap-2">
+                                                <Globe className="h-4 w-4 text-primary" />
+                                                Partnership Interest *
+                                            </Label>
+                                            <Input
+                                                id="interest"
+                                                name="interest"
+                                                required
+                                                value={formData.interest}
+                                                onChange={handleChange}
+                                                placeholder="e.g., Event Sponsorship"
+                                                className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="message" className="flex items-center gap-2">
+                                            <MessageSquare className="h-4 w-4 text-primary" />
+                                            Message *
+                                        </Label>
+                                        <Textarea
+                                            id="message"
+                                            name="message"
+                                            required
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            placeholder="Tell us about your partnership goals..."
+                                            rows={5}
+                                            className="resize-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                                        <Button
+                                            type="submit"
+                                            size="lg"
+                                            className="bg-primary hover:bg-ndc-darkblue text-white px-8 py-6 text-lg"
+                                        >
+                                            <Mail className="mr-2 h-5 w-5" />
+                                            Submit Partnership Inquiry
+                                        </Button>
+
+                                    </div>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
-
-                <Card className="border-2">
-                    <CardContent className="pt-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="organization" className="flex items-center gap-2">
-                                        <Building2 className="h-4 w-4 text-primary" />
-                                        Organization Name *
-                                    </Label>
-                                    <Input
-                                        id="organization"
-                                        name="organization"
-                                        required
-                                        value={formData.organization}
-                                        onChange={handleChange}
-                                        placeholder="Your organization"
-                                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="name" className="flex items-center gap-2">
-                                        <User className="h-4 w-4 text-primary" />
-                                        Contact Person *
-                                    </Label>
-                                    <Input
-                                        id="name"
-                                        name="name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        placeholder="Your name"
-                                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="email" className="flex items-center gap-2">
-                                        <Mail className="h-4 w-4 text-primary" />
-                                        Email Address *
-                                    </Label>
-                                    <Input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        placeholder="email@example.com"
-                                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="interest" className="flex items-center gap-2">
-                                        <Globe className="h-4 w-4 text-primary" />
-                                        Partnership Interest *
-                                    </Label>
-                                    <Input
-                                        id="interest"
-                                        name="interest"
-                                        required
-                                        value={formData.interest}
-                                        onChange={handleChange}
-                                        placeholder="e.g., Event Sponsorship"
-                                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="message" className="flex items-center gap-2">
-                                    <MessageSquare className="h-4 w-4 text-primary" />
-                                    Message *
-                                </Label>
-                                <Textarea
-                                    id="message"
-                                    name="message"
-                                    required
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    placeholder="Tell us about your partnership goals..."
-                                    rows={5}
-                                    className="resize-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                                />
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                                <Button
-                                    type="submit"
-                                    size="lg"
-                                    className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg"
-                                >
-                                    <Mail className="mr-2 h-5 w-5" />
-                                    Submit Partnership Inquiry
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="lg"
-                                    asChild
-                                    className="px-8 py-6 text-lg"
-                                >
-                                    <Link href="/community">
-                                        <Users className="mr-2 h-5 w-5" />
-                                        Join the Community
-                                    </Link>
-                                </Button>
-                            </div>
-                        </form>
-                    </CardContent>
-                </Card>
             </div>
         </section>
     );
