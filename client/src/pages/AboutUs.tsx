@@ -223,12 +223,12 @@ export default function AboutUs() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-ndc-darkblue text-white">
+      <section aria-label="Key statistics" className="py-20 bg-ndc-darkblue text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+          <div role="list" className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-6">
             {statisticsData.map((stat) => (
-              <div key={stat.id} className="space-y-2 text-white">
-                <StatisticCounter className="text-white text-4xl md:text-5xl font-bold" endValue={stat.number} />
+              <div key={stat.id} role="listitem" className="flex-shrink-0 lg:flex-1 min-w-[140px] text-center space-y-2">
+                <StatisticCounter className="text-white text-3xl md:text-5xl font-bold" endValue={stat.number} />
                 <div className="text-sm md:text-base opacity-90">{stat.label}</div>
               </div>
             ))}
@@ -353,11 +353,11 @@ export default function AboutUs() {
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Meet the Team Powering <br></br> DevOps in Nairobi
-              </h2>
-              
+            </h2>
+
             <div className="leading-relaxed lg:text-right lg:max-w-xl">
               <p className="text-pretty">
-                 Behind every meetup, workshop, and idea is a group of passionate individuals who believe in the transformative power of collaboration. Our team blends technical brilliance with community heart - building a future where DevOps works for everyone.
+                Behind every meetup, workshop, and idea is a group of passionate individuals who believe in the transformative power of collaboration. Our team blends technical brilliance with community heart - building a future where DevOps works for everyone.
               </p>
             </div>
           </div>
@@ -365,59 +365,59 @@ export default function AboutUs() {
             {/* Left Side - Featured Member */}
             <div className="flex flex-col">
               {featured && (
-                  <div className="flex-1 bg-ndc-darkblue backdrop-blur-sm rounded-3xl p-8 border-2 border-ndc-darkblue/30 shadow-2xl flex flex-col justify-between">
-                    <div>
-                      <div className="relative mb-6 mx-auto w-64 h-64">
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-600 rounded-3xl blur-xl opacity-50" />
-                        <img
-                          src={featured.image }
-                          alt={featured.name}
-                          className="relative w-full h-full object-cover rounded-3xl border-4"
-                        />
-                      </div>
-                      <div className="text-center space-y-4">
-                        <h3 className="text-2xl  text-white font-bold">{featured.name}</h3>
-                        <p className="text-blue-200 font-medium">{featured.role}</p>
-                        <div className="w-12 h-1 bg-primary mx-auto rounded-full" />
-                        <p className="text-blue-200 leading-relaxed text-pretty">{featured.bio}</p>
-                      </div>
+                <div className="flex-1 bg-ndc-darkblue backdrop-blur-sm rounded-3xl p-8 border-2 border-ndc-darkblue/30 shadow-2xl flex flex-col justify-between">
+                  <div>
+                    <div className="relative mb-6 mx-auto w-64 h-64">
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-600 rounded-3xl blur-xl opacity-50" />
+                      <img
+                        src={featured.image}
+                        alt={featured.name}
+                        className="relative w-full h-full object-cover rounded-3xl border-4"
+                      />
                     </div>
-                    <div className="flex items-center justify-center gap-4 pt-6 mt-4">
-                      {featured.socials &&
-                        Object.entries(featured.socials as Record<string, string>).map(([key, value]) => {
-                          if (!value || typeof value !== "string") return null;
-                          const href = key === "phone" ? `tel:${value}` : key === "email" ? `mailto:${value}` : value;
-                          const Icon =
-                            key === "phone"
-                              ? Phone
-                              : key === "linkedin"
-                              ? Linkedin
-                              : key === "twitter"
-                              ? X
-                              : key === "instagram"
-                              ? Instagram
-                              : Globe;
-                          const baseClass =
-                            key === "phone"
-                              ? "w-12 h-12 rounded-full bg-primary hover:bg-white transition-colors flex items-center justify-center"
-                              : "w-12 h-12 rounded-full bg-blue-700/50 hover:bg-white transition-colors flex items-center justify-center";
-
-                          return (
-                            <a
-                              key={key}
-                              href={href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={baseClass}
-                              aria-label={key}
-                            >
-                              <Icon className="w-5 h-5" />
-                            </a>
-                          );
-                        })}
+                    <div className="text-center space-y-4">
+                      <h3 className="text-2xl  text-white font-bold">{featured.name}</h3>
+                      <p className="text-blue-200 font-medium">{featured.role}</p>
+                      <div className="w-12 h-1 bg-primary mx-auto rounded-full" />
+                      <p className="text-blue-200 leading-relaxed text-pretty">{featured.bio}</p>
                     </div>
                   </div>
-                )}
+                  <div className="flex items-center justify-center gap-4 pt-6 mt-4">
+                    {featured.socials &&
+                      Object.entries(featured.socials as Record<string, string>).map(([key, value]) => {
+                        if (!value || typeof value !== "string") return null;
+                        const href = key === "phone" ? `tel:${value}` : key === "email" ? `mailto:${value}` : value;
+                        const Icon =
+                          key === "phone"
+                            ? Phone
+                            : key === "linkedin"
+                              ? Linkedin
+                              : key === "twitter"
+                                ? X
+                                : key === "instagram"
+                                  ? Instagram
+                                  : Globe;
+                        const baseClass =
+                          key === "phone"
+                            ? "w-12 h-12 rounded-full bg-primary hover:bg-white transition-colors flex items-center justify-center"
+                            : "w-12 h-12 rounded-full bg-blue-700/50 hover:bg-white transition-colors flex items-center justify-center";
+
+                        return (
+                          <a
+                            key={key}
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={baseClass}
+                            aria-label={key}
+                          >
+                            <Icon className="w-5 h-5" />
+                          </a>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
             </div>
             {/* Right Side - Team Grid */}
             <div className="flex flex-col">
@@ -469,7 +469,7 @@ export default function AboutUs() {
             </div>
           </div>
         </div>
-      </section>      
+      </section>
 
       {/* Partner With Us Section */}
       <section
