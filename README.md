@@ -120,6 +120,18 @@ The `client/src/data/` directory contains static data used throughout the applic
 
 ---
 
+## Code Style
+
+This project uses **Prettier** as the source of truth for code formatting and **ESLint** for code quality rules.
+
+- `npm run format` — Format all files with Prettier
+- `npm run format:check` — Check if files are formatted (used in CI)
+- `npm run lint` — Run ESLint for code quality checks
+
+Prettier and ESLint are configured to work together without conflicts via `eslint-config-prettier`.
+
+---
+
 ## Contributing
 We welcome contributions to enhance the Nairobi DevOps Community Platform! Whether it's fixing bugs, adding features, or improving documentation, your help is appreciated.
 ### How to Contribute

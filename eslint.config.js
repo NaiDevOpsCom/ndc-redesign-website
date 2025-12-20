@@ -4,6 +4,7 @@ import tsParser from "@typescript-eslint/parser";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import securityPlugin from "eslint-plugin-security";
+import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -74,5 +75,8 @@ export default [
             ],
             "security/detect-object-injection": "off"
         }
-    }
+    },
+
+    // 9. Prettier config (must be last to disable conflicting formatting rules)
+    prettierConfig,
 ];
