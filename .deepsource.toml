@@ -8,11 +8,15 @@ version = 1
 name = "javascript"
 
   [analyzers.meta]
+  plugins = ["react"]
   environment = [
     "browser",
     "nodejs",
     "jest"
   ]
+
+[[code_formatters]]
+name = "prettier"
 
 # ------------------------
 # Exclusions
