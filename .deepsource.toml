@@ -6,17 +6,13 @@ version = 1
 
 [[analyzers]]
 name = "javascript"
-enabled = true
 
   [analyzers.meta]
   environment = [
     "browser",
-    "nodejs"
+    "nodejs",
+    "jest"
   ]
-
-# Transformers: removed to avoid unsupported formatter/transformer names.
-# If you need coverage reporting with DeepSource, add a supported transformer
-# name following DeepSource documentation: https://deepsource.io/docs/
 
 # ------------------------
 # Exclusions
