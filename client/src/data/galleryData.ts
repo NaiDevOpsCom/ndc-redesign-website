@@ -41,4 +41,4 @@ export const galleryImages: GalleryImage[] = [
     url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101030400.MP.jpg?updatedAt=1764488001426",
     alt: "Community networking event",
   },
-]; 
+];

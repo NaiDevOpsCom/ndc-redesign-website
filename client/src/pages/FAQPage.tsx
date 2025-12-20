@@ -24,14 +24,12 @@ export default function FAQPage() {
     "Jobs & Opportunities":
       "Explore how we share hiring leads, freelance roles, and ways organizations connect with vetted DevOps talent.",
     "Sponsorship & Partnership":
-      "Learn how partners collaborate with us, support our initiatives, and showcase their brand to thousands of practitioners."
+      "Learn how partners collaborate with us, support our initiatives, and showcase their brand to thousands of practitioners.",
   };
 
   const toggleItem = (id: string) => {
-    setExpandedItems(prev =>
-      prev.includes(id)
-        ? prev.filter(item => item !== id)
-        : [id]
+    setExpandedItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [id],
     );
   };
 
@@ -50,12 +48,19 @@ export default function FAQPage() {
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--faq-bg)]/95 via-[var(--faq-bg)]/90 to-transparent" />
           </div>
           <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: "var(--faq-text)" }}>
+            <h1
+              className="text-4xl md:text-5xl font-bold mb-4"
+              style={{ color: "var(--faq-text)" }}
+            >
               Frequently Asked Questions
             </h1>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: "var(--faq-text)" }}>
-              Explore clear, concise answers to common questions about the Nairobi DevOps Community — from membership and
-              events to platform features and contribution opportunities.
+            <p
+              className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+              style={{ color: "var(--faq-text)" }}
+            >
+              Explore clear, concise answers to common questions about the
+              Nairobi DevOps Community — from membership and events to platform
+              features and contribution opportunities.
             </p>
           </div>
         </section>
@@ -64,7 +69,8 @@ export default function FAQPage() {
         <section className="transition-opacity duration-500 ease-out opacity-100">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             {faqDataByCategory.map((category, categoryIndex) => {
-              const sectionBg = categoryBackgrounds[categoryIndex % categoryBackgrounds.length];
+              const sectionBg =
+                categoryBackgrounds[categoryIndex % categoryBackgrounds.length];
 
               return (
                 <section
@@ -75,7 +81,10 @@ export default function FAQPage() {
                   <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start p-6 md:p-8 lg:p-10">
                     {/* Left: Category title & description */}
                     <div>
-                      <h2 className="text-2xl md:text-3xl font-semibold mb-3" style={{ color: "var(--faq-text)" }}>
+                      <h2
+                        className="text-2xl md:text-3xl font-semibold mb-3"
+                        style={{ color: "var(--faq-text)" }}
+                      >
                         {category.title} FAQs
                       </h2>
                       <p
@@ -112,7 +121,10 @@ export default function FAQPage() {
                               }}
                               onClick={() => toggleItem(id)}
                             >
-                              <span className="font-medium flex-1" style={{ color: "var(--faq-text)" }}>
+                              <span
+                                className="font-medium flex-1"
+                                style={{ color: "var(--faq-text)" }}
+                              >
                                 {faq.question}
                               </span>
                               <button
@@ -123,8 +135,9 @@ export default function FAQPage() {
                                 }}
                               >
                                 <Plus
-                                  className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-45" : ""
-                                    }`}
+                                  className={`w-4 h-4 transition-transform duration-200 ${
+                                    isExpanded ? "rotate-45" : ""
+                                  }`}
                                 />
                               </button>
                             </div>
@@ -133,9 +146,15 @@ export default function FAQPage() {
                             {isExpanded && (
                               <div
                                 className="px-6 pb-4 border-t"
-                                style={{ borderColor: "var(--faq-text)", opacity: 0.8 }}
+                                style={{
+                                  borderColor: "var(--faq-text)",
+                                  opacity: 0.8,
+                                }}
                               >
-                                <p className="leading-relaxed pt-4" style={{ color: "var(--faq-text)" }}>
+                                <p
+                                  className="leading-relaxed pt-4"
+                                  style={{ color: "var(--faq-text)" }}
+                                >
                                   {faq.answer}
                                 </p>
                               </div>
@@ -156,11 +175,15 @@ export default function FAQPage() {
           className="mt-16 max-w-4xl mx-auto text-center p-8 rounded-lg border"
           style={{ borderColor: "var(--faq-text)", opacity: 0.8 }}
         >
-          <h3 className="text-2xl font-bold mb-4" style={{ color: "var(--faq-text)" }}>
+          <h3
+            className="text-2xl font-bold mb-4"
+            style={{ color: "var(--faq-text)" }}
+          >
             Still have questions?
           </h3>
           <p className="text-lg mb-6" style={{ color: "var(--faq-text)" }}>
-            Can&apos;t find the answer you&apos;re looking for? We&apos;d love to hear from you.
+            Can&apos;t find the answer you&apos;re looking for? We&apos;d love
+            to hear from you.
           </p>
           <Button
             className="px-8 py-4 text-lg font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
@@ -168,7 +191,9 @@ export default function FAQPage() {
               backgroundColor: "var(--faq-text)",
               color: "var(--faq-bg)",
             }}
-            onClick={() => window.open("mailto:info@nairobidevops.org", "_self")}
+            onClick={() =>
+              window.open("mailto:info@nairobidevops.org", "_self")
+            }
           >
             Contact Us
           </Button>

@@ -19,7 +19,9 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
       />
       <CardContent className="p-4 sm:p-5 md:p-6">
         <div className="flex items-center mb-3 flex-wrap gap-2">
-          <Badge className={`${event.badgeColor} text-xs sm:text-sm`}>{event.type}</Badge>
+          <Badge className={`${event.badgeColor} text-xs sm:text-sm`}>
+            {event.type}
+          </Badge>
           <span className="text-xs sm:text-sm text-muted-foreground flex items-center">
             <Calendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
             {event.date}

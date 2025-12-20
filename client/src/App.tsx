@@ -18,13 +18,13 @@ import BlogDetail from "@/pages/BlogDetail";
 
 import NotFound from "@/pages/not-found";
 
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 
 function Router() {
   const [location] = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location]);
 
   return (

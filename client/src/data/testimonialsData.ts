@@ -39,4 +39,4 @@ export const testimonials = [
     avatar: "FJ",
     avatarColor: "bg-primary",
   },
-]; 
+];

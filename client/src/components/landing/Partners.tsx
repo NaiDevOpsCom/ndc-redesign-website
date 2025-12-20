@@ -55,7 +55,9 @@ export default function Partners() {
               <Card
                 key={partner.id}
                 className="flex-shrink-0 w-40 h-40 flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 transition-transform duration-300 hover:scale-105 hover:shadow-lg group cursor-pointer"
-                onClick={() => window.open(partner.website, "_blank", "noopener noreferrer")}
+                onClick={() =>
+                  window.open(partner.website, "_blank", "noopener noreferrer")
+                }
               >
                 <CardContent className="flex flex-col items-center justify-center h-full w-full p-0">
                   <img
@@ -71,16 +73,20 @@ export default function Partners() {
 
         {/* Dot Indicators */}
         <div className="flex justify-center mt-8 space-x-2">
-          {Array.from({ length: partnersData.communityPartners.length }).map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => emblaApi?.scrollTo(idx)}
-              className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                idx === (activeIndex % partnersData.communityPartners.length) ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
+          {Array.from({ length: partnersData.communityPartners.length }).map(
+            (_, idx) => (
+              <button
+                key={idx}
+                onClick={() => emblaApi?.scrollTo(idx)}
+                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                  idx === activeIndex % partnersData.communityPartners.length
+                    ? "bg-primary"
+                    : "bg-gray-300 dark:bg-gray-600"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ),
+          )}
         </div>
 
         {/* CTA Button */}
