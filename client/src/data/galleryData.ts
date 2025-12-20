@@ -64,4 +64,4 @@ export const teamGallery: GalleryImage[] = [
     url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80&auto=format&fit=crop",
     alt: "Team meeting",
   },
-]; 
+];

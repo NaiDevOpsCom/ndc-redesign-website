@@ -11,7 +11,9 @@ const formattedTestimonials = testimonialsData.community.map((testimonial) => ({
 }));
 
 const columnizedTestimonials = [0, 1, 2].map((columnIndex) =>
-  formattedTestimonials.filter((_, testimonialIndex) => testimonialIndex % 3 === columnIndex)
+  formattedTestimonials.filter(
+    (_, testimonialIndex) => testimonialIndex % 3 === columnIndex,
+  ),
 );
 
 export default function Testimonials() {
@@ -28,10 +30,12 @@ export default function Testimonials() {
           {/* <div className="inline-flex items-center gap-2 border border-primary/30 text-primary rounded-full px-4 py-1 text-sm font-medium mb-4">
             Testimonials
           </div> */}
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">What our members say</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            What our members say
+          </h2>
           <p className="text-lg text-muted-foreground">
-            Real stories from people building careers, shipping products, and creating impact through the Nairobi DevOps
-            Community.
+            Real stories from people building careers, shipping products, and
+            creating impact through the Nairobi DevOps Community.
           </p>
         </motion.div>
 
@@ -40,9 +44,20 @@ export default function Testimonials() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
           <div className="flex justify-center gap-6 md:gap-8 lg:gap-10 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
-            <TestimonialsColumn testimonials={columnizedTestimonials[0]} duration={16} />
-            <TestimonialsColumn testimonials={columnizedTestimonials[1]} duration={20} className="hidden md:block" />
-            <TestimonialsColumn testimonials={columnizedTestimonials[2]} duration={18} className="hidden lg:block" />
+            <TestimonialsColumn
+              testimonials={columnizedTestimonials[0]}
+              duration={16}
+            />
+            <TestimonialsColumn
+              testimonials={columnizedTestimonials[1]}
+              duration={20}
+              className="hidden md:block"
+            />
+            <TestimonialsColumn
+              testimonials={columnizedTestimonials[2]}
+              duration={18}
+              className="hidden lg:block"
+            />
           </div>
         </div>
       </div>

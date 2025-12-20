@@ -1,16 +1,43 @@
 import React, { useMemo } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RecordedVideoCard from "@/components/RecordedVideoCard";
 import { communityGallery } from "@/data/galleryData";
 // Import without extension to avoid potential resolver issues in some environments
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
-import { ClipboardList, FlaskConical, Users, Wrench, Check, Handshake, Cloud, Briefcase, Terminal, Compass, GraduationCap, Bell, Youtube } from "lucide-react";
+import {
+  ClipboardList,
+  FlaskConical,
+  Users,
+  Wrench,
+  Check,
+  Handshake,
+  Cloud,
+  Briefcase,
+  Terminal,
+  Compass,
+  GraduationCap,
+  Bell,
+  Youtube,
+} from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
-import { events, projects, recordedSessions, CommunityEvent, CommunityProject } from "@/data/communityPageData";
+import {
+  events,
+  projects,
+  recordedSessions,
+  CommunityEvent,
+  CommunityProject,
+} from "@/data/communityPageData";
 
 // --- Component for "What We Offer" items ---
 interface OfferItemProps {
@@ -24,7 +51,7 @@ const registrationSteps = [
   { number: 2, label: "Select\nCourses" },
   { number: 3, label: "Fill in your\ndetails" },
   { number: 4, label: "Confirm\nRegistration" },
-]
+];
 
 function RegistrationProgress() {
   return (
@@ -56,25 +83,40 @@ function RegistrationProgress() {
         <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#D6E8F5] flex items-center justify-center shadow-lg">
           <Check className="w-6 h-6 md:w-7 md:h-7 text-[#0066CC] stroke-[3]" />
         </div>
-        <p className="mt-3 text-xs md:text-sm text-center font-medium text-foreground">Done</p>
+        <p className="mt-3 text-xs md:text-sm text-center font-medium text-foreground">
+          Done
+        </p>
       </div>
     </div>
-  )
+  );
 }
 
-const OfferItem: React.FC<OfferItemProps> = ({ title, iconBg = "bg-white", variant }) => {
+const OfferItem: React.FC<OfferItemProps> = ({
+  title,
+  iconBg = "bg-white",
+  variant,
+}) => {
   const baseIconClass = "h-6 w-6 text-primary";
-  let IconEl: React.ReactNode = <ClipboardList className={baseIconClass} aria-hidden />;
-  if (variant === "labs") IconEl = <FlaskConical className={baseIconClass} aria-hidden />;
-  if (variant === "coaching") IconEl = <Users className={baseIconClass} aria-hidden />;
-  if (variant === "tools") IconEl = <Wrench className={baseIconClass} aria-hidden />;
+  let IconEl: React.ReactNode = (
+    <ClipboardList className={baseIconClass} aria-hidden />
+  );
+  if (variant === "labs")
+    IconEl = <FlaskConical className={baseIconClass} aria-hidden />;
+  if (variant === "coaching")
+    IconEl = <Users className={baseIconClass} aria-hidden />;
+  if (variant === "tools")
+    IconEl = <Wrench className={baseIconClass} aria-hidden />;
 
   return (
     <li className="flex items-center gap-4">
-      <span className={`inline-flex items-center justify-center h-12 w-12 rounded-lg shadow ${iconBg}`}>
+      <span
+        className={`inline-flex items-center justify-center h-12 w-12 rounded-lg shadow ${iconBg}`}
+      >
         {IconEl}
       </span>
-      <span className="text-lg font-medium text-slate-800 dark:text-white">{title}</span>
+      <span className="text-lg font-medium text-slate-800 dark:text-white">
+        {title}
+      </span>
     </li>
   );
 };
@@ -98,7 +140,9 @@ const DeliveryItem: React.FC<DeliveryItemProps> = ({ index, text }) => (
 function HeroGallery() {
   // Select a single random background from communityGallery (weighted by priority)
   const { url: fullUrl, alt } = useMemo(() => {
-    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+    const pool = communityGallery.flatMap((img) =>
+      img.priority ? [img, img] : [img],
+    );
     if (!pool.length) return { url: "", alt: "Community image" };
     const idx = Math.floor(Math.random() * pool.length);
     const picked = pool[idx];
@@ -120,10 +164,13 @@ function HeroGallery() {
       <div className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] flex items-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Building DevOps Future, <span className="text-primary">Together</span>
+            Building DevOps Future,{" "}
+            <span className="text-primary">Together</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-3xl mx-auto">
-            Join a vibrant community of developers, designers, engineers, and innovators shaping the future of technology through collaboration, learning, and impact.
+            Join a vibrant community of developers, designers, engineers, and
+            innovators shaping the future of technology through collaboration,
+            learning, and impact.
           </p>
         </div>
       </div>
@@ -137,7 +184,8 @@ const WhatDefinesUsSection: React.FC = () => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-black mb-4 dark:text-white">
-          What Defines Us</h2>
+          What Defines Us
+        </h2>
         <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
       </div>
 
@@ -152,8 +200,12 @@ const WhatDefinesUsSection: React.FC = () => (
               <div className="inline-flex items-center justify-center h-16 w-16 rounded-lg bg-white shadow-md group-hover:shadow-lg group-hover:bg-primary/5 transition-all duration-300 mb-6">
                 <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <h3 className="text-xl font-semibold text-black mb-3">{item.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{item.description}</p>
+              <h3 className="text-xl font-semibold text-black mb-3">
+                {item.title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {item.description}
+              </p>
             </div>
           );
         })}
@@ -164,7 +216,10 @@ const WhatDefinesUsSection: React.FC = () => (
 
 // --- Empowering Community Section Component ---
 const EmpoweringCommunitySection: React.FC = () => (
-  <section className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-[#C2C2C2] dark:bg-[#000000]" aria-labelledby="empowering-heading">
+  <section
+    className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-[#C2C2C2] dark:bg-[#000000]"
+    aria-labelledby="empowering-heading"
+  >
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start">
         {/* Left: Image + Title, Copy, Stats + CTA */}
@@ -186,16 +241,16 @@ const EmpoweringCommunitySection: React.FC = () => (
               Empowering the Nairobi DevOps Community
             </h2>
             <p className="text-base sm:text-lg text-black dark:text-slate-300 max-w-2xl">
-              Maamun Bwanakombo&apos;s vision and leadership continue to shape a thriving, inclusive tech ecosystem
-              across Kenya and beyond.
+              Maamun Bwanakombo&apos;s vision and leadership continue to shape a
+              thriving, inclusive tech ecosystem across Kenya and beyond.
             </p>
           </div>
 
-
-
           <div className="pt-2">
-
-            <Button size="lg" className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200">
+            <Button
+              size="lg"
+              className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
+            >
               <Users className="mr-2 h-5 w-5" />
               Join Our Community
             </Button>
@@ -208,24 +263,27 @@ const EmpoweringCommunitySection: React.FC = () => (
             {[
               {
                 title: "Championing DevOps Excellence",
-                content: "Maamun has led workshops, curated technical content, and introduced best practices in automation, CI/CD, and infrastructure as code. His expertise in Terraform, Jenkins, and Docker has empowered hundreds of engineers."
+                content:
+                  "Maamun has led workshops, curated technical content, and introduced best practices in automation, CI/CD, and infrastructure as code. His expertise in Terraform, Jenkins, and Docker has empowered hundreds of engineers.",
               },
               {
                 title: "Building Inclusive Spaces",
-                content: "Through mentorship and outreach, Maamun has grown the community to over 3,000 members, ensuring representation from students, startups, and professionals."
+                content:
+                  "Through mentorship and outreach, Maamun has grown the community to over 3,000 members, ensuring representation from students, startups, and professionals.",
               },
               {
                 title: "Leading Conversations",
-                content: "As a lead organizer of DevOpsDays Nairobi, Maamun has created platforms for dialogue and innovation through meetups, Twitter Spaces, and panels."
+                content:
+                  "As a lead organizer of DevOpsDays Nairobi, Maamun has created platforms for dialogue and innovation through meetups, Twitter Spaces, and panels.",
               },
               {
                 title: "A Legacy of Impact",
-                content: "Maamun's work fosters a culture of empathy, shared success, and continuous improvement—where DevOps is more than a methodology, it's a mindset."
-              }
+                content:
+                  "Maamun's work fosters a culture of empathy, shared success, and continuous improvement—where DevOps is more than a methodology, it's a mindset.",
+              },
             ].map((item, index) => (
               <div key={index} className="group">
                 <div className="flex items-start gap-4">
-
                   <div>
                     <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-black dark:text-slate-100">
                       {item.title}
@@ -239,29 +297,42 @@ const EmpoweringCommunitySection: React.FC = () => (
             ))}
           </div>
 
-
-
           {/* Stats */}
-          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6" aria-label="Community impact statistics">
+          <dl
+            className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6"
+            aria-label="Community impact statistics"
+          >
             <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
               <dt className="sr-only">Members reached</dt>
               <dd>
-                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">3000+</span>
-                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">members reached</span>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">
+                  3000+
+                </span>
+                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">
+                  members reached
+                </span>
               </dd>
             </div>
             <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
               <dt className="sr-only">Workshops hosted</dt>
               <dd>
-                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">50+</span>
-                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">workshops hosted</span>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">
+                  50+
+                </span>
+                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">
+                  workshops hosted
+                </span>
               </dd>
             </div>
             <div className="bg-slate-50 dark:bg-black/50 p-4 rounded-lg">
               <dt className="sr-only">Campuses engaged</dt>
               <dd>
-                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">10+</span>
-                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">campuses engaged</span>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary dark:text-sky-400 block">
+                  10+
+                </span>
+                <span className="text-xs sm:text-sm mt-1 text-black dark:text-slate-400 block">
+                  campuses engaged
+                </span>
               </dd>
             </div>
           </dl>
@@ -271,17 +342,22 @@ const EmpoweringCommunitySection: React.FC = () => (
             <blockquote className="text-lg sm:text-xl leading-relaxed">
               &ldquo;DevOps is about people first. Tools come second.&rdquo;
             </blockquote>
-            <figcaption className="mt-4 text-slate-300 font-medium">— Maamun Bwanakombo</figcaption>
+            <figcaption className="mt-4 text-slate-300 font-medium">
+              — Maamun Bwanakombo
+            </figcaption>
           </figure>
         </div>
       </div>
     </div>
-  </section >
+  </section>
 );
 
 // --- Campus Tour Section Component ---
 const CampusTourSection: React.FC = () => (
-  <section id="campustour" className="py-16 md:py-24 bg-white text-black dark:bg-ndc-darkblue dark:text-white">
+  <section
+    id="campustour"
+    className="py-16 md:py-24 bg-white text-black dark:bg-ndc-darkblue dark:text-white"
+  >
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
       <div className="text-center max-w-4xl mx-auto mb-16">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
@@ -291,7 +367,11 @@ const CampusTourSection: React.FC = () => (
           Bringing Real-World DevOps to Kenya&apos;s Universities
         </h3>
         <p className="text-lg text-black dark:text-white max-w-4xl mx-auto leading-relaxed">
-          The Campus Tour is our nationwide outreach initiative designed to equip students with practical DevOps and cloud computing skills—right on their campuses. We partner with leading tech groups to deliver hands-on sessions, expert talks, and career guidance that bridge the gap between classroom theory and industry demands
+          The Campus Tour is our nationwide outreach initiative designed to
+          equip students with practical DevOps and cloud computing skills—right
+          on their campuses. We partner with leading tech groups to deliver
+          hands-on sessions, expert talks, and career guidance that bridge the
+          gap between classroom theory and industry demands
         </p>
       </div>
 
@@ -305,24 +385,24 @@ const CampusTourSection: React.FC = () => (
             {[
               {
                 text: "Access to real-world DevOps and cloud experts",
-                icon: Cloud
+                icon: Cloud,
               },
               {
                 text: "Learn in-demand skills for internships and jobs",
-                icon: Briefcase
+                icon: Briefcase,
               },
               {
                 text: "Hands-on demos and guided activities",
-                icon: Terminal
+                icon: Terminal,
               },
               {
                 text: "Discover career paths in DevOps, SRE, and Cloud Engineering",
-                icon: Compass
+                icon: Compass,
               },
               {
                 text: "All sessions are free and tailored to your university's needs",
-                icon: GraduationCap
-              }
+                icon: GraduationCap,
+              },
             ].map((item, index) => {
               const Icon = item.icon;
               return (
@@ -341,18 +421,17 @@ const CampusTourSection: React.FC = () => (
           </div>
         </div>
 
-
         {/* How It Works */}
         <div className="bg-[#DDEBF7] rounded-lg p-8 md:p-10">
-          <h4 className="text-2xl font-bold text-black mb-6">
-            How It Works
-          </h4>
+          <h4 className="text-2xl font-bold text-black mb-6">How It Works</h4>
           <div className="space-y-6">
             <p className="text-lg text-black font-medium leading-relaxed">
-              We visit universities across Kenya, delivering interactive sessions on different areas.
+              We visit universities across Kenya, delivering interactive
+              sessions on different areas.
             </p>
             <p className="text-lg text-black font-medium leading-relaxed">
-              Each stop includes expert speakers, live demos, and networking opportunities with industry professionals.
+              Each stop includes expert speakers, live demos, and networking
+              opportunities with industry professionals.
             </p>
           </div>
         </div>
@@ -371,7 +450,7 @@ const CampusTourSection: React.FC = () => (
         </Button>
       </div>
     </div>
-  </section >
+  </section>
 );
 
 // --- DevOps Culture Section Component ---
@@ -387,10 +466,11 @@ const DevOpsCultureSection: React.FC = () => (
           Empowering Teams to Build, Ship, and Scale with Confidence
         </p>
         <p className="mt-8 text-base md:text-lg text-black/80 dark:text-white">
-          At Nairobi DevOps Community, we believe that DevOps is more than just tools—it&apos;s a culture of
-          collaboration, automation, and continuous improvement. Our corporate training programs are designed to
-          help organizations transform their development and operations workflows, foster innovation, and
-          accelerate delivery.
+          At Nairobi DevOps Community, we believe that DevOps is more than just
+          tools—it&apos;s a culture of collaboration, automation, and continuous
+          improvement. Our corporate training programs are designed to help
+          organizations transform their development and operations workflows,
+          foster innovation, and accelerate delivery.
         </p>
       </div>
 
@@ -398,12 +478,22 @@ const DevOpsCultureSection: React.FC = () => (
       <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
         {/* Left: What We Offer */}
         <div>
-          <h3 className="text-2xl font-bold text-black dark:text-white">What We Offer</h3>
+          <h3 className="text-2xl font-bold text-black dark:text-white">
+            What We Offer
+          </h3>
           <ul className="mt-8 space-y-8 dark:text-white">
             <OfferItem iconBg="bg-white" title="Customized Workshops" />
             <OfferItem iconBg="bg-white" title="Hands-On Labs" variant="labs" />
-            <OfferItem iconBg="bg-white" title="DevOps Culture Coaching" variant="coaching" />
-            <OfferItem iconBg="bg-white" title="Toolchain Mastery" variant="tools" />
+            <OfferItem
+              iconBg="bg-white"
+              title="DevOps Culture Coaching"
+              variant="coaching"
+            />
+            <OfferItem
+              iconBg="bg-white"
+              title="Toolchain Mastery"
+              variant="tools"
+            />
           </ul>
         </div>
 
@@ -412,8 +502,14 @@ const DevOpsCultureSection: React.FC = () => (
           <h3 className="text-2xl font-bold text-black">Delivery Formats</h3>
           <ul className="mt-8 space-y-6">
             <DeliveryItem index={1} text="On-site or virtual sessions" />
-            <DeliveryItem index={2} text="Half-day, full-day, or multi-week format" />
-            <DeliveryItem index={3} text="Certification prep and post-training support" />
+            <DeliveryItem
+              index={2}
+              text="Half-day, full-day, or multi-week format"
+            />
+            <DeliveryItem
+              index={3}
+              text="Certification prep and post-training support"
+            />
           </ul>
         </div>
       </div>
@@ -431,8 +527,9 @@ const DevOpsCoursesSection: React.FC = () => (
           DevOps Courses
         </h2>
         <p className="mt-4 text-sm md:text-base text-neutral-600 dark:text-neutral-300">
-          Whether you’re just starting out or scaling your DevOps expertise, our curated courses—delivered in partnership
-          with leading trainers—equip you with the skills to thrive in today’s tech landscape.
+          Whether you’re just starting out or scaling your DevOps expertise, our
+          curated courses—delivered in partnership with leading trainers—equip
+          you with the skills to thrive in today’s tech landscape.
         </p>
       </div>
 
@@ -442,19 +539,21 @@ const DevOpsCoursesSection: React.FC = () => (
           Ready to Upskill?
         </h3>
         <p className="mt-2 text-sm md:text-base text-neutral-600 dark:text-neutral-300">
-          Our registration process is quick and simple. Follow the steps below to enroll in your preferred course.
+          Our registration process is quick and simple. Follow the steps below
+          to enroll in your preferred course.
         </p>
         <p className="mt-2 text-xs md:text-sm text-neutral-600 dark:text-neutral-300">
           You’ll be done in just a few minutes — no guesswork, no confusion.
         </p>
       </div>
 
-
       <RegistrationProgress />
 
       {/* Available Courses */}
       <div className="container mx-auto px-4 mt-6">
-        <h2 className="text-3xl font-bold text-center mb-12">Available Courses</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Available Courses
+        </h2>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {events.length > 0 ? (
@@ -472,7 +571,9 @@ const DevOpsCoursesSection: React.FC = () => (
                 <CardHeader>
                   <CardTitle>{event.title}</CardTitle>
                   <div className="space-y-2 mt-2">
-                    <p className="text-sm text-gray-600">📅 {event.date} • 🕒 {event.time}</p>
+                    <p className="text-sm text-gray-600">
+                      📅 {event.date} • 🕒 {event.time}
+                    </p>
                     <p className="text-sm text-gray-600">📍 {event.location}</p>
                   </div>
                 </CardHeader>
@@ -493,15 +594,16 @@ const DevOpsCoursesSection: React.FC = () => (
               </h3>
 
               <p className="text-gray-600 dark:text-gray-300 max-w-lg mb-8 leading-relaxed">
-                We&apos;re currently planning our next batch of DevOps courses and workshops.
-                Subscribe to our newsletter to get notified as soon as registration opens!
+                We&apos;re currently planning our next batch of DevOps courses
+                and workshops. Subscribe to our newsletter to get notified as
+                soon as registration opens!
               </p>
 
               <Button
                 onClick={() => {
-                  const element = document.getElementById('newsletter');
+                  const element = document.getElementById("newsletter");
                   if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+                    element.scrollIntoView({ behavior: "smooth" });
                   }
                 }}
                 className="bg-primary hover:bg-sky-700 text-white font-medium px-8 py-2.5 rounded-lg flex items-center gap-2 group transition-all duration-200"
@@ -521,24 +623,36 @@ const DevOpsCoursesSection: React.FC = () => (
 import { getRandomItems } from "@/utils/getRandomItems";
 
 const EventsMeetupsSection: React.FC = () => {
-  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
+  const randomRecorded = React.useMemo(
+    () => getRandomItems(recordedSessions, 4),
+    [],
+  );
 
   return (
     <section className="py-16 bg-ndc-darkblue">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl text-primary font-bold mb-4">Events & Meetups</h2>
+          <h2 className="text-3xl text-primary font-bold mb-4">
+            Events & Meetups
+          </h2>
           <p className="mt-4 text-xl md:text-2xl font-semibold text-white mb-6 leading-tight">
             Workshops, Talks & Real-World Collaboration
           </p>
           <p className="text-white max-w-2xl mx-auto mb-10">
-            We host a variety of events catering to all skill levels. From deep-dive technical workshops and continuous learning series to casual meetups and industry expert panels. Our sessions are designed to be hands-on, bringing you practical knowledge you can apply immediately.
+            We host a variety of events catering to all skill levels. From
+            deep-dive technical workshops and continuous learning series to
+            casual meetups and industry expert panels. Our sessions are designed
+            to be hands-on, bringing you practical knowledge you can apply
+            immediately.
           </p>
 
           <h3 className="text-3xl text-primary font-bold mb-6 mt-16">
             Previous Recorded Sessions
           </h3>
-          <p className="text-gray-300 mb-8">Catch up on what you missed! Explore our library of past event recordings.</p>
+          <p className="text-gray-300 mb-8">
+            Catch up on what you missed! Explore our library of past event
+            recordings.
+          </p>
         </div>
 
         <div className="max-w-7xl mx-auto">
@@ -555,11 +669,25 @@ const EventsMeetupsSection: React.FC = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-          <Button asChild size="lg" className="bg-primary hover:bg-sky-500 text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg hover:shadow-primary/50">
+          <Button
+            asChild
+            size="lg"
+            className="bg-primary hover:bg-sky-500 text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg hover:shadow-primary/50"
+          >
             <Link href="/events">Explore All Events</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg">
-            <a href="https://www.youtube.com/@NairobiDevopsCommunity" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg"
+          >
+            <a
+              href="https://www.youtube.com/@NairobiDevopsCommunity"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
               <Youtube className="w-5 h-5" />
               <span>Visit Channel Library</span>
             </a>
@@ -588,8 +716,9 @@ const CommunityProjectsSection: React.FC = () => (
           Building Together, One Project at a Time
         </p>
         <p className="max-w-3xl mx-auto text-base sm:text-lg text-black">
-          We collaborate on tools, platforms, and experiments that solve real-world problems.
-          Whether you&apos;re a designer, developer, or strategist—there&apos;s a place for you here.
+          We collaborate on tools, platforms, and experiments that solve
+          real-world problems. Whether you&apos;re a designer, developer, or
+          strategist—there&apos;s a place for you here.
         </p>
       </div>
 
@@ -621,7 +750,9 @@ const CommunityProjectsSection: React.FC = () => (
                   // Safely compute an ISO date string if the provided date is parseable.
                   // This prevents runtime errors from invalid Date parsing (e.g., "Oct 2024").
                   const d = new Date(project.date);
-                  const iso = isNaN(d.getTime()) ? undefined : d.toISOString().split("T")[0];
+                  const iso = isNaN(d.getTime())
+                    ? undefined
+                    : d.toISOString().split("T")[0];
                   return (
                     <time
                       dateTime={iso}
@@ -667,7 +798,9 @@ const CollaborationCTASection: React.FC = () => {
   // Random CTA background image from galleryData
   const ctaBgUrl = useMemo(() => {
     if (!communityGallery?.length) return "";
-    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+    const pool = communityGallery.flatMap((img) =>
+      img.priority ? [img, img] : [img],
+    );
     const idx = Math.floor(Math.random() * pool.length);
     // Prefer full-size for CTA; fallback to thumbnail
     return pool[idx]?.url || "";
@@ -690,20 +823,32 @@ const CollaborationCTASection: React.FC = () => {
           Collaboration That Drives Innovation
         </h2>
         <p className="text-xl mb-8 max-w-6xl mx-auto">
-          The Nairobi DevOps Community thrives through strategic partnerships with forward-thinking organizations. Together, we co-create impactful experiences, tools, and learning opportunities that empower developers, designers, engineers, and students across Kenya. Whether you&apos;re a tech startup, open-source collective, or corporate leader, we welcome collaborations that foster growth, inclusivity, and innovation.
+          The Nairobi DevOps Community thrives through strategic partnerships
+          with forward-thinking organizations. Together, we co-create impactful
+          experiences, tools, and learning opportunities that empower
+          developers, designers, engineers, and students across Kenya. Whether
+          you&apos;re a tech startup, open-source collective, or corporate
+          leader, we welcome collaborations that foster growth, inclusivity, and
+          innovation.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center ">
-          <Button size="lg" className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200">
+          <Button
+            size="lg"
+            className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
+          >
             <Handshake className="mr-2 h-5 w-5" aria-hidden />
             Partner with Us
           </Button>
-          <Button variant="outline" size="lg" className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black" >
+          <Button
+            variant="outline"
+            size="lg"
+            className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black"
+          >
             <Users className="mr-2 h-5 w-5" aria-hidden />
             Join the community
           </Button>
         </div>
-
       </div>
     </section>
   );

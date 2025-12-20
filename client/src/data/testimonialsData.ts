@@ -90,14 +90,16 @@ export const testimonialsData: {
     {
       partner: "DEIMOS",
       logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1753531298/12_rxpcu2.svg",
-      quote: "Through our partnership, we've successfully onboarded top DevOps talent and contributed to shaping Kenya's cloud infrastructure landscape.",
+      quote:
+        "Through our partnership, we've successfully onboarded top DevOps talent and contributed to shaping Kenya's cloud infrastructure landscape.",
       impact: "20+ students placed in DevOps roles",
     },
     {
       partner: "Moringa School",
       logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1754735307/moringa_jnpf1j.svg",
-      quote: "Collaborating with Nairobi DevOps Community has enhanced our curriculum with real-world DevOps practices.",
+      quote:
+        "Collaborating with Nairobi DevOps Community has enhanced our curriculum with real-world DevOps practices.",
       impact: "500+ students trained in DevOps fundamentals",
     },
   ],
-}; 
+};
