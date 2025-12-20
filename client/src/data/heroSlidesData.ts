@@ -72,7 +72,7 @@ export const heroSlidesData: HeroSlideData[] = [
         ctaSecondary: {
             text: "Support a Cause",
             link: "/donate",
-            isScroll: true,
+            isScroll: false,
             icon: "heart",
         },
     },

@@ -426,40 +426,42 @@ export default function Eventspage() {
             place for you in the Nairobi DevOps Community. Let&apos;s build the
             future of tech together.
           </p>
+          <div className="flex flex-col lg:flex-row flex-wrap gap-4 items-center justify-center">
+            {/* Primary CTA */}
+            <div className="mb-6 lg:mb-0 lg:mr-6">
+              <Link href="/partners">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-[#023047] text-white px-10 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Partner with Us
+                </Button>
+              </Link>
+            </div>
 
-          {/* Primary CTA */}
-          <div className="mb-6">
-            <Link href="/partners-sponsorship">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-[#023047] text-white px-10 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Partner with Us
-              </Button>
-            </Link>
+            {/* Secondary CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link href="/partners">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-black px-8 py-4 text-base font-medium backdrop-blur-sm transition-all duration-300"
+                >
+                  Become a Speaker
+                </Button>
+              </Link>
+              <Link href="/community#campustour">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-black px-8 py-4 text-base font-medium backdrop-blur-sm transition-all duration-300"
+                >
+                  Learn About Campus Tour
+                </Button>
+              </Link>
+            </div>
           </div>
 
-          {/* Secondary CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/partners-sponsorship">
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-black px-8 py-4 text-base font-medium backdrop-blur-sm transition-all duration-300"
-              >
-                Become a Speaker
-              </Button>
-            </Link>
-            <Link href="/community#campustour">
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-black px-8 py-4 text-base font-medium backdrop-blur-sm transition-all duration-300"
-              >
-                Learn About Campus Tour
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 

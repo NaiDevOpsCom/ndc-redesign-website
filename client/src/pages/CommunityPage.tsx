@@ -833,13 +833,15 @@ const CollaborationCTASection: React.FC = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center ">
-          <Button
-            size="lg"
-            className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
-          >
-            <Handshake className="mr-2 h-5 w-5" aria-hidden />
-            Partner with Us
-          </Button>
+          <Link href="/partners">
+            <Button
+              size="lg"
+              className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
+            >
+              <Handshake className="mr-2 h-5 w-5" aria-hidden />
+              Partner with Us
+            </Button>
+          </Link>
           <Button
             variant="outline"
             size="lg"

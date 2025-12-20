@@ -575,7 +575,7 @@ export default function AboutUs() {
           <Button
             size="lg"
             className="bg-primary hover:bg-[#023047] text-white px-8 py-4 text-lg"
-            onClick={() => navigate("/partners-sponsorship")}
+            onClick={() => navigate("/partners")}
           >
             Partner with Us
           </Button>
