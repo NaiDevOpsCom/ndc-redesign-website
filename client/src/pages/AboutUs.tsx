@@ -345,7 +345,7 @@ export default function AboutUs() {
       </section>
 
 
-      {/* Our Summit Team Section */}
+      {/* Our Team Section */}
 
       <section className="py-16 md:py-24 bg-primary-light-blue text-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-cover bg-center" />
