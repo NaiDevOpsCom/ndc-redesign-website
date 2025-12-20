@@ -52,7 +52,7 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
     <div
       className={cn(
         "relative grid grid-cols-2 border-x md:grid-cols-4",
-        className
+        className,
       )}
       {...props}
     >
@@ -137,7 +137,13 @@ type LogoCardProps = React.ComponentProps<"div"> & {
   allLogos: Logo[];
 };
 
-function LogoCard({ initialLogo, allLogos, className, children, ...props }: LogoCardProps) {
+function LogoCard({
+  initialLogo,
+  allLogos,
+  className,
+  children,
+  ...props
+}: LogoCardProps) {
   const [currentLogo, setCurrentLogo] = useState(initialLogo);
   const [isFading, setIsFading] = useState(false);
 
@@ -180,7 +186,7 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
       className={cn(
         "flex items-center justify-center bg-background px-4 py-8 md:p-8 transition-opacity duration-1000 ease-in-out", // Slower, smoother transition
         isFading ? "opacity-0" : "opacity-100",
-        className
+        className,
       )}
       {...props}
     >

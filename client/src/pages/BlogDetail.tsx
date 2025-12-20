@@ -21,7 +21,10 @@ export default function BlogDetail() {
         <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl py-12">
           <h1 className="text-2xl font-bold">Article not found</h1>
           <p className="mt-2">
-            The requested blog post could not be found. <Link href="/blogs" className="text-primary underline">Back to blogs</Link>
+            The requested blog post could not be found.{" "}
+            <Link href="/blogs" className="text-primary underline">
+              Back to blogs
+            </Link>
           </p>
         </main>
         <Footer />
@@ -36,12 +39,28 @@ export default function BlogDetail() {
         <article className="pb-12">
           <header className="bg-slate-50 border-b">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-8">
-              <p className="text-sm text-blue-700 bg-blue-50 inline-flex px-2 py-1 rounded">{post.category}</p>
-              <h1 className="mt-3 text-3xl font-extrabold text-slate-900">{post.title}</h1>
+              <p className="text-sm text-blue-700 bg-blue-50 inline-flex px-2 py-1 rounded">
+                {post.category}
+              </p>
+              <h1 className="mt-3 text-3xl font-extrabold text-slate-900">
+                {post.title}
+              </h1>
               <div className="mt-3 flex items-center gap-3 text-sm text-slate-600">
-                <img src={post.author.avatar} alt="" width={32} height={32} className="h-8 w-8 rounded-full" loading="lazy" />
+                <img
+                  src={post.author.avatar}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 rounded-full"
+                  loading="lazy"
+                />
                 <span>
-                  {post.author.name} · {new Date(post.date).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}
+                  {post.author.name} ·{" "}
+                  {new Date(post.date).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </span>
               </div>
             </div>

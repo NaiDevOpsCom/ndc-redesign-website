@@ -71,6 +71,7 @@ The `client/src/data/` directory contains static data used throughout the applic
 - **galleryData.ts**: Image URLs and metadata for the gallery section
 - **partnersData.ts**: Information about community partners and sponsors
 - **whatWeDoData.ts**: Details about the community's activities and offerings
+
 ---
 
 ## Getting Started
@@ -83,23 +84,28 @@ The `client/src/data/` directory contains static data used throughout the applic
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone <repo-url>
    cd NDCsite
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server:**
+
    ```bash
    npm run dev
    ```
+
    - The app will be available at `http://localhost:5173` or `http://localhost:4000` (default Vite port).
 
 4. **Build for production:**
+
    ```bash
    npm run build
    ```
@@ -117,31 +123,34 @@ The `client/src/data/` directory contains static data used throughout the applic
 - `npm run build` — Build the client for production
 - `npm run preview` — Preview the production build locally
 
-
 ---
 
 ## Contributing
+
 We welcome contributions to enhance the Nairobi DevOps Community Platform! Whether it's fixing bugs, adding features, or improving documentation, your help is appreciated.
+
 ### How to Contribute
+
 To contribute, please follow these steps:
-  1. Clone the repository:
-     ```bash
-     git clone <repo-url>
-     cd NDCsite
-     ```
-  2. Create a new feature branch:
-     ```bash
-     git checkout -b feature/YourFeature
-     ```
-  3. Make your changes and commit:
-     ```bash
-     git commit -am 'Describe your update'
-     ```
-  4. Push your branch:
-     ```bash
-     git push origin feature/YourFeature
-     ```
-  5. Notify the repository maintainer to review your changes and merge them.
+
+1. Clone the repository:
+   ```bash
+   git clone <repo-url>
+   cd NDCsite
+   ```
+2. Create a new feature branch:
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. Make your changes and commit:
+   ```bash
+   git commit -am 'Describe your update'
+   ```
+4. Push your branch:
+   ```bash
+   git push origin feature/YourFeature
+   ```
+5. Notify the repository maintainer to review your changes and merge them.
 
 - Please follow the code style and commit message guidelines used in this project.
 

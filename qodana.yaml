@@ -21,17 +21,18 @@ include:
 exclude:
   - name: GeneratedFiles
     paths:
-      - '**/node_modules/**'
-      - '**/dist/**'
-      - '**/build/**'
-      - '**/coverage/**'
-      - '**/.vite/**'
-      - '**/*.d.ts'
-      - '**/*.min.js'
-      - '**/*.bundle.js'
+      - "**/node_modules/**"
+      - "**/dist/**"
+      - "**/build/**"
+      - "**/coverage/**"
+      - "**/.vite/**"
+      - "**/*.d.ts"
+      - "**/*.min.js"
+      - "**/*.bundle.js"
 
 failThreshold: 1
 
 fixesStrategy: apply # This is OK to keep
+
 
 # push-fixes: pull-request # REMOVE or move logic to workflow

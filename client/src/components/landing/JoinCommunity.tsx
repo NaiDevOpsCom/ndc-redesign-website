@@ -6,11 +6,15 @@ export default function JoinCommunity() {
   const [, navigate] = useLocation();
 
   const handleJoinClick = () => {
-    navigate('/join');
+    navigate("/join");
   };
 
   const handleLinkedInClick = () => {
-    window.open("https://www.linkedin.com/company/nairobidevops/", "_blank", "noopener,noreferrer");
+    window.open(
+      "https://www.linkedin.com/company/nairobidevops/",
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   const handleXClick = () => {
@@ -18,10 +22,11 @@ export default function JoinCommunity() {
   };
 
   return (
-    <section 
+    <section
       className="relative py-20 overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('https://pbs.twimg.com/media/Gw1gwJhWsAAZcBo?format=jpg&name=large')",
+        backgroundImage:
+          "url('https://pbs.twimg.com/media/Gw1gwJhWsAAZcBo?format=jpg&name=large')",
       }}
     >
       <div className="absolute inset-0 bg-primary/80 dark:bg-primary/90"></div>
@@ -33,7 +38,8 @@ export default function JoinCommunity() {
           Be part of Nairobi’s growing DevOps movement.
         </h3>
         <p className="text-lg md:text-xl text-blue-100 mb-12 max-w-3xl mx-auto">
-          Connect with fellow DevOps learners, builders, and leaders. Jump into conversations, share ideas, and grow with us.
+          Connect with fellow DevOps learners, builders, and leaders. Jump into
+          conversations, share ideas, and grow with us.
         </p>
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button
@@ -59,8 +65,12 @@ export default function JoinCommunity() {
             className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black overflow-hidden"
             onClick={handleXClick}
           >
-            <svg className="mr-3 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.53 2.477h3.924l-8.56 9.85 10.09 13.196h-7.98l-6.25-8.19-7.16 8.19H.07l9.13-10.51L0 2.477h8.13l5.77 7.57zm-1.13 17.03h2.17L7.1 4.36H4.8z"/>
+            <svg
+              className="mr-3 h-5 w-5"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M17.53 2.477h3.924l-8.56 9.85 10.09 13.196h-7.98l-6.25-8.19-7.16 8.19H.07l9.13-10.51L0 2.477h8.13l5.77 7.57zm-1.13 17.03h2.17L7.1 4.36H4.8z" />
             </svg>
             Follow On X
           </Button>

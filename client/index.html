@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,8 +17,14 @@
     />
     <meta name="author" content="Nairobi DevOps Community" />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Nairobi DevOps Community | DevOps in Kenya" />
-    <meta property="og:description" content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!" />
+    <meta
+      property="og:title"
+      content="Nairobi DevOps Community | DevOps in Kenya"
+    />
+    <meta
+      property="og:description"
+      content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nairobidevops.org" />
     <meta
@@ -27,47 +33,68 @@
     />
     <meta property="og:site_name" content="Nairobi DevOps Community" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Nairobi DevOps Community | DevOps in Kenya" />
-    <meta name="twitter:description" content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!"
+    <meta
+      name="twitter:title"
+      content="Nairobi DevOps Community | DevOps in Kenya"
     />
-    <meta name="twitter:image" content="https://res.cloudinary.com/nairobidevops/image/upload/v1752148496/35c51b621662f41a63a6219e4fdfb2a8_ril0ht.png" />
+    <meta
+      name="twitter:description"
+      content="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners. Join us for collaboration, innovation, and best practices in DevOps!"
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/nairobidevops/image/upload/v1752148496/35c51b621662f41a63a6219e4fdfb2a8_ril0ht.png"
+    />
     <meta name="twitter:site" content="@nairobidevops" />
     <meta name="twitter:creator" content="@nairobidevops" />
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/nairobidevops/image/upload/v1752909744/ndc-favicon_iyxltg.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/nairobidevops/image/upload/v1752909744/ndc-favicon_iyxltg.svg"
+    />
     <link rel="canonical" href="https://nairobidevops.org" />
 
     <!-- Community Contact Info -->
     <meta name="contact:email" content="info@nairobidevops.org" />
     <meta name="contact:x" content="https://x.com/nairobidevops" />
-    <meta name="contact:instagram" content="https://instagram.com/nairobidevops" />
-    <meta name="contact:linkedin" content="https://linkedin.com/company/nairobidevops" />
-  
-  
-  
+    <meta
+      name="contact:instagram"
+      content="https://instagram.com/nairobidevops"
+    />
+    <meta
+      name="contact:linkedin"
+      content="https://linkedin.com/company/nairobidevops"
+    />
+
     <!-- Google tag (gtag.js) -->
-      <!-- Google Analytics (Auto-disable on staging domains) -->
-      <script>
-          (function () {
-              const PROD_DOMAIN = "nairobidevops.org";
-              if (window.location.hostname !== PROD_DOMAIN) {
-                  console.warn("Google Analytics disabled for domain:", window.location.hostname);
-                  return;
-              }
+    <!-- Google Analytics (Auto-disable on staging domains) -->
+    <script>
+      (function () {
+        const PROD_DOMAIN = "nairobidevops.org";
+        if (window.location.hostname !== PROD_DOMAIN) {
+          console.warn(
+            "Google Analytics disabled for domain:",
+            window.location.hostname,
+          );
+          return;
+        }
 
-              const ga = document.createElement("script");
-              ga.async = true;
-              ga.src = "https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510";
-              document.head.appendChild(ga);
+        const ga = document.createElement("script");
+        ga.async = true;
+        ga.src = "https://www.googletagmanager.com/gtag/js?id=G-EKW7WYG510";
+        document.head.appendChild(ga);
 
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){ window.dataLayer.push(arguments); }
-              window.gtag = gtag;
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          window.dataLayer.push(arguments);
+        }
+        window.gtag = gtag;
 
-              gtag("js", new Date());
-              gtag("config", "G-EKW7WYG510");
-          })();
-      </script>
-</head>
+        gtag("js", new Date());
+        gtag("config", "G-EKW7WYG510");
+      })();
+    </script>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

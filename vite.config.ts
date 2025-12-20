@@ -3,9 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -24,11 +22,11 @@ export default defineConfig({
       deny: ["**/.*"],
     },
     proxy: {
-      '/api/luma': {
-        target: 'https://api.luma.com',
+      "/api/luma": {
+        target: "https://api.luma.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/luma/, ''),
-          secure: true,
+        rewrite: (path) => path.replace(/^\/api\/luma/, ""),
+        secure: true,
       },
     },
   },

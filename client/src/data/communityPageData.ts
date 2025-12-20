@@ -24,7 +24,8 @@ export const events: CommunityEvent[] = [
     date: "15 Jan 2024",
     time: "10:00 AM - 12:00 PM",
     location: "Online",
-    image: "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=4096x4096",
+    image:
+      "https://pbs.twimg.com/media/F6xKLnPX0AADDlt?format=jpg&name=4096x4096",
   },
   {
     id: 2,
@@ -118,7 +119,8 @@ export const recordedSessions: RecordedSession[] = [
   },
   {
     id: 4,
-    title: "Multi Tenancy In Kubernetes Using Virtual Clusters By Ian Kiprotich",
+    title:
+      "Multi Tenancy In Kubernetes Using Virtual Clusters By Ian Kiprotich",
     videoUrl: "https://www.youtube.com/watch?v=C7fk-tJngmI",
   },
   {
@@ -128,7 +130,8 @@ export const recordedSessions: RecordedSession[] = [
   },
   {
     id: 6,
-    title: "How To Migrate From AWS To SERVERCORE(Step by step) By SERVERCORE CTO - Ivan Romanko",
+    title:
+      "How To Migrate From AWS To SERVERCORE(Step by step) By SERVERCORE CTO - Ivan Romanko",
     videoUrl: "https://www.youtube.com/watch?v=BjOYoU7QtT8",
   },
   {

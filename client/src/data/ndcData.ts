@@ -24,7 +24,6 @@ export interface Statistic {
   icon?: string;
 }
 
-
 // Statistics Data
 export const statisticsData: Statistic[] = [
   {
@@ -157,7 +156,3 @@ export const teamData: TeamMember[] = [
     },
   },
 ];
-
-
-
- 

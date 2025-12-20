@@ -7,10 +7,12 @@ import { faqDataByCategory } from "@/data/faqData";
 
 export default function FAQSection() {
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(() =>
-    Math.floor(Math.random() * faqDataByCategory.length)
+    Math.floor(Math.random() * faqDataByCategory.length),
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
+  const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(
+    null,
+  );
   const [, navigate] = useLocation();
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function FAQSection() {
     const interval = setInterval(() => {
       setIsTransitioning(true);
       fadeTimeout = setTimeout(() => {
-        setActiveCategoryIndex(prev => (prev + 1) % faqDataByCategory.length);
+        setActiveCategoryIndex((prev) => (prev + 1) % faqDataByCategory.length);
         setExpandedQuestionId(null);
         setIsTransitioning(false);
       }, 300);
@@ -31,29 +33,26 @@ export default function FAQSection() {
     };
   }, []);
   const toggleQuestion = (id: string) => {
-    setExpandedQuestionId(prev => (prev === id ? null : id));
+    setExpandedQuestionId((prev) => (prev === id ? null : id));
   };
 
-
   const handleBrowseFAQs = () => {
-    navigate('/faqpage');
+    navigate("/faqpage");
   };
 
   const activeCategory = faqDataByCategory[activeCategoryIndex];
 
   return (
-    <section
-      id="faq"
-      className="py-20 bg-primary-light-blue text-faq-text"
-    >
+    <section id="faq" className="py-20 bg-primary-light-blue text-faq-text">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-faq-text">
             Frequently Asked Questions
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-faq-text">
-            Answers to the questions you're most likely to have—whether you're new to DevOps or already deep in the game.
-            We're here to make things clear, simple, and welcoming.
+            Answers to the questions you're most likely to have—whether you're
+            new to DevOps or already deep in the game. We're here to make things
+            clear, simple, and welcoming.
           </p>
         </div>
 
@@ -76,8 +75,11 @@ export default function FAQSection() {
             </div>
 
             <div
-              className={`space-y-4 transition-all duration-500 ease-in-out ${isTransitioning ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
-                }`}
+              className={`space-y-4 transition-all duration-500 ease-in-out ${
+                isTransitioning
+                  ? "opacity-0 translate-y-3"
+                  : "opacity-100 translate-y-0"
+              }`}
             >
               {activeCategory?.items.map((faq, index) => {
                 const id = `${activeCategory.title}-${index}`;
@@ -104,14 +106,18 @@ export default function FAQSection() {
                         }}
                       >
                         <Plus
-                          className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-45" : ""
-                            }`}
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isExpanded ? "rotate-45" : ""
+                          }`}
                         />
                       </button>
                     </div>
 
                     {isExpanded && (
-                      <div className="px-6 pb-4 border-t border-faq-text" style={{ opacity: 0.8 }}>
+                      <div
+                        className="px-6 pb-4 border-t border-faq-text"
+                        style={{ opacity: 0.8 }}
+                      >
                         <p className="leading-relaxed pt-4 text-faq-text/90">
                           {faq.answer}
                         </p>

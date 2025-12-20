@@ -8,7 +8,9 @@ import { Link, useLocation } from "wouter";
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(() => window.location.pathname + window.location.hash);
+  const [currentLocation, setCurrentLocation] = useState(
+    () => window.location.pathname + window.location.hash,
+  );
   const [, setLocation] = useLocation();
 
   const navLinks = [
@@ -20,10 +22,10 @@ export default function Navbar() {
   ];
 
   const handleNavClick = (href: string) => {
-    const isExternal = href.startsWith('http');
+    const isExternal = href.startsWith("http");
     if (isExternal) {
-      window.open(href, '_blank', 'noopener,noreferrer');
-    } else if (href.startsWith('/')) {
+      window.open(href, "_blank", "noopener,noreferrer");
+    } else if (href.startsWith("/")) {
       // Client-side navigation via wouter router
       setLocation(href);
       // Manually update current location for active link highlighting
@@ -32,11 +34,11 @@ export default function Navbar() {
       const element = document.querySelector(href);
       if (element) {
         // Smooth scroll into view
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: "smooth" });
         // Ensure the URL hash (and our state) reflects in-page navigation so active state can update
         if (window.location.hash !== href) {
           // Update the hash without causing a page reload
-          history.replaceState(null, '', href);
+          history.replaceState(null, "", href);
           // replaceState does not emit a hashchange event; update state manually
           setCurrentLocation(window.location.pathname + href);
         } else {
@@ -50,26 +52,27 @@ export default function Navbar() {
 
   // update active link when navigation occurs (hash change / history)
   useEffect(() => {
-    const handleChange = () => setCurrentLocation(window.location.pathname + window.location.hash);
-    window.addEventListener('popstate', handleChange);
-    window.addEventListener('hashchange', handleChange);
+    const handleChange = () =>
+      setCurrentLocation(window.location.pathname + window.location.hash);
+    window.addEventListener("popstate", handleChange);
+    window.addEventListener("hashchange", handleChange);
     return () => {
-      window.removeEventListener('popstate', handleChange);
-      window.removeEventListener('hashchange', handleChange);
+      window.removeEventListener("popstate", handleChange);
+      window.removeEventListener("hashchange", handleChange);
     };
   }, []);
 
   const isActive = (href: string) => {
-    if (href.startsWith('/')) {
+    if (href.startsWith("/")) {
       // normalize trailing slash
-      const a = currentLocation.split('#')[0].replace(/\/$/, '') || '/';
-      const b = href.replace(/\/$/, '') || '/';
+      const a = currentLocation.split("#")[0].replace(/\/$/, "") || "/";
+      const b = href.replace(/\/$/, "") || "/";
       return a === b;
     }
-    if (href.startsWith('#')) {
+    if (href.startsWith("#")) {
       return currentLocation.includes(href);
     }
-    if (href.startsWith('http')) {
+    if (href.startsWith("http")) {
       return currentLocation.startsWith(href);
     }
     return false;
@@ -82,10 +85,13 @@ export default function Navbar() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link href="/">
-                <img src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png" alt="Nairobi DevOps" className="w-36 object-contain cursor-pointer" />
+                <img
+                  src="https://res.cloudinary.com/nairobidevops/image/upload/v1751295185/My%20Brand/devOpsLogo-EpoD6axe_wgwtya.png"
+                  alt="Nairobi DevOps"
+                  className="w-36 object-contain cursor-pointer"
+                />
               </Link>
             </div>
-
           </div>
 
           <nav className="hidden md:flex space-x-8">
@@ -93,7 +99,7 @@ export default function Navbar() {
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className={`${isActive(link.href) ? 'text-primary' : 'text-black'} hover:text-primary focus:text-primary transition-colors`}
+                className={`${isActive(link.href) ? "text-primary" : "text-black"} hover:text-primary focus:text-primary transition-colors`}
               >
                 {link.label}
               </button>
@@ -101,13 +107,12 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center space-x-4">
-
             <Button
               className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
               onClick={() => {
-                setLocation('/partners-sponsorship');
+                setLocation("/partners-sponsorship");
                 // Manually update current location for immediate active state sync (consistent with handleNavClick)
-                setCurrentLocation('/partners-sponsorship');
+                setCurrentLocation("/partners-sponsorship");
               }}
             >
               <Handshake className="mr-2 h-5 w-5" />
@@ -120,9 +125,12 @@ export default function Navbar() {
               onClick={toggleTheme}
               className="text-muted-foreground hover:text-foreground"
             >
-              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+              {theme === "light" ? (
+                <Moon className="h-4 w-4" />
+              ) : (
+                <Sun className="h-4 w-4" />
+              )}
             </Button>
-
 
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
@@ -133,7 +141,11 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-lg font-semibold">Menu</span>
-                  <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(false)}
+                  >
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
@@ -142,7 +154,7 @@ export default function Navbar() {
                     <button
                       key={link.href}
                       onClick={() => handleNavClick(link.href)}
-                      className={`${isActive(link.href) ? 'text-primary' : 'text-black'} text-left hover:text-primary focus:text-primary transition-colors py-2`}
+                      className={`${isActive(link.href) ? "text-primary" : "text-black"} text-left hover:text-primary focus:text-primary transition-colors py-2`}
                     >
                       {link.label}
                     </button>
