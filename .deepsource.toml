@@ -14,17 +14,9 @@ enabled = true
     "nodejs"
   ]
 
-# ------------------------
-# Transformers
-# ------------------------
-
-[[transformers]]
-name = "test-coverage"
-enabled = true
-
-  [transformers.meta]
-  runtime = "nodejs"
-  coverage_file = "coverage/lcov.info"
+# Transformers: removed to avoid unsupported formatter/transformer names.
+# If you need coverage reporting with DeepSource, add a supported transformer
+# name following DeepSource documentation: https://deepsource.io/docs/
 
 # ------------------------
 # Exclusions
