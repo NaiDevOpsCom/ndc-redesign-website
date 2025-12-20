@@ -32,12 +32,8 @@ import { statisticsData } from "@/data/ndcData";
 
 // Hero Section Component
 function HeroSection() {
-    const bgUrl = useMemo(() => {
-        if (!communityGallery?.length) return "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
-        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-        const idx = Math.floor(Math.random() * pool.length);
-        return pool[idx]?.url || "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
-    }, []);
+    // Reuse shared deterministic selection hook
+    const bgUrl = useRandomGalleryImage(communityGallery);
 
     return (
         <section
@@ -46,10 +42,12 @@ function HeroSection() {
                 backgroundImage: `url('${bgUrl}')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                filter: "brightness(0.6)"
             }}
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center py-20">
+            {/* overlay darkens only the background image, keeping text readable */}
+            <div className="absolute inset-0 bg-black/60" />
+
+            <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center py-20">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                     Together, We Build <span className="text-primary">Better</span>
                 </h1>
@@ -251,21 +249,9 @@ function ImpactStatsSection() {
                 {/* CTA Buttons */}
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button asChild size="lg" className="bg-primary hover:bg-[#023047] text-white px-8 py-4">
-                        {/* <Handshake className="mr-2 h-5 w-5" />?\ */}
                         <Link href="/donate">Support a course</Link>
 
                     </Button>
-
-                    {/* <Button
-              className="hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
-              onClick={() => {
-                setLocation('/partners');
-                setCurrentLocation('/partners');
-              }}
-            >
-              <Handshake className="mr-2 h-5 w-5" />
-              Partner With Us
-            </Button> */}
                 </div>
             </div>
         </section>
@@ -350,8 +336,12 @@ function TestimonialsSection() {
                                 </p>
                                 <div className="border-t border-border pt-4">
                                     <p className="font-semibold text-white">{testimonial.author}</p>
-                                    <p className="text-sm text-white">{testimonial.organization}</p>
-                                    <p className="text-sm text-primary mt-1">{testimonial.role}</p>
+                                    {testimonial.organization ? (
+                                        <p className="text-sm text-white">{testimonial.organization}</p>
+                                    ) : null}
+                                    {testimonial.role ? (
+                                        <p className="text-sm text-primary mt-1">{testimonial.role}</p>
+                                    ) : null}
                                 </div>
                             </CardContent>
                         </Card>
