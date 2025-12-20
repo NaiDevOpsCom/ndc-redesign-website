@@ -210,7 +210,7 @@ function PartnershipModelsSection() {
 function ImpactStatsSection() {
     const stats = statisticsData;
 
-    const iconMap: Record<string, any> = {
+    const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
         Users,
         GraduationCap,
         Award,
@@ -274,20 +274,7 @@ function ImpactStatsSection() {
 
 // Success Stories Section
 function SuccessStoriesSection() {
-    const stories = [
-        {
-            partner: "DEIMOS",
-            logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1753531298/12_rxpcu2.svg",
-            quote: "Through our partnership, we've successfully onboarded top DevOps talent and contributed to shaping Kenya's cloud infrastructure landscape.",
-            impact: "20+ students placed in DevOps roles"
-        },
-        {
-            partner: "Moringa School",
-            logo: "https://res.cloudinary.com/nairobidevops/image/upload/v1754735307/moringa_jnpf1j.svg",
-            quote: "Collaborating with Nairobi DevOps Community has enhanced our curriculum with real-world DevOps practices.",
-            impact: "500+ students trained in DevOps fundamentals"
-        }
-    ];
+    const stories = testimonialsData.successStories;
 
     return (
         <section className="py-16 md:py-20 bg-background dark:bg-ndc-darkblue">
