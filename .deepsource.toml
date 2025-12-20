@@ -11,23 +11,11 @@ enabled = true
   [analyzers.meta]
   environment = [
     "browser",
-    "nodejs",
-    "jest"
+    "nodejs"
   ]
 
-[[analyzers]]
-name = "typescript"
-enabled = true
-
-[[analyzers]]
-name = "eslint"
-enabled = true
-
-  [analyzers.meta]
-  config_file = ".eslintrc.json"
-
 # ------------------------
-# Transformers (Coverage)
+# Transformers
 # ------------------------
 
 [[transformers]]
