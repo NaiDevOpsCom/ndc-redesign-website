@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useCallback, useState, useEffect, useRef, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,15 +42,9 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 w-full flex flex-col h-full">
       <CardContent className="flex flex-col items-start p-4 sm:p-5 md:p-6 flex-grow">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
-          <Badge className="bg-primary/10 text-primary text-xs sm:text-sm">
-            Upcoming
-          </Badge>
+          <Badge className="bg-primary/10 text-primary text-xs sm:text-sm">Upcoming</Badge>
           {event.categories?.slice(0, 2).map((category) => (
-            <Badge
-              key={category}
-              variant="secondary"
-              className="text-xs sm:text-sm"
-            >
+            <Badge key={category} variant="secondary" className="text-xs sm:text-sm">
               {category}
             </Badge>
           ))}
@@ -114,9 +102,7 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
 
 function UpcomingLumaEvents() {
   const { events, loading, error } = useLumaEvents();
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true }),
-  );
+  const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
   if (loading) {
     return (
@@ -130,14 +116,8 @@ function UpcomingLumaEvents() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-500 mb-4">
-          Error loading events from Luma calendar.
-        </p>
-        <Button
-          variant="outline"
-          onClick={() => window.location.reload()}
-          className="mt-4"
-        >
+        <p className="text-red-500 mb-4">Error loading events from Luma calendar.</p>
+        <Button variant="outline" onClick={() => window.location.reload()} className="mt-4">
           Retry
         </Button>
       </div>
@@ -153,9 +133,7 @@ function UpcomingLumaEvents() {
             <Cloud className="h-16 w-16 text-gray-300 dark:text-gray-600" />
           </div>
           <div className="absolute -top-2 -right-2 bg-white dark:bg-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-md border-2 border-gray-200 dark:border-gray-700">
-            <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">
-              0
-            </span>
+            <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">0</span>
           </div>
         </div>
 
@@ -166,9 +144,9 @@ function UpcomingLumaEvents() {
 
         {/* Description */}
         <p className="text-lg max-w-3xl text-muted-foreground text-center mb-6">
-          We don&apos;t have any events scheduled at the moment, but we&apos;re
-          always planning something exciting. Subscribe to our newsletter to be
-          notified when new events are announced.
+          We don&apos;t have any events scheduled at the moment, but we&apos;re always planning
+          something exciting. Subscribe to our newsletter to be notified when new events are
+          announced.
         </p>
 
         {/* CTA Button */}
@@ -240,9 +218,7 @@ export default function Eventspage() {
 
   // Random CTA background image from galleryData (weighted by priority)
   const ctaBgImage = useMemo(() => {
-    const pool = communityGallery.flatMap((img) =>
-      img.priority ? [img, img] : [img],
-    );
+    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
     if (!pool.length) return { url: "", alt: "Community image" };
     const idx = Math.floor(Math.random() * pool.length);
     return pool[idx];
@@ -269,9 +245,8 @@ export default function Eventspage() {
             Events & Workshops
           </h1>
           <p className="text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8">
-            Discover what’s happening, when, and why it matters. From casual
-            meetups to hands-on workshops, our events are where DevOps ideas
-            come to life—your voice included.
+            Discover what’s happening, when, and why it matters. From casual meetups to hands-on
+            workshops, our events are where DevOps ideas come to life—your voice included.
           </p>
           <div className="flex items-center justify-center gap-4">
             <Button
@@ -329,15 +304,13 @@ export default function Eventspage() {
       <section id="meetup" className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Events & Meetups
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Events & Meetups</h2>
             <h3 className="text-3xl md:text-4xl font-bold">
               Workshops, Talks & Real-World Collaboration
             </h3>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4">
-              Join us for hands-on sessions, tech talks, and community meetups
-              designed to sharpen your skills and grow your DevOps journey.
+              Join us for hands-on sessions, tech talks, and community meetups designed to sharpen
+              your skills and grow your DevOps journey.
             </p>
           </div>
 
@@ -355,14 +328,11 @@ export default function Eventspage() {
       <section className="py-16 lg:py-24 bg-[#d1e2f2] dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Past Events Highlights
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Past Events Highlights</h2>
           </div>
           <p className="text-center text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Explore our curated selection of past sessions — recordings, recaps,
-            and highlights to help you catch up, learn, and revisit talks from
-            our community events.
+            Explore our curated selection of past sessions — recordings, recaps, and highlights to
+            help you catch up, learn, and revisit talks from our community events.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -417,14 +387,11 @@ export default function Eventspage() {
         {/* Dark overlay: 70% black */}
         <div className="absolute inset-0 bg-black/70"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Join the Movement
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">Join the Movement</h2>
           <p className="text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Whether you want to attend events, share your expertise as a
-            speaker, host a campus session, or partner with us—there&apos;s a
-            place for you in the Nairobi DevOps Community. Let&apos;s build the
-            future of tech together.
+            Whether you want to attend events, share your expertise as a speaker, host a campus
+            session, or partner with us—there&apos;s a place for you in the Nairobi DevOps
+            Community. Let&apos;s build the future of tech together.
           </p>
           <div className="flex flex-col lg:flex-row flex-wrap gap-4 items-center justify-center">
             {/* Primary CTA */}
@@ -461,7 +428,6 @@ export default function Eventspage() {
               </Link>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -502,12 +468,9 @@ function FAQCarousel() {
 
   const prev = useCallback(
     () => setSlideIdx((s) => (s - 1 + slides.length) % slides.length),
-    [slides.length],
+    [slides.length]
   );
-  const next = useCallback(
-    () => setSlideIdx((s) => (s + 1) % slides.length),
-    [slides.length],
-  );
+  const next = useCallback(() => setSlideIdx((s) => (s + 1) % slides.length), [slides.length]);
 
   // Autoplay: advance every 5s when not paused
   useEffect(() => {
@@ -538,9 +501,7 @@ function FAQCarousel() {
 
   if (slides.length === 0) {
     return (
-      <p className="text-center text-muted-foreground">
-        No FAQs available for this category.
-      </p>
+      <p className="text-center text-muted-foreground">No FAQs available for this category.</p>
     );
   }
 
@@ -558,14 +519,9 @@ function FAQCarousel() {
       {/* Slides */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {slides[slideIdx].map((f, idx) => (
-          <div
-            key={`${slideIdx}-${idx}-${f.question}`}
-            className="bg-[#d1e2f2] rounded-lg p-6"
-          >
+          <div key={`${slideIdx}-${idx}-${f.question}`} className="bg-[#d1e2f2] rounded-lg p-6">
             <h3 className="font-semibold mb-3">{f.question}</h3>
-            <p className="text-sm text-muted-foreground whitespace-pre-line">
-              {f.answer}
-            </p>
+            <p className="text-sm text-muted-foreground whitespace-pre-line">{f.answer}</p>
           </div>
         ))}
       </div>

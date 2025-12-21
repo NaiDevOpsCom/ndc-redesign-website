@@ -13,70 +13,70 @@ import path from "node:path";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default [
-    // 1. Ignore generated files
-    {
-        ignores: ["node_modules", "dist", "build", "coverage", "**/.vite"],
+  // 1. Ignore generated files
+  {
+    ignores: ["node_modules", "dist", "build", "coverage", "**/.vite"],
+  },
+
+  // 2. Tell ESLint what files to lint (Flat Config REQUIRED)
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+  },
+
+  // 3. Base JS rules
+  js.configs.recommended,
+
+  // 4. TypeScript rules
+  {
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: tsPlugin.configs.recommended.rules,
+  },
+
+  // 5. React recommended rules
+  {
+    plugins: { react: reactPlugin },
+    rules: reactPlugin.configs.flat.recommended.rules,
+  },
+
+  // 6. React Hooks
+  {
+    plugins: { "react-hooks": reactHooksPlugin },
+    rules: reactHooksPlugin.configs.recommended.rules,
+  },
+
+  // 7. Security plugin
+  {
+    plugins: { security: securityPlugin },
+    rules: securityPlugin.configs.recommended.rules,
+  },
+
+  // 8. TS/React project-specific overrides
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: ["./tsconfig.json"],
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+      },
+      globals: globals.browser,
     },
-
-    // 2. Tell ESLint what files to lint (Flat Config REQUIRED)
-    {
-        files: ["**/*.{js,jsx,ts,tsx}"],
+    settings: { react: { version: "detect" } },
+    rules: {
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+      "react/prop-types": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      "security/detect-object-injection": "off",
     },
+  },
 
-    // 3. Base JS rules
-    js.configs.recommended,
-
-    // 4. TypeScript rules
-    {
-        plugins: { "@typescript-eslint": tsPlugin },
-        rules: tsPlugin.configs.recommended.rules,
-    },
-
-    // 5. React recommended rules
-    {
-        plugins: { react: reactPlugin },
-        rules: reactPlugin.configs.flat.recommended.rules,
-    },
-
-    // 6. React Hooks
-    {
-        plugins: { "react-hooks": reactHooksPlugin },
-        rules: reactHooksPlugin.configs.recommended.rules,
-    },
-
-    // 7. Security plugin
-    {
-        plugins: { security: securityPlugin },
-        rules: securityPlugin.configs.recommended.rules,
-    },
-
-    // 8. TS/React project-specific overrides
-    {
-        files: ["**/*.{ts,tsx}"],
-        languageOptions: {
-            parser: tsParser,
-            parserOptions: {
-                tsconfigRootDir: __dirname,
-                project: ["./tsconfig.json"],
-                ecmaVersion: "latest",
-                sourceType: "module",
-                ecmaFeatures: { jsx: true },
-            },
-            globals: globals.browser,
-        },
-        settings: { react: { version: "detect" } },
-        rules: {
-            "react/react-in-jsx-scope": "off",
-            "react/jsx-uses-react": "off",
-            "react/prop-types": "off",
-            "@typescript-eslint/no-unused-vars": [
-                "warn",
-                { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
-            ],
-            "security/detect-object-injection": "off"
-        }
-    },
-
-    // 9. Prettier config (must be last to disable conflicting formatting rules)
-    prettierConfig,
+  // 9. Prettier config (must be last to disable conflicting formatting rules)
+  prettierConfig,
 ];

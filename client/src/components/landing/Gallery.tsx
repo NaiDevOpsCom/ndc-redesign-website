@@ -12,8 +12,8 @@ export default function Gallery() {
             Snapshots of Our Journey
           </h2>
           <p className="text-lg text-black">
-            Explore moments from our Events, MeetUps, workshops, community
-            events, and Collaborations
+            Explore moments from our Events, MeetUps, workshops, community events, and
+            Collaborations
           </p>
         </div>
 

@@ -1,12 +1,4 @@
-import {
-  Globe,
-  Linkedin,
-  X,
-  Instagram,
-  ChevronLeft,
-  ChevronRight,
-  Phone,
-} from "lucide-react";
+import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -54,7 +46,7 @@ const objectivesData = [
 export default function AboutUs() {
   const randomImage = useMemo(
     () => communityGallery[Math.floor(Math.random() * communityGallery.length)],
-    [],
+    []
   );
   const [featuredId, setFeaturedId] = useState<string | null>(null);
   const [, navigate] = useLocation();
@@ -91,19 +83,13 @@ export default function AboutUs() {
   const showPrevFeatured = () => {
     if (!teamMembers || teamMembers.length === 0) return;
     const idx = teamMembers.findIndex((m) => m.id === featuredId);
-    const prevIdx =
-      idx === -1 ? 0 : (idx - 1 + teamMembers.length) % teamMembers.length;
+    const prevIdx = idx === -1 ? 0 : (idx - 1 + teamMembers.length) % teamMembers.length;
     setFeaturedId(teamMembers[prevIdx].id);
   };
 
   const handleMemberKeyDown = (e: React.KeyboardEvent, id: string) => {
     // Per WCAG, buttons should respond to Enter and Space
-    if (
-      e.key === "Enter" ||
-      e.key === " " ||
-      e.key === "Spacebar" ||
-      e.code === "Space"
-    ) {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar" || e.code === "Space") {
       e.preventDefault();
       setFeaturedId(id);
     }
@@ -126,12 +112,9 @@ export default function AboutUs() {
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-            About Us
-          </h1>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">About Us</h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Nairobi DevOps Community is more than a space to learn, grow, and
-            belong.
+            Nairobi DevOps Community is more than a space to learn, grow, and belong.
           </p>
         </div>
       </section>
@@ -140,9 +123,7 @@ export default function AboutUs() {
       <section className="py-20 bg-[#E6E6E6] dark:bg-[#1E1E1E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-[#1E1E1E]">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              Our Purpose
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">Our Purpose</h2>
             <h3 className="figma-heading dark:text-white">
               Mission, Vision & Real Stories in Action
             </h3>
@@ -155,10 +136,9 @@ export default function AboutUs() {
                   Our Mission
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  To create a supportive and inclusive community that empowers
-                  individuals and organizations to embrace DevOps practices,
-                  fostering innovation and excellence in software delivery
-                  across Nairobi and beyond.
+                  To create a supportive and inclusive community that empowers individuals and
+                  organizations to embrace DevOps practices, fostering innovation and excellence in
+                  software delivery across Nairobi and beyond.
                 </p>
               </div>
 
@@ -167,10 +147,9 @@ export default function AboutUs() {
                   Our Vision
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  To be the leading DevOps community in East Africa, recognized
-                  for our commitment to knowledge sharing, skill development,
-                  and industry collaboration that drives digital transformation
-                  across the region.
+                  To be the leading DevOps community in East Africa, recognized for our commitment
+                  to knowledge sharing, skill development, and industry collaboration that drives
+                  digital transformation across the region.
                 </p>
               </div>
               <Button
@@ -185,10 +164,7 @@ export default function AboutUs() {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Inside Nairobi DevOps
               </h3>
-              <p>
-                Discover what fuels our community—from shared learning to
-                lasting impact.
-              </p>
+              <p>Discover what fuels our community—from shared learning to lasting impact.</p>
 
               <div className="relative">
                 <div className="relative aspect-video bg-muted rounded-2xl overflow-hidden shadow-2xl">
@@ -241,18 +217,15 @@ export default function AboutUs() {
             {/* Paragraph on the right */}
             <div className="space-y-6">
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Founded in 2023, the Nairobi DevOps Community emerged from a
-                simple observation: the need for a dedicated space where DevOps
-                professionals, enthusiasts, and learners could connect, share
-                knowledge, and grow together. What started as a small group of
-                passionate individuals has evolved into a thriving community of
-                over 4,000 members.
+                Founded in 2023, the Nairobi DevOps Community emerged from a simple observation: the
+                need for a dedicated space where DevOps professionals, enthusiasts, and learners
+                could connect, share knowledge, and grow together. What started as a small group of
+                passionate individuals has evolved into a thriving community of over 4,000 members.
                 <br />
                 <br />
-                Our journey has been marked by countless meetups, workshops, and
-                collaborative projects that have not only advanced individual
-                careers but also contributed to the broader tech ecosystem in
-                Nairobi and East Africa.
+                Our journey has been marked by countless meetups, workshops, and collaborative
+                projects that have not only advanced individual careers but also contributed to the
+                broader tech ecosystem in Nairobi and East Africa.
               </p>
             </div>
           </div>
@@ -260,10 +233,7 @@ export default function AboutUs() {
       </section>
 
       {/* Statistics Section */}
-      <section
-        aria-label="Key statistics"
-        className="py-20 bg-ndc-darkblue text-white"
-      >
+      <section aria-label="Key statistics" className="py-20 bg-ndc-darkblue text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             role="list"
@@ -279,9 +249,7 @@ export default function AboutUs() {
                   className="text-white text-3xl md:text-5xl font-bold"
                   endValue={stat.number}
                 />
-                <div className="text-sm md:text-base opacity-90">
-                  {stat.label}
-                </div>
+                <div className="text-sm md:text-base opacity-90">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -296,9 +264,8 @@ export default function AboutUs() {
               Who We Are
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              A diverse community of DevOps professionals, enthusiasts, and
-              learners committed to advancing the practice of DevOps in Nairobi
-              and beyond.
+              A diverse community of DevOps professionals, enthusiasts, and learners committed to
+              advancing the practice of DevOps in Nairobi and beyond.
             </p>
           </div>
 
@@ -366,17 +333,14 @@ export default function AboutUs() {
                   What Drives Us
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Our community is driven by a shared passion for DevOps
-                  practices and a commitment to continuous learning. We believe
-                  in the power of collaboration, knowledge sharing, and hands-on
-                  experience to transform how organizations deliver software.
+                  Our community is driven by a shared passion for DevOps practices and a commitment
+                  to continuous learning. We believe in the power of collaboration, knowledge
+                  sharing, and hands-on experience to transform how organizations deliver software.
                 </p>
               </div>
 
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Objectives
-                </h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Objectives</h3>
                 <div className="space-y-4">
                   {objectivesData.map((objective) => (
                     <div key={objective.number} className="flex gap-4">
@@ -412,11 +376,9 @@ export default function AboutUs() {
 
             <div className="leading-relaxed lg:text-right lg:max-w-xl">
               <p className="text-pretty">
-                Behind every meetup, workshop, and idea is a group of passionate
-                individuals who believe in the transformative power of
-                collaboration. Our team blends technical brilliance with
-                community heart - building a future where DevOps works for
-                everyone.
+                Behind every meetup, workshop, and idea is a group of passionate individuals who
+                believe in the transformative power of collaboration. Our team blends technical
+                brilliance with community heart - building a future where DevOps works for everyone.
               </p>
             </div>
           </div>
@@ -435,58 +397,52 @@ export default function AboutUs() {
                       />
                     </div>
                     <div className="text-center space-y-4">
-                      <h3 className="text-2xl  text-white font-bold">
-                        {featured.name}
-                      </h3>
-                      <p className="text-blue-200 font-medium">
-                        {featured.role}
-                      </p>
+                      <h3 className="text-2xl  text-white font-bold">{featured.name}</h3>
+                      <p className="text-blue-200 font-medium">{featured.role}</p>
                       <div className="w-12 h-1 bg-primary mx-auto rounded-full" />
-                      <p className="text-blue-200 leading-relaxed text-pretty">
-                        {featured.bio}
-                      </p>
+                      <p className="text-blue-200 leading-relaxed text-pretty">{featured.bio}</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-center gap-4 pt-6 mt-4">
                     {featured.socials &&
-                      Object.entries(
-                        featured.socials as Record<string, string>,
-                      ).map(([key, value]) => {
-                        if (!value || typeof value !== "string") return null;
-                        const href =
-                          key === "phone"
-                            ? `tel:${value}`
-                            : key === "email"
-                              ? `mailto:${value}`
-                              : value;
-                        const Icon =
-                          key === "phone"
-                            ? Phone
-                            : key === "linkedin"
-                              ? Linkedin
-                              : key === "twitter"
-                                ? X
-                                : key === "instagram"
-                                  ? Instagram
-                                  : Globe;
-                        const baseClass =
-                          key === "phone"
-                            ? "w-12 h-12 rounded-full bg-primary hover:bg-white transition-colors flex items-center justify-center"
-                            : "w-12 h-12 rounded-full bg-blue-700/50 hover:bg-white transition-colors flex items-center justify-center";
+                      Object.entries(featured.socials as Record<string, string>).map(
+                        ([key, value]) => {
+                          if (!value || typeof value !== "string") return null;
+                          const href =
+                            key === "phone"
+                              ? `tel:${value}`
+                              : key === "email"
+                                ? `mailto:${value}`
+                                : value;
+                          const Icon =
+                            key === "phone"
+                              ? Phone
+                              : key === "linkedin"
+                                ? Linkedin
+                                : key === "twitter"
+                                  ? X
+                                  : key === "instagram"
+                                    ? Instagram
+                                    : Globe;
+                          const baseClass =
+                            key === "phone"
+                              ? "w-12 h-12 rounded-full bg-primary hover:bg-white transition-colors flex items-center justify-center"
+                              : "w-12 h-12 rounded-full bg-blue-700/50 hover:bg-white transition-colors flex items-center justify-center";
 
-                        return (
-                          <a
-                            key={key}
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={baseClass}
-                            aria-label={key}
-                          >
-                            <Icon className="w-5 h-5" />
-                          </a>
-                        );
-                      })}
+                          return (
+                            <a
+                              key={key}
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={baseClass}
+                              aria-label={key}
+                            >
+                              <Icon className="w-5 h-5" />
+                            </a>
+                          );
+                        }
+                      )}
                   </div>
                 </div>
               )}
@@ -499,8 +455,7 @@ export default function AboutUs() {
                   onClick={showPrevFeatured}
                   className="w-12 h-12 flex items-center justify-center bg-ndc-darkblue hover:bg-primary border-2 border-purple-400/50 transition-colors"
                   style={{
-                    clipPath:
-                      "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                    clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
                   }}
                   aria-label="Previous featured member"
                   title="Previous"
@@ -512,8 +467,7 @@ export default function AboutUs() {
                   onClick={showNextFeatured}
                   className="w-12 h-12 flex items-center justify-center bg-ndc-darkblue hover:bg-primary border-2 border-purple-400/50 transition-colors"
                   style={{
-                    clipPath:
-                      "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                    clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
                   }}
                   aria-label="Next featured member"
                   title="Next"
@@ -561,16 +515,13 @@ export default function AboutUs() {
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Partner With Us
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">Partner With Us</h2>
           <h3 className="text-2xl font-semibold text-white/90 mb-8 max-w-2xl mx-auto">
             Fuel inclusive innovation through collaboration
           </h3>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join us in shaping tech spaces that reflect diverse voices, shared
-            values, and bold ideas. Your partnership helps communities grow and
-            thrive.
+            Join us in shaping tech spaces that reflect diverse voices, shared values, and bold
+            ideas. Your partnership helps communities grow and thrive.
           </p>
           <Button
             size="lg"
