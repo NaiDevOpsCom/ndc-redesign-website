@@ -137,13 +137,13 @@ export default function AboutUs() {
       </section>
 
       {/* Our Purpose Section */}
-      <section className="py-20 bg-[#E6E6E6] dark:bg-[#898E99]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-[#E6E6E6] dark:bg-[#1E1E1E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-[#1E1E1E]">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
               Our Purpose
             </h2>
-            <h3 className="figma-heading">
+            <h3 className="figma-heading dark:text-white">
               Mission, Vision & Real Stories in Action
             </h3>
           </div>

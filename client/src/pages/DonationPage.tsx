@@ -1,13 +1,11 @@
+import { useMemo } from "react";
 import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { communityGallery } from "@/data/galleryData";
+import { statisticsData } from "@/data/ndcData";
+import StatisticCounter from "@/components/ui/StatisticCounter";
 
-// Placeholder images from Unsplash
-const HERO_IMAGE = "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2070&auto=format&fit=crop";
-const IMPACT_IMG_1 = "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop";
-const IMPACT_IMG_2 = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop";
-const IMPACT_IMG_3 = "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop";
-const BG_IMAGE = "https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2074&auto=format&fit=crop";
 
 const supportOptions = [
     {
@@ -36,59 +34,150 @@ const supportOptions = [
     },
 ];
 
-const impactStats = [
-    { number: "500+", label: "Developers trained" },
-    { number: "120", label: "Mentorship pairing" },
-    { number: "30+", label: "Community Events Hosted" },
-    { number: "15", label: "Scholarships awarded" },
-    { number: "10", label: "Open-source projects launched" },
-    { number: "10", label: "Corporate partnerships" },
-];
+// Use `statisticsData` from `ndcData` for impact stats to keep data centralized
+// (icons intentionally omitted; only number + label are displayed)
+
+
+function ImpactImagesGrid() {
+    const imgs = useMemo(() => {
+        if (!communityGallery || communityGallery.length === 0) {
+            return [
+                { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475", alt: "Tech conference presentation" },
+                { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230923_053327396.jpg?updatedAt=1764488001466", alt: "Community collaboration" },
+                { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101028361.MP.jpg?updatedAt=1764488001423", alt: "Workshop session" },
+            ];
+        }
+
+        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const picked: { url: string; alt: string }[] = [];
+        const used = new Set<string>();
+        let attempts = 0;
+
+        while (picked.length < 3 && attempts < 30) {
+            const idx = Math.floor(Math.random() * pool.length);
+            const p = pool[idx];
+            if (!used.has(p.url)) {
+                used.add(p.url);
+                picked.push({ url: p.url, alt: p.alt || "Community image" });
+            }
+            attempts++;
+        }
+
+        const fallbacks = [
+            { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475", alt: "Tech conference presentation" },
+            { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230923_053327396.jpg?updatedAt=1764488001466", alt: "Community collaboration" },
+            { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101028361.MP.jpg?updatedAt=1764488001423", alt: "Workshop session" },
+        ];
+
+        let i = 0;
+        while (picked.length < 3 && i < fallbacks.length) {
+            if (!used.has(fallbacks[i].url)) {
+                picked.push(fallbacks[i]);
+                used.add(fallbacks[i].url);
+            }
+            i++;
+        }
+
+        return picked;
+    }, []);
+
+    return (
+        <>
+            <div className="col-span-2 h-64 rounded-xl overflow-hidden shadow-lg">
+                <img
+                    src={imgs[0].url}
+                    alt={imgs[0].alt}
+                    className="w-full h-full object-cover hover-scale"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </div>
+
+            <div className="h-48 rounded-xl overflow-hidden shadow-lg">
+                <img
+                    src={imgs[1].url}
+                    alt={imgs[1].alt}
+                    className="w-full h-full object-cover hover-scale"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </div>
+
+            <div className="h-48 rounded-xl overflow-hidden shadow-lg">
+                <img
+                    src={imgs[2].url}
+                    alt={imgs[2].alt}
+                    className="w-full h-full object-cover hover-scale"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </div>
+        </>
+    );
+}
 
 export default function DonationPage() {
+    // Randomly select a background image from communityGallery (priority-weighted)
+    const heroBackground = useMemo(() => {
+        if (!communityGallery?.length) return "";
+        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const idx = Math.floor(Math.random() * pool.length);
+        return pool[idx]?.url || "";
+    }, []);
+
+    // Bottom hero background (randomized from communityGallery with BG_IMAGE as fallback)
+    const bottomHeroBackground = useMemo(() => {
+        if (!communityGallery?.length) {
+            return [
+                { url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475", alt: "Tech conference presentation" },
+            ];
+        }
+        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const idx = Math.floor(Math.random() * pool.length);
+        return pool[idx]?.url || "";
+    }, []);
+
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative w-full h-[500px] flex items-center justify-center overflow-hidden">
-                {/* Background Image with Overlay */}
-                <div
-                    className="absolute inset-0 z-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${HERO_IMAGE})` }}
-                >
-                    <div className="absolute inset-0 bg-nairobi-dark/80 mix-blend-multiply" />
-                    <div className="absolute inset-0 bg-black/40" />
-                </div>
-
-                {/* Hero Content */}
-                <div className="relative z-10 container mx-auto px-4 text-center text-white">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-poppins">
-                        Support a Mission of <br className="hidden md:block" /> Growth and Opportunity
+            <header
+                className="relative min-h-[50vh] flex items-center justify-center text-center"
+                style={{
+                    backgroundImage: `url('${heroBackground}')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            >
+                <div className="absolute inset-0 bg-black/60" />
+                <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+                        Support a Mission of <span className="text-primary">Growth and Opportunity</span>
                     </h1>
-                    <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-90 leading-relaxed">
+                    <p className="text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8">
                         Your donation fuels workshops, mentorship, and open-source projects that uplift Kenya&apos;s
                         DevOps community. Together, we&apos;re building inclusive spaces where developers grow,
                         innovate, and inspire the next generation.
                     </p>
                 </div>
-            </section>
+            </header>
 
             {/* How to support Section */}
-            <section className="py-20 bg-background">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-foreground font-poppins">
+            <section className="py-12 md:py-20 bg-background">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 md:mb-16 text-foreground font-poppins">
                         How to support Nairobi Devops
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-y-12 md:gap-x-8">
                         {supportOptions.map((option, index) => (
-                            <div key={index} className="flex flex-col items-start gap-3 group cursor-pointer">
-                                <div className="flex items-center gap-2 text-primary font-semibold text-lg group-hover:underline">
-                                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                                    {option.title}
+                            <div key={index} className="flex flex-col items-start gap-2 sm:gap-3 group cursor-pointer p-4 sm:p-0 rounded-lg hover:bg-muted/50 sm:hover:bg-transparent transition-colors">
+                                <div className="flex items-center gap-2 text-primary font-semibold text-base sm:text-lg group-hover:underline">
+                                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1 flex-shrink-0" />
+                                    <span>{option.title}</span>
                                 </div>
-                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                <p className="text-muted-foreground text-sm leading-relaxed pl-6 sm:pl-0">
                                     {option.description}
                                 </p>
                             </div>
@@ -98,33 +187,13 @@ export default function DonationPage() {
             </section>
 
             {/* Impact Section */}
-            <section className="py-20 bg-primary-light/30 dark:bg-muted/10">
-                <div className="container mx-auto px-4">
+            <section className="py-20 bg-primary-light-blue dark:bg-ndc-darkblue">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col lg:flex-row gap-12 items-center">
 
-                        {/* Impact - Images Grid */}
+                        {/* Impact - Images Grid (randomized from communityGallery for better reuse + perf) */}
                         <div className="w-full lg:w-1/2 grid grid-cols-2 gap-4">
-                            <div className="col-span-2 h-64 rounded-xl overflow-hidden shadow-lg">
-                                <img
-                                    src={IMPACT_IMG_1}
-                                    alt="Tech conference presentation"
-                                    className="w-full h-full object-cover hover-scale"
-                                />
-                            </div>
-                            <div className="h-48 rounded-xl overflow-hidden shadow-lg">
-                                <img
-                                    src={IMPACT_IMG_2}
-                                    alt="Community collaboration"
-                                    className="w-full h-full object-cover hover-scale"
-                                />
-                            </div>
-                            <div className="h-48 rounded-xl overflow-hidden shadow-lg">
-                                <img
-                                    src={IMPACT_IMG_3}
-                                    alt="Workshop session"
-                                    className="w-full h-full object-cover hover-scale"
-                                />
-                            </div>
+                            <ImpactImagesGrid />
                         </div>
 
                         {/* Impact - Content */}
@@ -139,9 +208,9 @@ export default function DonationPage() {
                             </div>
 
                             <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-4">
-                                {impactStats.map((stat, index) => (
-                                    <div key={index} className="space-y-1">
-                                        <p className="text-3xl font-bold text-primary font-poppins">{stat.number}</p>
+                                {statisticsData.map((stat) => (
+                                    <div key={stat.id} className="space-y-1 text-left">
+                                        <StatisticCounter endValue={stat.number} className="text-3xl font-bold text-primary font-poppins" />
                                         <p className="text-sm text-foreground/80 font-medium leading-tight">{stat.label}</p>
                                     </div>
                                 ))}
@@ -155,7 +224,7 @@ export default function DonationPage() {
             {/* Donation Form CTA Section */}
             <section className="py-24 bg-background relative overflow-hidden">
                 {/* Background Image Effect for this section if needed, or just white/dark bg */}
-                <div className="container mx-auto px-4">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
 
                         {/* Left Text */}
@@ -170,23 +239,20 @@ export default function DonationPage() {
 
                         {/* Right Donation Card */}
                         <div className="w-full lg:w-1/2">
-                            <div className="bg-[#023047] rounded-xl p-8 md:p-12 text-center text-white shadow-2xl max-w-md mx-auto lg:ml-auto">
-                                <h3 className="text-xl md:text-2xl font-bold mb-8 text-[#219EBC] font-poppins">
+                            <div className="bg-ndc-darkblue rounded-xl p-8 md:p-12 text-center text-white shadow-2xl max-w-md mx-auto lg:ml-auto">
+                                <h3 className="text-xl md:text-2xl font-bold mb-8 text-primary font-poppins">
                                     Your Donation Has The Power To Transform Lives.
                                 </h3>
 
                                 <div className="space-y-4">
-                                    <div className="relative">
-                                        <input
-                                            type="number"
-                                            placeholder="Enter amount"
-                                            className="w-full px-4 py-3 rounded-md bg-white/20 border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-[#219EBC]"
-                                        />
-                                    </div>
-
-                                    <button className="w-full bg-[#219EBC] hover:bg-[#219EBC]/90 text-white font-bold py-3 rounded-md transition-colors duration-200">
+                                    <a
+                                        href="https://web.mypayd.app/link/support-the-nairobi-devops-community"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full inline-block text-center bg-primary hover:bg-background hover:text-primary transition-colors duration-200ext-white font-bold py-3 rounded-md transition-colors duration-200"
+                                    >
                                         Donate Now
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -199,14 +265,14 @@ export default function DonationPage() {
             <section className="w-full h-[400px] relative overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${BG_IMAGE})` }}
+                    style={{ backgroundImage: `url('${bottomHeroBackground}')` }}
                 >
                     <div className="absolute inset-0 bg-nairobi-dark/60 mix-blend-multiply" />
                     <div className="absolute inset-0 bg-black/20" />
 
                     <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
                         <div className="max-w-4xl">
-                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 font-poppins text-blue-400">
+                            <h2 className="text-3xl md:text-5xl font-bold text-primary mb-6 text-blue-400">
                                 What Your Gift Makes Possible
                             </h2>
                             <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto">
