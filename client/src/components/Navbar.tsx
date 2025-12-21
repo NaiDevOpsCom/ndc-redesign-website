@@ -135,7 +135,11 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-lg font-semibold">Menu</span>
-                  <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(false)}
+                  >
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
