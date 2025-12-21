@@ -83,29 +83,18 @@ function RegistrationProgress() {
         <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#D6E8F5] flex items-center justify-center shadow-lg">
           <Check className="w-6 h-6 md:w-7 md:h-7 text-[#0066CC] stroke-[3]" />
         </div>
-        <p className="mt-3 text-xs md:text-sm text-center font-medium text-foreground">
-          Done
-        </p>
+        <p className="mt-3 text-xs md:text-sm text-center font-medium text-foreground">Done</p>
       </div>
     </div>
   );
 }
 
-const OfferItem: React.FC<OfferItemProps> = ({
-  title,
-  iconBg = "bg-white",
-  variant,
-}) => {
+const OfferItem: React.FC<OfferItemProps> = ({ title, iconBg = "bg-white", variant }) => {
   const baseIconClass = "h-6 w-6 text-primary";
-  let IconEl: React.ReactNode = (
-    <ClipboardList className={baseIconClass} aria-hidden />
-  );
-  if (variant === "labs")
-    IconEl = <FlaskConical className={baseIconClass} aria-hidden />;
-  if (variant === "coaching")
-    IconEl = <Users className={baseIconClass} aria-hidden />;
-  if (variant === "tools")
-    IconEl = <Wrench className={baseIconClass} aria-hidden />;
+  let IconEl: React.ReactNode = <ClipboardList className={baseIconClass} aria-hidden />;
+  if (variant === "labs") IconEl = <FlaskConical className={baseIconClass} aria-hidden />;
+  if (variant === "coaching") IconEl = <Users className={baseIconClass} aria-hidden />;
+  if (variant === "tools") IconEl = <Wrench className={baseIconClass} aria-hidden />;
 
   return (
     <li className="flex items-center gap-4">
@@ -114,9 +103,7 @@ const OfferItem: React.FC<OfferItemProps> = ({
       >
         {IconEl}
       </span>
-      <span className="text-lg font-medium text-slate-800 dark:text-white">
-        {title}
-      </span>
+      <span className="text-lg font-medium text-slate-800 dark:text-white">{title}</span>
     </li>
   );
 };
@@ -162,8 +149,7 @@ function HeroGallery() {
       <div className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] flex items-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Building DevOps Future,{" "}
-            <span className="text-primary">Together</span>
+            Building DevOps Future, <span className="text-primary">Together</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-3xl mx-auto">
             Join a vibrant community of developers, designers, engineers, and innovators shaping the
@@ -197,12 +183,8 @@ const WhatDefinesUsSection: React.FC = () => (
               <div className="inline-flex items-center justify-center h-16 w-16 rounded-lg bg-white shadow-md group-hover:shadow-lg group-hover:bg-primary/5 transition-all duration-300 mb-6">
                 <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <h3 className="text-xl font-semibold text-black mb-3">
-                {item.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {item.description}
-              </p>
+              <h3 className="text-xl font-semibold text-black mb-3">{item.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{item.description}</p>
             </div>
           );
         })}
@@ -339,9 +321,7 @@ const EmpoweringCommunitySection: React.FC = () => (
             <blockquote className="text-lg sm:text-xl leading-relaxed">
               &ldquo;DevOps is about people first. Tools come second.&rdquo;
             </blockquote>
-            <figcaption className="mt-4 text-slate-300 font-medium">
-              — Maamun Bwanakombo
-            </figcaption>
+            <figcaption className="mt-4 text-slate-300 font-medium">— Maamun Bwanakombo</figcaption>
           </figure>
         </div>
       </div>
@@ -471,22 +451,12 @@ const DevOpsCultureSection: React.FC = () => (
       <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
         {/* Left: What We Offer */}
         <div>
-          <h3 className="text-2xl font-bold text-black dark:text-white">
-            What We Offer
-          </h3>
+          <h3 className="text-2xl font-bold text-black dark:text-white">What We Offer</h3>
           <ul className="mt-8 space-y-8 dark:text-white">
             <OfferItem iconBg="bg-white" title="Customized Workshops" />
             <OfferItem iconBg="bg-white" title="Hands-On Labs" variant="labs" />
-            <OfferItem
-              iconBg="bg-white"
-              title="DevOps Culture Coaching"
-              variant="coaching"
-            />
-            <OfferItem
-              iconBg="bg-white"
-              title="Toolchain Mastery"
-              variant="tools"
-            />
+            <OfferItem iconBg="bg-white" title="DevOps Culture Coaching" variant="coaching" />
+            <OfferItem iconBg="bg-white" title="Toolchain Mastery" variant="tools" />
           </ul>
         </div>
 
@@ -495,14 +465,8 @@ const DevOpsCultureSection: React.FC = () => (
           <h3 className="text-2xl font-bold text-black">Delivery Formats</h3>
           <ul className="mt-8 space-y-6">
             <DeliveryItem index={1} text="On-site or virtual sessions" />
-            <DeliveryItem
-              index={2}
-              text="Half-day, full-day, or multi-week format"
-            />
-            <DeliveryItem
-              index={3}
-              text="Certification prep and post-training support"
-            />
+            <DeliveryItem index={2} text="Half-day, full-day, or multi-week format" />
+            <DeliveryItem index={3} text="Certification prep and post-training support" />
           </ul>
         </div>
       </div>
@@ -544,9 +508,7 @@ const DevOpsCoursesSection: React.FC = () => (
 
       {/* Available Courses */}
       <div className="container mx-auto px-4 mt-6">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Available Courses
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Available Courses</h2>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {events.length > 0 ? (
@@ -587,9 +549,8 @@ const DevOpsCoursesSection: React.FC = () => (
               </h3>
 
               <p className="text-gray-600 dark:text-gray-300 max-w-lg mb-8 leading-relaxed">
-                We&apos;re currently planning our next batch of DevOps courses
-                and workshops. Subscribe to our newsletter to get notified as
-                soon as registration opens!
+                We&apos;re currently planning our next batch of DevOps courses and workshops.
+                Subscribe to our newsletter to get notified as soon as registration opens!
               </p>
 
               <Button
@@ -616,18 +577,13 @@ const DevOpsCoursesSection: React.FC = () => (
 import { getRandomItems } from "@/utils/getRandomItems";
 
 const EventsMeetupsSection: React.FC = () => {
-  const randomRecorded = React.useMemo(
-    () => getRandomItems(recordedSessions, 4),
-    [],
-  );
+  const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
 
   return (
     <section className="py-16 bg-ndc-darkblue">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl text-primary font-bold mb-4">
-            Events & Meetups
-          </h2>
+          <h2 className="text-3xl text-primary font-bold mb-4">Events & Meetups</h2>
           <p className="mt-4 text-xl md:text-2xl font-semibold text-white mb-6 leading-tight">
             Workshops, Talks & Real-World Collaboration
           </p>
@@ -739,9 +695,7 @@ const CommunityProjectsSection: React.FC = () => (
                   // Safely compute an ISO date string if the provided date is parseable.
                   // This prevents runtime errors from invalid Date parsing (e.g., "Oct 2024").
                   const d = new Date(project.date);
-                  const iso = isNaN(d.getTime())
-                    ? undefined
-                    : d.toISOString().split("T")[0];
+                  const iso = isNaN(d.getTime()) ? undefined : d.toISOString().split("T")[0];
                   return (
                     <time
                       dateTime={iso}

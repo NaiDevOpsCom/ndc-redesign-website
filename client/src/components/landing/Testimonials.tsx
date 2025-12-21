@@ -11,9 +11,7 @@ const formattedTestimonials = testimonialsData.community.map((testimonial) => ({
 }));
 
 const columnizedTestimonials = [0, 1, 2].map((columnIndex) =>
-  formattedTestimonials.filter(
-    (_, testimonialIndex) => testimonialIndex % 3 === columnIndex,
-  ),
+  formattedTestimonials.filter((_, testimonialIndex) => testimonialIndex % 3 === columnIndex)
 );
 
 export default function Testimonials() {

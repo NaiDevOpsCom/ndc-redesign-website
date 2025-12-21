@@ -1,12 +1,4 @@
-import {
-  Globe,
-  Linkedin,
-  X,
-  Instagram,
-  ChevronLeft,
-  ChevronRight,
-  Phone,
-} from "lucide-react";
+import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -91,19 +83,13 @@ export default function AboutUs() {
   const showPrevFeatured = () => {
     if (!teamMembers || teamMembers.length === 0) return;
     const idx = teamMembers.findIndex((m) => m.id === featuredId);
-    const prevIdx =
-      idx === -1 ? 0 : (idx - 1 + teamMembers.length) % teamMembers.length;
+    const prevIdx = idx === -1 ? 0 : (idx - 1 + teamMembers.length) % teamMembers.length;
     setFeaturedId(teamMembers[prevIdx].id);
   };
 
   const handleMemberKeyDown = (e: React.KeyboardEvent, id: string) => {
     // Per WCAG, buttons should respond to Enter and Space
-    if (
-      e.key === "Enter" ||
-      e.key === " " ||
-      e.key === "Spacebar" ||
-      e.code === "Space"
-    ) {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar" || e.code === "Space") {
       e.preventDefault();
       setFeaturedId(id);
     }
@@ -128,8 +114,7 @@ export default function AboutUs() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">About Us</h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Nairobi DevOps Community is more than a space to learn, grow, and
-            belong.
+            Nairobi DevOps Community is more than a space to learn, grow, and belong.
           </p>
         </div>
       </section>
@@ -279,9 +264,8 @@ export default function AboutUs() {
               Who We Are
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              A diverse community of DevOps professionals, enthusiasts, and
-              learners committed to advancing the practice of DevOps in Nairobi
-              and beyond.
+              A diverse community of DevOps professionals, enthusiasts, and learners committed to
+              advancing the practice of DevOps in Nairobi and beyond.
             </p>
           </div>
 
@@ -356,9 +340,7 @@ export default function AboutUs() {
               </div>
 
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Objectives
-                </h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Objectives</h3>
                 <div className="space-y-4">
                   {objectivesData.map((objective) => (
                     <div key={objective.number} className="flex gap-4">
