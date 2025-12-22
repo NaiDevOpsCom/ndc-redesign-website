@@ -166,7 +166,7 @@ function PartnershipModelsSection() {
   ];
 
   return (
-    <section className="py-16 md:py-20 bg-background dark:bg-neutral-900 dark:bg-background">
+    <section className="py-16 md:py-20 dark:bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Partnership Models</h2>

@@ -284,7 +284,7 @@ export default function DonationPage() {
                     href="https://web.mypayd.app/link/support-the-nairobi-devops-community"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-block text-center bg-primary hover:bg-background hover:text-primary transition-colors duration-200 text-white font-bold py-3 rounded-md transition-colors duration-200"
+                    className="w-full inline-block text-center bg-primary hover:bg-background hover:text-primary text-white font-bold py-3 rounded-md transition-colors duration-200"
                   >
                     Donate Now
                   </a>

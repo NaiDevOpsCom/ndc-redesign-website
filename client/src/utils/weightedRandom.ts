@@ -17,8 +17,6 @@ export function getWeightedRandomItem<T>(items: T[], getWeight: (item: T) => num
     return Array(weight).fill(item);
   });
 
-  if (pool.length === 0) return null;
-
   const idx = Math.floor(Math.random() * pool.length);
   return pool[idx];
 }
