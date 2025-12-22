@@ -6,7 +6,7 @@ import { Link } from "wouter";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-[#d1e2f2] dark:bg-[#6B7280CC] text-[#22223B] pt-10 pb-4 px-2 md:px-0 border-t border-gray-300 transition-colors duration-300">
+    <footer className="bg-primary-light-blue dark:bg-ndc-darkblue/[.59] text-foreground pt-10 pb-4 px-2 md:px-0 border-t border-gray-300 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Logo & Affiliates */}
@@ -39,7 +39,7 @@ export default function Footer() {
                 aria-label="X"
               >
                 <svg
-                  className="h-5 w-5 text-[#22223B] hover:text-primary transition-colors"
+                  className="h-5 w-5 text-foreground hover:text-primary transition-colors"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -52,7 +52,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="h-5 w-5 text-[#22223B] hover:text-primary transition-colors" />
+                <Linkedin className="h-5 w-5 text-foreground hover:text-primary transition-colors" />
               </a>
               <a
                 href="https://instagram.com/nairobidevops"
@@ -60,7 +60,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 aria-label="Instagram"
               >
-                <Instagram className="h-5 w-5 text-[#22223B] hover:text-primary transition-colors" />
+                <Instagram className="h-5 w-5 text-foreground hover:text-primary transition-colors" />
               </a>
               <a
                 href="https://www.youtube.com/@NairobiDevopsCommunity"
@@ -68,7 +68,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 aria-label="YouTube"
               >
-                <Youtube className="h-5 w-5 text-[#22223B] hover:text-primary transition-colors" />
+                <Youtube className="h-5 w-5 text-foreground hover:text-primary transition-colors" />
               </a>
               <a
                 href="https://www.facebook.com/p/Nairobi-DevOps-Community-61562060464876/"
@@ -76,7 +76,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 aria-label="Facebook"
               >
-                <Facebook className="h-5 w-5 text-[#22223B] hover:text-primary transition-colors" />
+                <Facebook className="h-5 w-5 text-foreground hover:text-primary transition-colors" />
               </a>
               <a
                 href="https://www.whatsapp.com/channel/0029VbB0nYp4tRrwhzvySL1S"
@@ -85,7 +85,7 @@ export default function Footer() {
                 aria-label="WhatsApp"
               >
                 <svg
-                  className="h-5 w-5 text-[#22223B] hover:text-primary transition-colors"
+                  className="h-5 w-5 text-foreground hover:text-primary transition-colors"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -100,12 +100,12 @@ export default function Footer() {
             <div className="font-bold mb-2">Quick Links</div>
             <ul className="space-y-1 text-sm">
               <li>
-                <a href="/learn" className="hover:text-primary transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Learn with Us
                 </a>
               </li>
               <li>
-                <a href="/shop" className="hover:text-primary transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Shop our Merchants
                 </a>
               </li>
@@ -115,10 +115,16 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#" className="hover:text-primary transition-colors">
+                  Brand Guidelines
+                </a>
+              </li>
+              <li>
                 <a href="/partners" className="hover:text-primary transition-colors">
                   Partners & Sponsors
                 </a>
               </li>
+
             </ul>
           </div>
 
@@ -153,7 +159,7 @@ export default function Footer() {
               <Input
                 type="email"
                 placeholder="Enter you email Address"
-                className="bg-white border border-gray-300 text-[#22223B] placeholder:text-gray-400 focus:border-primary h-10 rounded"
+                className="bg-white border border-gray-300 text-foreground placeholder:text-gray-400 focus:border-primary h-10 rounded"
               />
               <Button
                 type="submit"
@@ -165,26 +171,26 @@ export default function Footer() {
           </div>
         </div>
         <hr className="border-gray-300 my-4" />
-        <div className="flex flex-col md:flex-row justify-between items-center text-xs text-[#22223B] gap-2">
+        <div className="flex flex-col md:flex-row justify-between items-center text-xs text-foreground gap-2">
           <div>&copy; 2023–{currentYear} Nairobi DevOps Community. Powered by the Community.</div>
           <div className="flex gap-4">
             <Link
               href="/code-of-conduct"
-              className="hover:underline"
+              className="hover:underline hover:text-primary transition-colors"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               Code of Conduct
             </Link>
             <Link
               href="/terms"
-              className="hover:underline"
+              className="hover:underline hover:text-primary transition-colors"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               Terms & Conditions
             </Link>
             <Link
               href="/privacy"
-              className="hover:underline"
+              className="hover:underline hover:text-primary transition-colors"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               Privacy Policy
@@ -197,7 +203,7 @@ export default function Footer() {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Back to top"
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white shadow-lg hover:bg-[#023047] hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white shadow-lg hover:bg-ndc-darkblue hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
       >
         <ArrowUp className="h-5 w-5" />
       </button>

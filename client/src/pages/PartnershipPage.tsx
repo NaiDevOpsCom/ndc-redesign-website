@@ -30,6 +30,18 @@ import {
 } from "lucide-react";
 import { statisticsData } from "@/data/ndcData";
 
+// Default CTA background used as fallback inside the hook
+const DEFAULT_CTA_BG = "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
+
+function useRandomGalleryImage(images: GalleryImage[] | undefined, fallback = DEFAULT_CTA_BG) {
+  return useMemo(() => {
+    if (!images || images.length === 0) return fallback;
+    const pool = images.flatMap((img) => (img.priority ? [img, img] : [img]));
+    const idx = Math.floor(Math.random() * pool.length);
+    return pool[idx]?.url || fallback;
+  }, [images, fallback]);
+}
+
 // Hero Section Component
 function HeroSection() {
   // Reuse shared deterministic selection hook
@@ -372,16 +384,6 @@ function TestimonialsSection() {
 }
 
 // CTA Section with Contact Form
-const DEFAULT_CTA_BG =
-  "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
-function useRandomGalleryImage(images: GalleryImage[] | undefined, fallback = DEFAULT_CTA_BG) {
-  return useMemo(() => {
-    if (!images || images.length === 0) return fallback;
-    const pool = images.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx]?.url || fallback;
-  }, [images, fallback]);
-}
 
 // const CTA_HEADING = "Partner with the community to multiply impact";
 // const CTA_LEAD = "Collaborate with trusted organizations to build long-term skills, mentor talent, and co-create programs that deliver measurable outcomes and lasting impact.";
@@ -411,7 +413,7 @@ Message:
 ${formData.message}
     `.trim();
 
-    window.location.href = `mailto:info@nairobidevops.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:info@nairobidevops.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

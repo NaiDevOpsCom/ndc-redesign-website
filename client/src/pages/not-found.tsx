@@ -50,7 +50,6 @@ export default function NotFound() {
           </div>
         </div>
       </main>
-      {/* <Footer /> */}
     </div>
   );
 }

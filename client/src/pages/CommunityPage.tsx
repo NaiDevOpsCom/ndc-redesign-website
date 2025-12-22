@@ -13,6 +13,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RecordedVideoCard from "@/components/RecordedVideoCard";
 import { communityGallery } from "@/data/galleryData";
+import { getWeightedRandomItem } from "@/utils/weightedRandom";
 // Import without extension to avoid potential resolver issues in some environments
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import {
@@ -127,10 +128,8 @@ const DeliveryItem: React.FC<DeliveryItemProps> = ({ index, text }) => (
 function HeroGallery() {
   // Select a single random background from communityGallery (weighted by priority)
   const { url: fullUrl, alt } = useMemo(() => {
-    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    if (!pool.length) return { url: "", alt: "Community image" };
-    const idx = Math.floor(Math.random() * pool.length);
-    const picked = pool[idx];
+    const picked = getWeightedRandomItem(communityGallery, (img) => (img.priority ? 2 : 1));
+    if (!picked) return { url: "", alt: "Community image" };
     return { url: picked.url, alt: picked.alt || "Community image" };
   }, []);
 
@@ -740,11 +739,8 @@ const CommunityProjectsSection: React.FC = () => (
 const CollaborationCTASection: React.FC = () => {
   // Random CTA background image from galleryData
   const ctaBgUrl = useMemo(() => {
-    if (!communityGallery?.length) return "";
-    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
-    // Prefer full-size for CTA; fallback to thumbnail
-    return pool[idx]?.url || "";
+    const picked = getWeightedRandomItem(communityGallery, (img) => (img.priority ? 2 : 1));
+    return picked?.url || "";
   }, []);
 
   return (
@@ -772,15 +768,16 @@ const CollaborationCTASection: React.FC = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center ">
-          <Link href="/partners">
-            <Button
-              size="lg"
-              className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
-            >
+          <Button
+            asChild
+            size="lg"
+            className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
+          >
+            <Link href="/partners">
               <Handshake className="mr-2 h-5 w-5" aria-hidden />
               Partner with Us
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <Button
             variant="outline"
             size="lg"
