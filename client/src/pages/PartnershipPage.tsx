@@ -386,42 +386,46 @@ function TestimonialsSection() {
 
 // CTA Section with Contact Form
 
-// const CTA_HEADING = "Partner with the community to multiply impact";
-// const CTA_LEAD = "Collaborate with trusted organizations to build long-term skills, mentor talent, and co-create programs that deliver measurable outcomes and lasting impact.";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const partnershipSchema = z.object({
+  organization: z.string().min(2, "Organization name must be at least 2 characters").trim(),
+  name: z.string().min(2, "Contact person name must be at least 2 characters").trim(),
+  email: z.string().email("Please enter a valid email address").trim(),
+  interest: z.string().min(2, "Partnership interest is required").trim(),
+  message: z.string().min(10, "Message must be at least 10 characters").trim(),
+});
+
+type PartnershipFormData = z.infer<typeof partnershipSchema>;
 
 function CTASection() {
-  const [formData, setFormData] = useState({
-    organization: "",
-    name: "",
-    email: "",
-    interest: "",
-    message: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PartnershipFormData>({
+    resolver: zodResolver(partnershipSchema),
   });
 
   const bgUrl = useRandomGalleryImage(communityGallery, DEFAULT_CTA_BG);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Create mailto link with form data (behavior preserved)
-    const subject = `Partnership Inquiry - ${formData.organization}`;
+  const onSubmit = (data: PartnershipFormData) => {
+    // Create mailto link with validated form data
+    // encodeURIComponent guards against injection and preserves formatting
+    const subject = `Partnership Inquiry - ${data.organization}`;
     const body = `
-Organization: ${formData.organization}
-Contact Person: ${formData.name}
-Email: ${formData.email}
-Partnership Interest: ${formData.interest}
+Organization: ${data.organization}
+Contact Person: ${data.name}
+Email: ${data.email}
+Partnership Interest: ${data.interest}
 
 Message:
-${formData.message}
+${data.message}
     `.trim();
 
     window.location.href = `mailto:info@nairobidevops.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
   };
 
   return (
@@ -442,31 +446,18 @@ ${formData.message}
           <div className="text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Let’s Build the Future Together</h2>
             <p className="text-lg text-white/90 max-w-xl">
-              {/* {CTA_LEAD} */}
               We’re always looking for passionate collaborators who believe in the power of
               community, education, and innovation. Whether you&apos;re a tech company, educator, or
               changemaker, we’d love to hear from you.
             </p>
             <div className="w-20 h-1 bg-primary mt-6 rounded-full mb-6" />
-            {/* <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="lg"
-                                            asChild
-                                            className="px-8 py-6 text-lg"
-                                        >
-                                            <Link href="/community">
-                                                <Users className="mr-2 h-5 w-5" />
-                                                Join the Community
-                                            </Link>
-                                        </Button> */}
           </div>
 
           {/* Right: Form (structure, validation, and behavior preserved) */}
           <div>
             <Card className="border-2">
               <CardContent className="pt-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <h3 className="text-2xl font-bold text-primary mb-2">Become a Partner</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -476,13 +467,13 @@ ${formData.message}
                       </Label>
                       <Input
                         id="organization"
-                        name="organization"
-                        required
-                        value={formData.organization}
-                        onChange={handleChange}
                         placeholder="Your organization"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.organization ? "border-red-500" : ""}`}
+                        {...register("organization")}
                       />
+                      {errors.organization && (
+                        <p className="text-sm text-red-500">{errors.organization.message}</p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -492,13 +483,13 @@ ${formData.message}
                       </Label>
                       <Input
                         id="name"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
                         placeholder="Your name"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.name ? "border-red-500" : ""}`}
+                        {...register("name")}
                       />
+                      {errors.name && (
+                        <p className="text-sm text-red-500">{errors.name.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -510,14 +501,14 @@ ${formData.message}
                       </Label>
                       <Input
                         id="email"
-                        name="email"
                         type="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
                         placeholder="email@example.com"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.email ? "border-red-500" : ""}`}
+                        {...register("email")}
                       />
+                      {errors.email && (
+                        <p className="text-sm text-red-500">{errors.email.message}</p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -527,13 +518,13 @@ ${formData.message}
                       </Label>
                       <Input
                         id="interest"
-                        name="interest"
-                        required
-                        value={formData.interest}
-                        onChange={handleChange}
                         placeholder="e.g., Event Sponsorship"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.interest ? "border-red-500" : ""}`}
+                        {...register("interest")}
                       />
+                      {errors.interest && (
+                        <p className="text-sm text-red-500">{errors.interest.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -544,14 +535,14 @@ ${formData.message}
                     </Label>
                     <Textarea
                       id="message"
-                      name="message"
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
                       placeholder="Tell us about your partnership goals..."
                       rows={5}
-                      className="resize-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      className={`resize-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.message ? "border-red-500" : ""}`}
+                      {...register("message")}
                     />
+                    {errors.message && (
+                      <p className="text-sm text-red-500">{errors.message.message}</p>
+                    )}
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
