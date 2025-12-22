@@ -487,9 +487,7 @@ ${data.message}
                         className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.name ? "border-red-500" : ""}`}
                         {...register("name")}
                       />
-                      {errors.name && (
-                        <p className="text-sm text-red-500">{errors.name.message}</p>
-                      )}
+                      {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
                     </div>
                   </div>
 
