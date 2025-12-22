@@ -33,9 +33,9 @@ export const statisticsData: Statistic[] = [
     icon: "Users",
   },
   {
-    id: "trained-learners",
+    id: "developers-trained",
     number: "300+",
-    label: "Trained Learners",
+    label: "Devlopers Trained",
     icon: "GraduationCap",
   },
   {
@@ -46,7 +46,7 @@ export const statisticsData: Statistic[] = [
   },
   {
     id: "events",
-    number: "60+",
+    number: "70+",
     label: "Events",
     icon: "Calendar",
   },
@@ -60,6 +60,12 @@ export const statisticsData: Statistic[] = [
     id: "students-reached",
     number: "2000+",
     label: "Students Reached",
+    icon: "GraduationCap",
+  },
+  {
+    id: "scholarship-awarded",
+    number: "60+",
+    label: "Scholarship Awarded",
     icon: "GraduationCap",
   },
 ];

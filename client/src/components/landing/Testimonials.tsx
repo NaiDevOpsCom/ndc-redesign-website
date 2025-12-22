@@ -11,9 +11,7 @@ const formattedTestimonials = testimonialsData.community.map((testimonial) => ({
 }));
 
 const columnizedTestimonials = [0, 1, 2].map((columnIndex) =>
-  formattedTestimonials.filter(
-    (_, testimonialIndex) => testimonialIndex % 3 === columnIndex,
-  ),
+  formattedTestimonials.filter((_, testimonialIndex) => testimonialIndex % 3 === columnIndex)
 );
 
 export default function Testimonials() {
@@ -34,8 +32,8 @@ export default function Testimonials() {
             What our members say
           </h2>
           <p className="text-lg text-muted-foreground">
-            Real stories from people building careers, shipping products, and
-            creating impact through the Nairobi DevOps Community.
+            Real stories from people building careers, shipping products, and creating impact
+            through the Nairobi DevOps Community.
           </p>
         </motion.div>
 
@@ -44,10 +42,7 @@ export default function Testimonials() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
           <div className="flex justify-center gap-6 md:gap-8 lg:gap-10 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
-            <TestimonialsColumn
-              testimonials={columnizedTestimonials[0]}
-              duration={16}
-            />
+            <TestimonialsColumn testimonials={columnizedTestimonials[0]} duration={16} />
             <TestimonialsColumn
               testimonials={columnizedTestimonials[1]}
               duration={20}

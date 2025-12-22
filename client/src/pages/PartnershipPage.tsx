@@ -1,15 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -18,6 +12,9 @@ import { partnersData } from "@/data/partnersData";
 import { communityGallery } from "@/data/galleryData";
 import type { GalleryImage } from "@/data/galleryData";
 import { testimonialsData } from "@/data/testimonialsData";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Handshake,
   Target,
@@ -35,6 +32,19 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { statisticsData } from "@/data/ndcData";
+
+// Default CTA background used as fallback inside the hook
+const DEFAULT_CTA_BG =
+  "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
+
+function useRandomGalleryImage(images: GalleryImage[] | undefined, fallback = DEFAULT_CTA_BG) {
+  return useMemo(() => {
+    if (!images || images.length === 0) return fallback;
+    const pool = images.flatMap((img) => (img.priority ? [img, img] : [img]));
+    const idx = Math.floor(Math.random() * pool.length);
+    return pool[idx]?.url || fallback;
+  }, [images, fallback]);
+}
 
 // Hero Section Component
 function HeroSection() {
@@ -58,8 +68,8 @@ function HeroSection() {
           Together, We Build <span className="text-primary">Better</span>
         </h1>
         <p className="text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed">
-          Partner with us to empower the next generation of DevOps professionals
-          and shape Kenya&apos;s tech future
+          Partner with us to empower the next generation of DevOps professionals and shape
+          Kenya&apos;s tech future
         </p>
       </div>
     </section>
@@ -156,21 +166,18 @@ function PartnershipModelsSection() {
   ];
 
   return (
-    <section className="py-16 md:py-20 bg-background dark:bg-neutral-900 dark:bg-background">
+    <section className="py-16 md:py-20 dark:bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-            Partnership Models
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Partnership Models</h2>
           <h3 className="text-2xl font-bold max-w-2xl mx-auto dark:text-white mb-4">
             Choose Your Path to Impact
           </h3>
           <div className="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
           <p className="text-md md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed dark:text-white">
-            Whether you&apos;re a grassroots initiative, a global tech company,
-            or an academic institution, Nairobi DevOps Community offers flexible
-            partnership models designed to amplify your mission while driving
-            real change in Kenya’s tech ecosystem.
+            Whether you&apos;re a grassroots initiative, a global tech company, or an academic
+            institution, Nairobi DevOps Community offers flexible partnership models designed to
+            amplify your mission while driving real change in Kenya’s tech ecosystem.
           </p>
         </div>
 
@@ -188,12 +195,8 @@ function PartnershipModelsSection() {
                       <Icon className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-xl mb-2">
-                        {model.title}
-                      </CardTitle>
-                      <CardDescription className="text-base">
-                        {model.description}
-                      </CardDescription>
+                      <CardTitle className="text-xl mb-2">{model.title}</CardTitle>
+                      <CardDescription className="text-base">{model.description}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -220,10 +223,7 @@ function PartnershipModelsSection() {
 function ImpactStatsSection() {
   const stats = statisticsData;
 
-  const iconMap: Record<
-    string,
-    React.ComponentType<React.SVGProps<SVGSVGElement>>
-  > = {
+  const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
     Users,
     GraduationCap,
     Award,
@@ -240,15 +240,13 @@ function ImpactStatsSection() {
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
           <p className="text-lg text-gray-200 dark:text-muted-foreground max-w-2xl mx-auto">
-            Our partnerships create meaningful impact across Kenya&apos;s tech
-            ecosystem.{" "}
+            Our partnerships create meaningful impact across Kenya&apos;s tech ecosystem.{" "}
             <strong>
-              Your support helps us build inclusive digital tools, mentor
-              emerging talent, and expand access to technology across local
-              communities.
+              Your support helps us build inclusive digital tools, mentor emerging talent, and
+              expand access to technology across local communities.
             </strong>{" "}
-            Every contribution fuels real change—through workshops, platforms,
-            and people-powered innovation.
+            Every contribution fuels real change—through workshops, platforms, and people-powered
+            innovation.
           </p>
         </div>
 
@@ -277,11 +275,7 @@ function ImpactStatsSection() {
 
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            asChild
-            size="lg"
-            className="bg-primary hover:bg-[#023047] text-white px-8 py-4"
-          >
+          <Button asChild size="lg" className="bg-primary hover:bg-[#023047] text-white px-8 py-4">
             <Link href="/donate">Support a course</Link>
           </Button>
         </div>
@@ -303,9 +297,9 @@ function SuccessStoriesSection() {
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-2"></div>
           <p className="text-lg dark:text-muted-foreground max-w-2xl mx-auto">
-            Real stories from real partners and volunteers driving change across
-            Kenya. These moments reflect the heart of Nairobi DevOps: practical
-            tech, community empowerment, and shared growth.
+            Real stories from real partners and volunteers driving change across Kenya. These
+            moments reflect the heart of Nairobi DevOps: practical tech, community empowerment, and
+            shared growth.
           </p>
         </div>
 
@@ -350,15 +344,12 @@ function TestimonialsSection() {
     <section className="py-16 md:py-20 bg-primary-light-blue dark:bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold dark:mb-4">
-            What Our Partners Say
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold dark:mb-4">What Our Partners Say</h2>
           <div className=" mt-2 mb-2 w-20 h-1 bg-primary mx-auto rounded-full"></div>
           <p className="dark:text-muted-foreground max-w-2xl mx-auto">
-            Our partners help us turn ideas into impact. Through mentorship,
-            funding, and collaboration, they’ve empowered local tech talent and
-            supported inclusive solutions that serve real community needs.
-            Here’s what they have to say.
+            Our partners help us turn ideas into impact. Through mentorship, funding, and
+            collaboration, they’ve empowered local tech talent and supported inclusive solutions
+            that serve real community needs. Here’s what they have to say.
           </p>
         </div>
 
@@ -379,18 +370,12 @@ function TestimonialsSection() {
                   {testimonial.quote}
                 </p>
                 <div className="border-t border-border pt-4">
-                  <p className="font-semibold text-white">
-                    {testimonial.author}
-                  </p>
+                  <p className="font-semibold text-white">{testimonial.author}</p>
                   {testimonial.organization ? (
-                    <p className="text-sm text-white">
-                      {testimonial.organization}
-                    </p>
+                    <p className="text-sm text-white">{testimonial.organization}</p>
                   ) : null}
                   {testimonial.role ? (
-                    <p className="text-sm text-primary mt-1">
-                      {testimonial.role}
-                    </p>
+                    <p className="text-sm text-primary mt-1">{testimonial.role}</p>
                   ) : null}
                 </div>
               </CardContent>
@@ -403,58 +388,42 @@ function TestimonialsSection() {
 }
 
 // CTA Section with Contact Form
-const DEFAULT_CTA_BG =
-  "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
-function useRandomGalleryImage(
-  images: GalleryImage[] | undefined,
-  fallback = DEFAULT_CTA_BG,
-) {
-  return useMemo(() => {
-    if (!images || images.length === 0) return fallback;
-    const pool = images.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx]?.url || fallback;
-  }, [images, fallback]);
-}
+const partnershipSchema = z.object({
+  organization: z.string().min(2, "Organization name must be at least 2 characters").trim(),
+  name: z.string().min(2, "Contact person name must be at least 2 characters").trim(),
+  email: z.string().email("Please enter a valid email address").trim(),
+  interest: z.string().min(2, "Partnership interest is required").trim(),
+  message: z.string().min(10, "Message must be at least 10 characters").trim(),
+});
 
-// const CTA_HEADING = "Partner with the community to multiply impact";
-// const CTA_LEAD = "Collaborate with trusted organizations to build long-term skills, mentor talent, and co-create programs that deliver measurable outcomes and lasting impact.";
+type PartnershipFormData = z.infer<typeof partnershipSchema>;
 
 function CTASection() {
-  const [formData, setFormData] = useState({
-    organization: "",
-    name: "",
-    email: "",
-    interest: "",
-    message: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PartnershipFormData>({
+    resolver: zodResolver(partnershipSchema),
   });
 
   const bgUrl = useRandomGalleryImage(communityGallery, DEFAULT_CTA_BG);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Create mailto link with form data (behavior preserved)
-    const subject = `Partnership Inquiry - ${formData.organization}`;
+  const onSubmit = (data: PartnershipFormData) => {
+    // Create mailto link with validated form data
+    // encodeURIComponent guards against injection and preserves formatting
+    const subject = `Partnership Inquiry - ${data.organization}`;
     const body = `
-Organization: ${formData.organization}
-Contact Person: ${formData.name}
-Email: ${formData.email}
-Partnership Interest: ${formData.interest}
+Organization: ${data.organization}
+Contact Person: ${data.name}
+Email: ${data.email}
+Partnership Interest: ${data.interest}
 
 Message:
-${formData.message}
+${data.message}
     `.trim();
 
-    window.location.href = `mailto:info@nairobidevops.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    window.location.href = `mailto:info@nairobidevops.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -473,57 +442,36 @@ ${formData.message}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left: Text only (clear hierarchy, reusable text constants) */}
           <div className="text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Let’s Build the Future Together
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Let’s Build the Future Together</h2>
             <p className="text-lg text-white/90 max-w-xl">
-              {/* {CTA_LEAD} */}
-              We’re always looking for passionate collaborators who believe in
-              the power of community, education, and innovation. Whether
-              you&apos;re a tech company, educator, or changemaker, we’d love to
-              hear from you.
+              We’re always looking for passionate collaborators who believe in the power of
+              community, education, and innovation. Whether you&apos;re a tech company, educator, or
+              changemaker, we’d love to hear from you.
             </p>
             <div className="w-20 h-1 bg-primary mt-6 rounded-full mb-6" />
-            {/* <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="lg"
-                                            asChild
-                                            className="px-8 py-6 text-lg"
-                                        >
-                                            <Link href="/community">
-                                                <Users className="mr-2 h-5 w-5" />
-                                                Join the Community
-                                            </Link>
-                                        </Button> */}
           </div>
 
           {/* Right: Form (structure, validation, and behavior preserved) */}
           <div>
             <Card className="border-2">
               <CardContent className="pt-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <h3 className="text-2xl font-bold text-primary mb-2">
-                    Become a Partner
-                  </h3>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <h3 className="text-2xl font-bold text-primary mb-2">Become a Partner</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label
-                        htmlFor="organization"
-                        className="flex items-center gap-2"
-                      >
+                      <Label htmlFor="organization" className="flex items-center gap-2">
                         <Building2 className="h-4 w-4 text-primary" />
                         Organization Name *
                       </Label>
                       <Input
                         id="organization"
-                        name="organization"
-                        required
-                        value={formData.organization}
-                        onChange={handleChange}
                         placeholder="Your organization"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.organization ? "border-red-500" : ""}`}
+                        {...register("organization")}
                       />
+                      {errors.organization && (
+                        <p className="text-sm text-red-500">{errors.organization.message}</p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -533,75 +481,64 @@ ${formData.message}
                       </Label>
                       <Input
                         id="name"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
                         placeholder="Your name"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.name ? "border-red-500" : ""}`}
+                        {...register("name")}
                       />
+                      {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label
-                        htmlFor="email"
-                        className="flex items-center gap-2"
-                      >
+                      <Label htmlFor="email" className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-primary" />
                         Email Address *
                       </Label>
                       <Input
                         id="email"
-                        name="email"
                         type="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
                         placeholder="email@example.com"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.email ? "border-red-500" : ""}`}
+                        {...register("email")}
                       />
+                      {errors.email && (
+                        <p className="text-sm text-red-500">{errors.email.message}</p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label
-                        htmlFor="interest"
-                        className="flex items-center gap-2"
-                      >
+                      <Label htmlFor="interest" className="flex items-center gap-2">
                         <Globe className="h-4 w-4 text-primary" />
                         Partnership Interest *
                       </Label>
                       <Input
                         id="interest"
-                        name="interest"
-                        required
-                        value={formData.interest}
-                        onChange={handleChange}
                         placeholder="e.g., Event Sponsorship"
-                        className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        className={`focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.interest ? "border-red-500" : ""}`}
+                        {...register("interest")}
                       />
+                      {errors.interest && (
+                        <p className="text-sm text-red-500">{errors.interest.message}</p>
+                      )}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label
-                      htmlFor="message"
-                      className="flex items-center gap-2"
-                    >
+                    <Label htmlFor="message" className="flex items-center gap-2">
                       <MessageSquare className="h-4 w-4 text-primary" />
                       Message *
                     </Label>
                     <Textarea
                       id="message"
-                      name="message"
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
                       placeholder="Tell us about your partnership goals..."
                       rows={5}
-                      className="resize-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      className={`resize-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${errors.message ? "border-red-500" : ""}`}
+                      {...register("message")}
                     />
+                    {errors.message && (
+                      <p className="text-sm text-red-500">{errors.message.message}</p>
+                    )}
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
