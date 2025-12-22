@@ -227,10 +227,13 @@ const EmpoweringCommunitySection: React.FC = () => (
           <div className="pt-2">
             <Button
               size="lg"
-              className="flex items-center text-lg px-8 py-4 hover:bg-[#023047] transition-colors duration-200"
+              className="flex items-center text-lg px-8 py-4 hover:bg-ndc-darkblue transition-colors duration-200"
+              asChild
             >
-              <Users className="mr-2 h-5 w-5" />
-              Join Our Community
+              <a href="https://linktr.ee/nairobidevops" target="_blank" rel="noopener noreferrer">
+                <Users className="mr-2 h-5 w-5" />
+                Join Our Community
+              </a>
             </Button>
           </div>
         </div>
@@ -782,9 +785,12 @@ const CollaborationCTASection: React.FC = () => {
             variant="outline"
             size="lg"
             className="flex items-center text-lg px-8 py-4 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black"
+            asChild
           >
-            <Users className="mr-2 h-5 w-5" aria-hidden />
-            Join the community
+            <a href="https://linktr.ee/nairobidevops" target="_blank" rel="noopener noreferrer">
+              <Users className="mr-2 h-5 w-5" aria-hidden />
+              Join the community
+            </a>
           </Button>
         </div>
       </div>
