@@ -155,10 +155,12 @@ export default function DonationPage() {
   // Helper: ensure background values are normalized to a string URL
   const normalizeBgUrl = (val: unknown): string => {
     if (typeof val === "string") return val;
-    if (Array.isArray(val))
-      return val[0] && typeof val[0] === "object" && "url" in (val[0] as any)
-        ? (val[0] as any).url
-        : "";
+    if (Array.isArray(val) && val.length > 0) {
+      const first = val[0];
+      if (typeof first === "object" && first !== null && "url" in first) {
+        return (first as { url: string }).url;
+      }
+    }
     return "";
   };
 

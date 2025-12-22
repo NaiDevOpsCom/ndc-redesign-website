@@ -26,7 +26,7 @@ export const heroSlidesData: HeroSlideData[] = [
     description:
       "We champion collaboration, drive innovation, and share best practices to elevate DevOps across Nairobi and beyond.",
     ctaPrimary: {
-      text: "Join Our Community",
+      text: "View Our Community",
       link: "/community",
       icon: "users",
     },
@@ -47,7 +47,7 @@ export const heroSlidesData: HeroSlideData[] = [
       "Access curated courses, mentorship tracks, and hands-on labs — built for learners across Kenya. Whether you're just starting or leveling up, our LMS is here for you.",
     ctaPrimary: {
       text: "Start Learning",
-      link: "#",
+      link: "/learn",
       icon: "arrow-right",
     },
     ctaSecondary: {
@@ -66,7 +66,7 @@ export const heroSlidesData: HeroSlideData[] = [
       "Support the community and rep your mission. Find merch, digital resources, and donation bundles — all designed to fuel DevOps growth in Kenya.",
     ctaPrimary: {
       text: "Visit the Shop",
-      link: "#",
+      link: "/shop",
       icon: "briefcase",
     },
     ctaSecondary: {

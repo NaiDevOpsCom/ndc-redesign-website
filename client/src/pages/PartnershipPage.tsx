@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -12,6 +12,9 @@ import { partnersData } from "@/data/partnersData";
 import { communityGallery } from "@/data/galleryData";
 import type { GalleryImage } from "@/data/galleryData";
 import { testimonialsData } from "@/data/testimonialsData";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Handshake,
   Target,
@@ -385,11 +388,6 @@ function TestimonialsSection() {
 }
 
 // CTA Section with Contact Form
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-
 const partnershipSchema = z.object({
   organization: z.string().min(2, "Organization name must be at least 2 characters").trim(),
   name: z.string().min(2, "Contact person name must be at least 2 characters").trim(),

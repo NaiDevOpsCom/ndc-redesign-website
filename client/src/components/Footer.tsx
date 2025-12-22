@@ -100,12 +100,12 @@ export default function Footer() {
             <div className="font-bold mb-2">Quick Links</div>
             <ul className="space-y-1 text-sm">
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a href="/learn" className="hover:text-primary transition-colors">
                   Learn with Us
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a href="/shop" className="hover:text-primary transition-colors">
                   Shop our Merchants
                 </a>
               </li>
@@ -115,7 +115,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a href="/branding" className="hover:text-primary transition-colors">
                   Brand Guidelines
                 </a>
               </li>
@@ -157,7 +157,7 @@ export default function Footer() {
             <form className="flex flex-col gap-2">
               <Input
                 type="email"
-                placeholder="Enter you email Address"
+                placeholder="Enter your email Address"
                 className="bg-white border border-gray-300 text-foreground placeholder:text-gray-400 focus:border-primary h-10 rounded"
               />
               <Button
