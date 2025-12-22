@@ -9,7 +9,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(
-    () => window.location.pathname + window.location.hash,
+    () => window.location.pathname + window.location.hash
   );
   const [, setLocation] = useLocation();
 
@@ -17,7 +17,7 @@ export default function Navbar() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
     { href: "/events", label: "Events" },
-    { href: "/blogs", label: "Blog" },
+    // { href: "/blogs", label: "Blog" },
     { href: "/community", label: "Community" },
   ];
 
@@ -52,8 +52,7 @@ export default function Navbar() {
 
   // update active link when navigation occurs (hash change / history)
   useEffect(() => {
-    const handleChange = () =>
-      setCurrentLocation(window.location.pathname + window.location.hash);
+    const handleChange = () => setCurrentLocation(window.location.pathname + window.location.hash);
     window.addEventListener("popstate", handleChange);
     window.addEventListener("hashchange", handleChange);
     return () => {
@@ -124,11 +123,7 @@ export default function Navbar() {
               onClick={toggleTheme}
               className="text-muted-foreground hover:text-foreground"
             >
-              {theme === "light" ? (
-                <Moon className="h-4 w-4" />
-              ) : (
-                <Sun className="h-4 w-4" />
-              )}
+              {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </Button>
 
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -140,11 +135,7 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-lg font-semibold">Menu</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsOpen(false)}
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
