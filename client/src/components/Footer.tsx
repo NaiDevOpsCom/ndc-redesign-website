@@ -124,7 +124,6 @@ export default function Footer() {
                   Partners & Sponsors
                 </a>
               </li>
-
             </ul>
           </div>
 

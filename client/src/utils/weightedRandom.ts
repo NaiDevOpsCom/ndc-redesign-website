@@ -7,21 +7,18 @@
  *                    than an item with weight 1.
  * @returns A randomly selected item, or null if the array is empty.
  */
-export function getWeightedRandomItem<T>(
-    items: T[],
-    getWeight: (item: T) => number
-): T | null {
-    if (!items.length) return null;
+export function getWeightedRandomItem<T>(items: T[], getWeight: (item: T) => number): T | null {
+  if (!items.length) return null;
 
-    // Create a pool where items are duplicated based on their weight
-    // This is efficient for small-to-medium datasets (like gallery images)
-    const pool = items.flatMap((item) => {
-        const weight = Math.max(1, Math.floor(getWeight(item)));
-        return Array(weight).fill(item);
-    });
+  // Create a pool where items are duplicated based on their weight
+  // This is efficient for small-to-medium datasets (like gallery images)
+  const pool = items.flatMap((item) => {
+    const weight = Math.max(1, Math.floor(getWeight(item)));
+    return Array(weight).fill(item);
+  });
 
-    if (pool.length === 0) return null;
+  if (pool.length === 0) return null;
 
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx];
+  const idx = Math.floor(Math.random() * pool.length);
+  return pool[idx];
 }

@@ -31,7 +31,8 @@ import {
 import { statisticsData } from "@/data/ndcData";
 
 // Default CTA background used as fallback inside the hook
-const DEFAULT_CTA_BG = "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
+const DEFAULT_CTA_BG =
+  "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
 
 function useRandomGalleryImage(images: GalleryImage[] | undefined, fallback = DEFAULT_CTA_BG) {
   return useMemo(() => {
