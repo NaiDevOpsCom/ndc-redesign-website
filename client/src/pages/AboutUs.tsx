@@ -383,6 +383,7 @@ export default function AboutUs() {
             </div>
           </div>
           <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+            {/* grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-stretch */}
             {/* Left Side - Featured Member */}
             <div className="flex flex-col">
               {featured && (
@@ -453,7 +454,7 @@ export default function AboutUs() {
                 <button
                   type="button"
                   onClick={showPrevFeatured}
-                  className="w-12 h-12 flex items-center justify-center bg-ndc-darkblue hover:bg-primary border-2 border-purple-400/50 transition-colors"
+                  className="w-12 h-12 flex items-center justify-center bg-primary hover:bg-ndc-darkblue border-2 border-purple-400/50 transition-colors"
                   style={{
                     clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
                   }}
@@ -465,7 +466,7 @@ export default function AboutUs() {
                 <button
                   type="button"
                   onClick={showNextFeatured}
-                  className="w-12 h-12 flex items-center justify-center bg-ndc-darkblue hover:bg-primary border-2 border-purple-400/50 transition-colors"
+                  className="w-12 h-12 flex items-center justify-center bg-primary hover:bg-ndc-darkblue border-2 border-purple-400/50 transition-colors"
                   style={{
                     clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
                   }}
@@ -501,6 +502,10 @@ export default function AboutUs() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section>
+
       </section>
 
       {/* Partner With Us Section */}
