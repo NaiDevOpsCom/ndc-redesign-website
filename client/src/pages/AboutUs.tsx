@@ -8,6 +8,7 @@ import { Image as UnpicImage } from "@unpic/react";
 import { teamData, statisticsData } from "@/data/ndcData";
 import StatisticCounter from "@/components/ui/StatisticCounter";
 import { communityGallery } from "@/data/galleryData";
+import TeamGallery from "@/components/TeamGallery";
 
 // Objectives data
 const objectivesData = [
@@ -257,7 +258,7 @@ export default function AboutUs() {
       </section>
 
       {/* Who We Are Section */}
-      <section className="py-20 bg-background dark:bg-accent">
+      <section className="py-20 bg-background dark:bg-ndc-darkblue">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
@@ -366,7 +367,7 @@ export default function AboutUs() {
 
       {/* Our Team Section */}
 
-      <section className="py-16 md:py-24 bg-primary-light-blue text-black relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-primary-light-blue relative overflow-hidden dark:bg-accent dark:text:white">
         <div className="absolute inset-0 opacity-5 bg-cover bg-center" />
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
@@ -504,8 +505,19 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section>
-
+      {/* Team gallery meetup  */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Inside Our Community Outside Leadership
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              From leadership meetups to shared moments of learning and celebration, these snapshots capture the energy, connection, and passion that power our community.
+            </p>
+          </div>
+          <TeamGallery />
+        </div>
       </section>
 
       {/* Partner With Us Section */}
