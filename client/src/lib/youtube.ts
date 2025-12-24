@@ -1,9 +1,11 @@
 // src/lib/youtube.ts
 // Utility helpers for extracting YouTube video IDs and generating thumbnail URLs.
 
-const YOUTUBE_THUMBNAIL_PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
-  `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="100%" height="100%" fill="#0f172a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial, Helvetica, sans-serif" font-size="20">No preview available</text></svg>`
-);
+const YOUTUBE_THUMBNAIL_PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="100%" height="100%" fill="#0f172a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial, Helvetica, sans-serif" font-size="20">No preview available</text></svg>`
+  );
 
 /**
  * Extracts the YouTube video ID from common YouTube URL formats.
@@ -37,7 +39,10 @@ export function extractYouTubeId(url?: string): string | undefined {
  * Returns a YouTube thumbnail URL for the given video URL. If the video URL
  * is invalid or no ID can be extracted, a small SVG data-uri placeholder is returned.
  */
-export function getYouTubeThumbnail(url?: string, quality: "default" | "mqdefault" | "hqdefault" | "sddefault" | "maxresdefault" = "hqdefault") {
+export function getYouTubeThumbnail(
+  url?: string,
+  quality: "default" | "mqdefault" | "hqdefault" | "sddefault" | "maxresdefault" = "hqdefault"
+) {
   const id = extractYouTubeId(url);
   if (!id) return YOUTUBE_THUMBNAIL_PLACEHOLDER;
   // YouTube thumbnail URL pattern

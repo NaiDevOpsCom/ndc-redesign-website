@@ -35,8 +35,7 @@ export const blogPosts: BlogPost[] = [
     date: new Date().toISOString(),
     author: authorMercy,
     cover: {
-      url:
-        "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1400&q=70",
+      url: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1400&q=70",
       alt: "Speaker presenting innovation and growth ideas at a tech meetup",
       width: 1400,
       height: 900,
@@ -47,13 +46,16 @@ export const blogPosts: BlogPost[] = [
       { type: "p", text: "Design decisions are increasingly informed by real user behavior." },
       {
         type: "p",
-        text:
-          "By pairing qualitative research with product analytics, teams uncover friction points and ship improvements faster.",
+        text: "By pairing qualitative research with product analytics, teams uncover friction points and ship improvements faster.",
       },
       { type: "h2", text: "What changes in 2025" },
       {
         type: "ul",
-        items: ["Experimentation becomes continuous", "UX metrics tie to business outcomes", "Privacy‑first telemetry"],
+        items: [
+          "Experimentation becomes continuous",
+          "UX metrics tie to business outcomes",
+          "Privacy‑first telemetry",
+        ],
       },
     ],
   },
@@ -68,8 +70,7 @@ export const blogPosts: BlogPost[] = [
     date: new Date().toISOString(),
     author: authorMercy,
     cover: {
-      url:
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=70",
+      url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=70",
       alt: "Engineer giving a talk holding a microphone in front of whiteboard",
       width: 800,
       height: 600,
@@ -78,8 +79,7 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         type: "p",
-        text:
-          "Platform Engineering streamlines delivery by providing paved roads, golden paths, and strong internal tooling.",
+        text: "Platform Engineering streamlines delivery by providing paved roads, golden paths, and strong internal tooling.",
       },
       { type: "p", text: "This article surveys emerging patterns and pitfalls for 2025." },
     ] as Array<{ type: "p" | "h2" | "ul"; text?: string; items?: string[] }>,

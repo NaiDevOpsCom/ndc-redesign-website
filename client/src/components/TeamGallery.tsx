@@ -53,9 +53,7 @@ export default function EventGallery() {
     Array.from({ length: SLOT_COUNT }, (_, i) => i % teamGallery.length)
   );
 
-  const [slotTransitions, setSlotTransitions] = useState<number[]>(
-    Array(SLOT_COUNT).fill(0)
-  );
+  const [slotTransitions, setSlotTransitions] = useState<number[]>(Array(SLOT_COUNT).fill(0));
 
   const timers = useRef<(NodeJS.Timeout | null)[]>(Array(SLOT_COUNT).fill(null));
 

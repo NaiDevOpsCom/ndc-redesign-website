@@ -59,8 +59,7 @@ export const projects: CommunityProject[] = [
   {
     id: 3,
     title: "Inclusive Tech Glossary",
-    description:
-      "A living document defining key DevOps terms in simple, inclusive language.",
+    description: "A living document defining key DevOps terms in simple, inclusive language.",
     image:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop",
     date: "Dec 2024",
@@ -86,8 +85,7 @@ export const projects: CommunityProject[] = [
   {
     id: 6,
     title: "Inclusive Tech Glossary",
-    description:
-      "A living document defining key DevOps terms in simple, inclusive language.",
+    description: "A living document defining key DevOps terms in simple, inclusive language.",
     image:
       "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1600&auto=format&fit=crop",
     date: "Mar 2025",

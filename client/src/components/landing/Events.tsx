@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -35,21 +35,30 @@ function EventCard({ event }: EventCardProps) {
       <CardContent className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
           <Badge className="bg-primary/10 text-primary text-xs sm:text-sm">Upcoming</Badge>
-          {event.categories?.slice(0, 2).map(category => (
-            <Badge key={category} variant="secondary" className="text-xs sm:text-sm">{category}</Badge>
+          {event.categories?.slice(0, 2).map((category) => (
+            <Badge key={category} variant="secondary" className="text-xs sm:text-sm">
+              {category}
+            </Badge>
           ))}
         </div>
 
-        <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-2 text-left line-clamp-2">{event.title}</h4>
+        <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-2 text-left line-clamp-2">
+          {event.title}
+        </h4>
 
         <div className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 text-left space-y-1">
           <p className="flex items-start">
             <span className="mr-2 flex-shrink-0">🗓️</span>
-            <span className="break-words">{format(new Date(event.startDate), 'EEEE, MMMM d, yyyy')}</span>
+            <span className="break-words">
+              {format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
+            </span>
           </p>
           <p className="flex items-start">
             <span className="mr-2 flex-shrink-0">⏰</span>
-            <span className="break-words">{format(new Date(event.startDate), 'h:mm a')} - {format(new Date(event.endDate), 'h:mm a')}</span>
+            <span className="break-words">
+              {format(new Date(event.startDate), "h:mm a")} -{" "}
+              {format(new Date(event.endDate), "h:mm a")}
+            </span>
           </p>
           {event.location && (
             <p className="flex items-start">
@@ -71,7 +80,7 @@ function EventCard({ event }: EventCardProps) {
             className="w-full bg-primary text-white hover:bg-[#023047] transition-colors duration-200 text-sm sm:text-base"
             onClick={() => {
               if (event.url) {
-                window.open(event.url, '_blank', 'noopener,noreferrer');
+                window.open(event.url, "_blank", "noopener,noreferrer");
               }
             }}
           >
@@ -85,9 +94,7 @@ function EventCard({ event }: EventCardProps) {
 
 function LumaEventsList() {
   const { events, loading, error } = useLumaEvents();
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  )
+  const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
   if (loading) {
     return (
@@ -102,11 +109,7 @@ function LumaEventsList() {
     return (
       <div className="text-center py-12">
         <p className="text-red-500 mb-4">Error loading events. Please try again later.</p>
-        <Button
-          variant="outline"
-          onClick={() => window.location.reload()}
-          className="mt-4"
-        >
+        <Button variant="outline" onClick={() => window.location.reload()} className="mt-4">
           Retry
         </Button>
       </div>
@@ -131,7 +134,10 @@ function LumaEventsList() {
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {events.map((event) => (
-            <CarouselItem key={event.uid} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+            <CarouselItem
+              key={event.uid}
+              className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+            >
               <div className="h-full">
                 <EventCard event={event} />
               </div>
@@ -158,14 +164,18 @@ import { getRandomItems } from "@/utils/getRandomItems";
 export default function Events() {
   const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
   return (
-    <section id="events" className="py-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <section
+      id="events"
+      className="py-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Events & Meetups
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Join us for hands-on sessions, tech talks, and community meetups designed to sharpen your skills and elevate your DevOps journey.
+            Join us for hands-on sessions, tech talks, and community meetups designed to sharpen
+            your skills and elevate your DevOps journey.
           </p>
         </div>
 
@@ -201,7 +211,12 @@ export default function Events() {
         </div>
 
         <div className="text-center mt-16">
-          <Button size="lg" onClick={() => { window.location.href = '/events'; }}>
+          <Button
+            size="lg"
+            onClick={() => {
+              window.location.href = "/events";
+            }}
+          >
             View All Events
           </Button>
         </div>

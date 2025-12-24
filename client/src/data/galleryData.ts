@@ -83,5 +83,5 @@ export const teamGallery: GalleryImage[] = [
   {
     url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_131256998.RAW-01.COVER.jpg?updatedAt=1766138019910",
     alt: "Team meeting",
-  },  
+  },
 ];

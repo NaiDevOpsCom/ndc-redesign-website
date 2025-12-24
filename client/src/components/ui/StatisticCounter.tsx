@@ -43,11 +43,7 @@ const StatisticCounter = ({
   return (
     <span ref={ref} className={className} aria-live="polite">
       {prefix}
-      {inView ? (
-        <CountUp start={0} end={numericValue} duration={duration} />
-      ) : (
-        "0"
-      )}
+      {inView ? <CountUp start={0} end={numericValue} duration={duration} /> : "0"}
       {suffix}
     </span>
   );

@@ -513,7 +513,8 @@ export default function AboutUs() {
               Inside Our Community Outside Leadership
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              From leadership meetups to shared moments of learning and celebration, these snapshots capture the energy, connection, and passion that power our community.
+              From leadership meetups to shared moments of learning and celebration, these snapshots
+              capture the energy, connection, and passion that power our community.
             </p>
           </div>
           <TeamGallery />
