@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
@@ -13,8 +13,16 @@ type ImageItem = {
     span: string; // Tailwind CSS grid span classes
 };
 
+// Raw image data structure for the pool
+type GalleryImage = {
+    url: string;
+    alt: string;
+    priority?: boolean;
+};
+
 interface InteractiveImageBentoGalleryProps {
     imageItems: ImageItem[];
+    imagePool: GalleryImage[];
     title: string;
     description: string;
 }
@@ -82,9 +90,112 @@ const ImageModal = ({
     );
 };
 
+const transitions = [
+    {
+        name: "Fade",
+        initial: { opacity: 0, scale: 1 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 1 },
+    },
+    {
+        name: "Zoom",
+        initial: { opacity: 0, scale: 1.1 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 0.95 },
+    },
+    {
+        name: "SlideUp",
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -20 },
+    },
+    {
+        name: "Blur",
+        initial: { opacity: 0, filter: "blur(4px)" },
+        animate: { opacity: 1, filter: "blur(0px)" },
+        exit: { opacity: 0, filter: "blur(4px)" },
+    },
+];
+
+const GalleryTile = ({
+    initialItem,
+    imagePool,
+    onSelect,
+}: {
+    initialItem: ImageItem;
+    imagePool: GalleryImage[];
+    onSelect: (item: ImageItem) => void;
+}) => {
+    const [currentItem, setCurrentItem] = useState(initialItem);
+    const [currentTransition, setCurrentTransition] = useState(transitions[0]);
+
+    useEffect(() => {
+        // Random interval between 5s and 12s for a relaxed organic feel
+        const intervalTime = Math.random() * 7000 + 5000;
+
+        const interval = setInterval(() => {
+            const randomImage = imagePool[Math.floor(Math.random() * imagePool.length)];
+
+            // Avoid same image consecutively if pool > 1
+            if (imagePool.length > 1 && randomImage.url === currentItem.url) {
+                return;
+            }
+
+            // Pick a random transition effect
+            const randomTransition = transitions[Math.floor(Math.random() * transitions.length)];
+            setCurrentTransition(randomTransition);
+
+            setCurrentItem({
+                ...currentItem,
+                title: randomImage.alt,
+                desc: `Snapshot from our community ${randomImage.alt.toLowerCase()}`,
+                url: randomImage.url,
+            });
+        }, intervalTime);
+
+        return () => clearInterval(interval);
+    }, [currentItem, imagePool]);
+
+    return (
+        <motion.div
+            variants={itemVariants}
+            className={cn(
+                "group relative cursor-zoom-in overflow-hidden rounded-2xl bg-muted",
+                "min-h-[300px] w-full",
+                currentItem.span
+            )}
+            onClick={() => onSelect(currentItem)}
+            layoutId={`card-${initialItem.id}`} // layoutId stays stable with ID
+        >
+            <AnimatePresence mode="popLayout" initial={false}>
+                <motion.img
+                    key={currentItem.url}
+                    src={currentItem.url}
+                    alt={currentItem.title}
+                    initial={currentTransition.initial}
+                    animate={currentTransition.animate}
+                    exit={currentTransition.exit}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+            </AnimatePresence>
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-10" />
+            <div className="absolute bottom-0 left-0 w-full p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 z-20">
+                <h3 className="line-clamp-1 text-xl font-semibold text-white">
+                    {currentItem.title}
+                </h3>
+                <p className="line-clamp-1 mt-1 text-sm text-white/80">
+                    {currentItem.desc}
+                </p>
+            </div>
+        </motion.div>
+    );
+};
+
 const InteractiveImageBentoGallery: React.FC<
     InteractiveImageBentoGalleryProps
-> = ({ imageItems, title, description }) => {
+> = ({ imageItems, imagePool, title, description }) => {
     const [selectedItem, setSelectedItem] = useState<ImageItem | null>(null);
 
     return (
@@ -119,33 +230,12 @@ const InteractiveImageBentoGallery: React.FC<
                     className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:auto-rows-[300px]"
                 >
                     {imageItems.map((item) => (
-                        <motion.div
+                        <GalleryTile
                             key={item.id}
-                            variants={itemVariants}
-                            className={cn(
-                                "group relative cursor-zoom-in overflow-hidden rounded-2xl bg-muted",
-                                "min-h-[300px] w-full",
-                                item.span
-                            )}
-                            onClick={() => setSelectedItem(item)}
-                            layoutId={`card-${item.id}`}
-                        >
-                            <img
-                                src={item.url}
-                                alt={item.title}
-                                loading="lazy"
-                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                            <div className="absolute bottom-0 left-0 w-full p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                                <h3 className="line-clamp-1 text-xl font-semibold text-white">
-                                    {item.title}
-                                </h3>
-                                <p className="line-clamp-1 mt-1 text-sm text-white/80">
-                                    {item.desc}
-                                </p>
-                            </div>
-                        </motion.div>
+                            initialItem={item}
+                            imagePool={imagePool}
+                            onSelect={setSelectedItem}
+                        />
                     ))}
                 </motion.div>
             </div>

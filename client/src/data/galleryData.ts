@@ -45,23 +45,43 @@ export const communityGallery: GalleryImage[] = [
 
 export const teamGallery: GalleryImage[] = [
   {
-    url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1200&q=80&auto=format&fit=crop",
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_163213825.RAW-01.COVER.jpg",
     alt: "Team brainstorming session",
   },
   {
-    url: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1200&q=80&auto=format&fit=crop",
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_142803576.PORTRAIT.jpg?updatedAt=1766523047335",
     alt: "Team portrait",
   },
   {
-    url: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&q=80&auto=format&fit=crop",
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_130735455.RAW-01.COVER.jpg?updatedAt=1766138883424",
     alt: "Remote team working",
   },
   {
-    url: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1200&q=80&auto=format&fit=crop",
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_130736656.RAW-01.COVER.jpg?updatedAt=1766138876145",
     alt: "Developers collaborating",
   },
   {
-    url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80&auto=format&fit=crop",
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_130927113.PORTRAIT.jpg?updatedAt=1766138866520",
     alt: "Team meeting",
   },
+  {
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_141805702.RAW-01.COVER.jpg?updatedAt=1766138842898",
+    alt: "Team meeting",
+  },
+  {
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_130955072.PORTRAIT.jpg?updatedAt=1766138076126",
+    alt: "Team meeting",
+  },
+  {
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_130955072.PORTRAIT.jpg?updatedAt=1766138076126",
+    alt: "Team meeting",
+  },
+  {
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_131356705.PORTRAIT.jpg?updatedAt=1766138042654",
+    alt: "Team meeting",
+  },
+  {
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_131256998.RAW-01.COVER.jpg?updatedAt=1766138019910",
+    alt: "Team meeting",
+  },  
 ];
