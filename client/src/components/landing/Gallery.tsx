@@ -2,25 +2,35 @@ import { communityGallery } from "@/data/galleryData";
 import InteractiveImageBentoGallery from "@/components/ui/bento-gallery";
 
 // Transform gallery data to match bento gallery format
-const bentoGalleryItems = communityGallery.map((image, index) => ({
-  id: index,
-  title: image.alt,
-  desc: `Snapshot from our community ${image.alt.toLowerCase()}`,
-  url: image.url,
-  span: index === 0 ? "md:col-span-2 md:row-span-2" : index % 3 === 0 ? "md:row-span-2" : "md:row-span-1",
-}));
+const bentoGalleryItems = communityGallery.map((image, index) => {
+  // Create a visually interesting pattern
+  // Pattern: Large, Small, Small, Long, Small, Small...
+  let span = "col-span-1 row-span-1";
+
+  const patternIndex = index % 5;
+  if (patternIndex === 0) {
+    span = "md:col-span-2 md:row-span-2"; // Large square
+  } else if (patternIndex === 3) {
+    span = "md:col-span-2 md:row-span-1"; // Wide rectangle
+  }
+
+  return {
+    id: index,
+    title: image.alt,
+    desc: `Snapshot from our community ${image.alt.toLowerCase()}`,
+    url: image.url,
+    span: span,
+  };
+});
 
 export default function Gallery() {
   return (
-    <section
-      id="gallery"
-      className="py-20 bg-muted dark:bg-[#023047] transition-colors duration-300"
-    >
+    <div id="gallery">
       <InteractiveImageBentoGallery
         imageItems={bentoGalleryItems}
         title="Snapshots of Our Journey"
         description="Explore moments from our Events, MeetUps, workshops, community events, and Collaborations"
       />
-    </section>
+    </div>
   );
 }

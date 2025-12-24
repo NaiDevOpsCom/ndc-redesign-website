@@ -44,7 +44,7 @@ export default function FAQSection() {
   return (
     <section
       id="faq"
-      className="py-20 bg-primary-light-blue text-faq-text"
+      className="py-20 bg-primary-light-blue text-faq-text dark:bg-background"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -86,7 +86,7 @@ export default function FAQSection() {
                 return (
                   <div
                     key={id}
-                    className="rounded-lg shadow-sm border overflow-hidden bg-faq border-faq-text"
+                    className="rounded-lg shadow-sm border overflow-hidden bg-white border-faq-text dark:text-background"
                     style={{ opacity: 0.9 }}
                   >
                     <div
