@@ -64,16 +64,13 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
           <div className="flex items-start gap-2">
             <span className="flex-shrink-0">🗓️</span>
             <span className="break-words">
-              {isStartDateValid
-                ? format(startDate, "EEEE, MMMM d, yyyy")
-                : "Invalid date"}
+              {isStartDateValid ? format(startDate, "EEEE, MMMM d, yyyy") : "Invalid date"}
             </span>
           </div>
           <div className="flex items-start gap-2">
             <span className="flex-shrink-0">⏰</span>
             <span className="break-words">
-              {isStartDateValid ? format(startDate, "h:mm a") : "Invalid time"}{" "}
-              -{" "}
+              {isStartDateValid ? format(startDate, "h:mm a") : "Invalid time"} -{" "}
               {isEndDateValid ? format(endDate, "h:mm a") : "Invalid time"}
             </span>
           </div>
