@@ -17,20 +17,25 @@ export default function AboutSection() {
   const [, navigate] = useLocation();
 
   const handleKnowUsClick = () => {
-    navigate('/about');
+    navigate("/about");
   };
 
-  const displayedStats = statisticsData.filter(stat =>
+  const displayedStats = statisticsData.filter((stat) =>
     ["Community Members", "Events", "Partners"].includes(stat.label)
   );
 
   return (
-    <section id="about" className="py-20 bg-[#d3d3d3] dark:bg-[#000000E5] transition-colors duration-300">
+    <section
+      id="about"
+      className="py-20 bg-[#d3d3d3] dark:bg-[#000000E5] transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-primary">About Us</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-primary">
+            About Us
+          </h2>
         </div>
-        
+
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Video Player on the Left */}
           <div className="relative">
@@ -45,14 +50,18 @@ export default function AboutSection() {
               />
             </div>
           </div>
-          
+
           {/* Text Content on the Right */}
           <div className="space-y-6 text-foreground dark:text-white">
-            <h3 className="text-2xl font-semibold mb-4">Building a Stronger Tech Community Through DevOps.</h3>
+            <h3 className="text-2xl font-semibold mb-4">
+              Building a Stronger Tech Community Through DevOps.
+            </h3>
             <p className="text-foreground dark:text-white leading-relaxed">
-            As part of Nairobi’s growing tech ecosystem, we’re fostering inclusive learning, collaboration, and innovation among DevOps engineers, developers, designers, students, and tech enthusiasts across Kenya and beyond.
+              As part of Nairobi’s growing tech ecosystem, we’re fostering inclusive learning,
+              collaboration, and innovation among DevOps engineers, developers, designers, students,
+              and tech enthusiasts across Kenya and beyond.
             </p>
-            
+
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 dark:bg-[#FFFFFF99] rounded-xl p-6">
               {displayedStats.map((stat) => {
                 const Icon = stat.icon ? iconMap[stat.icon] : null;
@@ -63,7 +72,9 @@ export default function AboutSection() {
                       <div className="text-2xl font-bold text-foreground">
                         <StatisticCounter endValue={stat.number} />
                       </div>
-                      <div className="text-sm text-muted-foreground dark:text-white">{stat.label}</div>
+                      <div className="text-sm text-muted-foreground dark:text-white">
+                        {stat.label}
+                      </div>
                     </div>
                   </div>
                 );
@@ -71,10 +82,13 @@ export default function AboutSection() {
             </div>
 
             <div className="flex items-center space-x-4 pt-4 ">
-              <Button size="lg" className="hover:bg-[#023047] transition-colors duration-200 " onClick={handleKnowUsClick}>
+              <Button
+                size="lg"
+                className="hover:bg-[#023047] transition-colors duration-200 "
+                onClick={handleKnowUsClick}
+              >
                 Get to Know Us
               </Button>
-              
             </div>
           </div>
         </div>

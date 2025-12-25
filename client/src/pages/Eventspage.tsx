@@ -9,7 +9,7 @@ import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
 import { Link } from "wouter";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import { communityGallery } from "@/data/galleryData";
 
 import Autoplay from "embla-carousel-autoplay";
@@ -38,6 +38,12 @@ interface UpcomingEventCardProps {
 }
 
 function UpcomingEventCard({ event }: UpcomingEventCardProps) {
+  const startDate = new Date(event.startDate);
+  const endDate = new Date(event.endDate);
+
+  const isStartDateValid = isValid(startDate);
+  const isEndDateValid = isValid(endDate);
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 w-full flex flex-col h-full">
       <CardContent className="flex flex-col items-start p-4 sm:p-5 md:p-6 flex-grow">
@@ -58,14 +64,14 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
           <div className="flex items-start gap-2">
             <span className="flex-shrink-0">🗓️</span>
             <span className="break-words">
-              {format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
+              {isStartDateValid ? format(startDate, "EEEE, MMMM d, yyyy") : "Invalid date"}
             </span>
           </div>
           <div className="flex items-start gap-2">
             <span className="flex-shrink-0">⏰</span>
             <span className="break-words">
-              {format(new Date(event.startDate), "h:mm a")} -{" "}
-              {format(new Date(event.endDate), "h:mm a")}
+              {isStartDateValid ? format(startDate, "h:mm a") : "Invalid time"} -{" "}
+              {isEndDateValid ? format(endDate, "h:mm a") : "Invalid time"}
             </span>
           </div>
           {event.location && (

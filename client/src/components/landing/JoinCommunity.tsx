@@ -6,7 +6,7 @@ export default function JoinCommunity() {
   const [, navigate] = useLocation();
 
   const handleJoinClick = () => {
-    navigate('/join');
+    navigate("/join");
   };
 
   const handleLinkedInClick = () => {
@@ -18,7 +18,7 @@ export default function JoinCommunity() {
   };
 
   return (
-    <section 
+    <section
       className="relative py-20 overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: "url('https://pbs.twimg.com/media/Gw1gwJhWsAAZcBo?format=jpg&name=large')",
@@ -26,14 +26,13 @@ export default function JoinCommunity() {
     >
       <div className="absolute inset-0 bg-primary/80 dark:bg-primary/90"></div>
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-          Join Our Community
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Join Our Community</h2>
         <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
           Be part of Nairobi’s growing DevOps movement.
         </h3>
         <p className="text-lg md:text-xl text-blue-100 mb-12 max-w-3xl mx-auto">
-          Connect with fellow DevOps learners, builders, and leaders. Jump into conversations, share ideas, and grow with us.
+          Connect with fellow DevOps learners, builders, and leaders. Jump into conversations, share
+          ideas, and grow with us.
         </p>
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button
@@ -60,7 +59,7 @@ export default function JoinCommunity() {
             onClick={handleXClick}
           >
             <svg className="mr-3 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.53 2.477h3.924l-8.56 9.85 10.09 13.196h-7.98l-6.25-8.19-7.16 8.19H.07l9.13-10.51L0 2.477h8.13l5.77 7.57zm-1.13 17.03h2.17L7.1 4.36H4.8z"/>
+              <path d="M17.53 2.477h3.924l-8.56 9.85 10.09 13.196h-7.98l-6.25-8.19-7.16 8.19H.07l9.13-10.51L0 2.477h8.13l5.77 7.57zm-1.13 17.03h2.17L7.1 4.36H4.8z" />
             </svg>
             Follow On X
           </Button>

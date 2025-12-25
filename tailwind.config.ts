@@ -63,12 +63,12 @@ export default {
           ring: "var(--sidebar-ring)",
         },
         ndc: {
-          darkblue: '#023047',
-          'primary-light': '#e6f0fa',
-          'primary-light-blue': '#d1e2f2',
-          'faq-bg': 'hsla(209, 56%, 88%, 1)',
-          'faq-text': '#000000',
-          'dark-bg-secondary': '#898E99',
+          darkblue: "#023047",
+          "primary-light": "#e6f0fa",
+          "primary-light-blue": "#d1e2f2",
+          "faq-bg": "hsla(209, 56%, 88%, 1)",
+          "faq-text": "#000000",
+          "dark-bg-secondary": "#898E99",
         },
       },
       keyframes: {

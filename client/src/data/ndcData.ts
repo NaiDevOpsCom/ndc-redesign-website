@@ -35,7 +35,7 @@ export const statisticsData: Statistic[] = [
   {
     id: "developers-trained",
     number: "300+",
-    label: "Devlopers Trained",
+    label: "Developers Trained",
     icon: "GraduationCap",
   },
   {
@@ -166,5 +166,17 @@ export const teamData: TeamMember[] = [
       twitter: "https://x.com/jumalaw98",
       instagram: "https://instagram.com/jumalaw98",
     },
+  },
+  {
+    id: "mercy-nduta-kabingu",
+    name: "Mercy Nduta Kabingu",
+    title: "UI/UX Designer",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1766460387/mercy_kabingu_-_kabingu_d0ijqn.jpg",
+    socials: {
+      twitter: "https://x.com/Ndutakabingu",
+      website: "https://dev-kabingu-portfolio.vercel.app/",
+    },
+    bio: "I am a UI/UX designer currently undertaking a 16‑week apprenticeship program at Techleap Zynamis, where I am building deeper expertise in creating clear, accessible, and user‑friendly digital experiences. My career path has been shaped by a strong commitment to design thinking and empathy, ensuring that technology feels welcoming and impactful. As part of Nairobi DevOps, I contributed as a volunteer designer for the community website, focusing on improving the interface and user journey to make resources and events easier to engage with. My passion lies in design that empowers communities by blending creativity with functionality, and I am especially inspired by projects that highlight African innovation and storytelling. At present, I am concentrating on refining my craft.",
   },
 ];
