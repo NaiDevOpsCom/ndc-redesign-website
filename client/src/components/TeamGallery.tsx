@@ -56,7 +56,7 @@ export default function TeamGallery() {
 
   const [slotTransitions, setSlotTransitions] = useState<number[]>(Array(SLOT_COUNT).fill(0));
 
-  const timers = useRef<(NodeJS.Timeout | null)[]>(Array(SLOT_COUNT).fill(null));
+  const timers = useRef<(ReturnType<typeof setInterval> | null)[]>(Array(SLOT_COUNT).fill(null));
 
   // Set up independent timers for each slot
   useEffect(() => {
@@ -67,11 +67,14 @@ export default function TeamGallery() {
     // Clear any existing timers
     timers.current.forEach((timer) => timer && clearInterval(timer));
 
+    // Capture the current timers array into a local const to ensure stable cleanup
+    const mountedTimers = [...timers.current];
+
     // Set up new timers
     for (let slot = 0; slot < SLOT_COUNT; slot++) {
       const randomInterval = 3000 + Math.floor(Math.random() * 4000); // 3-7s
 
-      timers.current[slot] = setInterval(() => {
+      const id = setInterval(() => {
         setSlotIndexes((prev) => {
           const next = [...prev];
           // Pick a new random index for this slot, different from current
@@ -91,10 +94,13 @@ export default function TeamGallery() {
           return next;
         });
       }, randomInterval);
+
+      mountedTimers[slot] = id;
+      timers.current[slot] = id;
     }
 
     return () => {
-      timers.current.forEach((timer) => timer && clearInterval(timer));
+      mountedTimers.forEach((timer) => timer && clearInterval(timer));
     };
   }, []);
 
