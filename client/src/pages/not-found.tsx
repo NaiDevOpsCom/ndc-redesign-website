@@ -34,7 +34,7 @@ export default function NotFound() {
             <Button
               asChild
               size="lg"
-              className="w-full sm:w-auto hidden md:inline-flex bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
+              className="w-full sm:w-auto bg-primary text-white hover:bg-[#023047] transition-colors duration-200"
             >
               <Link href="/">Back to Home</Link>
             </Button>
@@ -43,7 +43,7 @@ export default function NotFound() {
               asChild
               variant="outline"
               size="lg"
-              className="w-full sm:w-auto hidden md:inline-flex hover:bg-primary transition-colors duration-200"
+              className="w-full sm:w-auto hover:bg-primary transition-colors duration-200"
             >
               <a href="mailto:info@nairobidevops.org">Contact Us</a>
             </Button>

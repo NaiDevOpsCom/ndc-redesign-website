@@ -44,13 +44,14 @@ const ANIMATION_VARIANTS = [
 const SLOT_COUNT = 6;
 
 /**
- * EventGallery displays images in a grid with smooth animations.
  * Uses local teamGallery data with random slot updates.
  */
-export default function EventGallery() {
+export default function TeamGallery() {
   // Initialize with the first N images (or wrap around if not enough)
   const [slotIndexes, setSlotIndexes] = useState<number[]>(() =>
-    Array.from({ length: SLOT_COUNT }, (_, i) => i % teamGallery.length)
+    Array.from({ length: SLOT_COUNT }, (_, i) =>
+      teamGallery.length > 0 ? i % teamGallery.length : 0
+    )
   );
 
   const [slotTransitions, setSlotTransitions] = useState<number[]>(Array(SLOT_COUNT).fill(0));

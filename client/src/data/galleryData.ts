@@ -73,7 +73,7 @@ export const teamGallery: GalleryImage[] = [
     alt: "Team meeting",
   },
   {
-    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_130955072.PORTRAIT.jpg?updatedAt=1766138076126",
+    url: "https://ik.imagekit.io/nairobidevops/ndcTeam/PXL_20251109_163213825.RAW-01.COVER.jpg?updatedAt=1766557250113",
     alt: "Team meeting",
   },
   {

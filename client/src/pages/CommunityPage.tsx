@@ -14,8 +14,9 @@ import Footer from "@/components/Footer";
 import RecordedVideoCard from "@/components/RecordedVideoCard";
 import { communityGallery } from "@/data/galleryData";
 import { getWeightedRandomItem } from "@/utils/weightedRandom";
-// Import without extension to avoid potential resolver issues in some environments
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
+import { getRandomItems } from "@/utils/getRandomItems";
+
 import {
   ClipboardList,
   FlaskConical,
@@ -576,8 +577,6 @@ const DevOpsCoursesSection: React.FC = () => (
 );
 
 // --- Events & Meetups Section Component ---
-import { getRandomItems } from "@/utils/getRandomItems";
-
 const EventsMeetupsSection: React.FC = () => {
   const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
 

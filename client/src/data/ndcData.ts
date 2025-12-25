@@ -35,7 +35,7 @@ export const statisticsData: Statistic[] = [
   {
     id: "developers-trained",
     number: "300+",
-    label: "Devlopers Trained",
+    label: "Developers Trained",
     icon: "GraduationCap",
   },
   {

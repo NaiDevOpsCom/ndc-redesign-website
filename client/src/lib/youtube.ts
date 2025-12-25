@@ -7,6 +7,8 @@ const YOUTUBE_THUMBNAIL_PLACEHOLDER =
     `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="100%" height="100%" fill="#0f172a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial, Helvetica, sans-serif" font-size="20">No preview available</text></svg>`
   );
 
+const YOUTUBE_ID_REGEX = /^[0-9A-Za-z_-]{11}$/;
+
 /**
  * Extracts the YouTube video ID from common YouTube URL formats.
  * Returns undefined if no valid ID can be found.
@@ -20,12 +22,19 @@ export function extractYouTubeId(url?: string): string | undefined {
     const host = u.hostname.toLowerCase();
     // Accept the root domain 'youtube.com' or any valid subdomain like 'www.youtube.com', 'm.youtube.com', etc.
     if (host === "youtube.com" || host.endsWith(".youtube.com")) {
-      return u.searchParams.get("v") || undefined;
+      const videoId = u.searchParams.get("v");
+      if (videoId && YOUTUBE_ID_REGEX.test(videoId)) {
+        return videoId;
+      }
+      return undefined;
     }
     // Shortened youtu.be links
     if (host === "youtu.be") {
-      const pathname = u.pathname;
-      return pathname ? pathname.replace(/^\//, "") : undefined;
+      const pathname = u.pathname.replace(/^\//, "");
+      if (pathname && YOUTUBE_ID_REGEX.test(pathname)) {
+        return pathname;
+      }
+      return undefined;
     }
   } catch (err) {
     // Fallback to regex matching when URL parsing fails (e.g., missing scheme)

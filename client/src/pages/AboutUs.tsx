@@ -45,10 +45,12 @@ const objectivesData = [
 ];
 
 export default function AboutUs() {
-  const randomImage = useMemo(
-    () => communityGallery[Math.floor(Math.random() * communityGallery.length)],
-    []
-  );
+  const randomImage = useMemo(() => {
+    if (communityGallery.length > 0) {
+      return communityGallery[Math.floor(Math.random() * communityGallery.length)];
+    }
+    return null;
+  }, []);
   const [featuredId, setFeaturedId] = useState<string | null>(null);
   const [, navigate] = useLocation();
 
@@ -367,7 +369,7 @@ export default function AboutUs() {
 
       {/* Our Team Section */}
 
-      <section className="py-16 md:py-24 bg-primary-light-blue relative overflow-hidden dark:bg-accent dark:text:white">
+      <section className="py-16 md:py-24 bg-primary-light-blue relative overflow-hidden dark:bg-accent dark:text-white">
         <div className="absolute inset-0 opacity-5 bg-cover bg-center" />
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
@@ -525,7 +527,7 @@ export default function AboutUs() {
       <section
         className="min-h-screen flex items-center justify-center relative"
         style={{
-          backgroundImage: `url('${randomImage.url}')`,
+          backgroundImage: `url('${randomImage?.url || "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
