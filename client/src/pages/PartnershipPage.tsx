@@ -118,14 +118,13 @@ function PartnersGridSection() {
           <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
           <p className="text-lg text-black max-w-3xl mx-auto text-pretty">
             {/* text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed */}
-            Trusted organizations collaborating with us to grow Kenya’s DevOps ecosystem through education, innovation, and opportunity.
+            Trusted organizations collaborating with us to grow Kenya’s DevOps ecosystem through
+            education, innovation, and opportunity.
           </p>
         </div>
         <SponsorsCarousel />
       </div>
     </section>
-
-
   );
 }
 
