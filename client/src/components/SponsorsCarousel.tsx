@@ -6,20 +6,20 @@ interface SponsorCardProps {
 }
 
 function SponsorCard({ partner }: SponsorCardProps) {
-    return (
-        <div className="flex flex-col items-center justify-center px-8 md:px-12 min-w-[200px] md:min-w-[240px]">
-            <div className="relative w-32 h-20 md:w-40 md:h-24 mb-3  opacity-60 hover:opacity-100 transition-all duration-300">
-                <img
-                    src={partner.logo}
-                    alt={partner.name}
-                    className="w-full h-full object-contain"
-                    loading="lazy"
-                    decoding="async"
-                />
-            </div>
-            {/* <p className="text-sm font-medium text-foreground/80 text-center">{partner.name}</p> */}
-        </div>
-    );
+  return (
+    <div className="flex flex-col items-center justify-center px-8 md:px-12 min-w-[200px] md:min-w-[240px]">
+      <div className="relative w-32 h-20 md:w-40 md:h-24 mb-3  opacity-60 hover:opacity-100 transition-all duration-300">
+        <img
+          src={partner.logo}
+          alt={partner.name}
+          className="w-full h-full object-contain"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      {/* <p className="text-sm font-medium text-foreground/80 text-center">{partner.name}</p> */}
+    </div>
+  );
 }
 
 interface CarouselRowProps {
@@ -29,8 +29,8 @@ interface CarouselRowProps {
 }
 
 function CarouselRow({ partners, direction = "left", duration = 40 }: CarouselRowProps) {
-    // Duplicate partners array for seamless loop
-    const duplicatedPartners = [...partners, ...partners];
+  // Duplicate partners array for seamless loop
+  const duplicatedPartners = [...partners, ...partners];
 
   return (
     <div className="relative w-full overflow-hidden">
