@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "motion/react";
 import HeroSlide from "./HeroSlide";
 import { heroSlidesData } from "@/data/heroSlidesData";
 
@@ -163,10 +163,10 @@ export default function HeroCarousel() {
 
                 {/* Counter */}
                 <div className="text-xs md:text-sm tracking-wider text-white/90 ml-2">
-          <span className="inline-block min-w-[1.2rem] text-right">
-            {/* keep this simple; AnimatePresence could be used here for fancy number transitions */}
-              {index + 1}
-          </span>
+                    <span className="inline-block min-w-[1.2rem] text-right">
+                        {/* keep this simple; AnimatePresence could be used here for fancy number transitions */}
+                        {index + 1}
+                    </span>
                     <span className="opacity-70"> / {slidesCount}</span>
                 </div>
             </div>
