@@ -2,8 +2,10 @@ import React from "react";
 import { Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SponsorsCarousel } from "../SponsorsCarousel";
+import { useLocation } from "wouter";
 
 export default function Partners() {
+  const [, setLocation] = useLocation();
   return (
     <section className="py-16 md:py-24 bg-accent dark:bg-muted-foreground transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +28,7 @@ export default function Partners() {
         <div className="flex justify-center mt-8">
           <Button
             className="bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors duration-200"
-            onClick={() => window.open("/partners", "_self")}
+            onClick={() => setLocation("/partners")}
           >
             <Handshake className="h-5 w-5 text-white mr-2" />
             Partner with us

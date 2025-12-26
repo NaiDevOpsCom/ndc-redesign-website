@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import StatisticCounter from "@/components/ui/StatisticCounter";
-import { partnersData } from "@/data/partnersData";
 import { communityGallery } from "@/data/galleryData";
 import type { GalleryImage } from "@/data/galleryData";
 import { testimonialsData } from "@/data/testimonialsData";
@@ -79,44 +78,17 @@ function HeroSection() {
 
 // Partners Grid Section
 function PartnersGridSection() {
-  const allPartners = [...partnersData.communityPartners];
+
 
   return (
-    // <section className="py-16 md:py-20 bg-ndc-darkblue dark:bg-background">
-    //   <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-    //     <div className="text-center mb-12">
-    //       <h2 className="text-3xl md:text-4xl font-bold text-white dark:text-foreground mb-4">
-    //         Our Partners
-    //       </h2>
-    //       <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-    //     </div>
 
-    //     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8 md:gap-8">
-    //       {allPartners.map((partner) => (
-    //         <a
-    //           key={partner.id}
-    //           href={partner.website}
-    //           target="_blank"
-    //           rel="noopener noreferrer"
-    //           className="group bg-white dark:bg-card rounded-xl p-6 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-    //         >
-    //           <img
-    //             src={partner.logo}
-    //             alt={`${partner.name} logo`}
-    //             className="h-16 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
-    //           />
-    //         </a>
-    //       ))}
-    //     </div>
-    //   </div>
-    // </section>
 
     <section className="py-16 md:py-24 bg-accent dark:bg-muted-foreground">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">Our Partners</h2>
           <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-          <p className="text-lg text-black max-w-3xl mx-auto text-pretty">
+          <p className="text-lg text-foreground/80 dark:text-foreground max-w-3xl mx-auto text-pretty">
             {/* text-md md:text-lg text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed */}
             Trusted organizations collaborating with us to grow Kenya’s DevOps ecosystem through
             education, innovation, and opportunity.
