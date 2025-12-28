@@ -24,10 +24,7 @@ const AuthorMeta: React.FC<{ post: BlogPost }> = ({ post }) => (
     />
     <span>
       {post.author.name} ·
-      <time
-        dateTime={new Date(post.date).toISOString()}
-        className="ml-1"
-      >
+      <time dateTime={new Date(post.date).toISOString()} className="ml-1">
         {new Date(post.date).toLocaleDateString(undefined, {
           year: "numeric",
           month: "long",
@@ -40,7 +37,10 @@ const AuthorMeta: React.FC<{ post: BlogPost }> = ({ post }) => (
 
 const FeaturedPostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
   <article className="group overflow-hidden rounded-lg shadow-sm border bg-white">
-    <Link href={`/blogs/${post.slug}`} className="block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+    <Link
+      href={`/blogs/${post.slug}`}
+      className="block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+    >
       <figure className="relative">
         <img
           src={post.cover.url}
@@ -49,7 +49,10 @@ const FeaturedPostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
           height={post.cover.height}
           className="h-[360px] w-full object-cover"
         />
-        <figcaption className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" aria-hidden="true" />
+        <figcaption
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
+          aria-hidden="true"
+        />
       </figure>
       <div className="-mt-20 relative px-6 pb-6">
         <div className="inline-block">
@@ -58,9 +61,7 @@ const FeaturedPostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
         <h2 className="mt-3 text-2xl font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]">
           {post.title}
         </h2>
-        <p className="mt-2 max-w-3xl text-white/90">
-          {post.excerpt}
-        </p>
+        <p className="mt-2 max-w-3xl text-white/90">{post.excerpt}</p>
         <AuthorMeta post={post} />
       </div>
     </Link>
@@ -69,7 +70,10 @@ const FeaturedPostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
 
 const PostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
   <article className="flex h-full flex-col overflow-hidden rounded-lg border bg-white transition-shadow hover:shadow-md">
-    <Link href={`/blogs/${post.slug}`} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+    <Link
+      href={`/blogs/${post.slug}`}
+      className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+    >
       <img
         src={post.cover.url}
         alt={post.cover.alt}
@@ -80,9 +84,7 @@ const PostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
       />
       <div className="p-5">
         <CategoryBadge label={post.category} />
-        <h3 className="mt-2 line-clamp-2 text-lg font-semibold text-slate-900">
-          {post.title}
-        </h3>
+        <h3 className="mt-2 line-clamp-2 text-lg font-semibold text-slate-900">{post.title}</h3>
         <p className="mt-2 line-clamp-3 text-sm text-slate-600">{post.excerpt}</p>
         <AuthorMeta post={post} />
       </div>
@@ -94,7 +96,8 @@ export default function BlogPage() {
   // SEO meta
   useEffect(() => {
     const title = "Blogs | Nairobi DevOps Community";
-    const description = "Get information on all our upcoming events and past insights from the Nairobi DevOps Community blog.";
+    const description =
+      "Get information on all our upcoming events and past insights from the Nairobi DevOps Community blog.";
     document.title = title;
 
     const ensure = (selector: string, attrs: Record<string, string>) => {
@@ -115,7 +118,10 @@ export default function BlogPage() {
     // Twitter
     ensure('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
     ensure('meta[name="twitter:title"]', { name: "twitter:title", content: title });
-    ensure('meta[name="twitter:description"]', { name: "twitter:description", content: description });
+    ensure('meta[name="twitter:description"]', {
+      name: "twitter:description",
+      content: description,
+    });
   }, []);
 
   const { featured, posts } = blogData;
@@ -137,7 +143,9 @@ export default function BlogPage() {
         >
           <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center">
-            <h1 id="blog-page-title" className="text-4xl font-extrabold tracking-tight">Blogs</h1>
+            <h1 id="blog-page-title" className="text-4xl font-extrabold tracking-tight">
+              Blogs
+            </h1>
             <p className="mt-2 text-white/90">
               Get information on all our upcoming events and also past events.
             </p>
@@ -147,7 +155,9 @@ export default function BlogPage() {
         {/* Featured */}
         <section className="py-10 sm:py-12" aria-labelledby="featured-heading">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 id="featured-heading" className="mb-4 text-base font-semibold text-slate-700">Trending Post</h2>
+            <h2 id="featured-heading" className="mb-4 text-base font-semibold text-slate-700">
+              Trending Post
+            </h2>
             <FeaturedPostCard post={featured} />
           </div>
         </section>
@@ -155,7 +165,9 @@ export default function BlogPage() {
         {/* Grid */}
         <section className="pb-12 sm:pb-16" aria-labelledby="latest-heading">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 id="latest-heading" className="mb-6 text-base font-semibold text-slate-700">Our Latest Blog Topics</h2>
+            <h2 id="latest-heading" className="mb-6 text-base font-semibold text-slate-700">
+              Our Latest Blog Topics
+            </h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((p) => (
                 <PostCard key={p.id} post={p} />
@@ -177,13 +189,23 @@ export default function BlogPage() {
         >
           <div className="absolute inset-0 bg-slate-900/60" aria-hidden="true" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 id="cta-title" className="text-2xl md:text-3xl font-bold">Stay ahead in tech trends</h2>
-            <p className="mt-2 text-white/90">Stay ahead of the curve and unlock the future of DevOps by subscribing today.</p>
+            <h2 id="cta-title" className="text-2xl md:text-3xl font-bold">
+              Stay ahead in tech trends
+            </h2>
+            <p className="mt-2 text-white/90">
+              Stay ahead of the curve and unlock the future of DevOps by subscribing today.
+            </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="#newsletter" className="inline-flex items-center justify-center rounded bg-primary px-5 py-2.5 font-medium text-white hover:bg-[#023047] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+              <a
+                href="#newsletter"
+                className="inline-flex items-center justify-center rounded bg-primary px-5 py-2.5 font-medium text-white hover:bg-[#023047] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+              >
                 Subscribe Now
               </a>
-              <Link href="/community" className="inline-flex items-center justify-center rounded bg-white/10 px-5 py-2.5 font-medium text-white backdrop-blur hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+              <Link
+                href="/community"
+                className="inline-flex items-center justify-center rounded bg-white/10 px-5 py-2.5 font-medium text-white backdrop-blur hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+              >
                 Join the community
               </Link>
             </div>
