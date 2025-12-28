@@ -1,7 +1,8 @@
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
+
+import { Button } from "@/components/ui/button";
 import faqImage from "@/assets/faq.png";
 import { faqDataByCategory } from "@/data/faqData";
 

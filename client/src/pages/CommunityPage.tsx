@@ -1,5 +1,21 @@
 import React, { useMemo } from "react";
 import { Link } from "wouter";
+import {
+  ClipboardList,
+  FlaskConical,
+  Users,
+  Wrench,
+  Check,
+  Handshake,
+  Cloud,
+  Briefcase,
+  Terminal,
+  Compass,
+  GraduationCap,
+  Bell,
+  Youtube,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,22 +32,6 @@ import { communityGallery } from "@/data/galleryData";
 import { getWeightedRandomItem } from "@/utils/weightedRandom";
 import { LogoCloud } from "@/components/ui/ndcCampusLogos";
 import { getRandomItems } from "@/utils/getRandomItems";
-
-import {
-  ClipboardList,
-  FlaskConical,
-  Users,
-  Wrench,
-  Check,
-  Handshake,
-  Cloud,
-  Briefcase,
-  Terminal,
-  Compass,
-  GraduationCap,
-  Bell,
-  Youtube,
-} from "lucide-react";
 import { allData } from "@/data/whatWeDoData";
 import {
   events,

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+
 import { partnersData, type Partner } from "@/data/partnersData";
 
 interface SponsorCardProps {

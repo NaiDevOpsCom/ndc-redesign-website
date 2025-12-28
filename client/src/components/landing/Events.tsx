@@ -1,6 +1,9 @@
+import { format } from "date-fns";
+import React from "react";
+import Autoplay from "embla-carousel-autoplay";
+
 import { Button } from "@/components/ui/button";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
-import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,8 +13,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import React from "react";
-import Autoplay from "embla-carousel-autoplay";
 import RecordedVideoCard from "@/components/RecordedVideoCard.tsx";
 import { recordedSessions } from "@/data/communityPageData.ts";
 

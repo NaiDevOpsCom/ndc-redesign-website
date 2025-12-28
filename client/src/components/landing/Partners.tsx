@@ -1,8 +1,10 @@
 import React from "react";
 import { Handshake } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SponsorsCarousel } from "../SponsorsCarousel";
 import { useLocation } from "wouter";
+
+import { SponsorsCarousel } from "../SponsorsCarousel";
+
+import { Button } from "@/components/ui/button";
 
 export default function Partners() {
   const [, setLocation] = useLocation();

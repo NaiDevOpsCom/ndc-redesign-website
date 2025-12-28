@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+
 import { teamGallery } from "@/data/galleryData";
 
 const ANIMATION_VARIANTS = [

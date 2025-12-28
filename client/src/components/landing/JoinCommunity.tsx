@@ -1,6 +1,7 @@
 import { Users, Linkedin } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
+
+import { Button } from "@/components/ui/button";
 
 export default function JoinCommunity() {
   const [, navigate] = useLocation();

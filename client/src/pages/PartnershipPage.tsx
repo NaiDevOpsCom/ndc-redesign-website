@@ -1,16 +1,5 @@
 import React, { useMemo } from "react";
 import { Link } from "wouter";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import StatisticCounter from "@/components/ui/StatisticCounter";
-import { communityGallery } from "@/data/galleryData";
-import type { GalleryImage } from "@/data/galleryData";
-import { testimonialsData } from "@/data/testimonialsData";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +19,18 @@ import {
   User,
   MessageSquare,
 } from "lucide-react";
+
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import StatisticCounter from "@/components/ui/StatisticCounter";
+import { communityGallery } from "@/data/galleryData";
+import type { GalleryImage } from "@/data/galleryData";
+import { testimonialsData } from "@/data/testimonialsData";
 import { statisticsData } from "@/data/ndcData";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
 

@@ -1,7 +1,8 @@
 import { MapPin, Phone, Mail, Linkedin, Instagram, Youtube, Facebook, ArrowUp } from "lucide-react";
+import { Link } from "wouter";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "wouter";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();

@@ -1,7 +1,10 @@
 import { Switch, Route, useLocation } from "wouter";
 import { useEffect } from "react";
-import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
+
+import { queryClient } from "./lib/queryClient";
+
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -17,10 +20,8 @@ import BlogPage from "@/pages/BlogPage";
 import BlogDetail from "@/pages/BlogDetail";
 import DonationPage from "@/pages/DonationPage";
 import PartnershipPage from "@/pages/PartnershipPage";
-
 import NotFound from "@/pages/not-found";
 
-import { Analytics } from "@vercel/analytics/react";
 
 function Router() {
   const [location] = useLocation();

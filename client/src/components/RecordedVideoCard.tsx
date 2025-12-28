@@ -1,4 +1,5 @@
 import React from "react";
+
 import { getYouTubeThumbnail, YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG } from "@/lib/youtube";
 
 export interface RecordedVideoCardProps {
