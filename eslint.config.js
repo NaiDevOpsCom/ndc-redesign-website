@@ -63,7 +63,7 @@ export default [
     plugins: { promise: promisePlugin },
     rules: promisePlugin.configs.recommended.rules,
   },
-  
+
   // 10. Import plugin
   {
     plugins: { import: importPlugin },
@@ -71,18 +71,11 @@ export default [
       "import/order": [
         "error",
         {
-          "groups": [
-            "builtin",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index"
-          ],
-          "newlines-between": "always"
-        }
-      ]
-    }
+          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "newlines-between": "always",
+        },
+      ],
+    },
   },
 
   // 11. TS/React project-specific overrides
