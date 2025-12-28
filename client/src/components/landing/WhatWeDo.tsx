@@ -1,6 +1,6 @@
-import useEmblaCarousel from 'embla-carousel-react';
+import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 import { allData } from "@/data/whatWeDoData";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,7 +9,7 @@ export default function WhatWeDo() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
-      align: 'start',
+      align: "start",
     },
     [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]
   );
@@ -21,10 +21,10 @@ export default function WhatWeDo() {
     const onSelect = () => {
       setActiveIndex(emblaApi.selectedScrollSnap());
     };
-    emblaApi.on('select', onSelect);
+    emblaApi.on("select", onSelect);
     onSelect();
     return () => {
-      emblaApi.off('select', onSelect);
+      emblaApi.off("select", onSelect);
     };
   }, [emblaApi]);
 
@@ -34,16 +34,14 @@ export default function WhatWeDo() {
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">What We Do</h2>
           <p className="text-base md:text-lg text-white/80 max-w-3xl mx-auto">
-            We’re more than a meetup—we’re a movement. Nairobi DevOps Community exists to empower, connect, and grow the next generation of tech talent through:
+            We’re more than a meetup—we’re a movement. Nairobi DevOps Community exists to empower,
+            connect, and grow the next generation of tech talent through:
           </p>
         </div>
 
         {/* carousel  */}
         <div className="relative">
-          <div
-            className="overflow-hidden"
-            ref={emblaRef}
-          >
+          <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-6 will-change-transform">
               {allData.whatWeDo.map((service, index) => (
                 <div
@@ -56,7 +54,9 @@ export default function WhatWeDo() {
                         <div className="flex-shrink-0 w-12 h-12 mb-4 flex items-center justify-center">
                           <service.icon className="text-[#2563eb] h-12 w-12" />
                         </div>
-                        <h3 className="text-lg md:text-xl font-bold text-[#023047] mb-2">{service.title}</h3>
+                        <h3 className="text-lg md:text-xl font-bold text-[#023047] mb-2">
+                          {service.title}
+                        </h3>
                         <p className="text-sm md:text-base text-[#22223b] leading-relaxed mt-2 flex-1">
                           {service.description}
                         </p>
@@ -96,8 +96,9 @@ export default function WhatWeDo() {
               key={idx}
               aria-label={`Go to slide ${idx + 1}`}
               onClick={() => emblaApi && emblaApi.scrollTo(idx)}
-              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${idx === activeIndex ? 'bg-[#2563eb]' : 'bg-white/40'
-                }`}
+              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${
+                idx === activeIndex ? "bg-[#2563eb]" : "bg-white/40"
+              }`}
             />
           ))}
         </div>

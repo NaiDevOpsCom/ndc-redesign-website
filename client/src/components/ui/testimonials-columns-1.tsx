@@ -63,16 +63,26 @@ export function TestimonialsColumn({
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
-                <p className="text-base leading-relaxed text-muted-foreground">&ldquo;{text}&rdquo;</p>
+                <p className="text-base leading-relaxed text-muted-foreground">
+                  &ldquo;{text}&rdquo;
+                </p>
                 <div className="flex items-center gap-3 mt-6">
                   <Avatar>
                     <AvatarFallback className={avatarColor ? avatarColor : "bg-muted"}>
-                      {avatar ?? name.split(" ").map(n => n[0]).join("")}
+                      {avatar ??
+                        name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="font-semibold text-foreground leading-5 tracking-tight">{name}</span>
-                    <span className="text-sm text-muted-foreground leading-5 tracking-tight">{role}</span>
+                    <span className="font-semibold text-foreground leading-5 tracking-tight">
+                      {name}
+                    </span>
+                    <span className="text-sm text-muted-foreground leading-5 tracking-tight">
+                      {role}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -83,4 +93,3 @@ export function TestimonialsColumn({
     </div>
   );
 }
-

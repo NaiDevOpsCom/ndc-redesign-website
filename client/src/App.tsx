@@ -22,7 +22,6 @@ import DonationPage from "@/pages/DonationPage";
 import PartnershipPage from "@/pages/PartnershipPage";
 import NotFound from "@/pages/not-found";
 
-
 function Router() {
   const [location] = useLocation();
 

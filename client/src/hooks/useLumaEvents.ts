@@ -34,8 +34,7 @@ export function useLumaEvents() {
         setEvents(fetchedEvents);
       }
     } catch (err: unknown) {
-      const normalizedError =
-        err instanceof Error ? err : new Error("Failed to fetch Luma events");
+      const normalizedError = err instanceof Error ? err : new Error("Failed to fetch Luma events");
 
       console.error("useLumaEvents error:", normalizedError);
 

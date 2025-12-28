@@ -50,13 +50,7 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
   }
 
   return (
-    <div
-      className={cn(
-        "relative grid grid-cols-2 border-x md:grid-cols-4",
-        className
-      )}
-      {...props}
-    >
+    <div className={cn("relative grid grid-cols-2 border-x md:grid-cols-4", className)} {...props}>
       <div className="-translate-x-1/2 -top-px pointer-events-none absolute left-1/2 w-screen border-t" />
 
       <LogoCard
@@ -114,11 +108,7 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
         allLogos={allLogos}
       />
 
-      <LogoCard
-        className="border-r"
-        initialLogo={initialLogos[6]}
-        allLogos={allLogos}
-      />
+      <LogoCard className="border-r" initialLogo={initialLogos[6]} allLogos={allLogos} />
 
       <LogoCard
         className="bg-ndc-primary-light-blue dark:bg-secondary/30"
