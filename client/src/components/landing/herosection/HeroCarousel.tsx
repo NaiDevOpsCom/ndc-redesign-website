@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
+
 import HeroSlide from "./HeroSlide";
+
 import { heroSlidesData } from "@/data/heroSlidesData";
 
 const SLIDE_DURATION_MS = 6000; // 6s per slide (adjust to taste)

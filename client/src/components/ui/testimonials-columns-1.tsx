@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+
 import { Avatar, AvatarFallback } from "./avatar";
 
 export interface TestimonialsColumnItem {

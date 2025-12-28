@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { statisticsData } from "@/data/ndcData";
 import { Users, Calendar, Handshake, GraduationCap, Award } from "lucide-react";
 import React from "react";
-import StatisticCounter from "../ui/StatisticCounter";
 import { useLocation } from "wouter";
+
+import StatisticCounter from "../ui/StatisticCounter";
+
+import { statisticsData } from "@/data/ndcData";
+import { Button } from "@/components/ui/button";
 
 const iconMap: { [key: string]: React.ElementType } = {
   Users,

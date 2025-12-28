@@ -14,17 +14,14 @@ updates:
     reviewers:
       - "jumalaw98"
 
-    # Group all dependency updates into a single PR
+    # Group only minor and patch updates to maintain stability
     groups:
       frontend-dependencies:
         patterns:
           - "*"
-
-    # Prevent breaking (major) version updates
-    ignore:
-      - dependency-name: "*"
         update-types:
-          - "version-update:semver-major"
+          - "minor"
+          - "patch"
 
   # 2. GitHub Actions dependencies
   - package-ecosystem: "github-actions"
@@ -41,3 +38,6 @@ updates:
       github-actions:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"

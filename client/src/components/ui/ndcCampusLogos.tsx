@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { PlusIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { partnersData } from "@/data/partnersData";
 

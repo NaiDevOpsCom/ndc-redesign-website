@@ -1,18 +1,18 @@
 import React, { useCallback, useState, useEffect, useRef, useMemo } from "react";
+import { Cloud, Wrench, Award, Rocket, Handshake, Youtube } from "lucide-react";
+import { Image as UnpicImage } from "@unpic/react";
+import { Link } from "wouter";
+import { format, isValid } from "date-fns";
+import Autoplay from "embla-carousel-autoplay";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Cloud, Wrench, Award, Rocket, Handshake, Youtube } from "lucide-react";
-import { Image as UnpicImage } from "@unpic/react";
 import { getFAQsByCategory } from "@/data/faqData";
-import { Link } from "wouter";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
-import { format, isValid } from "date-fns";
 import { communityGallery } from "@/data/galleryData";
-
-import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
+import { Link } from "wouter";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Link } from "wouter";
 import { blogData, type BlogPost } from "@/data/blogData";
 
 // Small, file‑scoped UI primitives (kept local to avoid new shared components)

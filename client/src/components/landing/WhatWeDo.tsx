@@ -1,8 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { allData } from "@/data/whatWeDoData";
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from 'react';
+
+import { allData } from "@/data/whatWeDoData";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function WhatWeDo() {
   const [emblaRef, emblaApi] = useEmblaCarousel(

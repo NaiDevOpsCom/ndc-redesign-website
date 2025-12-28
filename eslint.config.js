@@ -1,3 +1,6 @@
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
 import js from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
@@ -9,8 +12,6 @@ import promisePlugin from "eslint-plugin-promise";
 import importPlugin from "eslint-plugin-import";
 import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
 
 // Recreate __dirname for ESM context
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -50,18 +51,24 @@ export default [
   },
 
   // 7. Security plugin
-  ...securityPlugin.configs.recommended,
+  {
+    plugins: { security: securityPlugin },
+    rules: { ...securityPlugin.configs.recommended.rules },
+  },
 
   // 8. JSX A11y
   {
     plugins: { "jsx-a11y": jsxA11yPlugin },
-    rules: jsxA11yPlugin.configs.recommended.rules,
+    rules: { ...jsxA11yPlugin.configs.recommended.rules },
+    languageOptions: {
+      parserOptions: { ...jsxA11yPlugin.configs.recommended.parserOptions },
+    },
   },
 
   // 9. Promise plugin
   {
     plugins: { promise: promisePlugin },
-    rules: promisePlugin.configs.recommended.rules,
+    rules: { ...promisePlugin.configs.recommended.rules },
   },
 
   // 10. Import plugin

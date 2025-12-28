@@ -1,9 +1,10 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { HeroSlideData } from "@/data/heroSlidesData";
 import { useLocation } from "wouter";
 import { Users, Calendar, ArrowRight, Briefcase, Heart } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { HeroSlideData } from "@/data/heroSlidesData";
 
 interface HeroSlideProps {
   slide: HeroSlideData;

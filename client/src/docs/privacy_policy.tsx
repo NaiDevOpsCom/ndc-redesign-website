@@ -1,7 +1,8 @@
 // Removed unused imports to satisfy ESLint
+import { useLocation } from "wouter";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useLocation } from "wouter";
 
 export default function PrivacyPolicy() {
   // eslint: keep useLocation destructuring as a placeholder for future navigation, prefix unused var

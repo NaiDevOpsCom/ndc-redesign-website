@@ -1,10 +1,11 @@
 import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
+import { Image as UnpicImage } from "@unpic/react";
+
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Image as UnpicImage } from "@unpic/react";
 import { teamData, statisticsData } from "@/data/ndcData";
 import StatisticCounter from "@/components/ui/StatisticCounter";
 import { communityGallery } from "@/data/galleryData";
