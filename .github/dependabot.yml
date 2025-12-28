@@ -12,16 +12,29 @@ updates:
     open-pull-requests-limit: 10
 
     reviewers:
-      - "jumalaw98"
+      - "@jumalaw98"
 
-    # Group only minor and patch updates to maintain stability
+    # Group dependencies for stability
     groups:
+      # Group ESLint + TypeScript-ESLint together
+      eslint-group:
+        patterns:
+          - "eslint"
+          - "@typescript-eslint/parser"
+          - "@typescript-eslint/eslint-plugin"
+
+      # Other frontend dependencies
       frontend-dependencies:
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
+
+    # Ignore ESLint v9 until ecosystem is ready
+    ignore:
+      - dependency-name: "eslint"
+        versions: [">=9"]
 
   # 2. GitHub Actions dependencies
   - package-ecosystem: "github-actions"
@@ -32,7 +45,7 @@ updates:
       timezone: "Africa/Nairobi"
 
     reviewers:
-      - "jumalaw98"
+      - "@jumalaw98"
 
     groups:
       github-actions:
