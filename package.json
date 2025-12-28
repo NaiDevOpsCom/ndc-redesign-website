@@ -5,7 +5,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "check-env": "tsx scripts/check-env.ts",
+    "build": "npm run check-env && vite build",
+    "build:staging": "npm run check-env && vite build --mode staging",
+    "build:prod": "npm run check-env && vite build --mode production",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",

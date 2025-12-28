@@ -1,0 +1,59 @@
+name: Hardened Build Verification
+
+on:
+  push:
+    branches:
+      - production
+      - staging
+  pull_request:
+    branches:
+      - production
+      - staging
+
+jobs:
+  verify-hardening:
+    name: Verify Hardening
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Environment Safety Check
+        run: npm run check-env
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - name: Build Hardened App
+        run: npm run build
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - name: Verify No Source Maps
+        run: |
+          if find dist -name "*.map" | grep -q .; then
+            echo "::error::Source maps found in hardened build! Hardening failed."
+            exit 1
+          else
+            echo "SUCCESS: No source maps found."
+          fi
+
+      - name: Verify No Console Statements
+        run: |
+          # Search for console.log in the minified js files. 
+          # We exclude node_modules if they were somehow bundled raw, 
+          # but vite build targets app source.
+          if grep -r "console.log" dist/assets/*.js; then
+            echo "::error::Found console.log in hardened build! Hardening failed."
+            exit 1
+          else
+            echo "SUCCESS: No console.log found."
+          fi
