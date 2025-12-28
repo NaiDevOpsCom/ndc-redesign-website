@@ -21,7 +21,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Qodana Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.cache/qodana
           key: qodana-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
