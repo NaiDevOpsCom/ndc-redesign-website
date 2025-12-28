@@ -4,6 +4,9 @@ import tsParser from "@typescript-eslint/parser";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import securityPlugin from "eslint-plugin-security";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
+import promisePlugin from "eslint-plugin-promise";
+import importPlugin from "eslint-plugin-import";
 import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
 import { fileURLToPath } from "node:url";
@@ -29,7 +32,9 @@ export default [
   // 4. TypeScript rules
   {
     plugins: { "@typescript-eslint": tsPlugin },
-    rules: tsPlugin.configs.recommended.rules,
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+    },
   },
 
   // 5. React recommended rules
@@ -45,12 +50,42 @@ export default [
   },
 
   // 7. Security plugin
+  ...securityPlugin.configs.recommended,
+
+  // 8. JSX A11y
   {
-    plugins: { security: securityPlugin },
-    rules: securityPlugin.configs.recommended.rules,
+    plugins: { "jsx-a11y": jsxA11yPlugin },
+    rules: jsxA11yPlugin.configs.recommended.rules,
   },
 
-  // 8. TS/React project-specific overrides
+  // 9. Promise plugin
+  {
+    plugins: { promise: promisePlugin },
+    rules: promisePlugin.configs.recommended.rules,
+  },
+  
+  // 10. Import plugin
+  {
+    plugins: { import: importPlugin },
+    rules: {
+      "import/order": [
+        "error",
+        {
+          "groups": [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index"
+          ],
+          "newlines-between": "always"
+        }
+      ]
+    }
+  },
+
+  // 11. TS/React project-specific overrides
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -77,6 +112,6 @@ export default [
     },
   },
 
-  // 9. Prettier config (must be last to disable conflicting formatting rules)
+  // 12. Prettier config (must be last to disable conflicting formatting rules)
   prettierConfig,
 ];
