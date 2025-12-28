@@ -26,7 +26,7 @@ jobs:
           path: ~/.cache/qodana
           key: qodana-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Run Qodana Scan with Auto-Fix
-        uses: JetBrains/qodana-action@v2025.2
+        uses: JetBrains/qodana-action@v2025.3
         with:
           pr-mode: ${{ github.event_name == 'pull_request' }}
           args: --apply-fixes
