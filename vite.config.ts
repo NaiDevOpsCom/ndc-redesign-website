@@ -3,14 +3,17 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig(({ mode }) => {
-  // Hardening: Apply only to staging and production branches
+  // Hardening: Apply to staging/production branches OR if running locally in production mode w/o branch info
+  // This allows `npm run build:prod` locally to produce a hardened build even if env vars are missing
   const branch = process.env.GITHUB_REF_NAME || process.env.VERCEL_GIT_COMMIT_REF || "";
+
   const isHardenedBranch = ["production", "staging"].includes(branch);
   const isHardenedMode = ["production", "staging"].includes(mode);
 
-  // Only harden if BOTH the mode is production/staging AND the branch is production/staging
-  // This ensures no impact on 'main' or other branches even if mode is 'production'
-  const isHardened = isHardenedMode && isHardenedBranch;
+  // If we have explicit branch info, trust it (must be on prod/staging branch AND mode).
+  // If we DO NOT have branch info (local), fall back to mode check.
+  const hasBranchInfo = !!branch;
+  const isHardened = hasBranchInfo ? (isHardenedBranch && isHardenedMode) : isHardenedMode;
 
   return {
     plugins: [react()],
