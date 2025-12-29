@@ -12,7 +12,7 @@ updates:
     open-pull-requests-limit: 10
 
     reviewers:
-      - "@jumalaw98"
+      - "jumalaw98"
 
     # Group dependencies for stability
     groups:
@@ -45,7 +45,7 @@ updates:
       timezone: "Africa/Nairobi"
 
     reviewers:
-      - "@jumalaw98"
+      - "jumalaw98"
 
     groups:
       github-actions:

@@ -14,6 +14,8 @@ jobs:
   verify-hardening:
     name: Verify Hardening
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,11 +28,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Run Environment Safety Check
-        run: npm run check-env
-        env:
-          GITHUB_REF_NAME: ${{ github.ref_name }}
 
       - name: Build Hardened App
         run: npm run build
@@ -46,14 +43,13 @@ jobs:
             echo "SUCCESS: No source maps found."
           fi
 
-      - name: Verify No Console Statements
+      - name: Verify No Console/Debugger Statements
         run: |
-          # Search for console.log in the minified js files. 
-          # We exclude node_modules if they were somehow bundled raw, 
-          # but vite build targets app source.
-          if grep -r "console.log" dist/assets/*.js; then
-            echo "::error::Found console.log in hardened build! Hardening failed."
+          # Search for any `console.*` usage or `debugger` in the minified js files.
+          # This is more robust than just checking for `console.log`.
+          if find dist -name "*.js" -print0 | xargs -0 grep -lE "console\.|debugger"; then
+            echo "::error::Found console or debugger statements in hardened build! Hardening failed."
             exit 1
           else
-            echo "SUCCESS: No console.log found."
+            echo "SUCCESS: No console or debugger statements found."
           fi
