@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   // If we have explicit branch info, trust it (must be on prod/staging branch AND mode).
   // If we DO NOT have branch info (local), fall back to mode check.
   const hasBranchInfo = !!branch;
-  const isHardened = hasBranchInfo ? (isHardenedBranch && isHardenedMode) : isHardenedMode;
+  const isHardened = hasBranchInfo ? isHardenedBranch && isHardenedMode : isHardenedMode;
 
   return {
     plugins: [react()],
