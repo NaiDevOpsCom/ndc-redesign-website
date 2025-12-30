@@ -16,6 +16,24 @@ updates:
 
     # Group dependencies for stability
     groups:
+      # 🔒 React core must move together
+      react-core:
+        patterns:
+          - "react"
+          - "@types/react"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # 🔒 React DOM must move together
+      react-dom-core:
+        patterns:
+          - "react-dom"
+          - "@types/react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+
       # Group ESLint + TypeScript-ESLint together
       eslint-group:
         patterns:

@@ -1,9 +1,17 @@
+/* ==========================
+   Google Fonts
+========================== */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ==========================
+   Tailwind Directives
+========================== */
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
+/* ==========================
+   CSS Variables
+========================== */
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(240, 10%, 3.9%);
@@ -30,6 +38,7 @@
   --faq-bg: hsla(209, 56%, 88%, 1);
   --faq-text: #000000;
   --black-overlay: rgba(0, 0, 0, 0.7);
+  --background-secondary: hsl(0,0%,98%);
 }
 
 .dark {
@@ -57,6 +66,9 @@
   --faq-text: #ffffff;
 }
 
+/* ==========================
+   Text & Fonts
+========================== */
 .text-nairobi-dark {
   color: var(--nairobi-dark) !important;
 }
@@ -67,43 +79,48 @@
   font-style: normal;
   font-size: 36px;
   line-height: 41px;
-  /*letter-spacing: 0%;*/
-  color: rgba(0, 0, 0, 0.7); /* #000000B2 equivalent */
+  color: rgba(0, 0, 0, 0.7);
 }
 
+/* ==========================
+   Base Layer
+========================== */
 @layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
     @apply font-sans antialiased bg-background text-foreground transition-colors duration-300;
   }
 }
 
-/* Custom scrollbar */
+/* ==========================
+   Custom Scrollbar
+========================== */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-muted;
+  background-color: var(--muted);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-400 rounded-full;
+  background-color: #cbd5e1; /* slate-400 fallback */
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-500;
+  background-color: #94a3b8; /* slate-500 fallback */
 }
 
-/* Smooth scroll behavior */
+/* ==========================
+   Smooth Scroll
+========================== */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom animations */
+/* ==========================
+   Animations
+========================== */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -125,4 +142,23 @@ html {
 
 .hover-scale:hover {
   transform: scale(1.05);
+}
+
+/* ==========================
+   Tailwind Custom Utilities (CSS Variables)
+========================== */
+@layer utilities {
+  .border-border { border-color: var(--border); }
+  .text-primary-light-blue { color: var(--primary-light-blue); }
+  .text-primary { color: var(--primary); }
+  .text-secondary { color: var(--secondary); }
+  .text-muted { color: var(--muted); }
+  .text-accent { color: var(--accent); }
+  .text-destructive { color: var(--destructive); }
+  .bg-primary-light-blue { background-color: var(--primary-light-blue); }
+  .bg-background { background-color: var(--background); }
+  .bg-card { background-color: var(--card); }
+  .bg-popover { background-color: var(--popover); }
+  .ring-ring { ring-color: var(--ring); }
+  .bg-input { background-color: var(--input); }
 }
