@@ -38,7 +38,7 @@
   --faq-bg: hsla(209, 56%, 88%, 1);
   --faq-text: #000000;
   --black-overlay: rgba(0, 0, 0, 0.7);
-  --background-secondary: hsl(0,0%,98%);
+  --background-secondary: hsl(0, 0%, 98%);
 }
 
 .dark {
@@ -148,17 +148,43 @@ html {
    Tailwind Custom Utilities (CSS Variables)
 ========================== */
 @layer utilities {
-  .border-border { border-color: var(--border); }
-  .text-primary-light-blue { color: var(--primary-light-blue); }
-  .text-primary { color: var(--primary); }
-  .text-secondary { color: var(--secondary); }
-  .text-muted { color: var(--muted); }
-  .text-accent { color: var(--accent); }
-  .text-destructive { color: var(--destructive); }
-  .bg-primary-light-blue { background-color: var(--primary-light-blue); }
-  .bg-background { background-color: var(--background); }
-  .bg-card { background-color: var(--card); }
-  .bg-popover { background-color: var(--popover); }
-  .ring-ring { ring-color: var(--ring); }
-  .bg-input { background-color: var(--input); }
+  .border-border {
+    border-color: var(--border);
+  }
+  .text-primary-light-blue {
+    color: var(--primary-light-blue);
+  }
+  .text-primary {
+    color: var(--primary);
+  }
+  .text-secondary {
+    color: var(--secondary);
+  }
+  .text-muted {
+    color: var(--muted);
+  }
+  .text-accent {
+    color: var(--accent);
+  }
+  .text-destructive {
+    color: var(--destructive);
+  }
+  .bg-primary-light-blue {
+    background-color: var(--primary-light-blue);
+  }
+  .bg-background {
+    background-color: var(--background);
+  }
+  .bg-card {
+    background-color: var(--card);
+  }
+  .bg-popover {
+    background-color: var(--popover);
+  }
+  .ring-ring {
+    ring-color: var(--ring);
+  }
+  .bg-input {
+    background-color: var(--input);
+  }
 }
