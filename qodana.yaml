@@ -20,14 +20,14 @@ include:
 exclude:
   - name: GeneratedFiles
     paths:
-      - '**/node_modules/**'
-      - '**/dist/**'
-      - '**/build/**'
-      - '**/coverage/**'
-      - '**/.vite/**'
-      - '**/*.d.ts'
-      - '**/*.min.js'
-      - '**/*.bundle.js'
+      - "**/node_modules/**"
+      - "**/dist/**"
+      - "**/build/**"
+      - "**/coverage/**"
+      - "**/.vite/**"
+      - "**/*.d.ts"
+      - "**/*.min.js"
+      - "**/*.bundle.js"
 
 failThreshold: 1
 

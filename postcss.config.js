@@ -1,18 +1,15 @@
-import autoprefixer from 'autoprefixer'
+import autoprefixer from "autoprefixer";
 
-let tailwindPlugin
+let tailwindPlugin;
 
 try {
   // Tailwind v4+
-  tailwindPlugin = (await import('@tailwindcss/postcss')).default
+  tailwindPlugin = (await import("@tailwindcss/postcss")).default;
 } catch {
   // Tailwind v3 fallback
-  tailwindPlugin = (await import('tailwindcss')).default
+  tailwindPlugin = (await import("tailwindcss")).default;
 }
 
 export default {
-  plugins: [
-    tailwindPlugin,
-    autoprefixer,
-  ],
-}
+  plugins: [tailwindPlugin, autoprefixer],
+};
