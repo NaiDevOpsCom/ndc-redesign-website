@@ -29,7 +29,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="py-20 bg-[#d3d3d3] dark:bg-[#000000E5] transition-colors duration-300"
+      className="py-20 bg-[#d3d3d3] dark:bg-ndc-darkblue transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -64,17 +64,17 @@ export default function AboutSection() {
               and tech enthusiasts across Kenya and beyond.
             </p>
 
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 dark:bg-[#FFFFFF99] rounded-xl p-6">
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 bg-primary-light-blue dark:bg-[#FFFFFF99] rounded-xl p-6">
               {displayedStats.map((stat) => {
                 const Icon = stat.icon ? iconMap[stat.icon] : null;
                 return (
                   <div key={stat.id} className="flex items-center gap-4">
-                    {Icon && <Icon className="h-10 w-10 text-primary flex-shrink-0" />}
+                    {Icon && <Icon className="h-10 w-10 text-primary shrink-0" />}
                     <div className="text-left">
-                      <div className="text-2xl font-bold text-foreground">
+                      <div className="text-2xl font-bold text-foreground dark:text-black">
                         <StatisticCounter endValue={stat.number} />
                       </div>
-                      <div className="text-sm text-muted-foreground dark:text-white">
+                      <div className="text-sm text-muted-foreground dark:text-black">
                         {stat.label}
                       </div>
                     </div>
@@ -86,7 +86,7 @@ export default function AboutSection() {
             <div className="flex items-center space-x-4 pt-4 ">
               <Button
                 size="lg"
-                className="hover:bg-[#023047] transition-colors duration-200 "
+                className="hover:bg-ndc-darkblue transition-colors duration-200 dark:hover:bg-white dark:text-black"
                 onClick={handleKnowUsClick}
               >
                 Get to Know Us

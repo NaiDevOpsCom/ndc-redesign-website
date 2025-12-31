@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Cloud, Wrench, Award, Rocket, Handshake, Youtube } from "lucide-react";
 import { Image as UnpicImage } from "@unpic/react";
 import { Link } from "wouter";
@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getFAQsByCategory } from "@/data/faqData";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
-import { communityGallery } from "@/data/galleryData";
+import { GalleryImage, communityGallery } from "@/data/galleryData";
 import {
   Carousel,
   CarouselContent,
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/carousel";
 import RecordedVideoCard from "@/components/RecordedVideoCard";
 import { recordedSessions } from "@/data/communityPageData";
+import { getRandomItems } from "@/utils/getRandomItems";
 
 // Reusable Event Card Component for Events Page
 interface UpcomingEventCardProps {
@@ -222,13 +223,20 @@ export default function Eventspage() {
     { icon: Handshake, title: "Host workshops and campus tours" },
   ];
 
+  // Random background image for "Why Our Events Matter"
+  const [matterBgImage] = useState<GalleryImage | null>(() => {
+    return getRandomItems(communityGallery, 1)[0] || null;
+  });
+
   // Random CTA background image from galleryData (weighted by priority)
-  const ctaBgImage = useMemo(() => {
+  const [ctaBgImage] = useState<GalleryImage>(() => {
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    if (!pool.length) return { url: "", alt: "Community image" };
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx];
-  }, []);
+    if (pool.length > 0) {
+      const idx = Math.floor(Math.random() * pool.length);
+      return pool[idx];
+    }
+    return { url: "", alt: "Community image", priority: false };
+  });
 
   // --- Render ---
   return (
@@ -267,7 +275,7 @@ export default function Eventspage() {
       </header>
 
       {/* Why Our Events Matter */}
-      <section className="py-16 lg:py-24 bg-blue-50 dark:bg-slate-900">
+      <section className="py-16 lg:py-24 bg-blue-50 dark:bg-ndc-darkblue">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="order-2 lg:order-1">
@@ -292,8 +300,11 @@ export default function Eventspage() {
             <div className="relative order-1 lg:order-2">
               <div className="rounded-2xl overflow-hidden shadow-2xl">
                 <UnpicImage
-                  src="https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9864.jpg?updatedAt=1764488001283"
-                  alt="Event group photo"
+                  src={
+                    matterBgImage?.url ||
+                    "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9864.jpg?updatedAt=1764488001283"
+                  }
+                  alt={matterBgImage?.alt || "Event group photo"}
                   className="w-full h-80 md:h-96 object-cover"
                   width={1200}
                   height={800}
@@ -307,7 +318,7 @@ export default function Eventspage() {
       </section>
 
       {/* Meetups */}
-      <section id="meetup" className="py-16 lg:py-24">
+      <section id="meetup" className="py-16 lg:py-24 dark:bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">Events & Meetups</h2>
@@ -331,7 +342,7 @@ export default function Eventspage() {
       </section>
 
       {/* Past Events Highlights */}
-      <section className="py-16 lg:py-24 bg-[#d1e2f2] dark:bg-slate-900">
+      <section className="py-16 lg:py-24 bg-primary-light-blue dark:bg-ndc-darkblue">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Past Events Highlights</h2>
@@ -358,7 +369,7 @@ export default function Eventspage() {
               asChild
               size="lg"
               variant="outline"
-              className="text-primary hover:bg-primary hover:text-white font-semibold px-8 py-6 text-lg transition-all duration-300 shadow-lg"
+              className="text-white bg-primary hover:bg-ndc-darkblue hover:text-white px-8 py-6 text-lg transition-all duration-300 shadow-lg dark:bg-white dark:text-primary dark:hover:bg-primary dark:hover:text-white"
             >
               <a
                 href="https://www.youtube.com/@NairobiDevopsCommunity"
@@ -472,12 +483,6 @@ function FAQCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<number | null>(null);
 
-  const prev = useCallback(
-    () => setSlideIdx((s) => (s - 1 + slides.length) % slides.length),
-    [slides.length]
-  );
-  const next = useCallback(() => setSlideIdx((s) => (s + 1) % slides.length), [slides.length]);
-
   // Autoplay: advance every 5s when not paused
   useEffect(() => {
     // clear any existing interval
@@ -500,10 +505,6 @@ function FAQCarousel() {
     };
   }, [isPaused, slides.length]);
 
-  const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowLeft") prev();
-    if (e.key === "ArrowRight") next();
-  };
 
   if (slides.length === 0) {
     return (
@@ -513,10 +514,7 @@ function FAQCarousel() {
 
   return (
     <div
-      className="relative"
-      tabIndex={0}
-      onKeyDown={handleKey}
-      aria-roledescription="carousel"
+      className="relative focus:outline-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
@@ -525,7 +523,7 @@ function FAQCarousel() {
       {/* Slides */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {slides[slideIdx].map((f, idx) => (
-          <div key={`${slideIdx}-${idx}-${f.question}`} className="bg-[#d1e2f2] rounded-lg p-6">
+          <div key={`${slideIdx}-${idx}-${f.question}`} className="bg-primary-light-blue rounded-lg p-6">
             <h3 className="font-semibold mb-3">{f.question}</h3>
             <p className="text-sm text-muted-foreground whitespace-pre-line">{f.answer}</p>
           </div>
@@ -543,7 +541,7 @@ function FAQCarousel() {
               setSlideIdx(i);
               setIsPaused(true);
             }}
-            className={`h-3 w-3 rounded-full ${i === slideIdx ? "bg-primary" : "bg-[#d1e2f2] dark:bg-slate-600"}`}
+            className={`h-3 w-3 rounded-full ${i === slideIdx ? "bg-primary" : "bg-primary-light-blue dark:bg-slate-600"}`}
           />
         ))}
       </div>

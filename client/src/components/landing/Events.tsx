@@ -119,8 +119,45 @@ function LumaEventsList() {
 
   if (events.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">No upcoming events scheduled. Check back soon!</p>
+      <div className="flex flex-col items-center justify-center py-16 px-4">
+        {/* Calendar Icon with "0" Badge */}
+        <div className="relative mb-6">
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+            <Cloud className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+          </div>
+          <div className="absolute -top-2 -right-2 bg-white dark:bg-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-md border-2 border-gray-200 dark:border-gray-700">
+            <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">0</span>
+          </div>
+        </div>
+
+        {/* Headline */}
+        <h3 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-3">
+          No Upcoming Events Scheduled
+        </h3>
+
+        {/* Description */}
+        <p className="text-lg max-w-3xl text-muted-foreground text-center mb-6">
+          We don&apos;t have any events scheduled at the moment, but we&apos;re always planning
+          something exciting. Subscribe to our newsletter to be notified when new events are
+          announced.
+        </p>
+
+        {/* CTA Button */}
+        <Button
+          size="lg"
+          className="bg-primary hover:bg-[#023047] text-white px-8 py-6 text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+          onClick={() => {
+            const newsletterSection = document.getElementById("newsletter");
+            if (newsletterSection) {
+              newsletterSection.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }
+          }}
+        >
+          Be the First to Know
+        </Button>
       </div>
     );
   }
@@ -161,6 +198,7 @@ function LumaEventsList() {
 }
 
 import { getRandomItems } from "@/utils/getRandomItems";
+import { Cloud } from "lucide-react";
 
 export default function Events() {
   const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
@@ -214,6 +252,7 @@ export default function Events() {
         <div className="text-center mt-16">
           <Button
             size="lg"
+            className="bg-primary hover:bg-ndc-darkblue"
             onClick={() => {
               window.location.href = "/events";
             }}

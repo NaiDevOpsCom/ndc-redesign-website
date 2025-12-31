@@ -1,5 +1,5 @@
 import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { Image as UnpicImage } from "@unpic/react";
 
@@ -10,6 +10,7 @@ import { teamData, statisticsData } from "@/data/ndcData";
 import StatisticCounter from "@/components/ui/StatisticCounter";
 import { communityGallery } from "@/data/galleryData";
 import TeamGallery from "@/components/TeamGallery";
+import { getRandomItems } from "@/utils/getRandomItems";
 
 // Objectives data
 const objectivesData = [
@@ -46,20 +47,23 @@ const objectivesData = [
 ];
 
 export default function AboutUs() {
-  const randomImage = useMemo(() => {
+  const [randomImage] = useState(() => {
     if (communityGallery.length > 0) {
       return communityGallery[Math.floor(Math.random() * communityGallery.length)];
     }
     return null;
-  }, []);
-  const [featuredId, setFeaturedId] = useState<string | null>(null);
-  const [, navigate] = useLocation();
+  });
 
-  useEffect(() => {
-    if (!teamData || teamData.length === 0) return;
+  const [storyImages] = useState(() => {
+    return getRandomItems(communityGallery, 2);
+  });
+
+  const [featuredId, setFeaturedId] = useState<string | null>(() => {
+    if (!teamData || teamData.length === 0) return null;
     const idx = Math.floor(Math.random() * teamData.length);
-    setFeaturedId(teamData[idx].id);
-  }, []);
+    return teamData[idx].id;
+  });
+  const [, navigate] = useLocation();
 
   const featured = useMemo(() => {
     if (!featuredId) return null;
@@ -124,8 +128,8 @@ export default function AboutUs() {
       </section>
 
       {/* Our Purpose Section */}
-      <section className="py-20 bg-[#E6E6E6] dark:bg-[#1E1E1E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-[#1E1E1E]">
+      <section className="py-20 bg-[#E6E6E6] dark:bg-ndc-darkblue">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">Our Purpose</h2>
             <h3 className="figma-heading dark:text-white">
@@ -188,7 +192,7 @@ export default function AboutUs() {
       </section>
 
       {/* Our Story Section */}
-      <section className="py-20">
+      <section className="py-20 dark:bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl text-center font-bold text-gray-900 dark:text-white">
             Our Story
@@ -199,8 +203,11 @@ export default function AboutUs() {
             <div className="relative flex justify-center items-center h-64 w-full lg:h-80 lg:w-full">
               {/* Background image */}
               <UnpicImage
-                src="https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9864.jpg?updatedAt=1764488001283"
-                alt="Africa DevOps Summit"
+                src={
+                  storyImages[0]?.url ||
+                  "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9864.jpg?updatedAt=1764488001283"
+                }
+                alt={storyImages[0]?.alt || "Africa DevOps Summit"}
                 className="rounded-lg shadow-lg absolute top-0 left-0 w-4/5 h-4/5 lg:w-[85%] lg:h-[85%] object-cover transition-transform duration-300 hover:scale-105 hover:rotate-1"
                 width={300}
                 height={300}
@@ -209,9 +216,12 @@ export default function AboutUs() {
               />
               {/* Floating image */}
               <UnpicImage
-                src="https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"
-                alt="Nairobi DevOps Community"
-                className="rounded-lg shadow-2xl absolute right-0 bottom-0 w-3/5 h-3/5 lg:w-[65%] lg:h-[65%] object-cover border-4 border-white dark:border-gray-900 transition-transform duration-300 hover:scale-110 hover:-rotate-2 hover:shadow-primary"
+                src={
+                  storyImages[1]?.url ||
+                  "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"
+                }
+                alt={storyImages[1]?.alt || "Nairobi DevOps Community"}
+                className="rounded-lg shadow-2xl absolute right-0 bottom-0 w-3/5 h-3/5 lg:w-[65%] lg:h-[65%] object-cover border-4 border-primary/50 dark:border-primary transition-transform duration-300 hover:scale-110 hover:-rotate-2 hover:shadow-primary"
                 width={300}
                 height={300}
                 loading="lazy"
