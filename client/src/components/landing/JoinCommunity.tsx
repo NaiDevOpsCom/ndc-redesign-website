@@ -1,10 +1,17 @@
+import { useState } from "react";
 import { Users, Linkedin } from "lucide-react";
 import { useLocation } from "wouter";
 
 import { Button } from "@/components/ui/button";
+import { communityGallery } from "@/data/galleryData";
+import { getRandomItems } from "@/utils/getRandomItems";
 
 export default function JoinCommunity() {
   const [, navigate] = useLocation();
+  const [bgImage] = useState<string>(() => {
+    const randomImage = getRandomItems(communityGallery, 1)[0];
+    return randomImage ? randomImage.url : "";
+  });
 
   const handleJoinClick = () => {
     navigate("/join");
@@ -20,12 +27,13 @@ export default function JoinCommunity() {
 
   return (
     <section
-      className="relative py-20 overflow-hidden bg-cover bg-center bg-no-repeat"
+      className="relative py-20 overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-700"
       style={{
-        backgroundImage: "url('https://pbs.twimg.com/media/Gw1gwJhWsAAZcBo?format=jpg&name=large')",
+        backgroundImage: bgImage ? `url('${bgImage}')` : "none",
+        backgroundColor: "#000000",
       }}
     >
-      <div className="absolute inset-0 bg-primary/80 dark:bg-primary/90"></div>
+      <div className="absolute inset-0 bg-black/70"></div>
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Join Our Community</h2>
         <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">

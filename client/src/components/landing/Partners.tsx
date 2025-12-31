@@ -29,7 +29,7 @@ export default function Partners() {
         {/* CTA Button */}
         <div className="flex justify-center mt-8">
           <Button
-            className="bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors duration-200"
+            className="bg-primary text-white flex items-center justify-center hover:bg-ndc-darkblue transition-colors duration-200"
             onClick={() => setLocation("/partners")}
           >
             <Handshake className="h-5 w-5 text-white mr-2" />
