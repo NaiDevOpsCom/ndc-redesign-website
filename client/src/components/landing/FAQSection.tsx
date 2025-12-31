@@ -67,8 +67,9 @@ export default function FAQSection() {
             </div>
 
             <div
-              className={`space-y-4 transition-all duration-500 ease-in-out ${isTransitioning ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
-                }`}
+              className={`space-y-4 transition-all duration-500 ease-in-out ${
+                isTransitioning ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
+              }`}
             >
               {activeCategory?.items.map((faq, index) => {
                 const id = `${activeCategory.title}-${index}`;
@@ -93,8 +94,9 @@ export default function FAQSection() {
                         }}
                       >
                         <Plus
-                          className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-45" : ""
-                            }`}
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isExpanded ? "rotate-45" : ""
+                          }`}
                         />
                       </button>
                     </div>
