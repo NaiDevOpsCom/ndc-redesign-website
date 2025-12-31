@@ -4,7 +4,7 @@ import { Link, useLocation } from "wouter";
 
 import { useTheme } from "@/contexts/ThemeContext";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -134,6 +134,10 @@ export default function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription>Mobile navigation menu</SheetDescription>
+                </SheetHeader>
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-lg font-semibold">Menu</span>
                   <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
