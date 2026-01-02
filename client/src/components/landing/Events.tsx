@@ -70,9 +70,7 @@ function EventCard({ event }: EventCardProps) {
                 const startText = Number.isNaN(start.getTime())
                   ? event.startDate
                   : format(start, "h:mm a");
-                const endText = Number.isNaN(end.getTime())
-                  ? event.endDate
-                  : format(end, "h:mm a");
+                const endText = Number.isNaN(end.getTime()) ? event.endDate : format(end, "h:mm a");
                 return `${startText} - ${endText}`;
               })()}
             </span>
