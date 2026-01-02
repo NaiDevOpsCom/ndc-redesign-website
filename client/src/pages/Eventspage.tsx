@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Cloud, Wrench, Award, Rocket, Handshake, Youtube } from "lucide-react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Cloud, Wrench, Award, Rocket, Handshake, Youtube, CalendarX } from "lucide-react";
 import { Image as UnpicImage } from "@unpic/react";
 import { Link } from "wouter";
 import { format, isValid } from "date-fns";
@@ -137,7 +137,7 @@ function UpcomingLumaEvents() {
         {/* Calendar Icon with "0" Badge */}
         <div className="relative mb-6">
           <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
-            <Cloud className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+            <CalendarX className="h-16 w-16 text-gray-300 dark:text-gray-600" />
           </div>
           <div className="absolute -top-2 -right-2 bg-white dark:bg-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-md border-2 border-gray-200 dark:border-gray-700">
             <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">0</span>
@@ -231,11 +231,9 @@ export default function Eventspage() {
   // Random CTA background image from galleryData (weighted by priority)
   const [ctaBgImage] = useState<GalleryImage>(() => {
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    if (pool.length > 0) {
-      const idx = Math.floor(Math.random() * pool.length);
-      return pool[idx];
-    }
-    return { url: "", alt: "Community image", priority: false };
+    return pool.length > 0
+      ? pool[Math.floor(Math.random() * pool.length)]
+      : { url: "", alt: "Community image", priority: false };
   });
 
   // --- Render ---
@@ -483,6 +481,19 @@ function FAQCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<number | null>(null);
 
+  const next = useCallback(() => {
+    setSlideIdx((s) => (s + 1) % slides.length);
+  }, [slides.length]);
+
+  const prev = useCallback(() => {
+    setSlideIdx((s) => (s - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  };
+
   // Autoplay: advance every 5s when not paused
   useEffect(() => {
     // clear any existing interval
@@ -493,7 +504,7 @@ function FAQCarousel() {
 
     if (!isPaused && slides.length > 1) {
       intervalRef.current = window.setInterval(() => {
-        setSlideIdx((s) => (s + 1) % slides.length);
+        next();
       }, 5000);
     }
 
@@ -503,7 +514,7 @@ function FAQCarousel() {
         intervalRef.current = null;
       }
     };
-  }, [isPaused, slides.length]);
+  }, [isPaused, slides.length, next]);
 
   if (slides.length === 0) {
     return (
@@ -513,7 +524,11 @@ function FAQCarousel() {
 
   return (
     <div
-      className="relative focus:outline-none"
+      className="relative focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg outline-none"
+      tabIndex={0}
+      onKeyDown={handleKey}
+      aria-roledescription="carousel"
+      aria-label="Event FAQs Carousel"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}

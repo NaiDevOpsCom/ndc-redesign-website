@@ -1,6 +1,7 @@
 export interface HeroSlideData {
   id: number;
   bgImage: string;
+  placeholder: string;
   headlineTop: string;
   headlineMain: string;
   description: string;
@@ -21,6 +22,7 @@ export const heroSlidesData: HeroSlideData[] = [
   {
     id: 1,
     bgImage: "https://ik.imagekit.io/nairobidevops/ndc-assets/IMG_9872.jpg",
+    placeholder: "https://ik.imagekit.io/nairobidevops/ndc-assets/IMG_9872.jpg?tr=bl-30,q-10,w-100",
     headlineTop: "Innovate . Empower . Grow",
     headlineMain: "Welcome To Nairobi DevOps Community",
     description:
@@ -41,6 +43,8 @@ export const heroSlidesData: HeroSlideData[] = [
     id: 2,
     bgImage:
       "https://ik.imagekit.io/nairobidevops/ndc-assets/PXL_20240601_141651842.jpg?updatedAt=1755152981667",
+    placeholder:
+      "https://ik.imagekit.io/nairobidevops/ndc-assets/PXL_20240601_141651842.jpg?updatedAt=1755152981667&tr=bl-30,q-10,w-100",
     headlineTop: "Support. Equip. Represent",
     headlineMain: "Learn DevOps, Your Way",
     description:
@@ -60,6 +64,7 @@ export const heroSlidesData: HeroSlideData[] = [
   {
     id: 3,
     bgImage: "https://ik.imagekit.io/nairobidevops/ndc-assets/IMG_9864.jpg",
+    placeholder: "https://ik.imagekit.io/nairobidevops/ndc-assets/IMG_9864.jpg?tr=bl-30,q-10,w-100",
     headlineTop: "Learn. Build. Thrive",
     headlineMain: "Explore the Nairobi DevOps Shop",
     description:
