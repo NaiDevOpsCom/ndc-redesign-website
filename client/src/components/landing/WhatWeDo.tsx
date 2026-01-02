@@ -34,7 +34,7 @@ export default function WhatWeDo() {
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">What We Do</h2>
           <p className="text-base md:text-lg text-white/80 max-w-3xl mx-auto">
-            We’re more than a meetup we’re a movement. Nairobi DevOps Community exists to empower,
+            We're more than a meetup—we're a movement. Nairobi DevOps Community exists to empower,
             connect, and grow the next generation of tech talent through:
           </p>
         </div>

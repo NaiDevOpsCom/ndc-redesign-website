@@ -29,7 +29,7 @@ export default function JoinCommunity() {
     <section
       className="relative py-20 overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-700"
       style={{
-        backgroundImage: bgImage ? `url('${bgImage}')` : "none",
+        backgroundImage: bgImage ? `url("${encodeURI(bgImage)}")` : undefined,
         backgroundColor: "#000000",
       }}
     >

@@ -142,6 +142,7 @@ export const teamData: TeamMember[] = [
       linkedin: "https://linkedin.com/in/tabitha-margaret771/",
       twitter: "https://x.com/_mWangechi",
     },
+    bio: "She's a passionate Graphic designer and UI/UX designer, whose main role in the community is to create visual assets that support the community events, programs and outreaches. I am responsible for creating the digital and print media working closely with the other community managers to achieve the brand's mission. I aim at creating a consistent and impactful visual identity of the community in the DevOps ecosystem in Nairobi.",
   },
   {
     id: "reyhana-cherop",
@@ -177,6 +178,6 @@ export const teamData: TeamMember[] = [
       twitter: "https://x.com/Ndutakabingu",
       website: "https://dev-kabingu-portfolio.vercel.app/",
     },
-    bio: "I am a UI/UX designer currently undertaking a 16‑week apprenticeship program at Techleap Zynamis, where I am building deeper expertise in creating clear, accessible, and user‑friendly digital experiences. My career path has been shaped by a strong commitment to design thinking and empathy, ensuring that technology feels welcoming and impactful. As part of Nairobi DevOps, I contributed as a volunteer designer for the community website, focusing on improving the interface and user journey to make resources and events easier to engage with. My passion lies in design that empowers communities by blending creativity with functionality, and I am especially inspired by projects that highlight African innovation and storytelling. At present, I am concentrating on refining my craft.",
+    bio: "UI/UX designer focused on crafting intuitive interfaces and committed to turning complex ideas into simple, usable experiences",
   },
 ];

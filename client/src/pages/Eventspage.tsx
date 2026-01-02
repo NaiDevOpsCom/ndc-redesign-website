@@ -538,7 +538,7 @@ function FAQCarousel() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {slides[slideIdx].map((f, idx) => (
           <div
-            key={`${slideIdx}-${idx}-${f.question}`}
+            key={`${f.question}-${idx}`}
             className="bg-primary-light-blue rounded-lg p-6"
           >
             <h3 className="font-semibold mb-3">{f.question}</h3>
