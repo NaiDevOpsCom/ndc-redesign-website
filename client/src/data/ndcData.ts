@@ -142,7 +142,7 @@ export const teamData: TeamMember[] = [
       linkedin: "https://linkedin.com/in/tabitha-margaret771/",
       twitter: "https://x.com/_mWangechi",
     },
-    bio: "She's a passionate Graphic designer and UI/UX designer, whose main role in the community is to create visual assets that support the community events, programs and outreaches. I am responsible for creating the digital and print media working closely with the other community managers to achieve the brand's mission. I aim at creating a consistent and impactful visual identity of the community in the DevOps ecosystem in Nairobi.",
+    bio: "She's a passionate Graphic designer and UI/UX designer, whose main role in the community is to create visual assets that support the community events, programs and outreaches. She is responsible for creating the digital and print media working closely with the other community managers to achieve the brand's mission. She aims at creating a consistent and impactful visual identity of the community in the DevOps ecosystem in Nairobi.",
   },
   {
     id: "reyhana-cherop",
