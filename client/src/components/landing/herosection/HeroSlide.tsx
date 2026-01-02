@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { useLocation } from "wouter";
 import { Users, Calendar, ArrowRight, Briefcase, Heart } from "lucide-react";
 
@@ -32,6 +32,17 @@ const iconMap = {
 
 const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
   const [, navigate] = useLocation();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Reset loaded state when slide changes
+  useEffect(() => {
+    setIsLoaded(false);
+    const img = new Image();
+    img.src = slide.bgImage;
+    img.onload = () => {
+      setIsLoaded(true);
+    };
+  }, [slide.bgImage]);
 
   const handlePrimaryClick = () => {
     if (slide.ctaPrimary.link.startsWith("http")) {
@@ -56,11 +67,11 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
   const SecondaryIcon = slide.ctaSecondary.icon ? iconMap[slide.ctaSecondary.icon] : null;
 
   return (
-    <div className="absolute inset-0 w-full h-full pointer-events-none">
-      {/* Background image layer */}
+    <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+      {/* Background image layer - Placeholder (blurred) */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center will-change-transform"
-        style={{ backgroundImage: `url(${slide.bgImage})` }}
+        style={{ backgroundImage: `url(${slide.placeholder})` }}
         variants={bgVariant}
         initial="initial"
         animate="animate"
@@ -69,9 +80,25 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
         aria-hidden
       />
 
+      {/* Background image layer - High Resolution */}
+      <AnimatePresence mode="wait">
+        {isLoaded && (
+          <motion.div
+            key={slide.bgImage}
+            className="absolute inset-0 bg-cover bg-center will-change-transform"
+            style={{ backgroundImage: `url(${slide.bgImage})` }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            aria-hidden
+          />
+        )}
+      </AnimatePresence>
+
       {/* subtle dark overlay for contrast */}
       <motion.div
-        className="absolute inset-0 bg-black/45"
+        className="absolute inset-0 bg-black/45 z-[1]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

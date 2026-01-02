@@ -1,9 +1,11 @@
-import { format } from "date-fns";
 import React from "react";
+import { format } from "date-fns";
 import Autoplay from "embla-carousel-autoplay";
+import { Calendar, Clock, MapPin, CalendarX } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { useLumaEvents } from "@/hooks/useLumaEvents";
+import { getRandomItems } from "@/utils/getRandomItems";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -15,7 +17,6 @@ import {
 } from "@/components/ui/carousel";
 import RecordedVideoCard from "@/components/RecordedVideoCard.tsx";
 import { recordedSessions } from "@/data/communityPageData.ts";
-
 // Reusable Event Card Component
 interface EventCardProps {
   event: {
@@ -33,7 +34,7 @@ interface EventCardProps {
 function EventCard({ event }: EventCardProps) {
   return (
     <Card className="w-full bg-card rounded-lg border border-border hover:shadow-md transition-shadow flex flex-col h-full">
-      <CardContent className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
+      <CardContent className="p-4 sm:p-5 md:p-6 flex flex-col grow">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
           <Badge className="bg-primary/10 text-primary text-xs sm:text-sm">Upcoming</Badge>
           {event.categories?.slice(0, 2).map((category) => (
@@ -49,22 +50,22 @@ function EventCard({ event }: EventCardProps) {
 
         <div className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 text-left space-y-1">
           <p className="flex items-start">
-            <span className="mr-2 flex-shrink-0">🗓️</span>
-            <span className="break-words">
+            <Calendar className="mr-2 h-4 w-4 shrink-0 text-primary" />
+            <span className="wrap-break-word">
               {format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
             </span>
           </p>
           <p className="flex items-start">
-            <span className="mr-2 flex-shrink-0">⏰</span>
-            <span className="break-words">
+            <Clock className="mr-2 h-4 w-4 shrink-0 text-primary" />
+            <span className="wrap-break-word">
               {format(new Date(event.startDate), "h:mm a")} -{" "}
               {format(new Date(event.endDate), "h:mm a")}
             </span>
           </p>
           {event.location && (
             <p className="flex items-start">
-              <span className="mr-2 flex-shrink-0">📍</span>
-              <span className="break-words">{event.location}</span>
+              <MapPin className="mr-2 h-4 w-4 shrink-0 text-primary" />
+              <span className="wrap-break-word">{event.location}</span>
             </p>
           )}
         </div>
@@ -123,7 +124,7 @@ function LumaEventsList() {
         {/* Calendar Icon with "0" Badge */}
         <div className="relative mb-6">
           <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
-            <Cloud className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+            <CalendarX className="h-16 w-16 text-gray-300 dark:text-gray-600" />
           </div>
           <div className="absolute -top-2 -right-2 bg-white dark:bg-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-md border-2 border-gray-200 dark:border-gray-700">
             <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">0</span>
@@ -197,8 +198,6 @@ function LumaEventsList() {
   );
 }
 
-import { getRandomItems } from "@/utils/getRandomItems";
-import { Cloud } from "lucide-react";
 
 export default function Events() {
   const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
@@ -236,7 +235,7 @@ export default function Events() {
           </p>
 
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-flow-col auto-cols-[min(80%,_320px)] gap-6 overflow-x-auto pb-2 lg:grid-flow-row lg:auto-cols-auto lg:grid-cols-4 lg:overflow-hidden">
+            <div className="grid grid-flow-col auto-cols-[min(80%,320px)] gap-6 overflow-x-auto pb-2 lg:grid-flow-row lg:auto-cols-auto lg:grid-cols-4 lg:overflow-hidden">
               {randomRecorded.map((session) => (
                 <RecordedVideoCard
                   key={session.id}
