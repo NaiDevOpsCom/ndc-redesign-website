@@ -1,5 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
+import { useLocation } from "wouter";
 import Autoplay from "embla-carousel-autoplay";
 import { Calendar, Clock, MapPin, CalendarX } from "lucide-react";
 
@@ -51,21 +52,35 @@ function EventCard({ event }: EventCardProps) {
         <div className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 text-left space-y-1">
           <p className="flex items-start">
             <Calendar className="mr-2 h-4 w-4 shrink-0 text-primary" />
-            <span className="wrap-break-word">
-              {format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
+            <span className="break-words">
+              {(() => {
+                const d = new Date(event.startDate);
+                return Number.isNaN(d.getTime())
+                  ? event.startDate
+                  : format(d, "EEEE, MMMM d, yyyy");
+              })()}
             </span>
           </p>
           <p className="flex items-start">
             <Clock className="mr-2 h-4 w-4 shrink-0 text-primary" />
-            <span className="wrap-break-word">
-              {format(new Date(event.startDate), "h:mm a")} -{" "}
-              {format(new Date(event.endDate), "h:mm a")}
+            <span className="break-words">
+              {(() => {
+                const start = new Date(event.startDate);
+                const end = new Date(event.endDate);
+                const startText = Number.isNaN(start.getTime())
+                  ? event.startDate
+                  : format(start, "h:mm a");
+                const endText = Number.isNaN(end.getTime())
+                  ? event.endDate
+                  : format(end, "h:mm a");
+                return `${startText} - ${endText}`;
+              })()}
             </span>
           </p>
           {event.location && (
             <p className="flex items-start">
               <MapPin className="mr-2 h-4 w-4 shrink-0 text-primary" />
-              <span className="wrap-break-word">{event.location}</span>
+              <span className="break-words">{event.location}</span>
             </p>
           )}
         </div>
@@ -199,6 +214,7 @@ function LumaEventsList() {
 }
 
 export default function Events() {
+  const [, navigate] = useLocation();
   const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
   return (
     <section
@@ -252,7 +268,7 @@ export default function Events() {
             size="lg"
             className="bg-primary hover:bg-ndc-darkblue"
             onClick={() => {
-              window.location.href = "/events";
+              navigate("/events");
             }}
           >
             View All Events

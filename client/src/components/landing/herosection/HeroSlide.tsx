@@ -32,17 +32,33 @@ const iconMap = {
 
 const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
   const [, navigate] = useLocation();
-  const [isLoaded, setIsLoaded] = useState(false);
+  // Track which image URL is loaded instead of a boolean.
+  // When slide.bgImage changes, (loadedImage === slide.bgImage) naturally becomes false.
+  const [loadedImage, setLoadedImage] = useState<string | null>(null);
 
-  // Reset loaded state when slide changes
   useEffect(() => {
-    setIsLoaded(false);
+    let isMounted = true;
+
     const img = new Image();
-    img.src = slide.bgImage;
+
     img.onload = () => {
-      setIsLoaded(true);
+      if (isMounted) setLoadedImage(slide.bgImage);
+    };
+
+    img.onerror = () => {
+      if (isMounted) setLoadedImage(null);
+    };
+
+    img.src = slide.bgImage;
+
+    return () => {
+      isMounted = false;
+      img.onload = null;
+      img.onerror = null;
     };
   }, [slide.bgImage]);
+
+  const isLoaded = loadedImage === slide.bgImage;
 
   const handlePrimaryClick = () => {
     if (slide.ctaPrimary.link.startsWith("http")) {
@@ -71,7 +87,7 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
       {/* Background image layer - Placeholder (blurred) */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center will-change-transform"
-        style={{ backgroundImage: `url(${slide.placeholder})` }}
+        style={{ backgroundImage: `url("${encodeURI(slide.placeholder)}")` }}
         variants={bgVariant}
         initial="initial"
         animate="animate"
@@ -86,7 +102,7 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
           <motion.div
             key={slide.bgImage}
             className="absolute inset-0 bg-cover bg-center will-change-transform"
-            style={{ backgroundImage: `url(${slide.bgImage})` }}
+            style={{ backgroundImage: `url("${encodeURI(slide.bgImage)}")` }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
