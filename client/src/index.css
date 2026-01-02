@@ -38,6 +38,7 @@
   --faq-bg: hsla(209, 56%, 88%, 1);
   --faq-text: #000000;
   --black-overlay: rgba(0, 0, 0, 0.7);
+  --black-overlay80: rgba(0, 0, 0, 0.8);
   --background-secondary: hsl(0, 0%, 98%);
 }
 

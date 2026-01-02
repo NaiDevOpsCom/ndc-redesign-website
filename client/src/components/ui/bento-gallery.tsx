@@ -24,6 +24,7 @@ interface InteractiveImageBentoGalleryProps {
   imagePool: GalleryImage[];
   title: string;
   description: string;
+  className?: string;
 }
 
 const containerVariants: Variants = {
@@ -187,11 +188,12 @@ const InteractiveImageBentoGallery: React.FC<InteractiveImageBentoGalleryProps> 
   imagePool,
   title,
   description,
+  className,
 }) => {
   const [selectedItem, setSelectedItem] = useState<ImageItem | null>(null);
 
   return (
-    <section className="bg-background py-16 sm:py-24">
+    <section className={cn("py-16 sm:py-24 transition-colors duration-300", className)}>
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center sm:mb-16">
           <motion.h2
