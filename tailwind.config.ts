@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
 
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -50,6 +50,8 @@ export default {
           "faq-text": "#000000",
           "dark-bg-secondary": "#898E99",
         },
+        "black-overlay": "var(--black-overlay)",
+        "black-overlay80": "var(--black-overlay80)",
       },
       keyframes: {
         "accordion-down": {

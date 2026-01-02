@@ -25,12 +25,13 @@ const bentoGalleryItems = communityGallery.map((image, index) => {
 
 export default function Gallery() {
   return (
-    <div id="gallery" className="bg-white dark:bg-ndc-darkblue">
+    <div id="gallery">
       <InteractiveImageBentoGallery
         imageItems={bentoGalleryItems}
         imagePool={communityGallery}
         title="Snapshots of Our Journey"
         description="Explore moments from our Events, MeetUps, workshops, community events, and Collaborations"
+        className="bg-[#d3d3d3] dark:bg-ndc-darkblue"
       />
     </div>
   );

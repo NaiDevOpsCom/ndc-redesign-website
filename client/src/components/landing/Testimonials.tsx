@@ -17,7 +17,7 @@ const columnizedTestimonials = [0, 1, 2].map((columnIndex) =>
 
 export default function Testimonials() {
   return (
-    <section className="py-20 bg-background dark:bg-[#000000CC] transition-colors duration-300">
+    <section className="py-20 bg-background dark:bg-accent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -39,9 +39,6 @@ export default function Testimonials() {
         </motion.div>
 
         <div className="relative mt-14">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background via-background/60 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background via-background/60 to-transparent" />
-
           <div className="flex justify-center gap-6 md:gap-8 lg:gap-10 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
             <TestimonialsColumn testimonials={columnizedTestimonials[0]} duration={16} />
             <TestimonialsColumn

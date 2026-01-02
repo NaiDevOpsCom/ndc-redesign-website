@@ -42,7 +42,7 @@ export default function FAQSection() {
   const activeCategory = faqDataByCategory[activeCategoryIndex];
 
   return (
-    <section id="faq" className="py-20 bg-primary-light-blue text-faq-text dark:bg-background">
+    <section id="faq" className="py-20 bg-primary-light-blue text-faq-text dark:bg-accent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-faq-text">
