@@ -1,11 +1,16 @@
 {
+  "_comment_csp": "CSP Directives - Add new origins in their respective sections below",
+  "_comment_img": "img-src: Add new image CDNs here (e.g., cdn.example.com)",
+  "_comment_connect": "connect-src: Add new API endpoints here (e.g., api.example.com)",
+  "_comment_frame": "frame-src: Add new embed sources here (e.g., player.vimeo.com)",
+  "_comment_script": "script-src: Add new script CDNs here (e.g., cdn.jsdelivr.net)",
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://ik.imagekit.io https://i.ytimg.com https://images.unsplash.com https://res.cloudinary.com https://pbs.twimg.com https://cdn.hashnode.com; font-src 'self' https://fonts.gstatic.com; frame-src https://www.youtube.com; connect-src 'self' https://api.allorigins.win https://lu.ma https://web.mypayd.app https://www.google-analytics.com https://gql.hashnode.com https://www.googleapis.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
         },
         {
           "key": "X-Frame-Options",
@@ -21,7 +26,11 @@
         },
         {
           "key": "Strict-Transport-Security",
-          "value": "max-age=31536000; includeSubDomains"
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
         }
       ]
     }
