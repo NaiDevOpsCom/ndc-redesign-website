@@ -44,10 +44,7 @@ export default function WhatWeDo() {
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-6 will-change-transform">
               {allData.whatWeDo.map((service, index) => (
-                <div
-                  key={index}
-                  className="embla__slide shrink-0 px-2 w-full sm:w-1/2 md:w-1/3"
-                >
+                <div key={index} className="embla__slide shrink-0 px-2 w-full sm:w-1/2 md:w-1/3">
                   <div className="mx-auto max-w-90 h-full">
                     <Card className="bg-primary-light-blue rounded-lg shadow-md border-0 w-full h-full">
                       <CardContent className="p-6 md:p-8 text-center flex flex-col items-center h-full">
@@ -96,8 +93,9 @@ export default function WhatWeDo() {
               key={idx}
               aria-label={`Go to slide ${idx + 1}`}
               onClick={() => emblaApi && emblaApi.scrollTo(idx)}
-              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${idx === activeIndex ? "bg-[#2563eb]" : "bg-white/40"
-                }`}
+              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${
+                idx === activeIndex ? "bg-[#2563eb]" : "bg-white/40"
+              }`}
             />
           ))}
         </div>
