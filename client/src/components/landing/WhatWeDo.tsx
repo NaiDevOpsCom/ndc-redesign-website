@@ -34,8 +34,8 @@ export default function WhatWeDo() {
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">What We Do</h2>
           <p className="text-base md:text-lg text-white/80 max-w-3xl mx-auto">
-            We&apos;re more than a meetup—we&apos;re a movement. Nairobi DevOps Community exists to empower,
-            connect, and grow the next generation of tech talent through:
+            We&apos;re more than a meetup—we&apos;re a movement. Nairobi DevOps Community exists to
+            empower, connect, and grow the next generation of tech talent through:
           </p>
         </div>
 
@@ -93,8 +93,9 @@ export default function WhatWeDo() {
               key={idx}
               aria-label={`Go to slide ${idx + 1}`}
               onClick={() => emblaApi && emblaApi.scrollTo(idx)}
-              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${idx === activeIndex ? "bg-[#2563eb]" : "bg-white/40"
-                }`}
+              className={`w-3 h-3 rounded-full transition-colors duration-300 focus:outline-none ${
+                idx === activeIndex ? "bg-[#2563eb]" : "bg-white/40"
+              }`}
             />
           ))}
         </div>
