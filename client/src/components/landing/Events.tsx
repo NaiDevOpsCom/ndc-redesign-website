@@ -198,7 +198,6 @@ function LumaEventsList() {
   );
 }
 
-
 export default function Events() {
   const randomRecorded = React.useMemo(() => getRandomItems(recordedSessions, 4), []);
   return (
