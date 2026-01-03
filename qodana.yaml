@@ -30,7 +30,7 @@ exclude:
       - "**/*.bundle.js"
   - name: All
     paths:
-      - client\public\analytics.js
+      - client/public/analytics.js
 
 failThreshold: 1
 
