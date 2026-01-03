@@ -2,7 +2,7 @@
 
 ## Overview
 
-A **Content Security Policy (CSP)** is a modern security layer that helps detect and mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks. 
+A **Content Security Policy (CSP)** is a modern security layer that helps detect and mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks.
 
 It works by defining an "allowlist" of trusted sources for content like scripts, styles, images, and fonts. Any resource not matching the policy is automatically blocked by the browser.
 
@@ -18,7 +18,7 @@ If CSP was NOT implemented, a single XSS vulnerability in a React component or a
 
 ## Implementation Details
 
-Our CSP is implemented via the `Content-Security-Policy` HTTP header. 
+Our CSP is implemented via the `Content-Security-Policy` HTTP header.
 
 ### Key Configuration Decisions
 
@@ -29,14 +29,14 @@ Our CSP is implemented via the `Content-Security-Policy` HTTP header.
 
 ### Current Directive Breakdown
 
-| Directive | Allowed Sources | Reason |
-| :--- | :--- | :--- |
-| `script-src` | `'self'`, GTM, YouTube | Core application logic and essential embeds. |
-| `style-src` | `'self'`, `'unsafe-inline'`, Google Fonts | Required for Tailwind CSS and typography. |
-| `img-src` | `'self'`, ImageKit, Cloudinary, Unsplash, YouTube | Our primary image hosting and CDNs. |
-| `connect-src` | `'self'`, Google Analytics, Lu.ma, MyPayd | API endpoints and analytics reporting. |
-| `frame-src` | YouTube | For embedded video content. |
-| `object-src`| `'none'` | Disables legacy plugins like Flash and Java. |
+| Directive     | Allowed Sources                                   | Reason                                       |
+| :------------ | :------------------------------------------------ | :------------------------------------------- |
+| `script-src`  | `'self'`, GTM, YouTube                            | Core application logic and essential embeds. |
+| `style-src`   | `'self'`, `'unsafe-inline'`, Google Fonts         | Required for Tailwind CSS and typography.    |
+| `img-src`     | `'self'`, ImageKit, Cloudinary, Unsplash, YouTube | Our primary image hosting and CDNs.          |
+| `connect-src` | `'self'`, Google Analytics, Lu.ma, MyPayd         | API endpoints and analytics reporting.       |
+| `frame-src`   | YouTube                                           | For embedded video content.                  |
+| `object-src`  | `'none'`                                          | Disables legacy plugins like Flash and Java. |
 
 ## Code & Configuration Location
 

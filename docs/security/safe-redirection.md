@@ -6,12 +6,12 @@
 
 ### Common Risks
 
-| Risk | Example | Impact |
-|------|---------|--------|
-| **Phishing** | `yoursite.com?redirect=evil.com` | Users trust the initial domain |
-| **Credential theft** | Redirect to fake login page | Stolen passwords |
-| **XSS via javascript:** | `javascript:alert(document.cookie)` | Session hijacking |
-| **Data exfiltration** | `data:text/html,...` | Arbitrary content execution |
+| Risk                    | Example                             | Impact                         |
+| ----------------------- | ----------------------------------- | ------------------------------ |
+| **Phishing**            | `yoursite.com?redirect=evil.com`    | Users trust the initial domain |
+| **Credential theft**    | Redirect to fake login page         | Stolen passwords               |
+| **XSS via javascript:** | `javascript:alert(document.cookie)` | Session hijacking              |
+| **Data exfiltration**   | `data:text/html,...`                | Arbitrary content execution    |
 
 ---
 
@@ -74,30 +74,31 @@
 
 ### Denylist Logic
 
-| Protocol | Status | Reason |
-|----------|--------|--------|
-| `javascript:` | ❌ Blocked | XSS attack vector |
-| `data:` | ❌ Blocked | Arbitrary content execution |
-| `vbscript:` | ❌ Blocked | Legacy IE attack vector |
-| `file:` | ❌ Blocked | Local file access |
-| `blob:` | ❌ Blocked | Arbitrary blob content |
-| `http://` | ❌ Blocked* | External redirect |
-| `https://` | ❌ Blocked* | External redirect |
-| `//` | ❌ Blocked | Protocol-relative external |
+| Protocol      | Status       | Reason                      |
+| ------------- | ------------ | --------------------------- |
+| `javascript:` | ❌ Blocked   | XSS attack vector           |
+| `data:`       | ❌ Blocked   | Arbitrary content execution |
+| `vbscript:`   | ❌ Blocked   | Legacy IE attack vector     |
+| `file:`       | ❌ Blocked   | Local file access           |
+| `blob:`       | ❌ Blocked   | Arbitrary blob content      |
+| `http://`     | ❌ Blocked\* | External redirect           |
+| `https://`    | ❌ Blocked\* | External redirect           |
+| `//`          | ❌ Blocked   | Protocol-relative external  |
 
-*Allowed only when explicitly opening external URLs with `safeOpenExternal()`
+\*Allowed only when explicitly opening external URLs with `safeOpenExternal()`
 
 ### External vs Internal URL Handling
 
-| URL Type | Handler | Behavior |
-|----------|---------|----------|
-| Internal (`/about`) | `getSafeRoute()` | Sanitized and navigated |
+| URL Type                 | Handler              | Behavior                                    |
+| ------------------------ | -------------------- | ------------------------------------------- |
+| Internal (`/about`)      | `getSafeRoute()`     | Sanitized and navigated                     |
 | External (`https://...`) | `safeOpenExternal()` | Opens in new tab with `noopener,noreferrer` |
-| Invalid/Malicious | Fallback | Returns `/` (home) |
+| Invalid/Malicious        | Fallback             | Returns `/` (home)                          |
 
 ### Fallback Behavior
 
 When an invalid redirect is detected, the system:
+
 1. Logs a warning to the console (development mode)
 2. Returns the fallback route (default: `/`)
 3. Never exposes the invalid URL to the user
@@ -114,14 +115,14 @@ client/src/utils/safeNavigate.ts
 
 ### Functions Exported
 
-| Function | Purpose |
-|----------|---------|
-| `validateInternalRoute(url, fallback)` | Validates and returns `ValidationResult` |
-| `getSafeRoute(url, fallback)` | Returns safe route string or fallback |
-| `validateExternalUrl(url)` | Validates external URLs (http/https only) |
-| `safeOpenExternal(url)` | Opens external URL securely |
-| `isExternalUrl(url)` | Detects if URL is external |
-| `createSafeNavigate(navigateFn)` | Creates hook-compatible wrapper |
+| Function                               | Purpose                                   |
+| -------------------------------------- | ----------------------------------------- |
+| `validateInternalRoute(url, fallback)` | Validates and returns `ValidationResult`  |
+| `getSafeRoute(url, fallback)`          | Returns safe route string or fallback     |
+| `validateExternalUrl(url)`             | Validates external URLs (http/https only) |
+| `safeOpenExternal(url)`                | Opens external URL securely               |
+| `isExternalUrl(url)`                   | Detects if URL is external                |
+| `createSafeNavigate(navigateFn)`       | Creates hook-compatible wrapper           |
 
 ### Unit Tests
 
@@ -147,7 +148,7 @@ import { useLocation } from "wouter";
 
 function MyComponent() {
   const [, navigate] = useLocation();
-  
+
   const handleClick = (destination: string) => {
     // Always sanitize before navigating
     navigate(getSafeRoute(destination));
@@ -180,9 +181,9 @@ navigate(getSafeRoute(userInput, "/dashboard"));
 
 ```typescript
 // All of these return "/" (fallback)
-getSafeRoute("javascript:alert(1)");     // → "/"
-getSafeRoute("//evil.com");               // → "/"
-getSafeRoute("%2F%2Fevil.com");           // → "/" (decoded to //evil.com)
+getSafeRoute("javascript:alert(1)"); // → "/"
+getSafeRoute("//evil.com"); // → "/"
+getSafeRoute("%2F%2Fevil.com"); // → "/" (decoded to //evil.com)
 getSafeRoute("data:text/html,<script>"); // → "/"
 ```
 
@@ -190,16 +191,16 @@ getSafeRoute("data:text/html,<script>"); // → "/"
 
 ## Edge Cases Handled
 
-| Edge Case | Input | Behavior |
-|-----------|-------|----------|
-| Empty string | `""` | Returns fallback |
-| Whitespace only | `"   "` | Normalizes to `/` |
-| Null/undefined | `null` | Returns fallback |
+| Edge Case            | Input                               | Behavior                          |
+| -------------------- | ----------------------------------- | --------------------------------- |
+| Empty string         | `""`                                | Returns fallback                  |
+| Whitespace only      | `"   "`                             | Normalizes to `/`                 |
+| Null/undefined       | `null`                              | Returns fallback                  |
 | URL-encoded protocol | `%6A%61%76%61%73%63%72%69%70%74%3A` | Decoded → `javascript:` → Blocked |
-| Double-encoded | `%252F%252F` | Decoded → `//` → Blocked |
-| Path traversal | `/../../../etc` | Normalized to `/etc` |
-| Mixed slashes | `/\evil.com` | Blocked as external |
-| Case variations | `JAVASCRIPT:` | Lowercase comparison → Blocked |
+| Double-encoded       | `%252F%252F`                        | Decoded → `//` → Blocked          |
+| Path traversal       | `/../../../etc`                     | Normalized to `/etc`              |
+| Mixed slashes        | `/\evil.com`                        | Blocked as external               |
+| Case variations      | `JAVASCRIPT:`                       | Lowercase comparison → Blocked    |
 
 ---
 
@@ -222,6 +223,7 @@ getSafeRoute("data:text/html,<script>"); // → "/"
 ### Defense-in-Depth
 
 This implementation is one layer. Additional protections include:
+
 - CSP `frame-ancestors 'none'` (prevents embedding)
 - `X-Frame-Options: DENY`
 - HTTPS enforcement via HSTS
@@ -247,6 +249,7 @@ The current implementation allows **all relative paths**. To add strict route wh
 ### When Modifying Routing Logic
 
 Review checklist:
+
 - [ ] Ensure all new navigation uses `getSafeRoute()` or `safeOpenExternal()`
 - [ ] Add unit tests for any new navigation patterns
 - [ ] Check for any `window.location.href` assignments (should use utilities)
@@ -256,10 +259,10 @@ Review checklist:
 
 ## Related Files
 
-| File | Purpose |
-|------|---------|
-| [`client/src/utils/safeNavigate.ts`](../client/src/utils/safeNavigate.ts) | Core utility |
-| [`client/src/utils/__tests__/safeNavigate.test.ts`](../client/src/utils/__tests__/safeNavigate.test.ts) | Unit tests |
+| File                                                                                                                    | Purpose       |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------- |
+| [`client/src/utils/safeNavigate.ts`](../client/src/utils/safeNavigate.ts)                                               | Core utility  |
+| [`client/src/utils/__tests__/safeNavigate.test.ts`](../client/src/utils/__tests__/safeNavigate.test.ts)                 | Unit tests    |
 | [`client/src/components/landing/herosection/HeroSlide.tsx`](../client/src/components/landing/herosection/HeroSlide.tsx) | Example usage |
 
 ---

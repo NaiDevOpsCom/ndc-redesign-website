@@ -5,11 +5,7 @@ import { Users, Calendar, ArrowRight, Briefcase, Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { HeroSlideData } from "@/data/heroSlidesData";
-import {
-  isExternalUrl,
-  safeOpenExternal,
-  getSafeRoute,
-} from "@/utils/safeNavigate";
+import { isExternalUrl, safeOpenExternal, getSafeRoute } from "@/utils/safeNavigate";
 
 interface HeroSlideProps {
   slide: HeroSlideData;

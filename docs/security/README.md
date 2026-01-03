@@ -8,13 +8,13 @@ The mission of the Nairobi DevOps Community is to build and maintain a secure, t
 
 ## Documentation Index
 
-| Topic | Description | Link |
-| :--- | :--- | :--- |
-| **Security Overview** | A high-level view of our security strategy and threat model. | [**Read More**](./overview.md) |
-| **Supply Chain Security** | How we manage dependencies and prevent malicious package injection. | [**Read More**](./dependency-supply-chain-security.md) |
-| **Browser Security Headers** | Detailed breakdown of our HTTP security headers and their purpose. | [**Read More**](./browser-security-headers.md) |
-| **Content Security Policy** | Our strategy for mitigating XSS and controlling resource loading. | [**Read More**](./content-security-policy.md) |
-| **Safe Redirection** | Preventing open redirect vulnerabilities and path traversal. | [**Read More**](./safe-redirection.md) |
+| Topic                        | Description                                                         | Link                                                   |
+| :--------------------------- | :------------------------------------------------------------------ | :----------------------------------------------------- |
+| **Security Overview**        | A high-level view of our security strategy and threat model.        | [**Read More**](./overview.md)                         |
+| **Supply Chain Security**    | How we manage dependencies and prevent malicious package injection. | [**Read More**](./dependency-supply-chain-security.md) |
+| **Browser Security Headers** | Detailed breakdown of our HTTP security headers and their purpose.  | [**Read More**](./browser-security-headers.md)         |
+| **Content Security Policy**  | Our strategy for mitigating XSS and controlling resource loading.   | [**Read More**](./content-security-policy.md)          |
+| **Safe Redirection**         | Preventing open redirect vulnerabilities and path traversal.        | [**Read More**](./safe-redirection.md)                 |
 
 ---
 

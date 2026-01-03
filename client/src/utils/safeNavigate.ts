@@ -19,42 +19,36 @@ const DEFAULT_FALLBACK = "/";
 
 /** Allowed internal route prefixes (can be expanded as needed) */
 const ALLOWED_ROUTE_PREFIXES = [
-    "/",
-    "/about",
-    "/events",
-    "/community",
-    "/partners",
-    "/join",
-    "/donate",
-    "/shop",
-    "/learn",
-    "/faqpage",
+  "/",
+  "/about",
+  "/events",
+  "/community",
+  "/partners",
+  "/join",
+  "/donate",
+  "/shop",
+  "/learn",
+  "/faqpage",
 ] as const;
 
 /** Dangerous protocols that must be blocked */
-const DANGEROUS_PROTOCOLS = [
-    "javascript:",
-    "data:",
-    "vbscript:",
-    "file:",
-    "blob:",
-] as const;
+const DANGEROUS_PROTOCOLS = ["javascript:", "data:", "vbscript:", "file:", "blob:"] as const;
 
 /** Patterns that indicate protocol-relative or absolute URLs */
 const ABSOLUTE_URL_PATTERNS = [
-    /^\/\//,          // Protocol-relative: //evil.com
-    /^\\\/\\\//,      // Escaped: \/\/evil.com
-    /^\/\\/,          // Mixed: /\evil.com
-    /^[a-z][a-z0-9+.-]*:/i, // Any protocol: http:, https:, ftp:, etc.
+  /^\/\//, // Protocol-relative: //evil.com
+  /^\\\/\\\//, // Escaped: \/\/evil.com
+  /^\/\\/, // Mixed: /\evil.com
+  /^[a-z][a-z0-9+.-]*:/i, // Any protocol: http:, https:, ftp:, etc.
 ] as const;
 
 /**
  * Result of URL validation
  */
 export interface ValidationResult {
-    isValid: boolean;
-    sanitizedUrl: string;
-    reason?: string;
+  isValid: boolean;
+  sanitizedUrl: string;
+  reason?: string;
 }
 
 /**
@@ -65,26 +59,26 @@ export interface ValidationResult {
  * @returns Fully decoded URL string
  */
 function fullyDecodeUrl(url: string): string {
-    let decoded = url;
-    let previous = "";
+  let decoded = url;
+  let previous = "";
 
-    // Keep decoding until no more changes (handles multiple encoding layers)
-    // Limit iterations to prevent infinite loops on malformed input
-    let iterations = 0;
-    const maxIterations = 5;
+  // Keep decoding until no more changes (handles multiple encoding layers)
+  // Limit iterations to prevent infinite loops on malformed input
+  let iterations = 0;
+  const maxIterations = 5;
 
-    while (decoded !== previous && iterations < maxIterations) {
-        previous = decoded;
-        try {
-            decoded = decodeURIComponent(decoded);
-        } catch {
-            // If decoding fails, return current state
-            break;
-        }
-        iterations++;
+  while (decoded !== previous && iterations < maxIterations) {
+    previous = decoded;
+    try {
+      decoded = decodeURIComponent(decoded);
+    } catch {
+      // If decoding fails, return current state
+      break;
     }
+    iterations++;
+  }
 
-    return decoded;
+  return decoded;
 }
 
 /**
@@ -95,21 +89,21 @@ function fullyDecodeUrl(url: string): string {
  * @returns Normalized path
  */
 function normalizePath(path: string): string {
-    // Split path into segments
-    const segments = path.split("/").filter(Boolean);
-    const normalized: string[] = [];
+  // Split path into segments
+  const segments = path.split("/").filter(Boolean);
+  const normalized: string[] = [];
 
-    for (const segment of segments) {
-        if (segment === "..") {
-            // Go up one level, but don't go above root
-            normalized.pop();
-        } else if (segment !== ".") {
-            normalized.push(segment);
-        }
+  for (const segment of segments) {
+    if (segment === "..") {
+      // Go up one level, but don't go above root
+      normalized.pop();
+    } else if (segment !== ".") {
+      normalized.push(segment);
     }
+  }
 
-    // Reconstruct path with leading slash
-    return "/" + normalized.join("/");
+  // Reconstruct path with leading slash
+  return "/" + normalized.join("/");
 }
 
 /**
@@ -119,15 +113,15 @@ function normalizePath(path: string): string {
  * @returns True if dangerous protocol detected
  */
 function hasDangerousProtocol(url: string): boolean {
-    const lowerUrl = url.toLowerCase().trim();
+  const lowerUrl = url.toLowerCase().trim();
 
-    for (const protocol of DANGEROUS_PROTOCOLS) {
-        if (lowerUrl.startsWith(protocol)) {
-            return true;
-        }
+  for (const protocol of DANGEROUS_PROTOCOLS) {
+    if (lowerUrl.startsWith(protocol)) {
+      return true;
     }
+  }
 
-    return false;
+  return false;
 }
 
 /**
@@ -137,15 +131,15 @@ function hasDangerousProtocol(url: string): boolean {
  * @returns True if URL is absolute or protocol-relative
  */
 function isAbsoluteUrl(url: string): boolean {
-    const trimmed = url.trim();
+  const trimmed = url.trim();
 
-    for (const pattern of ABSOLUTE_URL_PATTERNS) {
-        if (pattern.test(trimmed)) {
-            return true;
-        }
+  for (const pattern of ABSOLUTE_URL_PATTERNS) {
+    if (pattern.test(trimmed)) {
+      return true;
     }
+  }
 
-    return false;
+  return false;
 }
 
 /**
@@ -165,65 +159,65 @@ function isAbsoluteUrl(url: string): boolean {
  * ```
  */
 export function validateInternalRoute(
-    target: string,
-    fallback: string = DEFAULT_FALLBACK
+  target: string,
+  fallback: string = DEFAULT_FALLBACK
 ): ValidationResult {
-    // Handle empty/null input
-    if (!target || typeof target !== "string") {
-        return {
-            isValid: false,
-            sanitizedUrl: fallback,
-            reason: "Empty or invalid input",
-        };
-    }
-
-    // Decode to catch encoded bypass attempts
-    const decoded = fullyDecodeUrl(target.trim());
-
-    // Check for dangerous protocols
-    if (hasDangerousProtocol(decoded)) {
-        return {
-            isValid: false,
-            sanitizedUrl: fallback,
-            reason: "Dangerous protocol detected",
-        };
-    }
-
-    // Check for absolute/external URLs
-    if (isAbsoluteUrl(decoded)) {
-        return {
-            isValid: false,
-            sanitizedUrl: fallback,
-            reason: "External URL not allowed for internal navigation",
-        };
-    }
-
-    // Ensure path starts with /
-    let sanitized = decoded.startsWith("/") ? decoded : "/" + decoded;
-
-    // Normalize to prevent path traversal
-    sanitized = normalizePath(sanitized);
-
-    // Extract just the path (before any query string or hash)
-    const pathOnly = sanitized.split("?")[0].split("#")[0];
-
-    // Optional: Validate against allowed prefixes (strict mode)
-    // Uncomment if you want strict route whitelisting
-    // const isAllowedPrefix = ALLOWED_ROUTE_PREFIXES.some(
-    //   prefix => pathOnly === prefix || pathOnly.startsWith(prefix + "/")
-    // );
-    // if (!isAllowedPrefix) {
-    //   return {
-    //     isValid: false,
-    //     sanitizedUrl: fallback,
-    //     reason: "Route not in allowed list",
-    //   };
-    // }
-
+  // Handle empty/null input
+  if (!target || typeof target !== "string") {
     return {
-        isValid: true,
-        sanitizedUrl: sanitized,
+      isValid: false,
+      sanitizedUrl: fallback,
+      reason: "Empty or invalid input",
     };
+  }
+
+  // Decode to catch encoded bypass attempts
+  const decoded = fullyDecodeUrl(target.trim());
+
+  // Check for dangerous protocols
+  if (hasDangerousProtocol(decoded)) {
+    return {
+      isValid: false,
+      sanitizedUrl: fallback,
+      reason: "Dangerous protocol detected",
+    };
+  }
+
+  // Check for absolute/external URLs
+  if (isAbsoluteUrl(decoded)) {
+    return {
+      isValid: false,
+      sanitizedUrl: fallback,
+      reason: "External URL not allowed for internal navigation",
+    };
+  }
+
+  // Ensure path starts with /
+  let sanitized = decoded.startsWith("/") ? decoded : "/" + decoded;
+
+  // Normalize to prevent path traversal
+  sanitized = normalizePath(sanitized);
+
+  // Extract just the path (before any query string or hash)
+  const pathOnly = sanitized.split("?")[0].split("#")[0];
+
+  // Optional: Validate against allowed prefixes (strict mode)
+  // Uncomment if you want strict route whitelisting
+  // const isAllowedPrefix = ALLOWED_ROUTE_PREFIXES.some(
+  //   prefix => pathOnly === prefix || pathOnly.startsWith(prefix + "/")
+  // );
+  // if (!isAllowedPrefix) {
+  //   return {
+  //     isValid: false,
+  //     sanitizedUrl: fallback,
+  //     reason: "Route not in allowed list",
+  //   };
+  // }
+
+  return {
+    isValid: true,
+    sanitizedUrl: sanitized,
+  };
 }
 
 /**
@@ -241,11 +235,8 @@ export function validateInternalRoute(
  * navigate(getSafeRoute(userInput));
  * ```
  */
-export function getSafeRoute(
-    target: string,
-    fallback: string = DEFAULT_FALLBACK
-): string {
-    return validateInternalRoute(target, fallback).sanitizedUrl;
+export function getSafeRoute(target: string, fallback: string = DEFAULT_FALLBACK): string {
+  return validateInternalRoute(target, fallback).sanitizedUrl;
 }
 
 /**
@@ -264,39 +255,39 @@ export function getSafeRoute(
  * ```
  */
 export function validateExternalUrl(url: string): ValidationResult {
-    if (!url || typeof url !== "string") {
-        return {
-            isValid: false,
-            sanitizedUrl: "",
-            reason: "Empty or invalid input",
-        };
-    }
-
-    const decoded = fullyDecodeUrl(url.trim());
-
-    // Check for dangerous protocols first
-    if (hasDangerousProtocol(decoded)) {
-        return {
-            isValid: false,
-            sanitizedUrl: "",
-            reason: "Dangerous protocol detected",
-        };
-    }
-
-    // Only allow http and https for external URLs
-    const lowerDecoded = decoded.toLowerCase();
-    if (!lowerDecoded.startsWith("http://") && !lowerDecoded.startsWith("https://")) {
-        return {
-            isValid: false,
-            sanitizedUrl: "",
-            reason: "Only http:// and https:// protocols allowed",
-        };
-    }
-
+  if (!url || typeof url !== "string") {
     return {
-        isValid: true,
-        sanitizedUrl: decoded,
+      isValid: false,
+      sanitizedUrl: "",
+      reason: "Empty or invalid input",
     };
+  }
+
+  const decoded = fullyDecodeUrl(url.trim());
+
+  // Check for dangerous protocols first
+  if (hasDangerousProtocol(decoded)) {
+    return {
+      isValid: false,
+      sanitizedUrl: "",
+      reason: "Dangerous protocol detected",
+    };
+  }
+
+  // Only allow http and https for external URLs
+  const lowerDecoded = decoded.toLowerCase();
+  if (!lowerDecoded.startsWith("http://") && !lowerDecoded.startsWith("https://")) {
+    return {
+      isValid: false,
+      sanitizedUrl: "",
+      reason: "Only http:// and https:// protocols allowed",
+    };
+  }
+
+  return {
+    isValid: true,
+    sanitizedUrl: decoded,
+  };
 }
 
 /**
@@ -306,15 +297,15 @@ export function validateExternalUrl(url: string): ValidationResult {
  * @returns True if opened successfully, false if blocked
  */
 export function safeOpenExternal(url: string): boolean {
-    const result = validateExternalUrl(url);
+  const result = validateExternalUrl(url);
 
-    if (!result.isValid) {
-        console.warn(`[safeNavigate] Blocked external URL: ${result.reason}`);
-        return false;
-    }
+  if (!result.isValid) {
+    console.warn(`[safeNavigate] Blocked external URL: ${result.reason}`);
+    return false;
+  }
 
-    window.open(result.sanitizedUrl, "_blank", "noopener,noreferrer");
-    return true;
+  window.open(result.sanitizedUrl, "_blank", "noopener,noreferrer");
+  return true;
 }
 
 /**
@@ -325,14 +316,14 @@ export function safeOpenExternal(url: string): boolean {
  * @returns True if external URL
  */
 export function isExternalUrl(url: string): boolean {
-    if (!url || typeof url !== "string") {
-        return false;
-    }
+  if (!url || typeof url !== "string") {
+    return false;
+  }
 
-    const decoded = fullyDecodeUrl(url.trim());
-    const lower = decoded.toLowerCase();
+  const decoded = fullyDecodeUrl(url.trim());
+  const lower = decoded.toLowerCase();
 
-    return lower.startsWith("http://") || lower.startsWith("https://");
+  return lower.startsWith("http://") || lower.startsWith("https://");
 }
 
 /**
@@ -351,10 +342,10 @@ export function isExternalUrl(url: string): boolean {
  * ```
  */
 export function createSafeNavigate(
-    navigateFn: (to: string) => void
+  navigateFn: (to: string) => void
 ): (target: string, fallback?: string) => void {
-    return (target: string, fallback?: string) => {
-        const safeRoute = getSafeRoute(target, fallback);
-        navigateFn(safeRoute);
-    };
+  return (target: string, fallback?: string) => {
+    const safeRoute = getSafeRoute(target, fallback);
+    navigateFn(safeRoute);
+  };
 }
