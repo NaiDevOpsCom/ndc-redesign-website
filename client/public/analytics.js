@@ -1,3 +1,4 @@
+/* eslint-env browser */
 (function () {
   const PROD_DOMAIN = "nairobidevops.org";
   if (window.location.hostname !== PROD_DOMAIN) {
