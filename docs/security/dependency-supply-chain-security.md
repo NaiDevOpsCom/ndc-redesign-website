@@ -2,7 +2,7 @@
 
 ## Overview
 
-Modern web applications rely on hundreds or thousands of third-party dependencies. **Supply Chain Security** is the practice of ensuring that these dependencies are legitimate, up-to-date, and free from known vulnerabilities. 
+Modern web applications rely on hundreds or thousands of third-party dependencies. **Supply Chain Security** is the practice of ensuring that these dependencies are legitimate, up-to-date, and free from known vulnerabilities.
 
 A compromised package in our `package.json` could lead to data exfiltration, backdoors in our build process, or the injection of malicious scripts into the final production bundle.
 

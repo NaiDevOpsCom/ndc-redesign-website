@@ -19,13 +19,13 @@ We implement these headers at the infrastructure level using our deployment conf
 
 ### Key Configuration Decisions
 
-| Header | Value | Purpose |
-| :--- | :--- | :--- |
-| `X-Frame-Options` | `DENY` | Completely prevents the application from being embedded in an `<iframe>`, neutralizing Clickjacking. |
-| `X-Content-Type-Options` | `nosniff` | Forces the browser to strictly follow the `Content-Type` header provided by the server, preventing MIME sniffing. |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` | Sends the full URL when staying on our site, but only the origin (domain) when navigating to external sites over HTTPS. |
-| `Strict-Transport-Security` | `max-age=...; includeSubDomains; preload` | Tells the browser to only ever communicate with our domain over HTTPS for the next year. |
-| `Permissions-Policy` | `camera=(), geolocation=(), ...` | Disables access to sensitive browser APIs (camera, microphone, geolocation) by default to protect user privacy. |
+| Header                      | Value                                     | Purpose                                                                                                                 |
+| :-------------------------- | :---------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| `X-Frame-Options`           | `DENY`                                    | Completely prevents the application from being embedded in an `<iframe>`, neutralizing Clickjacking.                    |
+| `X-Content-Type-Options`    | `nosniff`                                 | Forces the browser to strictly follow the `Content-Type` header provided by the server, preventing MIME sniffing.       |
+| `Referrer-Policy`           | `strict-origin-when-cross-origin`         | Sends the full URL when staying on our site, but only the origin (domain) when navigating to external sites over HTTPS. |
+| `Strict-Transport-Security` | `max-age=...; includeSubDomains; preload` | Tells the browser to only ever communicate with our domain over HTTPS for the next year.                                |
+| `Permissions-Policy`        | `camera=(), geolocation=(), ...`          | Disables access to sensitive browser APIs (camera, microphone, geolocation) by default to protect user privacy.         |
 
 ## Code & Configuration Location
 
@@ -42,7 +42,8 @@ The headers are defined within the `"headers"` array, targeting the `"source": "
   "value": "DENY"
 }
 ```
-*This snippet shows how we explicitly block framing.*
+
+_This snippet shows how we explicitly block framing._
 
 ## Security Benefits
 
