@@ -5,6 +5,11 @@ import { Users, Calendar, ArrowRight, Briefcase, Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { HeroSlideData } from "@/data/heroSlidesData";
+import {
+  isExternalUrl,
+  safeOpenExternal,
+  getSafeRoute,
+} from "@/utils/safeNavigate";
 
 interface HeroSlideProps {
   slide: HeroSlideData;
@@ -60,22 +65,40 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide }) => {
 
   const isLoaded = loadedImage === slide.bgImage;
 
+  /**
+   * Handle primary CTA click with safe navigation.
+   * External URLs are validated and opened securely.
+   * Internal routes are sanitized to prevent open redirects.
+   */
   const handlePrimaryClick = () => {
-    if (slide.ctaPrimary.link.startsWith("http")) {
-      window.open(slide.ctaPrimary.link, "_blank", "noopener");
+    const link = slide.ctaPrimary.link;
+
+    if (isExternalUrl(link)) {
+      // Validate and open external URL with noopener/noreferrer
+      safeOpenExternal(link);
     } else {
-      navigate(slide.ctaPrimary.link);
+      // Sanitize internal route to prevent encoded URL attacks
+      navigate(getSafeRoute(link));
     }
   };
 
+  /**
+   * Handle secondary CTA click with safe navigation.
+   * Supports scroll-to-element, external URLs, and internal routes.
+   */
   const handleSecondaryClick = () => {
+    const link = slide.ctaSecondary.link;
+
     if (slide.ctaSecondary.isScroll) {
-      const el = document.getElementById(slide.ctaSecondary.link);
+      // Scroll behavior - link is an element ID
+      const el = document.getElementById(link);
       if (el) el.scrollIntoView({ behavior: "smooth" });
-    } else if (slide.ctaSecondary.link.startsWith("http")) {
-      window.open(slide.ctaSecondary.link, "_blank", "noopener");
+    } else if (isExternalUrl(link)) {
+      // Validate and open external URL with noopener/noreferrer
+      safeOpenExternal(link);
     } else {
-      navigate(slide.ctaSecondary.link);
+      // Sanitize internal route to prevent encoded URL attacks
+      navigate(getSafeRoute(link));
     }
   };
 
