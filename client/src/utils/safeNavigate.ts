@@ -17,17 +17,15 @@
 /** Default fallback route when navigation target is invalid */
 const DEFAULT_FALLBACK = "/";
 
-
-
 /** Dangerous protocols that must be blocked */
 const DANGEROUS_PROTOCOLS = ["javascript:", "data:", "vbscript:", "file:", "blob:"] as const;
 
 /** Patterns that indicate protocol-relative or absolute URLs */
 const ABSOLUTE_URL_PATTERNS = [
-    /^\/\//,          // Protocol-relative: //evil.com
-    /^\\\/\\\//,      // Escaped protocol-relative, e.g. source strings like "\\/\\/evil.com" that become "\/\/evil.com" at runtime
-    /^\/\\/,          // Mixed: /\evil.com
-    /^[a-z][a-z0-9+.-]*:/i, // Any protocol: http:, https:, ftp:, etc.
+  /^\/\//, // Protocol-relative: //evil.com
+  /^\\\/\\\//, // Escaped protocol-relative, e.g. source strings like "\\/\\/evil.com" that become "\/\/evil.com" at runtime
+  /^\/\\/, // Mixed: /\evil.com
+  /^[a-z][a-z0-9+.-]*:/i, // Any protocol: http:, https:, ftp:, etc.
 ] as const;
 
 /**
@@ -78,16 +76,16 @@ function fullyDecodeUrl(url: string): string {
  * @returns Normalized path
  */
 function normalizePath(path: string): string {
-    // Separate path from query/hash
-    const [pathPart, ...rest] = path.split("?");
-    const queryAndHash = rest.length > 0 ? "?" + rest.join("?") : "";
+  // Separate path from query/hash
+  const [pathPart, ...rest] = path.split("?");
+  const queryAndHash = rest.length > 0 ? "?" + rest.join("?") : "";
 
-    // Further split query from hash if needed, but for normalization
-    // we primarily care about the path segment before '?'
+  // Further split query from hash if needed, but for normalization
+  // we primarily care about the path segment before '?'
 
-    // Split path into segments
-    const segments = pathPart.split("/").filter(Boolean);
-    const normalized: string[] = [];
+  // Split path into segments
+  const segments = pathPart.split("/").filter(Boolean);
+  const normalized: string[] = [];
 
   for (const segment of segments) {
     if (segment === "..") {
@@ -98,8 +96,8 @@ function normalizePath(path: string): string {
     }
   }
 
-    // Reconstruct path with leading slash and reattach query/hash
-    return "/" + normalized.join("/") + queryAndHash;
+  // Reconstruct path with leading slash and reattach query/hash
+  return "/" + normalized.join("/") + queryAndHash;
 }
 
 /**
@@ -158,14 +156,14 @@ export function validateInternalRoute(
   target: string,
   fallback: string = DEFAULT_FALLBACK
 ): ValidationResult {
-    // Handle empty/null or whitespace-only input
-    if (!target || typeof target !== "string" || !target.trim()) {
-        return {
-            isValid: false,
-            sanitizedUrl: fallback,
-            reason: "Empty or invalid input",
-        };
-    }
+  // Handle empty/null or whitespace-only input
+  if (!target || typeof target !== "string" || !target.trim()) {
+    return {
+      isValid: false,
+      sanitizedUrl: fallback,
+      reason: "Empty or invalid input",
+    };
+  }
 
   // Decode to catch encoded bypass attempts
   const decoded = fullyDecodeUrl(target.trim());
@@ -193,8 +191,6 @@ export function validateInternalRoute(
 
   // Normalize to prevent path traversal
   sanitized = normalizePath(sanitized);
-
-
 
   // Optional: Validate against allowed prefixes (strict mode)
   // Uncomment if you want strict route whitelisting
@@ -293,12 +289,12 @@ export function validateExternalUrl(url: string): ValidationResult {
  * @returns True if opened successfully, false if blocked or not in browser
  */
 export function safeOpenExternal(url: string): boolean {
-    // SSR guard
-    if (typeof window === "undefined") {
-        return false;
-    }
+  // SSR guard
+  if (typeof window === "undefined") {
+    return false;
+  }
 
-    const result = validateExternalUrl(url);
+  const result = validateExternalUrl(url);
 
   if (!result.isValid) {
     console.warn(`[safeNavigate] Blocked external URL: ${result.reason}`);
