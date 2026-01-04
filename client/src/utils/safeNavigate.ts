@@ -17,29 +17,17 @@
 /** Default fallback route when navigation target is invalid */
 const DEFAULT_FALLBACK = "/";
 
-/** Allowed internal route prefixes (can be expanded as needed) */
-const ALLOWED_ROUTE_PREFIXES = [
-  "/",
-  "/about",
-  "/events",
-  "/community",
-  "/partners",
-  "/join",
-  "/donate",
-  "/shop",
-  "/learn",
-  "/faqpage",
-] as const;
+
 
 /** Dangerous protocols that must be blocked */
 const DANGEROUS_PROTOCOLS = ["javascript:", "data:", "vbscript:", "file:", "blob:"] as const;
 
 /** Patterns that indicate protocol-relative or absolute URLs */
 const ABSOLUTE_URL_PATTERNS = [
-  /^\/\//, // Protocol-relative: //evil.com
-  /^\\\/\\\//, // Escaped: \/\/evil.com
-  /^\/\\/, // Mixed: /\evil.com
-  /^[a-z][a-z0-9+.-]*:/i, // Any protocol: http:, https:, ftp:, etc.
+    /^\/\//,          // Protocol-relative: //evil.com
+    /^\\\/\\\//,      // Escaped protocol-relative, e.g. source strings like "\\/\\/evil.com" that become "\/\/evil.com" at runtime
+    /^\/\\/,          // Mixed: /\evil.com
+    /^[a-z][a-z0-9+.-]*:/i, // Any protocol: http:, https:, ftp:, etc.
 ] as const;
 
 /**
@@ -84,14 +72,22 @@ function fullyDecodeUrl(url: string): string {
 /**
  * Normalizes a path by resolving .. and . segments.
  * Prevents path traversal attacks.
+ * Handles query strings and hashes by separating them during normalization.
  *
  * @param path - The path to normalize
  * @returns Normalized path
  */
 function normalizePath(path: string): string {
-  // Split path into segments
-  const segments = path.split("/").filter(Boolean);
-  const normalized: string[] = [];
+    // Separate path from query/hash
+    const [pathPart, ...rest] = path.split("?");
+    const queryAndHash = rest.length > 0 ? "?" + rest.join("?") : "";
+
+    // Further split query from hash if needed, but for normalization
+    // we primarily care about the path segment before '?'
+
+    // Split path into segments
+    const segments = pathPart.split("/").filter(Boolean);
+    const normalized: string[] = [];
 
   for (const segment of segments) {
     if (segment === "..") {
@@ -102,8 +98,8 @@ function normalizePath(path: string): string {
     }
   }
 
-  // Reconstruct path with leading slash
-  return "/" + normalized.join("/");
+    // Reconstruct path with leading slash and reattach query/hash
+    return "/" + normalized.join("/") + queryAndHash;
 }
 
 /**
@@ -162,14 +158,14 @@ export function validateInternalRoute(
   target: string,
   fallback: string = DEFAULT_FALLBACK
 ): ValidationResult {
-  // Handle empty/null input
-  if (!target || typeof target !== "string") {
-    return {
-      isValid: false,
-      sanitizedUrl: fallback,
-      reason: "Empty or invalid input",
-    };
-  }
+    // Handle empty/null or whitespace-only input
+    if (!target || typeof target !== "string" || !target.trim()) {
+        return {
+            isValid: false,
+            sanitizedUrl: fallback,
+            reason: "Empty or invalid input",
+        };
+    }
 
   // Decode to catch encoded bypass attempts
   const decoded = fullyDecodeUrl(target.trim());
@@ -198,8 +194,7 @@ export function validateInternalRoute(
   // Normalize to prevent path traversal
   sanitized = normalizePath(sanitized);
 
-  // Extract just the path (before any query string or hash)
-  const pathOnly = sanitized.split("?")[0].split("#")[0];
+
 
   // Optional: Validate against allowed prefixes (strict mode)
   // Uncomment if you want strict route whitelisting
@@ -292,12 +287,18 @@ export function validateExternalUrl(url: string): ValidationResult {
 
 /**
  * Safely opens an external URL in a new tab with security attributes.
+ * Safe to call in SSR environments (no-op).
  *
  * @param url - The URL to open
- * @returns True if opened successfully, false if blocked
+ * @returns True if opened successfully, false if blocked or not in browser
  */
 export function safeOpenExternal(url: string): boolean {
-  const result = validateExternalUrl(url);
+    // SSR guard
+    if (typeof window === "undefined") {
+        return false;
+    }
+
+    const result = validateExternalUrl(url);
 
   if (!result.isValid) {
     console.warn(`[safeNavigate] Blocked external URL: ${result.reason}`);
