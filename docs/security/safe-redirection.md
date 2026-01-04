@@ -122,7 +122,6 @@ client/src/utils/safeNavigate.ts
 | `validateExternalUrl(url)`             | Validates external URLs (http/https only) |
 | `safeOpenExternal(url)`                | Opens external URL securely               |
 | `isExternalUrl(url)`                   | Detects if URL is external                |
-| `createSafeNavigate(navigateFn)`       | Creates hook-compatible wrapper           |
 
 ### Unit Tests
 
