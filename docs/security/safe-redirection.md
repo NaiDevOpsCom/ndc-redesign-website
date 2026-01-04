@@ -36,7 +36,7 @@
 
 ### How Redirects Are Validated
 
-```
+```text
 ┌─────────────────┐
 │   Input URL     │
 └────────┬────────┘
@@ -109,7 +109,7 @@ When an invalid redirect is detected, the system:
 
 ### Primary Utility
 
-```
+```text
 client/src/utils/safeNavigate.ts
 ```
 
@@ -125,7 +125,7 @@ client/src/utils/safeNavigate.ts
 
 ### Unit Tests
 
-```
+```text
 client/src/utils/__tests__/safeNavigate.test.ts
 ```
 
