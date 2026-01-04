@@ -301,8 +301,8 @@ export function safeOpenExternal(url: string): boolean {
     return false;
   }
 
-  window.open(result.sanitizedUrl, "_blank", "noopener,noreferrer");
-  return true;
+    const opened = window.open(result.sanitizedUrl, "_blank", "noopener,noreferrer");
+    return opened !== null;
 }
 
 /**
