@@ -15,7 +15,7 @@ import "./index.css";
  * @see client/src/components/ErrorBoundary.tsx
  */
 createRoot(document.getElementById("root")!).render(
-    <ErrorBoundary>
-        <App />
-    </ErrorBoundary>
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
 );
