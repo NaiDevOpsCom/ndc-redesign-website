@@ -26,7 +26,7 @@
 
 ### Compliance & Best Practices
 
-- OWASP Top 10 (A10:2021 - Server-Side Request Forgery)
+- OWASP Unvalidated Redirects and Forwards Cheat Sheet
 - CWE-601: URL Redirection to Untrusted Site
 - Defense-in-depth security architecture
 
@@ -72,7 +72,7 @@
 └─────────────────┘
 ```
 
-### Denylist Logic
+### Protocol Blocklist
 
 | Protocol      | Status       | Reason                      |
 | ------------- | ------------ | --------------------------- |
