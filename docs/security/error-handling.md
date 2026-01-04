@@ -9,12 +9,14 @@ This document describes the error handling security measures implemented in the 
 ### 1. Information Disclosure via Error Messages
 
 **Risk**: Unhandled JavaScript errors can expose:
+
 - Internal file paths and directory structure
 - Component names and application architecture
 - Library versions and dependencies
 - Variable names and business logic
 
 **Impact**: Attackers can use this information to:
+
 - Map the application structure for targeted attacks
 - Identify vulnerable dependencies
 - Craft more effective phishing or social engineering attacks
@@ -22,6 +24,7 @@ This document describes the error handling security measures implemented in the 
 ### 2. Source Map Exposure
 
 **Risk**: Source maps (`.map` files) in production allow anyone to:
+
 - View the original, unminified source code
 - Understand business logic and security implementations
 - Identify hardcoded secrets or API keys
@@ -41,12 +44,12 @@ A React Error Boundary wraps the entire application to catch unhandled JavaScrip
 
 #### Behavior by Environment
 
-| Feature | Development | Production |
-|---------|-------------|------------|
-| Error details in UI | ✅ Full stack trace | ❌ Hidden |
-| Component stack | ✅ Visible | ❌ Hidden |
-| Console logging | ✅ Detailed | ❌ Disabled |
-| Fallback UI | 🔧 Debug-friendly | 👤 User-friendly |
+| Feature             | Development         | Production       |
+| ------------------- | ------------------- | ---------------- |
+| Error details in UI | ✅ Full stack trace | ❌ Hidden        |
+| Component stack     | ✅ Visible          | ❌ Hidden        |
+| Console logging     | ✅ Detailed         | ❌ Disabled      |
+| Fallback UI         | 🔧 Debug-friendly   | 👤 User-friendly |
 
 #### Usage
 
@@ -70,7 +73,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 
 <ErrorBoundary fallback={<CustomErrorComponent />}>
   <RiskyComponent />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ---
@@ -88,12 +91,12 @@ build: {
 }
 ```
 
-| Build Mode | Source Maps |
-|------------|-------------|
-| `npm run dev` | ✅ Enabled |
-| `npm run build` | ✅ Enabled |
+| Build Mode              | Source Maps |
+| ----------------------- | ----------- |
+| `npm run dev`           | ✅ Enabled  |
+| `npm run build`         | ✅ Enabled  |
 | `npm run build:staging` | ❌ Disabled |
-| `npm run build:prod` | ❌ Disabled |
+| `npm run build:prod`    | ❌ Disabled |
 
 ---
 
@@ -102,19 +105,23 @@ build: {
 ### Test Error Boundary
 
 1. **Development Mode Test**:
+
    ```tsx
    // Add temporarily to any component
    throw new Error("Test Error Boundary");
    ```
+
    - Run `npm run dev`
    - Trigger the error
    - **Expected**: Full error details visible in fallback UI
 
 2. **Production Mode Test**:
+
    ```bash
    npm run build:prod
    npm run preview
    ```
+
    - Trigger the same error
    - **Expected**: User-friendly message only, no technical details
 
@@ -139,15 +146,18 @@ Get-ChildItem -Path dist/assets -Filter *.map -Recurse
 ## Security Scanner Compliance
 
 ### Qodana
+
 - ✅ No unsafe error interpolation in UI
 - ✅ Environment checks use standard Vite patterns
 
 ### DeepSource
+
 - ✅ Console statements have ESLint disable comments with justification
 - ✅ Console logging only in development paths
 - ✅ No production console output
 
 ### Dependabot
+
 - ✅ No new dependencies introduced
 - ✅ Uses React built-in Error Boundary pattern
 
@@ -170,4 +180,4 @@ Get-ChildItem -Path dist/assets -Filter *.map -Recurse
 
 ---
 
-*Last updated: January 04, 2026*
+_Last updated: January 04, 2026_
