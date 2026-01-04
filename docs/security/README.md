@@ -15,6 +15,7 @@ The mission of the Nairobi DevOps Community is to build and maintain a secure, t
 | **Browser Security Headers** | Detailed breakdown of our HTTP security headers and their purpose.  | [**Read More**](./browser-security-headers.md)         |
 | **Content Security Policy**  | Our strategy for mitigating XSS and controlling resource loading.   | [**Read More**](./content-security-policy.md)          |
 | **Safe Redirection**         | Preventing open redirect vulnerabilities and path traversal.        | [**Read More**](./safe-redirection.md)                 |
+| **Error Handling**           | Preventing internal error exposure and information disclosure.      | [**Read More**](./error-handling.md)                   |
 
 ---
 
