@@ -14,8 +14,14 @@ import "./index.css";
  *
  * @see client/src/components/ErrorBoundary.tsx
  */
-createRoot(document.getElementById("root")!).render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
+const rootElement = document.getElementById("root");
+
+if (!rootElement) {
+    throw new Error("Failed to find the root element");
+}
+
+createRoot(rootElement).render(
+    <ErrorBoundary>
+        <App />
+    </ErrorBoundary>
 );
