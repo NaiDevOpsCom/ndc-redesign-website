@@ -50,14 +50,14 @@ interface ErrorBoundaryState {
 const isDevelopment = (): boolean => {
   const mode =
     typeof import.meta !== "undefined" &&
-      typeof import.meta.env !== "undefined" &&
-      typeof import.meta.env.MODE === "string"
+    typeof import.meta.env !== "undefined" &&
+    typeof import.meta.env.MODE === "string"
       ? import.meta.env.MODE
       : typeof process !== "undefined" &&
-        // eslint-disable-next-line no-undef
-        typeof process.env !== "undefined"
+          // eslint-disable-next-line no-undef
+          typeof process.env !== "undefined"
         ? // eslint-disable-next-line no-undef
-        process.env.NODE_ENV
+          process.env.NODE_ENV
         : undefined;
 
   return mode === "development";
@@ -209,17 +209,15 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             {/* PRODUCTION: User-friendly message only */}
             {!isDev && (
               <p style={styles.message}>
-                We apologize for the inconvenience. Please try refreshing the
-                page or come back later.
+                We apologize for the inconvenience. Please try refreshing the page or come back
+                later.
               </p>
             )}
 
             {/* DEVELOPMENT: Full error details for debugging */}
             {isDev && error && (
               <div style={styles.devSection}>
-                <p style={styles.devLabel}>
-                  🔧 Development Mode - Error Details:
-                </p>
+                <p style={styles.devLabel}>🔧 Development Mode - Error Details:</p>
 
                 <div style={styles.errorBox}>
                   <p style={styles.errorName}>{error.name}</p>
@@ -236,20 +234,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 {errorInfo?.componentStack && (
                   <details style={styles.details}>
                     <summary style={styles.summary}>Component Stack</summary>
-                    <pre style={styles.stackTrace}>
-                      {errorInfo.componentStack}
-                    </pre>
+                    <pre style={styles.stackTrace}>{errorInfo.componentStack}</pre>
                   </details>
                 )}
               </div>
             )}
 
             <div style={styles.buttonGroup}>
-              <button
-                type="button"
-                onClick={this.handleRetry}
-                style={styles.primaryButton}
-              >
+              <button type="button" onClick={this.handleRetry} style={styles.primaryButton}>
                 Try Again
               </button>
               <button
