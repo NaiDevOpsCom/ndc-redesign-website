@@ -25,6 +25,8 @@ interface ErrorBoundaryProps {
   children: ReactNode;
   /** Optional custom fallback UI to display when an error occurs */
   fallback?: ReactNode;
+  /** Array of values that, if changed, trigger a reset of the error boundary */
+  resetKeys?: Array<unknown>;
 }
 
 /**
@@ -46,7 +48,19 @@ interface ErrorBoundaryState {
  * @returns true if running in development mode
  */
 const isDevelopment = (): boolean => {
-  return import.meta.env.MODE === "development";
+  const mode =
+    typeof import.meta !== "undefined" &&
+      typeof import.meta.env !== "undefined" &&
+      typeof import.meta.env.MODE === "string"
+      ? import.meta.env.MODE
+      : typeof process !== "undefined" &&
+        // eslint-disable-next-line no-undef
+        typeof process.env !== "undefined"
+        ? // eslint-disable-next-line no-undef
+        process.env.NODE_ENV
+        : undefined;
+
+  return mode === "development";
 };
 
 /**
@@ -67,6 +81,27 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       error: null,
       errorInfo: null,
     };
+  }
+
+  /**
+   * Component lifecycle method called when props or state update.
+   * Used to automatically reset the error boundary when resetKeys change.
+   *
+   * @param prevProps - Previous props
+   */
+  componentDidUpdate(prevProps: ErrorBoundaryProps): void {
+    const prevKeys = prevProps.resetKeys ?? [];
+    const nextKeys = this.props.resetKeys ?? [];
+
+    // Check if error exists and resetKeys have changed
+    if (this.state.hasError && prevKeys.length === nextKeys.length) {
+      for (let i = 0; i < nextKeys.length; i += 1) {
+        if (!Object.is(prevKeys[i], nextKeys[i])) {
+          this.handleRetry();
+          break;
+        }
+      }
+    }
   }
 
   /**
@@ -150,7 +185,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       const isDev = isDevelopment();
 
       return (
-        <div style={styles.container}>
+        <div style={styles.container} role="alert" aria-live="assertive">
           <div style={styles.content}>
             <div style={styles.iconWrapper}>
               <svg
@@ -174,15 +209,17 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             {/* PRODUCTION: User-friendly message only */}
             {!isDev && (
               <p style={styles.message}>
-                We apologize for the inconvenience. Please try refreshing the page or come back
-                later.
+                We apologize for the inconvenience. Please try refreshing the
+                page or come back later.
               </p>
             )}
 
             {/* DEVELOPMENT: Full error details for debugging */}
             {isDev && error && (
               <div style={styles.devSection}>
-                <p style={styles.devLabel}>🔧 Development Mode - Error Details:</p>
+                <p style={styles.devLabel}>
+                  🔧 Development Mode - Error Details:
+                </p>
 
                 <div style={styles.errorBox}>
                   <p style={styles.errorName}>{error.name}</p>
@@ -199,14 +236,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 {errorInfo?.componentStack && (
                   <details style={styles.details}>
                     <summary style={styles.summary}>Component Stack</summary>
-                    <pre style={styles.stackTrace}>{errorInfo.componentStack}</pre>
+                    <pre style={styles.stackTrace}>
+                      {errorInfo.componentStack}
+                    </pre>
                   </details>
                 )}
               </div>
             )}
 
             <div style={styles.buttonGroup}>
-              <button type="button" onClick={this.handleRetry} style={styles.primaryButton}>
+              <button
+                type="button"
+                onClick={this.handleRetry}
+                style={styles.primaryButton}
+              >
                 Try Again
               </button>
               <button
