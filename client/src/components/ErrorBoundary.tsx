@@ -121,33 +121,33 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     // }
   }
 
-    /**
-     * Resets the error boundary state, allowing the user to retry.
-     */
-    handleRetry = (): void => {
-        window.location.reload();
-    };
+  /**
+   * Resets the error boundary state, allowing the user to retry.
+   */
+  handleRetry = (): void => {
+    window.location.reload();
+  };
 
-    /**
-     * Renders the fallback UI or children based on error state.
-     */
-    render(): ReactNode {
-        if (this.state.hasError) {
-            // If a custom fallback is provided, use it
-            if (this.props.fallback) {
-                try {
-                    return this.props.fallback;
-                } catch (e) {
-                    if (isDevelopment()) {
-                        // eslint-disable-next-line no-console
-                        console.error("Error in custom fallback:", e);
-                    }
-                    // proceed to default fallback UI
-                }
-            }
+  /**
+   * Renders the fallback UI or children based on error state.
+   */
+  render(): ReactNode {
+    if (this.state.hasError) {
+      // If a custom fallback is provided, use it
+      if (this.props.fallback) {
+        try {
+          return this.props.fallback;
+        } catch (e) {
+          if (isDevelopment()) {
+            // eslint-disable-next-line no-console
+            console.error("Error in custom fallback:", e);
+          }
+          // proceed to default fallback UI
+        }
+      }
 
-            const { error, errorInfo } = this.state;
-            const isDev = isDevelopment();
+      const { error, errorInfo } = this.state;
+      const isDev = isDevelopment();
 
       return (
         <div style={styles.container}>
@@ -171,18 +171,18 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
             <h1 style={styles.title}>Something went wrong</h1>
 
-                        {/* PRODUCTION: User-friendly message only */}
-                        {!isDev && (
-                            <p style={styles.message}>
-                                We apologize for the inconvenience. Please try refreshing the
-                                page or come back later.
-                            </p>
-                        )}
+            {/* PRODUCTION: User-friendly message only */}
+            {!isDev && (
+              <p style={styles.message}>
+                We apologize for the inconvenience. Please try refreshing the page or come back
+                later.
+              </p>
+            )}
 
-                        {/* DEVELOPMENT: Full error details for debugging */}
-                        {isDev && error && (
-                            <div style={styles.devSection}>
-                                <p style={styles.devLabel}>🔧 Development Mode - Error Details:</p>
+            {/* DEVELOPMENT: Full error details for debugging */}
+            {isDev && error && (
+              <div style={styles.devSection}>
+                <p style={styles.devLabel}>🔧 Development Mode - Error Details:</p>
 
                 <div style={styles.errorBox}>
                   <p style={styles.errorName}>{error.name}</p>
@@ -205,28 +205,24 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               </div>
             )}
 
-                        <div style={styles.buttonGroup}>
-                            <button
-                                type="button"
-                                onClick={this.handleRetry}
-                                style={styles.primaryButton}
-                            >
-                                Try Again
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    window.location.replace("/");
-                                }}
-                                style={styles.secondaryButton}
-                            >
-                                Return Home
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
+            <div style={styles.buttonGroup}>
+              <button type="button" onClick={this.handleRetry} style={styles.primaryButton}>
+                Try Again
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.replace("/");
+                }}
+                style={styles.secondaryButton}
+              >
+                Return Home
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return this.props.children;
   }
