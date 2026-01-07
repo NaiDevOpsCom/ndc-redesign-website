@@ -15,6 +15,7 @@ export interface TeamMember {
     phone?: string;
   };
   bio?: string;
+  career?: string;
 }
 
 export interface Statistic {
@@ -97,6 +98,7 @@ export const teamData: TeamMember[] = [
       website: "https://kevintuei.medium.com",
     },
     bio: "My mission is to make the world a better place through technology. How? By training 100,000+ people on Cloud, AI/ML and Cybersecurity and leading 500+ projects in IT for Quality Education and Inclusion through Tech Communities and Mentorship.",
+    career: "Cybersecurity & AI/ML Consultant",
   },
   {
     id: "alvin-ndungu",
@@ -109,6 +111,7 @@ export const teamData: TeamMember[] = [
       twitter: "https://x.com/alvin_kh",
     },
     bio: "Project management expert focused on delivering impactful DevOps initiatives and community-driven solutions.",
+  
   },
   {
     id: "ronald-kipchirchir",
@@ -120,17 +123,20 @@ export const teamData: TeamMember[] = [
       linkedin: "https://linkedin.com/in/ronald-kipchirchir-034983246/",
       twitter: "https://x.com/Ronaah_254",
     },
+    bio: "Events Coordinator at the Nairobi DevOps Community, focused on building strong, inclusive spaces where people learn, connect, and grow together. I lead the planning and delivery of community-driven initiatives such as campus tours, meetups, summits and online events that connect students, professionals, and industry partners. I come from a community of marathon runners—but instead of running races, I chose to run code and tech events! This background shapes my leadership style: consistent, collaborative, and purpose-driven. My work centers on empowering emerging talent, strengthening partnerships, and creating programs that turn curiosity into capability and community into impact.",
   },
   {
     id: "moses-mbadi",
     name: "Moses Mbadi",
-    title: "Head of IT",
+    title: "Mentor",
     image:
       "https://res.cloudinary.com/nairobidevops/image/upload/v1762225694/IMG_3815_-_Moses_Mbadi_nd5izk.jpg",
     socials: {
       linkedin: "https://www.linkedin.com/in/moses-mbadi-0b8500198/",
       twitter: "https://twitter.com/mosesmbadi",
     },
+    bio: "Hi, I’m Mbadi! As a Community Lead and Mentor, my mission is simple: to help developers find their aha! moment. I believe that tech is better when we build it together, and I spend my time creating spaces where everyone—from students to senior leads—feels supported and heard. Whether I’m hosting a workshop or sitting down for a 1:1 mentorship session, I’m always looking for ways to turn individual growth into community success. Let's build something great together!",
+    career: "Head of IT @ Chem-Labs Ltd, Founder @ Soma Stories",
   },
   {
     id: "tabitha-margaret-wangechi",
@@ -143,6 +149,7 @@ export const teamData: TeamMember[] = [
       twitter: "https://x.com/_mWangechi",
     },
     bio: "She's a passionate Graphic designer and UI/UX designer, whose main role in the community is to create visual assets that support the community events, programs and outreaches. She is responsible for creating the digital and print media working closely with the other community managers to achieve the brand's mission. She aims at creating a consistent and impactful visual identity of the community in the DevOps ecosystem in Nairobi.",
+    career: "Student @ JKUAT",
   },
   {
     id: "reyhana-cherop",
@@ -153,7 +160,6 @@ export const teamData: TeamMember[] = [
     socials: {
       linkedin: "https://linkedin.com/in/reyhana-cherop-77a584156/",
       twitter: "https://x.com/reyhana_cherop",
-      website: "https://reyhanacynthia.wixsite.com/portfolio",
     },
   },
   {
@@ -179,5 +185,32 @@ export const teamData: TeamMember[] = [
       website: "https://dev-kabingu-portfolio.vercel.app/",
     },
     bio: "UI/UX designer focused on crafting intuitive interfaces and committed to turning complex ideas into simple, usable experiences",
+    career: "UI/UX designer @Techleap-zynamis",
+  },
+  {
+    id: "anita-kahenya",
+    name: "Anita kahenya ",
+    title: "Lead events",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1751513207/IMG_2484_-_Anita_Kahenya_pmocp9.jpg",
+    socials: {
+      twitter: "https://x.com/KahenyaAnita",
+      linkedin: "https://www.linkedin.com/in/anita-kahenya/",
+    },
+    bio: "I am the Events Lead at the Nairobi DevOps Community, where I help design, plan, and execute events that bring together practitioners, learners, and industry leaders across the DevOps ecosystem. My focus is on creating meaningful, well-structured experiences that encourage knowledge sharing, collaboration, and real-world problem solving. With a background in software quality engineering, cloud systems monitoring, and developer enablement, I’m passionate about building bridges between technical excellence and community impact. I care deeply about making DevOps accessible, practical, and inclusive especially for early-career engineers and underrepresented voices in tech. Through my work, I focus on community-driven events, speaker curation, mentorship opportunities, and initiatives that strengthen learning, visibility, and growth within the Nairobi tech ecosystem.",
+    career: "QA Engineer- Jacaranda health",
+  },
+  {
+    id: "ian-kiprotich",
+    name: "Ian Kiprotich",
+    title: "Finance and Planning manager",
+    image:
+      "https://res.cloudinary.com/nairobidevops/image/upload/v1767729547/PXL_20250819_104000826_2_-_Ian_Kiprotich_nbkrgu.jpg",
+    socials: {
+      twitter: "https://x.com/Onai_erd",
+      linkedin: "https://www.linkedin.com/in/iankiprotich",
+    },
+    bio: "I am passionate about open-source technologies, cloud-native adoption, and community building through mentorship, events, and knowledge sharing. My current focus is on Kubernetes platform engineering, GitOps, security, and observability, while helping teams adopt modern, scalable DevOps practices.",
+    career: "DevOps engineer @ Safaricom",
   },
 ];
