@@ -188,7 +188,7 @@ export const teamData: TeamMember[] = [
   },
   {
     id: "anita-kahenya",
-    name: "Anita kahenya ",
+    name: "Anita Kahenya",
     title: "Lead events",
     image:
       "https://res.cloudinary.com/nairobidevops/image/upload/v1751513207/IMG_2484_-_Anita_Kahenya_pmocp9.jpg",

@@ -9,3 +9,9 @@ export function getRandomItems<T>(items: T[], count: number): T[] {
   }
   return arr.slice(0, count);
 }
+
+// Utility: pick a single random item from an array
+export function getRandomFrom<T>(items: T[]): T | null {
+  if (!items || items.length === 0) return null;
+  return items[Math.floor(Math.random() * items.length)];
+}
