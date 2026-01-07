@@ -111,7 +111,6 @@ export const teamData: TeamMember[] = [
       twitter: "https://x.com/alvin_kh",
     },
     bio: "Project management expert focused on delivering impactful DevOps initiatives and community-driven solutions.",
-  
   },
   {
     id: "ronald-kipchirchir",
