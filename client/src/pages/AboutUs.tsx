@@ -1,4 +1,4 @@
-import { Globe, Linkedin, X, Instagram, ChevronLeft, ChevronRight, Phone } from "lucide-react";
+import { Globe, Linkedin, Instagram, ChevronLeft, ChevronRight, Phone, Mail, Youtube, Facebook } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { Image as UnpicImage } from "@unpic/react";
@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { teamData, statisticsData } from "@/data/ndcData";
 import StatisticCounter from "@/components/ui/StatisticCounter";
-import { communityGallery } from "@/data/galleryData";
+import { communityGallery, teamGallery } from "@/data/galleryData";
 import TeamGallery from "@/components/TeamGallery";
 import { getRandomItems } from "@/utils/getRandomItems";
 
@@ -47,9 +47,16 @@ const objectivesData = [
 ];
 
 export default function AboutUs() {
-  const [randomImage] = useState(() => {
-    if (communityGallery.length > 0) {
-      return communityGallery[Math.floor(Math.random() * communityGallery.length)];
+  const [heroBg] = useState(() => {
+    if (teamGallery.length > 0) {
+      return teamGallery[Math.floor(Math.random() * teamGallery.length)];
+    }
+    return null;
+  });
+
+  const [partnerBg] = useState(() => {
+    if (teamGallery.length > 0) {
+      return teamGallery[Math.floor(Math.random() * teamGallery.length)];
     }
     return null;
   });
@@ -76,6 +83,7 @@ export default function AboutUs() {
       bio: m.bio || "",
       image: m.image,
       socials: m.socials || {},
+      career: m.career,
     };
   }, [featuredId]);
 
@@ -111,8 +119,7 @@ export default function AboutUs() {
       <section
         className="relative min-h-[60vh] flex items-center justify-center py-20"
         style={{
-          backgroundImage:
-            "url('https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247')",
+          backgroundImage: `url('${heroBg?.url || "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -132,7 +139,7 @@ export default function AboutUs() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">Our Purpose</h2>
-            <h3 className="figma-heading dark:text-white">
+            <h3 className="text-3xl font-bold text-black dark:text-white">
               Mission, Vision & Real Stories in Action
             </h3>
           </div>
@@ -161,8 +168,8 @@ export default function AboutUs() {
                 </p>
               </div>
               <Button
-                className="bg-primary hover:bg-[#023047] text-white "
-                onClick={() => navigate("/join")}
+                className="bg-primary hover:bg-ndc-darkblue text-white dark:bg-white dark:hover:bg-primary dark:text-black "
+                onClick={() => navigate("/community")}
               >
                 See Us In Action
               </Button>
@@ -289,53 +296,41 @@ export default function AboutUs() {
               <div className="grid grid-rows-2 gap-4 h-full">
                 {/* Top image */}
                 <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 flex-1">
-                  <UnpicImage
+                  <img
                     src="https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"
                     alt="Nairobi DevOps Community"
                     className="w-full h-full object-cover"
-                    width={300}
-                    height={300}
                     loading="lazy"
-                    layout="constrained"
                   />
                 </div>
                 {/* Bottom image */}
                 <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 flex-1">
-                  <UnpicImage
+                  <img
                     src="https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9872.jpg?updatedAt=1764488001358"
                     alt="Africa DevOps Summit"
                     className="w-full h-full object-cover"
-                    width={300}
-                    height={300}
                     loading="lazy"
-                    layout="constrained"
                   />
                 </div>
               </div>
               {/* Right column - one larger image */}
               <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 h-full">
-                <UnpicImage
+                <img
                   src="https://ik.imagekit.io/nairobidevops/ndcAssets/GxreT67XgAECapE.jpeg"
                   alt="Nairobi DevOps Community"
                   className="w-full h-full object-cover"
-                  width={300}
-                  height={300}
                   loading="lazy"
-                  layout="constrained"
                 />
               </div>
 
               {/* Bottom spanning image */}
               <div className="col-span-1 lg:col-span-2">
                 <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 h-48 lg:h-64">
-                  <UnpicImage
+                  <img
                     src="https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20240601_141647444.jpg?updatedAt=1764488001435"
                     alt="Nairobi DevOps Community Event"
                     className="w-full h-full object-cover"
-                    width={300}
-                    height={300}
                     loading="lazy"
-                    layout="constrained"
                   />
                 </div>
               </div>
@@ -396,7 +391,8 @@ export default function AboutUs() {
               </p>
             </div>
           </div>
-          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-stretch">
+            {/* grid lg:grid-cols-2 gap-12 items-stretch */}
             {/* grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-stretch */}
             {/* Left Side - Featured Member */}
             <div className="flex flex-col">
@@ -408,7 +404,7 @@ export default function AboutUs() {
                       <img
                         src={featured.image}
                         alt={featured.name}
-                        className="relative w-full h-full object-cover rounded-3xl border-4"
+                        className="relative w-full h-full object-cover rounded-3xl border-2"
                       />
                     </div>
                     <div className="text-center space-y-4">
@@ -416,33 +412,60 @@ export default function AboutUs() {
                       <p className="text-blue-200 font-medium">{featured.role}</p>
                       <div className="w-12 h-1 bg-primary mx-auto rounded-full" />
                       <p className="text-blue-200 leading-relaxed text-pretty">{featured.bio}</p>
+                      <div className="w-12 h-1 bg-primary mx-auto rounded-full" />
+                      {featured.career && (
+                        <h4 className="text-blue-200 font-bold leading-relaxed text-pretty pt-2 font-medium">
+                          {featured.career}
+                        </h4>
+                      )}
                     </div>
                   </div>
-                  <div className="flex items-center justify-center gap-4 pt-6 mt-4">
+                  <div className="flex items-center justify-center gap-5 pt-6 mt-4">
                     {featured.socials &&
                       Object.entries(featured.socials as Record<string, string>).map(
                         ([key, value]) => {
                           if (!value || typeof value !== "string") return null;
-                          const href =
-                            key === "phone"
-                              ? `tel:${value}`
-                              : key === "email"
-                                ? `mailto:${value}`
-                                : value;
-                          const Icon =
-                            key === "phone"
-                              ? Phone
-                              : key === "linkedin"
-                                ? Linkedin
-                                : key === "twitter"
-                                  ? X
-                                  : key === "instagram"
-                                    ? Instagram
-                                    : Globe;
-                          const baseClass =
-                            key === "phone"
-                              ? "w-12 h-12 rounded-full bg-primary hover:bg-white transition-colors flex items-center justify-center"
-                              : "w-12 h-12 rounded-full bg-blue-700/50 hover:bg-white transition-colors flex items-center justify-center";
+
+                          let href = value;
+                          if (key === "phone") href = `tel:${value}`;
+                          else if (key === "email") href = `mailto:${value}`;
+
+                          const commonClass =
+                            "h-5 w-5 text-white hover:text-primary transition-colors";
+
+                          let iconElement = <Globe className={commonClass} />;
+
+                          if (key === "phone") iconElement = <Phone className={commonClass} />;
+                          else if (key === "email") iconElement = <Mail className={commonClass} />;
+                          else if (key === "linkedin")
+                            iconElement = <Linkedin className={commonClass} />;
+                          else if (key === "instagram")
+                            iconElement = <Instagram className={commonClass} />;
+                          else if (key === "youtube")
+                            iconElement = <Youtube className={commonClass} />;
+                          else if (key === "facebook")
+                            iconElement = <Facebook className={commonClass} />;
+                          else if (key === "twitter" || key === "x") {
+                            iconElement = (
+                              <svg
+                                className={commonClass}
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M17.53 2.477h3.924l-8.56 9.85 10.09 13.196h-7.98l-6.25-8.19-7.16 8.19H.07l9.13-10.51L0 2.477h8.13l5.77 7.57zm-1.13 17.03h2.17L7.1 4.36H4.8z" />
+                              </svg>
+                            );
+                          } else if (key === "whatsapp") {
+                            iconElement = (
+                              <svg
+                                className={commonClass}
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M20.52 3.48A12.07 12.07 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.19 1.6 6.01L0 24l6.18-1.62A12.07 12.07 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.23-3.48-8.52zM12 22c-1.85 0-3.67-.5-5.24-1.44l-.37-.22-3.67.97.98-3.58-.24-.37A9.94 9.94 0 0 1 2 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.2-7.6c-.28-.14-1.65-.81-1.9-.9-.25-.09-.43-.14-.61.14-.18.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.17.18-.29.28-.48.09-.19.05-.36-.02-.5-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47-.16-.01-.35-.01-.54-.01-.19 0-.5.07-.76.34-.26.27-1 1-.99 2.43.01 1.43 1.03 2.81 1.18 3 .15.19 2.03 3.1 4.93 4.23.69.3 1.23.48 1.65.61.69.22 1.32.19 1.81.12.55-.08 1.65-.67 1.88-1.32.23-.65.23-1.2.16-1.32-.07-.12-.25-.19-.53-.33z" />
+                              </svg>
+                            );
+                          }
 
                           return (
                             <a
@@ -450,10 +473,9 @@ export default function AboutUs() {
                               href={href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className={baseClass}
                               aria-label={key}
                             >
-                              <Icon className="w-5 h-5" />
+                              {iconElement}
                             </a>
                           );
                         }
@@ -464,7 +486,7 @@ export default function AboutUs() {
             </div>
             {/* Right Side - Team Grid */}
             <div className="flex flex-col">
-              <div className="flex justify-end gap-3 mb-6">
+              <div className="flex flex-col items-end gap-3 mb-6">
                 <button
                   type="button"
                   onClick={showPrevFeatured}
@@ -490,7 +512,7 @@ export default function AboutUs() {
                   <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
-              <div className="flex-1 grid grid-cols-3 gap-4 md:gap-6 content-start">
+              <div className="flex-1 grid grid-cols-3 gap-4 md:gap-6 content-start max-h-[650px] overflow-y-auto pr-2">
                 {teamMembers.map((member) => (
                   <div key={member.id} className="text-center space-y-2">
                     <div
@@ -498,15 +520,15 @@ export default function AboutUs() {
                       tabIndex={0}
                       onClick={() => setFeaturedId(member.id)}
                       onKeyDown={(e) => handleMemberKeyDown(e, member.id)}
-                      className={`relative group ${member.id === featured?.id ? "ring-4 ring-white/20 rounded-2xl" : ""}`}
+                      className={`relative group overflow-hidden rounded-2xl ${member.id === featured?.id ? "ring-4 ring-white/20" : ""}`}
                     >
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity`}
+                        className={`absolute inset-0 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity`}
                       />
                       <img
                         src={member.image || "/placeholder.svg"}
                         alt={member.name}
-                        className={`relative w-full aspect-square object-cover rounded-2xl border-3 border-blue-400/50 bg-gradient-to-br from-blue-400 to-cyan-400 ${member.id === featured?.id ? "scale-105" : ""}`}
+                        className={`relative w-full aspect-square object-cover rounded-2xl border-2 border-blue-400/50 bg-gradient-to-br from-blue-400 to-cyan-400 grayscale group-hover:grayscale-0 transition-all duration-300 ${member.id === featured?.id ? "grayscale-0" : ""}`}
                       />
                     </div>
                     <p className="text-sm font-medium">{member.name}</p>
@@ -519,7 +541,7 @@ export default function AboutUs() {
       </section>
 
       {/* Team gallery meetup  */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background dark:bg-ndc-darkblue">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -538,7 +560,7 @@ export default function AboutUs() {
       <section
         className="min-h-screen flex items-center justify-center relative"
         style={{
-          backgroundImage: `url('${randomImage?.url || "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"}')`,
+          backgroundImage: `url('${partnerBg?.url || "https://ik.imagekit.io/nairobidevops/ndcAssets/DSC_6977%20copy.jpg?updatedAt=1764488001247"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
