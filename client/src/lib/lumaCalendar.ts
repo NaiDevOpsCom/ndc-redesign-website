@@ -19,9 +19,7 @@ export interface LumaEvent {
 // webcal://api.luma.com/ics/get?entity=calendar&id=cal-fFX28aaHRNQkThJ
 
 const LUMA_CALENDAR_ID = 'cal-fFX28aaHRNQkThJ';
-const LUMA_CALENDAR_URL = import.meta.env.DEV
-  ? `/api/luma/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`
-  : `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.luma.com/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`)}`;
+const LUMA_CALENDAR_URL = `/api/luma/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`;
 
 /**
  * Extract URL from Luma event description if not in URL field
@@ -60,10 +58,10 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
       const endDate = event.getFirstPropertyValue('dtend') as ICALTime | null;
       const location = event.getFirstPropertyValue('location')?.toString();
       let url = event.getFirstPropertyValue('url')?.toString();
-      
+
       // Use a deterministic fallback for the UID
       const uid = event.getFirstPropertyValue('uid')?.toString() || `${summary}-${startDate.toJSDate().toISOString()}`;
-      
+
       // Correctly get the ICAL.Property object to safely call getValues()
       const categoriesProperty = event.getFirstProperty('categories');
       const categories = categoriesProperty
