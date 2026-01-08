@@ -15,11 +15,15 @@ $base_url = 'https://api.luma.com';
 // Or parse $_SERVER['REQUEST_URI'] manually.
 // For simplicity with the proposed .htaccess rule: `RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]`
 
+
+// Ensure response is always JSON
+header('Content-Type: application/json');
+
 $path = isset($_GET['path']) ? $_GET['path'] : '';
 
 if (!$path) {
     http_response_code(400);
-    echo json_encode(['error' => 'No path provided']);
+    echo json_encode(['error' => 'No path provided'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     exit;
 }
 
@@ -43,7 +47,8 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 if (curl_errno($ch)) {
     http_response_code(500);
-    echo json_encode(['error' => 'Curl error: ' . curl_error($ch)]);
+    // Use JSON_HEX_* flags to prevent XSS while keeping valid JSON
+    echo json_encode(['error' => 'Curl error: ' . curl_error($ch)], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     curl_close($ch);
     exit;
 }
@@ -52,5 +57,4 @@ curl_close($ch);
 
 // 4. Output the response
 http_response_code($http_code);
-header('Content-Type: application/json'); // Assumption: Luma API returns JSON
 echo $response;
