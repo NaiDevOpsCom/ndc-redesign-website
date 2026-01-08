@@ -59,6 +59,8 @@ Example:
 ### Vercel
 
 The script updates the `"headers"` section of `vercel.json`. This file is committed to Git and used by Vercel during deployment.
+> [!IMPORTANT]
+> **API Proxy Difference**: Vercel uses a direct rewrite rule in `vercel.json` (`/api/luma/*` -> `https://api.luma.com/*`) which bypasses the PHP proxy (`luma.php`). This means path validation and custom error handling defined in `luma.php` do **not** apply to Vercel deployments. The PHP proxy is used primarily for Apache/cPanel environments.
 
 ### cPanel / Apache
 
