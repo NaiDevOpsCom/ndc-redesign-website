@@ -1,4 +1,4 @@
-import ICAL from 'ical.js';
+import ICAL from "ical.js";
 
 // Type for ICAL Time to avoid 'any' usage
 type ICALTime = {
@@ -18,7 +18,7 @@ export interface LumaEvent {
 
 // webcal://api.luma.com/ics/get?entity=calendar&id=cal-fFX28aaHRNQkThJ
 
-const LUMA_CALENDAR_ID = 'cal-fFX28aaHRNQkThJ';
+const LUMA_CALENDAR_ID = "cal-fFX28aaHRNQkThJ";
 const LUMA_CALENDAR_URL = `/api/luma/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`;
 
 /**
@@ -48,22 +48,24 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
   const icsData = await response.text();
   const jcalData = ICAL.parse(icsData);
   const component = new ICAL.Component(jcalData);
-  const events = component.getAllSubcomponents('vevent');
+  const events = component.getAllSubcomponents("vevent");
 
   return events
     .map((event) => {
-      const summary = event.getFirstPropertyValue('summary')?.toString() || 'Untitled Event';
-      const description = event.getFirstPropertyValue('description')?.toString() || '';
-      const startDate = event.getFirstPropertyValue('dtstart') as ICALTime;
-      const endDate = event.getFirstPropertyValue('dtend') as ICALTime | null;
-      const location = event.getFirstPropertyValue('location')?.toString();
-      let url = event.getFirstPropertyValue('url')?.toString();
+      const summary = event.getFirstPropertyValue("summary")?.toString() || "Untitled Event";
+      const description = event.getFirstPropertyValue("description")?.toString() || "";
+      const startDate = event.getFirstPropertyValue("dtstart") as ICALTime;
+      const endDate = event.getFirstPropertyValue("dtend") as ICALTime | null;
+      const location = event.getFirstPropertyValue("location")?.toString();
+      let url = event.getFirstPropertyValue("url")?.toString();
 
       // Use a deterministic fallback for the UID
-      const uid = event.getFirstPropertyValue('uid')?.toString() || `${summary}-${startDate.toJSDate().toISOString()}`;
+      const uid =
+        event.getFirstPropertyValue("uid")?.toString() ||
+        `${summary}-${startDate.toJSDate().toISOString()}`;
 
       // Correctly get the ICAL.Property object to safely call getValues()
-      const categoriesProperty = event.getFirstProperty('categories');
+      const categoriesProperty = event.getFirstProperty("categories");
       const categories = categoriesProperty
         ? categoriesProperty.getValues().map((v: unknown) => String(v))
         : [];
