@@ -21,9 +21,12 @@ header('Content-Type: application/json');
 
 $path = isset($_GET['path']) ? $_GET['path'] : '';
 
-if (!$path) {
+// Validate path to prevent traversal and SSRF
+// Matches alphanumeric, forward slash, underscore, hyphen, period, equals, and ampersand.
+// explicitly rejects ".." and "//" to prevent traversal/protocol relative attacks.
+if (!$path || preg_match('#(\.\.|\\/\\/)#', $path) || !preg_match('#^[a-zA-Z0-9/_\-\.?=&]+$#', $path)) {
     http_response_code(400);
-    echo json_encode(['error' => 'No path provided'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    echo json_encode(['error' => 'Invalid or missing path'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     exit;
 }
 
@@ -47,8 +50,10 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 if (curl_errno($ch)) {
     http_response_code(500);
-    // Use JSON_HEX_* flags to prevent XSS while keeping valid JSON
-    echo json_encode(['error' => 'Curl error: ' . curl_error($ch)], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    // Log actual error server-side
+    error_log('Luma Proxy Error: ' . curl_error($ch));
+    // Return generic error to client
+    echo json_encode(['error' => 'Upstream request failed'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     curl_close($ch);
     exit;
 }

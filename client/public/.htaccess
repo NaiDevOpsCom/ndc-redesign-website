@@ -25,9 +25,13 @@
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
+
+  # API Proxy - Must come before SPA catch-all
+  RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]
+
+  # SPA Routing - Only fallback if file doesn't exist
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]
   RewriteRule . /index.html [L]
 </IfModule>
