@@ -1,86 +1,88 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ROOT_DIR = path.resolve(__dirname, '..');
-const POLICY_PATH = path.join(ROOT_DIR, 'security-policy.json');
-const VERCEL_CONFIG_PATH = path.join(ROOT_DIR, 'vercel.json');
-const HTACCESS_PATH = path.join(ROOT_DIR, 'client', 'public', '.htaccess');
+const ROOT_DIR = path.resolve(__dirname, "..");
+const POLICY_PATH = path.join(ROOT_DIR, "security-policy.json");
+const VERCEL_CONFIG_PATH = path.join(ROOT_DIR, "vercel.json");
+const HTACCESS_PATH = path.join(ROOT_DIR, "client", "public", ".htaccess");
 
 function loadPolicy() {
-    if (!fs.existsSync(POLICY_PATH)) {
-        console.error(`Error: Policy file not found at ${POLICY_PATH}`);
-        process.exit(1);
-    }
-    return JSON.parse(fs.readFileSync(POLICY_PATH, 'utf8'));
+  if (!fs.existsSync(POLICY_PATH)) {
+    console.error(`Error: Policy file not found at ${POLICY_PATH}`);
+    process.exit(1);
+  }
+  return JSON.parse(fs.readFileSync(POLICY_PATH, "utf8"));
 }
 
 function generateCSPString(cspConfig) {
-    const directives = Object.entries(cspConfig).map(([key, value]) => {
-        if (key === 'upgrade-insecure-requests') {
-            return value ? key : '';
-        }
-        if (Array.isArray(value)) {
-            return `${key} ${value.join(' ')}`;
-        }
-        return '';
-    }).filter(Boolean);
+  const directives = Object.entries(cspConfig)
+    .map(([key, value]) => {
+      if (key === "upgrade-insecure-requests") {
+        return value ? key : "";
+      }
+      if (Array.isArray(value)) {
+        return `${key} ${value.join(" ")}`;
+      }
+      return "";
+    })
+    .filter(Boolean);
 
-    return directives.join('; ') + ';';
+  return directives.join("; ") + ";";
 }
 
 function updateVercelConfig(policy) {
-    let vercelConfig = {};
-    if (fs.existsSync(VERCEL_CONFIG_PATH)) {
-        vercelConfig = JSON.parse(fs.readFileSync(VERCEL_CONFIG_PATH, 'utf8'));
-    }
+  let vercelConfig = {};
+  if (fs.existsSync(VERCEL_CONFIG_PATH)) {
+    vercelConfig = JSON.parse(fs.readFileSync(VERCEL_CONFIG_PATH, "utf8"));
+  }
 
-    const cspString = generateCSPString(policy.contentSecurityPolicy);
+  const cspString = generateCSPString(policy.contentSecurityPolicy);
 
-    const headers = [
-        {
-            key: 'Content-Security-Policy',
-            value: cspString
-        },
-        ...Object.entries(policy.headers).map(([key, value]) => ({
-            key,
-            value
-        }))
-    ];
+  const headers = [
+    {
+      key: "Content-Security-Policy",
+      value: cspString,
+    },
+    ...Object.entries(policy.headers).map(([key, value]) => ({
+      key,
+      value,
+    })),
+  ];
 
-    // Update or add the headers section for source "/(.*)"
-    vercelConfig.headers = vercelConfig.headers || [];
-    const headerRuleIndex = vercelConfig.headers.findIndex(h => h.source === '/(.*)');
+  // Update or add the headers section for source "/(.*)"
+  vercelConfig.headers = vercelConfig.headers || [];
+  const headerRuleIndex = vercelConfig.headers.findIndex((h) => h.source === "/(.*)");
 
-    const newHeaderRule = {
-        source: '/(.*)',
-        headers
-    };
+  const newHeaderRule = {
+    source: "/(.*)",
+    headers,
+  };
 
-    if (headerRuleIndex >= 0) {
-        vercelConfig.headers[headerRuleIndex] = newHeaderRule;
-    } else {
-        vercelConfig.headers.push(newHeaderRule);
-    }
+  if (headerRuleIndex >= 0) {
+    vercelConfig.headers[headerRuleIndex] = newHeaderRule;
+  } else {
+    vercelConfig.headers.push(newHeaderRule);
+  }
 
-    fs.writeFileSync(VERCEL_CONFIG_PATH, JSON.stringify(vercelConfig, null, 2));
-    console.log(`Updated Vercel config at ${VERCEL_CONFIG_PATH}`);
+  fs.writeFileSync(VERCEL_CONFIG_PATH, JSON.stringify(vercelConfig, null, 2));
+  console.log(`Updated Vercel config at ${VERCEL_CONFIG_PATH}`);
 }
 
 function generateHtaccess(policy) {
-    const cspString = generateCSPString(policy.contentSecurityPolicy);
+  const cspString = generateCSPString(policy.contentSecurityPolicy);
 
-    const rules = [
-        '<IfModule mod_headers.c>',
-        `  Header set Content-Security-Policy "${cspString}"`,
-        ...Object.entries(policy.headers).map(([key, value]) => `  Header set ${key} "${value}"`),
-        '</IfModule>'
-    ];
+  const rules = [
+    "<IfModule mod_headers.c>",
+    `  Header set Content-Security-Policy "${cspString}"`,
+    ...Object.entries(policy.headers).map(([key, value]) => `  Header set ${key} "${value}"`),
+    "</IfModule>",
+  ];
 
-    const content = `# ==============================================================================
+  const content = `# ==============================================================================
 # SECURITY HEADERS (AUTO-GENERATED)
 # ==============================================================================
 # This file is automatically generated from 'security-policy.json'.
@@ -93,7 +95,7 @@ function generateHtaccess(policy) {
 # Documentation: https://github.com/nairobi-devops/ndc-redesign-website/blob/main/docs/SECURITY.md
 # ==============================================================================
 
-${rules.join('\n')}
+${rules.join("\n")}
 
 # SPA Routing Rules
 <IfModule mod_rewrite.c>
@@ -107,24 +109,24 @@ ${rules.join('\n')}
 </IfModule>
 `;
 
-    // Ensure directory exists
-    const dir = path.dirname(HTACCESS_PATH);
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
+  // Ensure directory exists
+  const dir = path.dirname(HTACCESS_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 
-    fs.writeFileSync(HTACCESS_PATH, content);
-    console.log(`Generated .htaccess at ${HTACCESS_PATH}`);
+  fs.writeFileSync(HTACCESS_PATH, content);
+  console.log(`Generated .htaccess at ${HTACCESS_PATH}`);
 }
 
 function main() {
-    console.log('Generating security headers...');
-    const policy = loadPolicy();
+  console.log("Generating security headers...");
+  const policy = loadPolicy();
 
-    updateVercelConfig(policy);
-    generateHtaccess(policy);
+  updateVercelConfig(policy);
+  generateHtaccess(policy);
 
-    console.log('Done.');
+  console.log("Done.");
 }
 
 main();
