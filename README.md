@@ -132,8 +132,18 @@ This project uses **Prettier** as the source of truth for code formatting and **
 - `npm run format` — Format all files with Prettier
 - `npm run format:check` — Check if files are formatted (used in CI)
 - `npm run lint` — Run ESLint for code quality checks
+- `npm run security:generate` — Auto-generate security headers (`.htaccess` & `vercel.json`) from `security-policy.json`
 
 Prettier and ESLint are configured to work together without conflicts via `eslint-config-prettier`.
+
+---
+
+## Documentation
+
+The `docs/` directory contains detailed documentation about the project's architecture and security workflows:
+
+- **[SECURITY-HEADERS.md](docs/SECURITY-HEADERS.md)**: Explains the "Single Source of Truth" architecture for HTTP security headers and how to modify the Content Security Policy (CSP).
+- **security/**: Contains additional security-related documentation and policy details.
 
 ---
 
