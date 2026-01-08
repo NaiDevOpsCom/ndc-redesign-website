@@ -35,7 +35,6 @@
         ],
         "connect-src": [
             "'self'",
-            "https://api.allorigins.win",
             "https://lu.ma",
             "https://web.mypayd.app",
             "https://www.googleapis.com",

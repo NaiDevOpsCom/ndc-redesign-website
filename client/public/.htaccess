@@ -8,25 +8,26 @@
 # 1. Modify 'security-policy.json' in the project root.
 # 2. Run 'npm run security:generate' (or 'npm run build').
 #
-# Documentation: https://github.com/nairobi-devops/ndc-redesign-website/blob/main/docs/SECURITY.md
+# Documentation: https://github.com/nairobi-devops/ndc-redesign-website/blob/main/docs/SECURITY-HEADERS.md
 # ==============================================================================
 
 <IfModule mod_headers.c>
-  Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://ik.imagekit.io https://res.cloudinary.com https://i.ytimg.com https://images.unsplash.com https://pbs.twimg.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; frame-src https://www.youtube.com; connect-src 'self' https://api.allorigins.win https://lu.ma https://web.mypayd.app https://www.googleapis.com https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
-  Header set X-Frame-Options "DENY"
-  Header set X-Content-Type-Options "nosniff"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-  Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://ik.imagekit.io https://res.cloudinary.com https://i.ytimg.com https://images.unsplash.com https://pbs.twimg.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; frame-src https://www.youtube.com; connect-src 'self' https://lu.ma https://web.mypayd.app https://www.googleapis.com https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
 </IfModule>
 
 # SPA Routing Rules
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index.html$ - [L]
+  RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]
   RewriteRule . /index.html [L]
 </IfModule>
