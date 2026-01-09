@@ -26,6 +26,7 @@ jobs:
         run: npm ci
 
       - name: Scan dependencies
+        if: github.event_name == 'pull_request'
         uses: actions/dependency-review-action@v4
 
       - name: Lint lockfile (registry/https)
