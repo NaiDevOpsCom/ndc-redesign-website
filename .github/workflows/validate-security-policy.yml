@@ -10,6 +10,8 @@ jobs:
   validate-policy:
     name: Verify Security Headers & Rules
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,12 +25,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Scan dependencies
+        uses: actions/dependency-review-action@v4
+
+      - name: Lint lockfile (registry/https)
+        run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
+
       - name: Generate Security Configuration
         run: npm run security:generate
 
       - name: Check for uncommitted changes
         run: |
-          if [[ -n $(git status --porcelain) ]]; then
+          if ! git diff --quiet -- vercel.json client/public/.htaccess; then
             echo "::error::Security policy files (vercel.json, .htaccess) do not match security-policy.json. Please run 'npm run security:generate' locally and commit the changes."
             git status
             git diff
