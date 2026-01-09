@@ -11,25 +11,27 @@ The project uses GitHub Actions for CI/CD, deploying to a cPanel-hosted server v
 The workflow is defined in [.github/workflows/deploy.yml](../.github/workflows/deploy.yml).
 
 ### Triggers
+
 1.  **Push to `main`**: Automatically triggers a deployment when changes are merged into the main branch. The workflow monitors the following paths:
-    -   `client/src/**`
-    -   `client/public/**`
-    -   `package.json`
-    -   `package-lock.json`
-    -   `vite.config.ts`
-    -   `tsconfig.json`
-    -   `.github/workflows/deploy.yml`
+    - `client/src/**`
+    - `client/public/**`
+    - `package.json`
+    - `package-lock.json`
+    - `vite.config.ts`
+    - `tsconfig.json`
+    - `.github/workflows/deploy.yml`
 2.  **Manual Trigger (`workflow_dispatch`)**: Allows manual execution of the workflow from the GitHub "Actions" tab for any branch.
 
 ### Prerequisites (GitHub Secrets)
 
 The following secrets must be configured in the GitHub repository:
--   `SSH_PRIVATE_KEY`: Private SSH key for server access (OpenSSH format).
--   `KNOWN_HOSTS`: SSH known hosts for identity verification (use `ssh-keyscan` to obtain this).
--   `REMOTE_HOST`: Server IP or hostname.
--   `REMOTE_USER`: SSH username.
--   `REMOTE_PORT`: SSH port (defaults to 22).
--   `REMOTE_PATH`: The final path where the website should be accessible (e.g., `/home/user/public_html`).
+
+- `SSH_PRIVATE_KEY`: Private SSH key for server access (OpenSSH format).
+- `KNOWN_HOSTS`: SSH known hosts for identity verification (use `ssh-keyscan` to obtain this).
+- `REMOTE_HOST`: Server IP or hostname.
+- `REMOTE_USER`: SSH username.
+- `REMOTE_PORT`: SSH port (defaults to 22).
+- `REMOTE_PATH`: The final path where the website should be accessible (e.g., `/home/user/public_html`).
 
 ## Implementation Details
 
@@ -43,26 +45,30 @@ The build process runs on `ubuntu-latest`:
 - Validates that the `dist` directory is not empty.
 
 ### 2. Atomic Deployment Mechanism
+
 Instead of overwriting the existing site, the workflow uses a release-based structure for true atomic updates:
+
 1.  **Timestamp Generation**: A unique timestamp (`RELEASE_TIMESTAMP`) is created for each deployment.
 2.  **Release Directory**: A new directory is created on the server: `/home/${user}/releases/${timestamp}`.
 3.  **Sync**: Files from the `dist` directory are synced to the new release directory using `rsync`.
 4.  **Atomic Symlink Switch**: The workflow uses a "Create-and-Move" pattern to ensure atomicity and compatibility with cPanel:
-    -   A temporary symlink is created pointing to the new release.
-    -   The `mv -Tf` command atomically replaces the current `REMOTE_PATH` with the new symlink.
-    -   Ownership is explicitly set to the remote user to comply with cPanel security policies (e.g., SecureLinks).
+    - A temporary symlink is created pointing to the new release.
+    - The `mv -Tf` command atomically replaces the current `REMOTE_PATH` with the new symlink.
+    - Ownership is explicitly set to the remote user to comply with cPanel security policies (e.g., SecureLinks).
 
 ### 3. Supply-Chain Security
--   **Pinned Actions**: All GitHub Actions are pinned to full commit SHAs (e.g., `appleboy/ssh-action@7eaf766...`) rather than mutable version tags. This prevents "tag retargeting" attacks and ensures the exact same code runs every time.
--   **Safe Secret Handling**: Multi-line secrets like `SSH_PRIVATE_KEY` and `KNOWN_HOSTS` are written using `printf` to avoid interpretation of special characters.
+
+- **Pinned Actions**: All GitHub Actions are pinned to full commit SHAs (e.g., `appleboy/ssh-action@7eaf766...`) rather than mutable version tags. This prevents "tag retargeting" attacks and ensures the exact same code runs every time.
+- **Safe Secret Handling**: Multi-line secrets like `SSH_PRIVATE_KEY` and `KNOWN_HOSTS` are written using `printf` to avoid interpretation of special characters.
 
 ### 4. Verification & Rollback
--   **Verification**: After deployment, check the website URL to ensure the new changes are live.
--   **Rollback**: To roll back to a previous version, manually update the symlink on the server:
-    ```bash
-    ln -sfn /home/user/releases/OLD_TIMESTAMP /home/user/public_html.tmp
-    mv -Tf /home/user/public_html.tmp /home/user/public_html
-    ```
+
+- **Verification**: After deployment, check the website URL to ensure the new changes are live.
+- **Rollback**: To roll back to a previous version, manually update the symlink on the server:
+  ```bash
+  ln -sfn /home/user/releases/OLD_TIMESTAMP /home/user/public_html.tmp
+  mv -Tf /home/user/public_html.tmp /home/user/public_html
+  ```
 
 ## Testing Your Deployment
 
