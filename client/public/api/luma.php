@@ -5,14 +5,9 @@
 // header("Access-Control-Allow-Origin: https://yourdomain.com");
 
 // 2. Prepare the destination URL
-// We assume the frontend requests /api/luma/something
-// and we want to fetch https://api.luma.com/something
-
 $base_url = 'https://api.luma.com';
 
 // Get the path after /api/luma
-// If your server rewrites /api/luma/(.*) to luma.php?path=$1, use $_GET['path']
-// Or parse $_SERVER['REQUEST_URI'] manually.
 $path = isset($_GET['path']) ? $_GET['path'] : '';
 
 // Validate path to prevent traversal and SSRF
@@ -29,6 +24,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $allowedMethods = ['GET','POST','PUT','PATCH','DELETE','OPTIONS','HEAD'];
 if (!in_array($method, $allowedMethods, true)) {
     http_response_code(405);
+    header('Allow: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
     echo json_encode(['error' => 'Method not allowed'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     exit;
 }
@@ -48,13 +44,18 @@ if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 }
 
+// Helper to sanitize header values (strip CRLF)
+function sanitizeHeader($value) {
+    return preg_replace('/[\r\n]+/', '', $value);
+}
+
 // Forward selected headers (Authorization, Content-Type)
 $forwardHeaders = [];
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-    $forwardHeaders[] = 'Authorization: ' . $_SERVER['HTTP_AUTHORIZATION'];
+    $forwardHeaders[] = 'Authorization: ' . sanitizeHeader($_SERVER['HTTP_AUTHORIZATION']);
 }
 if (isset($_SERVER['CONTENT_TYPE'])) {
-    $forwardHeaders[] = 'Content-Type: ' . $_SERVER['CONTENT_TYPE'];
+    $forwardHeaders[] = 'Content-Type: ' . sanitizeHeader($_SERVER['CONTENT_TYPE']);
 }
 if (!empty($forwardHeaders)) {
     curl_setopt($ch, CURLOPT_HTTPHEADER, $forwardHeaders);

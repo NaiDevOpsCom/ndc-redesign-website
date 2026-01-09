@@ -1,0 +1,38 @@
+name: Validate Security Policy Generation
+
+on:
+  push:
+    branches: [ main, production, staging ]
+  pull_request:
+    branches: [ main, production, staging ]
+
+jobs:
+  validate-policy:
+    name: Verify Security Headers & Rules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Security Configuration
+        run: npm run security:generate
+
+      - name: Check for uncommitted changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Security policy files (vercel.json, .htaccess) do not match security-policy.json. Please run 'npm run security:generate' locally and commit the changes."
+            git status
+            git diff
+            exit 1
+          else
+            echo "SUCCESS: Generated security files match the policy."
+          fi
