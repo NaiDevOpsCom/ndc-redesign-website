@@ -13,6 +13,8 @@ $path = isset($_GET['path']) ? $_GET['path'] : '';
 // Validate path to prevent traversal and SSRF
 if (!$path || preg_match('#(\\.\\.|//)#', $path) || !preg_match('#^[a-zA-Z0-9/_\\-\\.\?=&]+$#', $path)) {
     http_response_code(400);
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Content-Type-Options: nosniff');
     echo json_encode(['error' => 'Invalid or missing path'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     exit;
 }
@@ -24,7 +26,9 @@ $method = $_SERVER['REQUEST_METHOD'];
 $allowedMethods = ['GET','POST','PUT','PATCH','DELETE','OPTIONS','HEAD'];
 if (!in_array($method, $allowedMethods, true)) {
     http_response_code(405);
-    header('Allow: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
+    header('Allow: ' . implode(', ', $allowedMethods));
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Content-Type-Options: nosniff');
     echo json_encode(['error' => 'Method not allowed'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     exit;
 }
@@ -44,15 +48,16 @@ if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 }
 
-// Helper to sanitize header values (strip CRLF)
+// Helper to sanitize header values (strip CRLF and other vertical whitespace)
 function sanitizeHeader($value) {
-    return preg_replace('/[\r\n]+/', '', $value);
+    return preg_replace('/\v+/', '', $value);
 }
 
 // Forward selected headers (Authorization, Content-Type)
 $forwardHeaders = [];
-if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-    $forwardHeaders[] = 'Authorization: ' . sanitizeHeader($_SERVER['HTTP_AUTHORIZATION']);
+$authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? null;
+if ($authHeader) {
+    $forwardHeaders[] = 'Authorization: ' . sanitizeHeader($authHeader);
 }
 if (isset($_SERVER['CONTENT_TYPE'])) {
     $forwardHeaders[] = 'Content-Type: ' . sanitizeHeader($_SERVER['CONTENT_TYPE']);
@@ -68,6 +73,8 @@ $upstreamContentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 if (curl_errno($ch)) {
     http_response_code(500);
     error_log('Luma Proxy Error: ' . curl_error($ch));
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Content-Type-Options: nosniff');
     echo json_encode(['error' => 'Upstream request failed'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     curl_close($ch);
     exit;
