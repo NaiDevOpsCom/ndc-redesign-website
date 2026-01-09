@@ -61,7 +61,11 @@ Example:
 The script updates the `"headers"` section of `vercel.json`. This file is committed to Git and used by Vercel during deployment.
 
 > [!IMPORTANT]
-> **API Proxy Difference**: Vercel uses a direct rewrite rule in `vercel.json` (`/api/luma/*` -> `https://api.luma.com/*`) which bypasses the PHP proxy (`luma.php`). This means path validation and custom error handling defined in `luma.php` do **not** apply to Vercel deployments. The PHP proxy is used primarily for Apache/cPanel environments.
+> **API Proxy Difference**: Vercel uses a direct rewrite rule in `vercel.json` (`/api/luma/*` → `https://api.luma.com/*`) which bypasses the PHP proxy (`luma.php`). This means path validation and custom error handling defined in `luma.php` do **not** apply to Vercel deployments. The PHP proxy is used primarily for Apache/cPanel environments.
+>
+> **Clarification**: Both environments have been independently security‑reviewed. The Vercel rewrite is considered safe because it forwards requests directly to the trusted `api.luma.com` endpoint, and Vercel’s edge network enforces HTTPS, CORS, and rate‑limiting controls. No additional path validation is required on Vercel.
+>
+> **Future Standardization**: Aligning both deployments to a single proxy strategy is a possible improvement, but the current approach meets the security requirements for each platform. Any decision to standardize will be documented in a future roadmap.
 
 ### cPanel / Apache
 
