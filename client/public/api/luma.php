@@ -13,18 +13,10 @@ $base_url = 'https://api.luma.com';
 // Get the path after /api/luma
 // If your server rewrites /api/luma/(.*) to luma.php?path=$1, use $_GET['path']
 // Or parse $_SERVER['REQUEST_URI'] manually.
-// For simplicity with the proposed .htaccess rule: `RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]`
-
-
-// Ensure response is always JSON
-header('Content-Type: application/json');
-
 $path = isset($_GET['path']) ? $_GET['path'] : '';
 
 // Validate path to prevent traversal and SSRF
-// Matches alphanumeric, forward slash, underscore, hyphen, period, equals, and ampersand.
-// explicitly rejects ".." and "//" to prevent traversal/protocol relative attacks.
-if (!$path || preg_match('#(\.\.|\\/\\/)#', $path) || !preg_match('#^[a-zA-Z0-9/_\-\.?=&]+$#', $path)) {
+if (!$path || preg_match('#(\\.\\.|//)#', $path) || !preg_match('#^[a-zA-Z0-9/_\\-\\.\?=&]+$#', $path)) {
     http_response_code(400);
     echo json_encode(['error' => 'Invalid or missing path'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     exit;
@@ -33,26 +25,40 @@ if (!$path || preg_match('#(\.\.|\\/\\/)#', $path) || !preg_match('#^[a-zA-Z0-9/
 $target_url = $base_url . '/' . ltrim($path, '/');
 
 // 3. Forward the request
+$method = $_SERVER['REQUEST_METHOD'];
 $ch = curl_init($target_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 
-// Forward headers if needed (e.g., Authorization)
-// $headers = [];
-// if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-//     $headers[] = 'Authorization: ' . $_SERVER['HTTP_AUTHORIZATION'];
-// }
-// curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+// Forward request body for methods that may have one
+if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
+    $body = file_get_contents('php://input');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+}
+
+// Forward selected headers (Authorization, Content-Type)
+$forwardHeaders = [];
+if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    $forwardHeaders[] = 'Authorization: ' . $_SERVER['HTTP_AUTHORIZATION'];
+}
+if (isset($_SERVER['CONTENT_TYPE'])) {
+    $forwardHeaders[] = 'Content-Type: ' . $_SERVER['CONTENT_TYPE'];
+}
+if (!empty($forwardHeaders)) {
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $forwardHeaders);
+}
 
 $response = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$upstreamContentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 
 if (curl_errno($ch)) {
     http_response_code(500);
-    // Log actual error server-side
     error_log('Luma Proxy Error: ' . curl_error($ch));
-    // Return generic error to client
     echo json_encode(['error' => 'Upstream request failed'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     curl_close($ch);
     exit;
@@ -62,4 +68,9 @@ curl_close($ch);
 
 // 4. Output the response
 http_response_code($http_code);
+if (!empty($upstreamContentType)) {
+    header('Content-Type: ' . $upstreamContentType);
+} else {
+    header('Content-Type: application/json');
+}
 echo $response;
