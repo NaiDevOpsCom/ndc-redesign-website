@@ -39,6 +39,9 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+if ($method === 'HEAD') {
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+}
 curl_setopt($ch, CURLOPT_BUFFERSIZE, 128 * 1024); // 128KB buffer
 curl_setopt($ch, CURLOPT_MAXFILESIZE, 10 * 1024 * 1024); // 10MB max file size
 
@@ -89,4 +92,7 @@ if (!empty($upstreamContentType)) {
 } else {
     header('Content-Type: application/json');
 }
-echo $response;
+
+if ($method !== 'HEAD') {
+    echo $response;
+}
