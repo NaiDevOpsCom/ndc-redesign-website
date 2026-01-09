@@ -1,13 +1,28 @@
 name: Deploy to cPanel
 
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - main  # Set this to your default branch (master or main)
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       # 1. Check out the code
@@ -22,19 +37,48 @@ jobs:
           cache: 'npm'
 
       # 3. Install dependencies and Build
+      # 3. Install dependencies and Build
       - name: Install and Build
         run: |
           npm ci
           npm run build
+          # Validate build output
+          if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
+            echo "Error: dist/ directory is missing or empty"
+            exit 1
+          fi
+          # Generate timestamp for release
+          echo "RELEASE_TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
-      # 4. Deploy using Rsync
-      - name: Sync Files via SSH
-        uses: Burnett01/rsync-deployments@7.0.1
+      # 4. Atomic Deployment
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa ~/.ssh/known_hosts
+
+      - name: Create Release Directory
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          switches: -avzr --delete
-          path: ./dist/    # Check your build config! Vite uses 'dist', Create-React-App uses 'build'
-          remote_path: /home/${{ secrets.REMOTE_USER }}/public_html/
-          remote_host: ${{ secrets.REMOTE_HOST }}
-          remote_user: ${{ secrets.REMOTE_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          remote_port: ${{ secrets.REMOTE_PORT }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT || 22 }}
+          script: |
+            mkdir -p /home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}
+
+      - name: Sync Files to Release
+        run: |
+          rsync -avzr --delete -e "ssh -p ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes" ./dist/ ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
+
+      - name: Atomically Switch Symlink
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT || 22 }}
+          script: |
+            # Atomically update symlink
+            ln -nfs /home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }} ${{ secrets.REMOTE_PATH }}
