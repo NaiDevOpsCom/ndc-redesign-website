@@ -72,7 +72,7 @@ jobs:
 
       - name: Sync Files to Release
         run: |
-          rsync -avzr --delete -e "ssh -p ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes" ./dist/ ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
+          scp -P ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes -r ./dist/* ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
 
       - name: Atomically Switch Symlink
         uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # v1.2.0
