@@ -72,7 +72,8 @@ jobs:
 
       - name: Sync Files to Release
         run: |
-          scp -P ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes -r ./dist/* ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
+          # Use ./dist/. to include hidden files like .htaccess
+          scp -P ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes -r ./dist/. ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
 
       - name: Atomically Switch Symlink
         uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # v1.2.0
@@ -83,8 +84,29 @@ jobs:
           port: ${{ secrets.REMOTE_PORT || 22 }}
           script: |
             set -euo pipefail
-            release="/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}"
-            link="${{ secrets.REMOTE_PATH }}"
-            tmp="${link}.tmp"
-            ln -sfn "$release" "$tmp"
-            mv -Tf "$tmp" "$link"
+            
+            # Paths
+            RELEASE_DIR="/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}"
+            TARGET_LINK="${{ secrets.REMOTE_PATH }}"
+            TMP_LINK="${TARGET_LINK}.tmp"
+            
+            echo "Deploying release: ${{ env.RELEASE_TIMESTAMP }}"
+            
+            # 1. Safety Check: If target is a directory and not a link, abort with instructions
+            if [ -d "$TARGET_LINK" ] && [ ! -L "$TARGET_LINK" ]; then
+              echo "CRITICAL ERROR: $TARGET_LINK is a physical directory."
+              echo "Atomic deployment requires this path to be a symbolic link."
+              echo "Please manually rename the existing directory: mv $TARGET_LINK ${TARGET_LINK}_old"
+              exit 1
+            fi
+            
+            # 2. Atomic Switch
+            ln -sfn "$RELEASE_DIR" "$TMP_LINK"
+            mv -Tf "$TMP_LINK" "$TARGET_LINK"
+            
+            # 3. Cleanup: Keep only last 5 releases
+            echo "Cleaning up old releases..."
+            cd "/home/${{ secrets.REMOTE_USER }}/releases"
+            ls -1t | tail -n +6 | xargs rm -rf 2>/dev/null || true
+            
+            echo "Deployment successful."

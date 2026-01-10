@@ -50,10 +50,12 @@ Instead of overwriting the existing site, the workflow uses a release-based stru
 
 1.  **Timestamp Generation**: A unique timestamp (`RELEASE_TIMESTAMP`) is created for each deployment.
 2.  **Release Directory**: A new directory is created on the server: `/home/${user}/releases/${timestamp}`.
-3.  **Sync**: Files from the `dist` directory are synced to the new release directory using `rsync`.
+3.  **Sync**: Files from the `dist` directory are synced to the new release directory using `scp`. The target path must end with `.` (e.g., `./dist/.`) to ensure hidden files like `.htaccess` are included.
 4.  **Atomic Symlink Switch**: The workflow uses a "Create-and-Move" pattern to ensure atomicity and compatibility with cPanel:
+    - A check verifies that the `REMOTE_PATH` is a symbolic link. If it's a physical directory, the workflow will fail with instructions to rename it.
     - A temporary symlink is created pointing to the new release.
     - The `mv -Tf` command atomically replaces the current `REMOTE_PATH` with the new symlink.
+5.  **Cleanup**: The workflow automatically removes old releases, keeping only the last 5 versions to save disk space.
 
 ### 3. Supply-Chain Security
 
