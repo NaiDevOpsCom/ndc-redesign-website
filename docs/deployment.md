@@ -52,9 +52,8 @@ Instead of overwriting the existing site, the workflow uses a release-based stru
 2.  **Release Directory**: A new directory is created on the server: `/home/${user}/releases/${timestamp}`.
 3.  **Sync**: Files from the `dist` directory are synced to the new release directory using `rsync`.
 4.  **Atomic Symlink Switch**: The workflow uses a "Create-and-Move" pattern to ensure atomicity and compatibility with cPanel:
-    - A temporary symlink is created pointing to the new release.
-    - The `mv -Tf` command atomically replaces the current `REMOTE_PATH` with the new symlink.
-    - Ownership is explicitly set to the remote user to comply with cPanel security policies (e.g., SecureLinks).
+    -   A temporary symlink is created pointing to the new release.
+    -   The `mv -Tf` command atomically replaces the current `REMOTE_PATH` with the new symlink.
 
 ### 3. Supply-Chain Security
 
