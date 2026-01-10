@@ -19,7 +19,15 @@ if (!$path || preg_match('#(\\.\\.|//)#', $path) || !preg_match('#^[a-zA-Z0-9/_\
     exit;
 }
 
+// Build query string from remaining parameters
+$queryParams = $_GET;
+unset($queryParams['path']);
+$queryString = http_build_query($queryParams);
+
 $target_url = $base_url . '/' . ltrim($path, '/');
+if ($queryString) {
+    $target_url .= (strpos($target_url, '?') === false ? '?' : '&') . $queryString;
+}
 
 // 3. Forward the request
 $method = $_SERVER['REQUEST_METHOD'];
