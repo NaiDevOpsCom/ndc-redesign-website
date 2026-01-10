@@ -39,10 +39,10 @@ jobs:
           cache: 'npm'
 
       # 3. Install dependencies and Build
-      # 3. Install dependencies and Build
       - name: Install and Build
         run: |
           npm ci
+          npm run security:generate
           npm run build
           # Validate build output
           if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
@@ -68,7 +68,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.REMOTE_PORT || 22 }}
           script: |
-            mkdir -p /home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}
+            mkdir -p "/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}"
 
       - name: Sync Files to Release
         run: |
@@ -88,5 +88,3 @@ jobs:
             tmp="${link}.tmp"
             ln -sfn "$release" "$tmp"
             mv -Tf "$tmp" "$link"
-            # Verify ownership matches cPanel user expectations
-            chown -h ${{ secrets.REMOTE_USER }}:${{ secrets.REMOTE_USER }} "$link"
