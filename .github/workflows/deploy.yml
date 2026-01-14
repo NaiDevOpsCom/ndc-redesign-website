@@ -61,7 +61,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa ~/.ssh/known_hosts
 
       - name: Create Release Directory
-        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # v1.2.0
+        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
@@ -76,7 +76,7 @@ jobs:
           scp -P ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes -r ./dist/. ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
 
       - name: Atomically Switch Symlink
-        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # v1.2.0
+        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
