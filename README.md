@@ -18,7 +18,6 @@ A modern, responsive web application for the Nairobi DevOps Community. Built wit
     - [Installation](#installation)
   - [Scripts](#scripts)
   - [Contributing](#contributing)
-    - [How to Contribute](#how-to-contribute)
   - [License](#license)
 
 ---
@@ -78,7 +77,7 @@ The `client/src/data/` directory contains static data used throughout the applic
 
 ### Prerequisites
 
-- Node.js (v18+ recommended)
+- Node.js (v20+ recommended)
 - npm or yarn
 
 ### Installation
@@ -87,13 +86,13 @@ The `client/src/data/` directory contains static data used throughout the applic
 
    ```bash
    git clone <repo-url>
-   cd NDCsite
+   cd ndc-redesign-website
    ```
 
 2. **Install dependencies:**
-
+   Use `npm ci` for a consistent installation that matches our CI environment.
    ```bash
-   npm install
+   npm ci
    ```
 
 3. **Start the development server:**
@@ -102,39 +101,24 @@ The `client/src/data/` directory contains static data used throughout the applic
    npm run dev
    ```
 
-   - The app will be available at `http://localhost:5173` or `http://localhost:4000` (default Vite port).
-
-4. **Build for production:**
-
-   ```bash
-   npm run build
-   ```
-
-5. **Preview the production build:**
-   ```bash
-   npm run preview
-   ```
+   - The app will be available at `http://localhost:5173`.
 
 ---
 
 ## Scripts
 
-- `npm run dev` — Start the app in development mode (with Vite and hot reload)
-- `npm run build` — Build the client for production
-- `npm run preview` — Preview the production build locally
+- `npm run dev` — Start the app in development mode.
+- `npm run build` — Build the client for production.
+- `npm run test` — Run tests using Vitest.
+- `npm run lint` — Check for code quality issues with ESLint.
+- `npm run format` — Format all files with Prettier.
+- `npm run preview` — Preview the production build locally.
 
 ---
 
 ## Code Style
 
-This project uses **Prettier** as the source of truth for code formatting and **ESLint** for code quality rules.
-
-- `npm run format` — Format all files with Prettier
-- `npm run format:check` — Check if files are formatted (used in CI)
-- `npm run lint` — Run ESLint for code quality checks
-- `npm run security:generate` — Auto-generate security headers (`.htaccess` & `vercel.json`) from `security-policy.json`
-
-Prettier and ESLint are configured to work together without conflicts via `eslint-config-prettier`.
+This project uses **Prettier** for code formatting and **ESLint** for code quality rules. Both are enforced by our CI pipeline. Please run `npm run format` and `npm run lint` before committing your changes.
 
 ---
 
@@ -142,39 +126,21 @@ Prettier and ESLint are configured to work together without conflicts via `eslin
 
 The `docs/` directory contains detailed documentation about the project's architecture and security workflows:
 
-- **[SECURITY-HEADERS.md](docs/SECURITY-HEADERS.md)**: Explains the "Single Source of Truth" architecture for HTTP security headers and how to modify the Content Security Policy (CSP).
-- **security/**: Contains additional security-related documentation and policy details.
+- **[SECURITY-HEADERS.md](docs/SECURITY-HEADERS.md)**: Explains the "Single Source of Truth" architecture for HTTP security headers.
+- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)**: Our main contribution guide.
 
 ---
 
 ## Contributing
 
-We welcome contributions to enhance the Nairobi DevOps Community Platform! Whether it's fixing bugs, adding features, or improving documentation, your help is appreciated.
+We welcome contributions from the community! Whether you're fixing a bug, adding a new feature, or improving documentation, your help is valuable.
 
-### How to Contribute
+To ensure a smooth collaboration, please read our **[Contribution Guide](docs/CONTRIBUTING.md)** before you start. It contains detailed information on our development workflow, coding standards, and pull request process.
 
-To contribute, please follow these steps:
-
-1. Clone the repository:
-   ```bash
-   git clone <repo-url>
-   cd NDCsite
-   ```
-2. Create a new feature branch:
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-3. Make your changes and commit:
-   ```bash
-   git commit -am 'Describe your update'
-   ```
-4. Push your branch:
-   ```bash
-   git push origin feature/YourFeature
-   ```
-5. Notify the repository maintainer to review your changes and merge them.
-
-- Please follow the code style and commit message guidelines used in this project.
+### Quick Links
+- [Branching Strategy](docs/CONTRIBUTING.md#branching-strategy)
+- [Commit Message Convention](docs/CONTRIBUTING.md#commit-message-convention)
+- [Submitting a Pull Request](docs/CONTRIBUTING.md#submitting-a-pull-request)
 
 ---
 
