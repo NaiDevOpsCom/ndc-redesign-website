@@ -29,13 +29,13 @@ jobs:
       # Checkout repository
       # ------------------------------------------------------------
       - name: Checkout repository
-        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6.0.1
+        uses: actions/checkout@b4ffde65f46336ab11d5bead2418a16036fbe90d # v4.1.1
 
       # ------------------------------------------------------------
       # Setup Node.js
       # ------------------------------------------------------------
       - name: Setup Node.js
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        uses: actions/setup-node@60edb5dd545a775198f52414f780978706e4f3d8 # v4.0.2
         with:
           node-version: ${{ inputs.node-version }}
           cache: npm
