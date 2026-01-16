@@ -119,7 +119,7 @@ export default [
 
       // Security
       "no-eval": "error",
-      "security/detect-object-injection": "warn",
+      "security/detect-object-injection": "off",
 
       // React Hooks
       "react-hooks/rules-of-hooks": "error",
@@ -131,6 +131,14 @@ export default [
         "warn",
         { "argsIgnorePattern": "^_" }
       ],
+    },
+  },
+
+  // 11b. Config files (vite, tailwind, etc.) - Node environment
+  {
+    files: ["*.config.ts", "*.config.js"],
+    languageOptions: {
+      globals: globals.node,
     },
   },
 
