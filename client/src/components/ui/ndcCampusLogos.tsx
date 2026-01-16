@@ -18,12 +18,31 @@ const allLogos: Logo[] = partnersData.campusTour
   .filter((p) => p.logo) // Validate that the logo field is not empty
   .map((p) => ({ src: p.logo, alt: p.name }));
 
+// Utility function to shuffle an array deterministically based on a seed
+function seededShuffle<T>(array: T[], seed: number): T[] {
+  const shuffled = [...array];
+  let random = seed;
+  
+  const seededRandom = () => {
+    random = (random * 9301 + 49297) % 233280;
+    return random / 233280;
+  };
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  
+  return shuffled;
+}
+
 // --- Main Component: LogoCloud ---
 
 type LogoCloudProps = React.ComponentProps<"div">;
 
 export function LogoCloud({ className, ...props }: LogoCloudProps) {
   // Prepare a shuffled list of unique logos for initial display
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const initialLogos = useMemo(() => {
     const logos = [...allLogos];
     const shuffled: Logo[] = [];
@@ -36,13 +55,8 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
       shuffled.push(logos[i % logos.length]);
     }
 
-    // Shuffle the pool to ensure a random start for each card
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-
-    return shuffled;
+    // Shuffle the pool using a fixed seed for consistent initial rendering
+    return seededShuffle(shuffled, 12345);
   }, []);
 
   if (allLogos.length === 0) {
@@ -138,12 +152,18 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const changeLogo = () => {
-      let newLogo = currentLogo;
+      // We need to pick a new logo that is different from the current one
+      // We use a functional update or just access the current state if needed,
+      // but here we are inside the effect which depends on currentLogo.
+      
+      let newLogo: Logo;
       if (allLogos.length > 1) {
         do {
           const randomIndex = Math.floor(Math.random() * allLogos.length);
           newLogo = allLogos[randomIndex];
         } while (newLogo.src === currentLogo.src);
+      } else {
+        newLogo = currentLogo;
       }
 
       setIsFading(true);
@@ -155,6 +175,9 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
     };
 
     // Set a random interval for each card to change its logo (between 5 and 10 seconds)
+    // We use a ref or just let the effect re-run. Since we depend on currentLogo,
+    // the effect re-runs every time the logo changes. This is actually fine and creates
+    // a new random interval for the next change.
     const randomInterval = Math.random() * 5000 + 5000;
     const intervalId = setInterval(changeLogo, randomInterval);
 

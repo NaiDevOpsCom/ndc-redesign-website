@@ -1,56 +1,56 @@
-import React, { useMemo } from "react";
-import { Link } from "wouter";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
-  Handshake,
-  Target,
-  Rocket,
   Award,
-  Users,
-  GraduationCap,
+  Building2,
   Calendar,
   CheckCircle2,
-  Building2,
-  Lightbulb,
   Globe,
+  GraduationCap,
+  Handshake,
+  Lightbulb,
   Mail,
-  User,
   MessageSquare,
+  Rocket,
+  Target,
+  User,
+  Users,
 } from "lucide-react";
+import { Link } from "wouter";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import StatisticCounter from "@/components/ui/StatisticCounter";
-import { communityGallery } from "@/data/galleryData";
-import type { GalleryImage } from "@/data/galleryData";
-import { testimonialsData } from "@/data/testimonialsData";
-import { statisticsData } from "@/data/ndcData";
+import Navbar from "@/components/Navbar";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
+import StatisticCounter from "@/components/ui/StatisticCounter";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { communityGallery } from "@/data/galleryData";
+import { statisticsData } from "@/data/ndcData";
+import { testimonialsData } from "@/data/testimonialsData";
 
-// Default CTA background used as fallback inside the hook
+// Default CTA background used as fallback
 const DEFAULT_CTA_BG =
   "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9550.jpg?updatedAt=1764488001161";
 
-function useRandomGalleryImage(images: GalleryImage[] | undefined, fallback = DEFAULT_CTA_BG) {
-  return useMemo(() => {
-    if (!images || images.length === 0) return fallback;
-    const pool = images.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx]?.url || fallback;
-  }, [images, fallback]);
-}
-
 // Hero Section Component
 function HeroSection() {
-  // Reuse shared deterministic selection hook
-  const bgUrl = useRandomGalleryImage(communityGallery);
+  // Initialize with fallback to match server-side rendering
+  const [bgUrl, setBgUrl] = useState(DEFAULT_CTA_BG);
+
+  useEffect(() => {
+    if (communityGallery && communityGallery.length > 0) {
+      const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+      const idx = Math.floor(Math.random() * pool.length);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setBgUrl(pool[idx]?.url || DEFAULT_CTA_BG);
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
     <section
@@ -167,11 +167,11 @@ function PartnershipModelsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {models.map((model, index) => {
+          {models.map((model) => {
             const Icon = model.icon;
             return (
               <Card
-                key={index}
+                key={model.title}
                 className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary"
               >
                 <CardHeader>
@@ -189,7 +189,7 @@ function PartnershipModelsSection() {
                   <ul className="space-y-3">
                     {model.benefits.map((benefit, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                         <span className="text-muted-foreground">{benefit}</span>
                       </li>
                     ))}
@@ -206,7 +206,7 @@ function PartnershipModelsSection() {
 
 // Statistics/Impact Section
 function ImpactStatsSection() {
-  const stats = statisticsData;
+  const statistics = statisticsData;
 
   const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
     Users,
@@ -236,7 +236,7 @@ function ImpactStatsSection() {
         </div>
 
         <div className="grid gap-6 grid-flow-row lg:grid-flow-col lg:auto-cols-fr overflow-x-auto lg:overflow-visible">
-          {stats.map((stat) => {
+          {statistics.map((stat) => {
             const Icon = iconMap[stat.icon as string] || Users;
             return (
               <Card
@@ -289,9 +289,9 @@ function SuccessStoriesSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {stories.map((story, index) => (
+          {stories.map((story) => (
             <Card
-              key={index}
+              key={story.partner}
               className="relative overflow-hidden bg-primary-light-blue hover:shadow-xl transition-all duration-300"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full"></div>
@@ -339,8 +339,8 @@ function TestimonialsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-ndc-darkblue">
+          {testimonials.map((testimonial) => (
+            <Card key={testimonial.author} className="bg-ndc-darkblue">
               <CardContent className="pt-6">
                 <div className="mb-6">
                   <svg
@@ -383,6 +383,25 @@ const partnershipSchema = z.object({
 
 type PartnershipFormData = z.infer<typeof partnershipSchema>;
 
+const handlePartnershipSubmit = (data: PartnershipFormData) => {
+  // Create mailto link with validated form data
+  // encodeURIComponent guards against injection and preserves formatting
+  const subject = `Partnership Inquiry - ${data.organization}`;
+  const body = `
+Organization: ${data.organization}
+Contact Person: ${data.name}
+Email: ${data.email}
+Partnership Interest: ${data.interest}
+
+Message:
+${data.message}
+  `.trim();
+
+  window.location.href = `mailto:info@nairobidevops.org?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+};
+
 function CTASection() {
   const {
     register,
@@ -392,24 +411,17 @@ function CTASection() {
     resolver: zodResolver(partnershipSchema),
   });
 
-  const bgUrl = useRandomGalleryImage(communityGallery, DEFAULT_CTA_BG);
+  // Initialize with fallback to match server-side rendering
+  const [bgUrl, setBgUrl] = useState(DEFAULT_CTA_BG);
 
-  const onSubmit = (data: PartnershipFormData) => {
-    // Create mailto link with validated form data
-    // encodeURIComponent guards against injection and preserves formatting
-    const subject = `Partnership Inquiry - ${data.organization}`;
-    const body = `
-Organization: ${data.organization}
-Contact Person: ${data.name}
-Email: ${data.email}
-Partnership Interest: ${data.interest}
-
-Message:
-${data.message}
-    `.trim();
-
-    window.location.href = `mailto:info@nairobidevops.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
+  useEffect(() => {
+    if (communityGallery && communityGallery.length > 0) {
+      const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+      const idx = Math.floor(Math.random() * pool.length);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setBgUrl(pool[idx]?.url || DEFAULT_CTA_BG);
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
     <section
@@ -440,7 +452,7 @@ ${data.message}
           <div>
             <Card className="border-2">
               <CardContent className="pt-6">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={handleSubmit(handlePartnershipSubmit)} className="space-y-6">
                   <h3 className="text-2xl font-bold text-primary mb-2">Become a Partner</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">

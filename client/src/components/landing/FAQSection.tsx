@@ -49,14 +49,14 @@ export default function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-faq-text">
-            Answers to the questions you're most likely to have—whether you're new to DevOps or
-            already deep in the game. We're here to make things clear, simple, and welcoming.
+            Answers to the questions you&apos;re most likely to have—whether you&apos;re new to DevOps or
+            already deep in the game. We&apos;re here to make things clear, simple, and welcoming.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative">
-            <div className="relative w-full h-96 lg:h-[500px] flex items-center justify-center">
+            <div className="relative w-full h-96 lg:h-125 flex items-center justify-center">
               <img src={faqImage} alt="FAQ Illustration" className="w-full h-full object-contain" />
             </div>
           </div>
@@ -81,28 +81,31 @@ export default function FAQSection() {
                     className="rounded-lg shadow-sm border overflow-hidden bg-white border-faq-text dark:text-background"
                     style={{ opacity: 0.9 }}
                   >
-                    <div
-                      className="flex items-center justify-between px-6 py-4 cursor-pointer transition-colors bg-faq text-faq-text"
+                    <button
+                      type="button"
+                      className="w-full flex items-center justify-between px-6 py-4 cursor-pointer transition-colors bg-faq text-faq-text text-left"
                       onClick={() => toggleQuestion(id)}
+                      aria-expanded={isExpanded}
+                      aria-controls={`faq-answer-${id}`}
                     >
                       <span className="font-medium flex-1 text-faq-text">{faq.question}</span>
-                      <button
+                      <span
                         className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-[#023047] transition-colors ml-4"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleQuestion(id);
-                        }}
                       >
                         <Plus
                           className={`w-4 h-4 transition-transform duration-200 ${
                             isExpanded ? "rotate-45" : ""
                           }`}
                         />
-                      </button>
-                    </div>
+                      </span>
+                    </button>
 
                     {isExpanded && (
-                      <div className="px-6 pb-4 border-t border-faq-text" style={{ opacity: 0.8 }}>
+                      <div 
+                        id={`faq-answer-${id}`}
+                        className="px-6 pb-4 border-t border-faq-text" 
+                        style={{ opacity: 0.8 }}
+                      >
                         <p className="leading-relaxed pt-4 text-faq-text/90">{faq.answer}</p>
                       </div>
                     )}
