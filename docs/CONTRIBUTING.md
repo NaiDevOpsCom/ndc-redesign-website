@@ -148,7 +148,13 @@ We use a branching model based on `main` and `pre-dev` (staging) branches:
 ### Linting and Formatting
 
 - **Prettier**: We use Prettier for consistent code formatting. Run `npm run format` to format your code automatically.
-- **ESLint**: We use ESLint to catch potential bugs and enforce code style. Run `npm run lint` to check your code.
+- **ESLint**: We use ESLint to catch potential bugs, security issues, and enforce best practices. Run `npm run lint` to check your code.
+
+**Key Linting Rules:**
+- **Security**: Plugins like `eslint-plugin-security` help prevent vulnerabilities (e.g., object injection, `no-eval`).
+- **React Hooks**: We strictly enforce `rules-of-hooks` and `exhaustive-deps` to prevent bugs in component lifecycles.
+- **Imports**: `eslint-plugin-unused-imports` ensures a clean codebase by stripping unused imports.
+- **Best Practices**: Stricter rules are in place. Address warnings (e.g., regarding impure functions) rather than suppressing them.
 
 ### Testing
 

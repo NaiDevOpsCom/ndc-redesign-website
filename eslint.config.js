@@ -10,6 +10,7 @@ import securityPlugin from "eslint-plugin-security";
 import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 import promisePlugin from "eslint-plugin-promise";
 import importPlugin from "eslint-plugin-import";
+import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
 
@@ -25,6 +26,11 @@ export default [
   // 2. Tell ESLint what files to lint (Flat Config REQUIRED)
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
   },
 
   // 3. Base JS rules
@@ -88,6 +94,9 @@ export default [
   // 11. TS/React project-specific overrides
   {
     files: ["**/*.{ts,tsx}"],
+    plugins: {
+      "unused-imports": unusedImportsPlugin,
+    },
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -99,7 +108,6 @@ export default [
       },
       globals: globals.browser,
     },
-    settings: { react: { version: "detect" } },
     rules: {
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
@@ -108,7 +116,21 @@ export default [
         "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-      "security/detect-object-injection": "off",
+
+      // Security
+      "no-eval": "error",
+      "security/detect-object-injection": "warn",
+
+      // React Hooks
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+
+      // Clean imports
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        { "argsIgnorePattern": "^_" }
+      ],
     },
   },
 
