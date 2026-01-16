@@ -91,6 +91,7 @@ The `client/src/data/` directory contains static data used throughout the applic
 
 2. **Install dependencies:**
    Use `npm ci` for a consistent installation that matches our CI environment.
+
    ```bash
    npm ci
    ```
@@ -138,6 +139,7 @@ We welcome contributions from the community! Whether you're fixing a bug, adding
 To ensure a smooth collaboration, please read our **[Contribution Guide](docs/CONTRIBUTING.md)** before you start. It contains detailed information on our development workflow, coding standards, and pull request process.
 
 ### Quick Links
+
 - [Branching Strategy](docs/CONTRIBUTING.md#branching-strategy)
 - [Commit Message Convention](docs/CONTRIBUTING.md#commit-message-convention)
 - [Submitting a Pull Request](docs/CONTRIBUTING.md#submitting-a-pull-request)
