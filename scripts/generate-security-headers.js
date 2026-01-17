@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import prettier from "prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,7 +60,7 @@ function generateCSPString(cspConfig) {
   return directives.join("; ") + ";";
 }
 
-function updateVercelConfig(policy) {
+async function updateVercelConfig(policy) {
   let vercelConfig = {};
   if (fs.existsSync(VERCEL_CONFIG_PATH)) {
     try {
@@ -114,7 +115,10 @@ function updateVercelConfig(policy) {
     });
   }
 
-  fs.writeFileSync(VERCEL_CONFIG_PATH, JSON.stringify(vercelConfig, null, 2));
+  const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
+    parser: "json",
+  });
+  fs.writeFileSync(VERCEL_CONFIG_PATH, formattedJson);
   console.log(`Updated Vercel config at ${VERCEL_CONFIG_PATH}`);
 }
 
@@ -153,11 +157,11 @@ function generateHtaccess(policy) {
   console.log(`Generated .htaccess at ${HTACCESS_PATH}`);
 }
 
-function main() {
+async function main() {
   console.log("Generating security headers...");
   const policy = loadPolicy();
 
-  updateVercelConfig(policy);
+  await updateVercelConfig(policy);
   generateHtaccess(policy);
 
   console.log("Done.");
