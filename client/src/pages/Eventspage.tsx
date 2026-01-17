@@ -23,6 +23,7 @@ import {
 import RecordedVideoCard from "@/components/RecordedVideoCard";
 import { recordedSessions } from "@/data/communityPageData";
 import { getRandomItems } from "@/utils/getRandomItems";
+import { seededRandom } from "@/lib/random";
 
 // Reusable Event Card Component for Events Page
 interface UpcomingEventCardProps {
@@ -232,7 +233,7 @@ export default function Eventspage() {
   const [ctaBgImage] = useState<GalleryImage>(() => {
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
     return pool.length > 0
-      ? pool[Math.floor(Math.random() * pool.length)]
+      ? pool[Math.floor(seededRandom() * pool.length)]
       : { url: "", alt: "Community image", priority: false };
   });
 
@@ -486,32 +487,14 @@ function FAQCarousel() {
     setSlideIdx((s) => (s + 1) % slides.length);
   }, [slides.length]);
 
-  // const prev = useCallback(() => {
-  //   setSlideIdx((s) => (s - 1 + slides.length) % slides.length);
-  // }, [slides.length]);
+  const prev = useCallback(() => {
+    setSlideIdx((s) => (s - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
-  // Attach event listeners manually to avoid ESLint non-interactive element warnings
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleMouseEnter = () => setIsPaused(true);
-    const handleMouseLeave = () => setIsPaused(false);
-    const handleFocusIn = () => setIsPaused(true);
-    const handleFocusOut = () => setIsPaused(false);
-
-    container.addEventListener("mouseenter", handleMouseEnter);
-    container.addEventListener("mouseleave", handleMouseLeave);
-    container.addEventListener("focusin", handleFocusIn);
-    container.addEventListener("focusout", handleFocusOut);
-
-    return () => {
-      container.removeEventListener("mouseenter", handleMouseEnter);
-      container.removeEventListener("mouseleave", handleMouseLeave);
-      container.removeEventListener("focusin", handleFocusIn);
-      container.removeEventListener("focusout", handleFocusOut);
-    };
-  }, []);
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  };
 
   // Autoplay: advance every 5s when not paused
   useEffect(() => {
@@ -542,37 +525,47 @@ function FAQCarousel() {
   }
 
   return (
-    <section
-      ref={containerRef}
-      className="relative rounded-lg outline-none"
-      aria-roledescription="carousel"
-      aria-label="Event FAQs Carousel"
-    >
-      {/* Slides */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {slides[slideIdx].map((f, idx) => (
-          <div key={`${f.question}-${idx}`} className="bg-primary-light-blue rounded-lg p-6">
-            <h3 className="font-semibold mb-3">{f.question}</h3>
-            <p className="text-sm text-muted-foreground whitespace-pre-line">{f.answer}</p>
-          </div>
-        ))}
-      </div>
+    <>
+      {/* eslint-disable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
+      <section
+        ref={containerRef}
+        className="relative rounded-lg outline-none"
+        tabIndex={0}
+        onKeyDown={handleKey}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocus={() => setIsPaused(true)}
+        onBlur={() => setIsPaused(false)}
+        aria-roledescription="carousel"
+        aria-label="Event FAQs Carousel"
+      >
+      {/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
+        {/* Slides */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {slides[slideIdx].map((f, idx) => (
+            <div key={`${f.question}-${idx}`} className="bg-primary-light-blue rounded-lg p-6">
+              <h3 className="font-semibold mb-3">{f.question}</h3>
+              <p className="text-sm text-muted-foreground whitespace-pre-line">{f.answer}</p>
+            </div>
+          ))}
+        </div>
 
-      {/* Dots */}
-      <div className="flex items-center justify-center gap-2 mt-6">
-        {slides.map((_, i) => (
-          <button
-            key={`dot-${i}`}
-            aria-label={`Go to slide ${i + 1}`}
-            aria-current={i === slideIdx}
-            onClick={() => {
-              setSlideIdx(i);
-              setIsPaused(true);
-            }}
-            className={`h-3 w-3 rounded-full ${i === slideIdx ? "bg-primary" : "bg-primary-light-blue dark:bg-slate-600"}`}
-          />
-        ))}
-      </div>
-    </section>
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-2 mt-6">
+          {slides.map((_, i) => (
+            <button
+              key={`dot-${i}`}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === slideIdx}
+              onClick={() => {
+                setSlideIdx(i);
+                setIsPaused(true);
+              }}
+              className={`h-3 w-3 rounded-full ${i === slideIdx ? "bg-primary" : "bg-primary-light-blue dark:bg-slate-600"}`}
+            />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

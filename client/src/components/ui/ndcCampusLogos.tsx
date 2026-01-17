@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { PlusIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { seededRandom, seededShuffle } from "@/lib/random";
 import { partnersData } from "@/data/partnersData";
 
 // --- Types and Constants ---
@@ -18,23 +19,7 @@ const allLogos: Logo[] = partnersData.campusTour
   .filter((p) => p.logo) // Validate that the logo field is not empty
   .map((p) => ({ src: p.logo, alt: p.name }));
 
-// Utility function to shuffle an array deterministically based on a seed
-function seededShuffle<T>(array: T[], seed: number): T[] {
-  const shuffled = [...array];
-  let random = seed;
 
-  const seededRandom = () => {
-    random = (random * 9301 + 49297) % 233280;
-    return random / 233280;
-  };
-
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(seededRandom() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  return shuffled;
-}
 
 // --- Main Component: LogoCloud ---
 
@@ -152,24 +137,20 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const changeLogo = () => {
-      // We need to pick a new logo that is different from the current one
-      // We use a functional update or just access the current state if needed,
-      // but here we are inside the effect which depends on currentLogo.
-
-      let newLogo: Logo;
-      if (allLogos.length > 1) {
-        do {
-          const randomIndex = Math.floor(Math.random() * allLogos.length);
-          newLogo = allLogos[randomIndex];
-        } while (newLogo.src === currentLogo.src);
-      } else {
-        newLogo = currentLogo;
-      }
-
       setIsFading(true);
       // Wait for fade-out to complete before changing the logo and fading back in
       timeoutId = setTimeout(() => {
-        setCurrentLogo(newLogo);
+        setCurrentLogo((prevLogo) => {
+          if (allLogos.length > 1) {
+            let newLogo: Logo;
+            do {
+              const idx = Math.floor(seededRandom() * allLogos.length);
+              newLogo = allLogos[idx];
+            } while (newLogo.src === prevLogo.src);
+            return newLogo;
+          }
+          return prevLogo;
+        });
         setIsFading(false);
       }, 1000); // This duration should match the CSS transition
     };
@@ -178,7 +159,7 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
     // We use a ref or just let the effect re-run. Since we depend on currentLogo,
     // the effect re-runs every time the logo changes. This is actually fine and creates
     // a new random interval for the next change.
-    const randomInterval = Math.random() * 5000 + 5000;
+    const randomInterval = seededRandom() * 5000 + 5000;
     const intervalId = setInterval(changeLogo, randomInterval);
 
     return () => {

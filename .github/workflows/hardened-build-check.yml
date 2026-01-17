@@ -24,16 +24,22 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: npm
 
-      - name: Install dependencies
+      - name: Install dependencies (lockfile integrity)
         run: npm ci
+
+      - name: Lint lockfile (registry/https)
+        run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
+
+      - name: Scan dependencies
+        uses: actions/dependency-review-action@v4
 
       - name: Build Hardened App (Typecheck + Build)
         run: npm run build

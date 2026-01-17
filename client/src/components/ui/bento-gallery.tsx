@@ -3,6 +3,7 @@ import { motion, AnimatePresence, Variants } from "motion/react";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { seededRandom } from "@/lib/random";
 
 type ImageItem = {
   id: number | string;
@@ -125,10 +126,10 @@ const GalleryTile = ({
 
   useEffect(() => {
     // Random interval between 5s and 12s for a relaxed organic feel
-    const intervalTime = Math.random() * 7000 + 5000;
+    const intervalTime = seededRandom() * 7000 + 5000;
 
     const interval = setInterval(() => {
-      const randomImage = imagePool[Math.floor(Math.random() * imagePool.length)];
+      const randomImage = imagePool[Math.floor(seededRandom() * imagePool.length)];
 
       // Avoid same image consecutively if pool > 1
       if (imagePool.length > 1 && randomImage.url === currentItem.url) {
@@ -136,7 +137,7 @@ const GalleryTile = ({
       }
 
       // Pick a random transition effect
-      const randomTransition = transitions[Math.floor(Math.random() * transitions.length)];
+      const randomTransition = transitions[Math.floor(seededRandom() * transitions.length)];
       setCurrentTransition(randomTransition);
 
       setCurrentItem({

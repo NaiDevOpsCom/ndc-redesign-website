@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed">
             Your privacy and data protection are important to us. This Privacy Policy explains how
-            Nairobi DevOps Community (&quot;we,&quot; &rdquo;our,&rdquo; or &quot;the
+            Nairobi DevOps Community (&quot;we,&quot; &quot;our,&quot; or &quot;the
             Community&rdquo;) collects, uses, shares, and protects your personal data across all
             platforms, events, and services we operate. We are committed to compliance with
             applicable data protection laws, including Kenya&apos;s Data Protection Act (2019), the
@@ -252,7 +252,7 @@ export default function PrivacyPolicy() {
             <ul className="list-disc list-inside space-y-2 text-muted-foreground leading-relaxed ml-4 mb-4">
               <li>Request access to your personal data</li>
               <li>Correct inaccurate or outdated data</li>
-              <li>Request deletion of your data (&quot;right to be forgotten&rdquo;)</li>
+              <li>Request deletion of your data (&quot;right to be forgotten&quot;)</li>
               <li>Object to or restrict processing</li>
               <li>Withdraw consent at any time</li>
               <li>
@@ -286,7 +286,7 @@ export default function PrivacyPolicy() {
             </h2>
             <p className="text-muted-foreground leading-relaxed">
               We may update this Privacy Policy to reflect legal or operational changes. The latest
-              version will always be available on our website with a &quot;last updated&ldquo; date.
+              version will always be available on our website with a &quot;last updated&quot; date.
               We encourage you to review it periodically.
             </p>
           </section>
