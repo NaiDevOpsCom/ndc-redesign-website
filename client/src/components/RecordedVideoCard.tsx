@@ -20,7 +20,6 @@ export interface RecordedVideoCardProps {
  * - Accessible link with proper ARIA labels
  */
 export const RecordedVideoCard: React.FC<RecordedVideoCardProps> = ({
-  id,
   title,
   videoUrl,
   className = "",
@@ -53,7 +52,7 @@ export const RecordedVideoCard: React.FC<RecordedVideoCardProps> = ({
           </div>
         </div>
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent opacity-60"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 to-transparent opacity-60"></div>
       </div>
 
       {/* Content Section */}

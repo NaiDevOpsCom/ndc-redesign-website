@@ -20,7 +20,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default [
   // 1. Ignore generated files
   {
-    ignores: ["node_modules", "dist", "build", "coverage", "**/.vite"],
+    ignores: ["node_modules", "dist", "build", "coverage", "**/.vite", "client/public/analytics.js", "scripts/generate-security-headers.js"],
   },
 
   // 2. Tell ESLint what files to lint (Flat Config REQUIRED)
