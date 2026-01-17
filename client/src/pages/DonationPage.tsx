@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
+import { seededRandom } from "@/lib/random";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { communityGallery } from "@/data/galleryData";
@@ -63,7 +64,7 @@ const getRandomImages = (count: number) => {
   let attempts = 0;
 
   while (picked.length < count && attempts < 30) {
-    const idx = Math.floor(Math.random() * pool.length);
+    const idx = Math.floor(seededRandom() * pool.length);
     const p = pool[idx];
     if (!used.has(p.url)) {
       used.add(p.url);
@@ -144,7 +145,7 @@ export default function DonationPage() {
   const [heroBackground] = useState(() => {
     if (!communityGallery?.length) return "";
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
+    const idx = Math.floor(seededRandom() * pool.length);
     return pool[idx]?.url || "";
   });
 
@@ -153,7 +154,7 @@ export default function DonationPage() {
       return "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475";
     }
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
+    const idx = Math.floor(seededRandom() * pool.length);
     return pool[idx]?.url || "";
   });
 

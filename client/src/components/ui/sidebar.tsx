@@ -5,6 +5,7 @@ import { PanelLeft } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { seededRandom } from "@/lib/random";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -135,7 +136,7 @@ const SidebarProvider = React.forwardRef<
               } as React.CSSProperties
             }
             className={cn(
-              "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
+              "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
               className
             )}
             ref={ref}
@@ -639,11 +640,15 @@ const SidebarMenuSkeleton = React.forwardRef<
   }
 >(({ className, showIcon = false, ...props }, ref) => {
   // Random width between 50 to 90%.
-  const [width, setWidth] = React.useState("70%");
+  const [width, setWidth] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    setWidth(`${Math.floor(Math.random() * 40) + 50}%`);
+    setWidth(`${Math.floor(seededRandom() * 40) + 50}%`);
   }, []);
+
+  if (!width) {
+    return null;
+  }
 
   return (
     <div

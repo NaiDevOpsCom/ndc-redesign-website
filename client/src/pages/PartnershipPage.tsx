@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Award,
@@ -21,6 +21,7 @@ import { Link } from "wouter";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import { seededRandom } from "@/lib/random";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
@@ -41,16 +42,14 @@ const DEFAULT_CTA_BG =
 // Hero Section Component
 function HeroSection() {
   // Initialize with fallback to match server-side rendering
-  const [bgUrl, setBgUrl] = useState(DEFAULT_CTA_BG);
-
-  useEffect(() => {
+  const [bgUrl] = useState(() => {
     if (communityGallery && communityGallery.length > 0) {
       const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
       const idx = Math.floor(Math.random() * pool.length);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setBgUrl(pool[idx]?.url || DEFAULT_CTA_BG);
+      return pool[idx]?.url || DEFAULT_CTA_BG;
     }
-  }, []); // Empty dependency array ensures this runs only once on mount
+    return DEFAULT_CTA_BG;
+  });
 
   return (
     <section
@@ -411,27 +410,23 @@ function CTASection() {
     resolver: zodResolver(partnershipSchema),
   });
 
-  // Initialize with fallback to match server-side rendering
-  const [bgUrl, setBgUrl] = useState(DEFAULT_CTA_BG);
-
-  useEffect(() => {
+  // Initialize with fallback/random image to match server-side rendering logic or client mount
+  const [bgUrl] = useState(() => {
     if (communityGallery && communityGallery.length > 0) {
-      const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-      const idx = Math.floor(Math.random() * pool.length);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setBgUrl(pool[idx]?.url || DEFAULT_CTA_BG);
+        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+        const idx = Math.floor(seededRandom() * pool.length);
+        return pool[idx]?.url || DEFAULT_CTA_BG;
     }
-  }, []); // Empty dependency array ensures this runs only once on mount
+    return DEFAULT_CTA_BG;
+  });
 
   return (
     <section
       className="py-16 md:py-20 relative overflow-hidden"
-      style={{
-        backgroundImage: `url('${bgUrl}')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
     >
+      <div className="absolute inset-0 -z-10">
+        <img src={bgUrl} alt="" className="w-full h-full object-cover" />
+      </div>
       {/* overlay for readability */}
       <div className="absolute inset-0 bg-black/60 pointer-events-none" />
 
