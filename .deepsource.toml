@@ -1,34 +1,14 @@
 version = 1
 
-# ------------------------
-# Analyzers
-# ------------------------
-
 [[analyzers]]
 name = "javascript"
 
   [analyzers.meta]
-  plugins = ["react"]
   environment = [
     "browser",
     "nodejs",
-    "jest"
+    "vitest"
   ]
 
 [[code_formatters]]
 name = "prettier"
-
-# ------------------------
-# Exclusions
-# ------------------------
-
-exclude_patterns = [
-  "node_modules/**",
-  "dist/**",
-  "build/**",
-  "coverage/**",
-  "public/**",
-  "**/*.config.js",
-  "**/*.config.ts",
-  "vite.config.ts"
-]
