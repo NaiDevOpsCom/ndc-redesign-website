@@ -539,7 +539,7 @@ function FAQCarousel() {
         aria-roledescription="carousel"
         aria-label="Event FAQs Carousel"
       >
-      {/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
+        {/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
         {/* Slides */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {slides[slideIdx].map((f, idx) => (
