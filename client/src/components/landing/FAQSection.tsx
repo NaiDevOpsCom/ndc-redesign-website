@@ -49,8 +49,9 @@ export default function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-faq-text">
-            Answers to the questions you&apos;re most likely to have—whether you&apos;re new to DevOps or
-            already deep in the game. We&apos;re here to make things clear, simple, and welcoming.
+            Answers to the questions you&apos;re most likely to have—whether you&apos;re new to
+            DevOps or already deep in the game. We&apos;re here to make things clear, simple, and
+            welcoming.
           </p>
         </div>
 
@@ -89,9 +90,7 @@ export default function FAQSection() {
                       aria-controls={`faq-answer-${id}`}
                     >
                       <span className="font-medium flex-1 text-faq-text">{faq.question}</span>
-                      <span
-                        className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-[#023047] transition-colors ml-4"
-                      >
+                      <span className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-[#023047] transition-colors ml-4">
                         <Plus
                           className={`w-4 h-4 transition-transform duration-200 ${
                             isExpanded ? "rotate-45" : ""
@@ -101,9 +100,9 @@ export default function FAQSection() {
                     </button>
 
                     {isExpanded && (
-                      <div 
+                      <div
                         id={`faq-answer-${id}`}
-                        className="px-6 pb-4 border-t border-faq-text" 
+                        className="px-6 pb-4 border-t border-faq-text"
                         style={{ opacity: 0.8 }}
                       >
                         <p className="leading-relaxed pt-4 text-faq-text/90">{faq.answer}</p>

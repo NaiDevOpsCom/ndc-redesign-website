@@ -20,7 +20,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default [
   // 1. Ignore generated files
   {
-    ignores: ["node_modules", "dist", "build", "coverage", "**/.vite", "client/public/analytics.js", "scripts/generate-security-headers.js"],
+    ignores: [
+      "node_modules",
+      "dist",
+      "build",
+      "coverage",
+      "**/.vite",
+      "client/public/analytics.js",
+      "scripts/generate-security-headers.js",
+    ],
   },
 
   // 2. Tell ESLint what files to lint (Flat Config REQUIRED)
@@ -127,10 +135,7 @@ export default [
 
       // Clean imports
       "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "warn",
-        { "argsIgnorePattern": "^_" }
-      ],
+      "unused-imports/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     },
   },
 
