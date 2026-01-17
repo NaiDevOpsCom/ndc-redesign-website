@@ -22,9 +22,8 @@ on:
       - '.github/workflows/deploy.yml'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       # 1. Check out the code
@@ -49,10 +48,33 @@ jobs:
             echo "Error: dist/ directory is missing or empty"
             exit 1
           fi
-          # Generate timestamp for release
-          echo "RELEASE_TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
-      # 4. Atomic Deployment
+      # 4. Upload Build Artifact
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      # 1. Download Build Artifact
+      - name: Download Build Artifact
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: dist
+          path: dist
+
+      # 2. Generate Release Timestamp
+      - name: Generate Release Timestamp
+        run: echo "RELEASE_TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      # 3. Setup SSH
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -60,6 +82,7 @@ jobs:
           printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa ~/.ssh/known_hosts
 
+      # 4. Create Release Directory
       - name: Create Release Directory
         uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
         with:
@@ -70,11 +93,13 @@ jobs:
           script: |
             mkdir -p "/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}"
 
+      # 5. Sync Files to Release
       - name: Sync Files to Release
         run: |
           # Use ./dist/. to include hidden files like .htaccess
           scp -P ${{ secrets.REMOTE_PORT || 22 }} -o StrictHostKeyChecking=yes -r ./dist/. ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}/
 
+      # 6. Atomically Switch Symlink
       - name: Atomically Switch Symlink
         uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
         with:
