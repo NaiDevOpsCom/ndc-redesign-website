@@ -151,6 +151,7 @@ We use a branching model based on `main` and `pre-dev` (staging) branches:
 - **ESLint**: We use ESLint to catch potential bugs, security issues, and enforce best practices. Run `npm run lint` to check your code.
 
 **Key Linting Rules:**
+
 - **Security**: Plugins like `eslint-plugin-security` help prevent vulnerabilities (e.g., object injection, `no-eval`).
 - **React Hooks**: We strictly enforce `rules-of-hooks` and `exhaustive-deps` to prevent bugs in component lifecycles.
 - **Imports**: `eslint-plugin-unused-imports` ensures a clean codebase by stripping unused imports.
