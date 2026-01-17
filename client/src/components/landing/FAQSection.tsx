@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 import { Button } from "@/components/ui/button";
+import { seededRandom } from "@/lib/random";
 import faqImage from "@/assets/faq.png";
 import { faqDataByCategory } from "@/data/faqData";
 
 export default function FAQSection() {
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(() =>
-    Math.floor(Math.random() * faqDataByCategory.length)
+    Math.floor(seededRandom() * faqDataByCategory.length)
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
@@ -57,7 +58,7 @@ export default function FAQSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative">
-            <div className="relative w-full h-96 lg:h-125 flex items-center justify-center">
+            <div className="relative w-full h-96 lg:h-[500px] flex items-center justify-center">
               <img src={faqImage} alt="FAQ Illustration" className="w-full h-full object-contain" />
             </div>
           </div>
@@ -73,7 +74,9 @@ export default function FAQSection() {
               }`}
             >
               {activeCategory?.items.map((faq, index) => {
-                const id = `${activeCategory.title}-${index}`;
+                const id = `${activeCategory.title
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")}-${index}`;
                 const isExpanded = expandedQuestionId === id;
 
                 return (
