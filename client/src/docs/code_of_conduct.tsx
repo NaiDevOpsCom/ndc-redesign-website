@@ -129,7 +129,9 @@ export default function CodeOfConduct() {
               <li>
                 Interactions involving community representatives, members, volunteers, and partners.
               </li>
-              <li>Communication under the community&apos;s name or in association with its branding.</li>
+              <li>
+                Communication under the community&apos;s name or in association with its branding.
+              </li>
             </ul>
           </section>
 

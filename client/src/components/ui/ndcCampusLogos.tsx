@@ -22,7 +22,7 @@ const allLogos: Logo[] = partnersData.campusTour
 function seededShuffle<T>(array: T[], seed: number): T[] {
   const shuffled = [...array];
   let random = seed;
-  
+
   const seededRandom = () => {
     random = (random * 9301 + 49297) % 233280;
     return random / 233280;
@@ -32,7 +32,7 @@ function seededShuffle<T>(array: T[], seed: number): T[] {
     const j = Math.floor(seededRandom() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  
+
   return shuffled;
 }
 
@@ -155,7 +155,7 @@ function LogoCard({ initialLogo, allLogos, className, children, ...props }: Logo
       // We need to pick a new logo that is different from the current one
       // We use a functional update or just access the current state if needed,
       // but here we are inside the effect which depends on currentLogo.
-      
+
       let newLogo: Logo;
       if (allLogos.length > 1) {
         do {
