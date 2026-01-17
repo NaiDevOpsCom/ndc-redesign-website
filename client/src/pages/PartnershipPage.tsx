@@ -413,17 +413,15 @@ function CTASection() {
   // Initialize with fallback/random image to match server-side rendering logic or client mount
   const [bgUrl] = useState(() => {
     if (communityGallery && communityGallery.length > 0) {
-        const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-        const idx = Math.floor(seededRandom() * pool.length);
-        return pool[idx]?.url || DEFAULT_CTA_BG;
+      const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+      const idx = Math.floor(seededRandom() * pool.length);
+      return pool[idx]?.url || DEFAULT_CTA_BG;
     }
     return DEFAULT_CTA_BG;
   });
 
   return (
-    <section
-      className="py-16 md:py-20 relative overflow-hidden"
-    >
+    <section className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
         <img src={bgUrl} alt="" className="w-full h-full object-cover" />
       </div>

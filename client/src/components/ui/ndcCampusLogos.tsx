@@ -19,8 +19,6 @@ const allLogos: Logo[] = partnersData.campusTour
   .filter((p) => p.logo) // Validate that the logo field is not empty
   .map((p) => ({ src: p.logo, alt: p.name }));
 
-
-
 // --- Main Component: LogoCloud ---
 
 type LogoCloudProps = React.ComponentProps<"div">;
