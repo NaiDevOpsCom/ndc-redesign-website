@@ -9,7 +9,10 @@ export default defineConfig(({ mode }) => {
   // This allows `npm run build:prod` locally to produce a hardened build even if env vars are missing
   const branch = process.env.GITHUB_REF_NAME || process.env.VERCEL_GIT_COMMIT_REF || "";
 
-  const isHardenedBranch = ["production", "staging"].includes(branch);
+  // Hardened branches:
+  // 'main' -> Production
+  // 'pre-dev' -> Staging
+  const isHardenedBranch = ["production", "staging", "main", "pre-dev"].includes(branch);
   const isHardenedMode = ["production", "staging"].includes(mode);
 
   // If we have explicit branch info, trust it (must be on prod/staging branch AND mode).
