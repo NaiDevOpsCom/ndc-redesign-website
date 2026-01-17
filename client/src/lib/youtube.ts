@@ -36,7 +36,7 @@ export function extractYouTubeId(url?: string): string | undefined {
       }
       return undefined;
     }
-  } catch (err) {
+  } catch {
     // Fallback to regex matching when URL parsing fails (e.g., missing scheme)
     const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})(?:[&?#]|$)/);
     return match ? match[1] : undefined;
@@ -60,7 +60,7 @@ export function getYouTubeThumbnail(
 
 export const YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG = YOUTUBE_THUMBNAIL_PLACEHOLDER;
 
-export default {
-  extractYouTubeId,
-  getYouTubeThumbnail,
-};
+// export default {
+//   extractYouTubeId,
+//   getYouTubeThumbnail,
+// };
