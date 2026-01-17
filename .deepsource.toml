@@ -3,17 +3,25 @@ version = 1
 # ------------------------
 # Analyzers
 # ------------------------
-
 [[analyzers]]
 name = "javascript"
+enabled = true
 
-  [analyzers.meta]
-  plugins = ["react"]
-  environment = [
-    "browser",
-    "nodejs",
-    "jest"
-  ]
+[analyzers.meta]
+plugins = ["react"]
+environment = [
+  "browser",
+  "nodejs",
+  "jest",
+  "es2022"
+]
+
+style_guide = "none"
+
+# Disable the invalid characters rule - it's too strict for content
+excluded_rules = [
+  "JS-0454"  # Invalid characters in markup - false positives on apostrophes
+]
 
 [[code_formatters]]
 name = "prettier"
@@ -21,7 +29,6 @@ name = "prettier"
 # ------------------------
 # Exclusions
 # ------------------------
-
 exclude_patterns = [
   "node_modules/**",
   "dist/**",
