@@ -62,14 +62,15 @@ function generateCSPString(cspConfig) {
 
 async function updateVercelConfig(policy) {
   let vercelConfig = {};
-  if (fs.existsSync(VERCEL_CONFIG_PATH)) {
-    try {
-      vercelConfig = JSON.parse(fs.readFileSync(VERCEL_CONFIG_PATH, "utf8"));
-    } catch (error) {
-      console.error(`Error: Failed to parse Vercel config at ${VERCEL_CONFIG_PATH}`);
-      console.error(error.message);
-      process.exit(1);
+  try {
+    const fileContent = await fs.promises.readFile(VERCEL_CONFIG_PATH, "utf8");
+    vercelConfig = JSON.parse(fileContent);
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error(`Error reading or parsing ${VERCEL_CONFIG_PATH}:`, error);
     }
+    // Initialize with a default structure if file doesn't exist or parsing fails
+    vercelConfig = { headers: [] };
   }
 
   // eslint-disable-next-line security/detect-object-injection
@@ -118,7 +119,7 @@ async function updateVercelConfig(policy) {
   const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
     parser: "json",
   });
-  fs.writeFileSync(VERCEL_CONFIG_PATH, formattedJson);
+  await fs.promises.writeFile(VERCEL_CONFIG_PATH, formattedJson);
   console.log(`Updated Vercel config at ${VERCEL_CONFIG_PATH}`);
 }
 

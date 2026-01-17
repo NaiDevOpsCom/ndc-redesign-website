@@ -119,7 +119,7 @@ The `client/src/data/` directory contains static data used throughout the applic
 
 ## Code Style
 
-This project uses **Prettier** for code formatting and **ESLint** for code quality rules. Both are enforced by our CI pipeline. Please run `npm run format` and `npm run lint` before committing your changes.
+This project uses **Prettier** for code formatting and **ESLint** for code quality rules. Both are enforced by our CI pipeline. **Mandatory Check**: Please run `npm run format`, `npm run lint`, and `npm run build` before pushing your changes to ensure code integrity and build success.
 
 ---
 

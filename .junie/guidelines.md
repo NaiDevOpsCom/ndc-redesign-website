@@ -73,8 +73,8 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
     - npm i -D vitest @vitest/ui @testing-library/react @testing-library/jest-dom jsdom
     - Add "test": "vitest" and optionally "test:ui": "vitest --ui" to package.json.
     - Create vitest.config.ts that extends Vite config and sets test.environment = "jsdom"; include alias resolution via Vite.
-    - Add a sample test in client/src/**tests**/ e.g., utils.test.ts that imports from @/lib/utils and uses expect from Vitest.
-  - Keep test files out of production builds by placing them under **tests** or using \*.test.ts(x) patterns ignored by tsconfig exclude.
+    - Add a sample test in `client/src/__tests__/` e.g., utils.test.ts that imports from @/lib/utils and uses expect from Vitest.
+  - Keep test files out of production builds by placing them under `__tests__` or using `*.test.ts(x)` patterns ignored by tsconfig exclude.
 
 3. Additional development notes
 
@@ -89,7 +89,7 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
   - Tailwind is configured via tailwind.config.ts and postcss.config.js. Prefer class composition via the cn helper in client/src/lib/utils.ts. Avoid bespoke string concatenation that defeats Tailwind’s merge behavior.
 
 - Linting and quality
-  - Run npm run lint before committing. Address warnings where practical; do not broadly disable rules without justification.
+  - Run `npm run lint` and `npm run build` before committing or pushing. A complete and successful build is **mandatory** to ensure no regressions are introduced. Address warnings where practical; do not broadly disable rules without justification.
 
 - Accessibility and icons
   - lucide-react is used extensively; ensure icons have aria-hidden when decorative and provide labels when interactive.
