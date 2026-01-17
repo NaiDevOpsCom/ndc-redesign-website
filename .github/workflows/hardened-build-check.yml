@@ -1,14 +1,20 @@
+# This workflow verifies the integrity and security of the build artifacts.
+# It ensures that:
+# 1. The application builds successfully (including TypeScript validation via the build script).
+# 2. No source maps are generated (preventing source code leakage).
+# 3. No console.log or debugger statements remain in the production build.
+
 name: Hardened Build Verification
 
 on:
   push:
     branches:
-      - production
-      - staging
+      - main
+      - pre-dev
   pull_request:
     branches:
-      - production
-      - staging
+      - main
+      - pre-dev
 
 jobs:
   verify-hardening:
@@ -29,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Hardened App
+      - name: Build Hardened App (Typecheck + Build)
         run: npm run build
         env:
           GITHUB_REF_NAME: ${{ github.ref_name }}
