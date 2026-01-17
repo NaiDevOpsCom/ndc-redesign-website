@@ -6,7 +6,7 @@
   "scripts": {
     "security:generate": "node scripts/generate-security-headers.js",
     "dev": "npm run security:generate && vite",
-    "build": "npm run security:generate && vite build",
+    "build": "npm run security:generate && npm run typecheck && vite build",
     "build:staging": "npm run security:generate && vite build --mode staging",
     "build:prod": "npm run security:generate && vite build --mode production",
     "preview": "vite preview",
@@ -15,7 +15,8 @@
     "lint": "eslint . --fix",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -99,13 +100,14 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^17.0.0",
     "lockfile-lint": "^4.14.1",
     "postcss": "^8.4.47",
     "prettier": "^3.8.0",
     "tailwindcss": "^4.1.18",
-    "tsx": "^4.19.1",
-    "typescript": "^5.4.5",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vitest": "^4.0.17"
   }

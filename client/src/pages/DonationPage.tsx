@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
+import { seededRandom } from "@/lib/random";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { communityGallery } from "@/data/galleryData";
@@ -38,41 +39,10 @@ const supportOptions = [
   },
 ];
 
-function ImpactImagesGrid() {
-  const imgs = useMemo(() => {
-    if (!communityGallery || communityGallery.length === 0) {
-      return [
-        {
-          url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475",
-          alt: "Tech conference presentation",
-        },
-        {
-          url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230923_053327396.jpg?updatedAt=1764488001466",
-          alt: "Community collaboration",
-        },
-        {
-          url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101028361.MP.jpg?updatedAt=1764488001423",
-          alt: "Workshop session",
-        },
-      ];
-    }
-
-    const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const picked: { url: string; alt: string }[] = [];
-    const used = new Set<string>();
-    let attempts = 0;
-
-    while (picked.length < 3 && attempts < 30) {
-      const idx = Math.floor(Math.random() * pool.length);
-      const p = pool[idx];
-      if (!used.has(p.url)) {
-        used.add(p.url);
-        picked.push({ url: p.url, alt: p.alt || "Community image" });
-      }
-      attempts++;
-    }
-
-    const fallbacks = [
+// Helper to get random images deterministically for client-side rendering
+const getRandomImages = (count: number) => {
+  if (!communityGallery || communityGallery.length === 0) {
+    return [
       {
         url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475",
         alt: "Tech conference presentation",
@@ -85,19 +55,55 @@ function ImpactImagesGrid() {
         url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101028361.MP.jpg?updatedAt=1764488001423",
         alt: "Workshop session",
       },
-    ];
+    ].slice(0, count);
+  }
 
-    let i = 0;
-    while (picked.length < 3 && i < fallbacks.length) {
-      if (!used.has(fallbacks[i].url)) {
-        picked.push(fallbacks[i]);
-        used.add(fallbacks[i].url);
-      }
-      i++;
+  const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
+  const picked: { url: string; alt: string }[] = [];
+  const used = new Set<string>();
+  let attempts = 0;
+
+  while (picked.length < count && attempts < 30) {
+    const idx = Math.floor(seededRandom() * pool.length);
+    const p = pool[idx];
+    if (!used.has(p.url)) {
+      used.add(p.url);
+      picked.push({ url: p.url, alt: p.alt || "Community image" });
     }
+    attempts++;
+  }
 
-    return picked;
-  }, []);
+  // Fill with fallbacks if needed
+  const fallbacks = [
+    {
+      url: "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475",
+      alt: "Tech conference presentation",
+    },
+    {
+      url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230923_053327396.jpg?updatedAt=1764488001466",
+      alt: "Community collaboration",
+    },
+    {
+      url: "https://ik.imagekit.io/nairobidevops/ndcAssets/PXL_20230701_101028361.MP.jpg?updatedAt=1764488001423",
+      alt: "Workshop session",
+    },
+  ];
+
+  let i = 0;
+  while (picked.length < count && i < fallbacks.length) {
+    if (!used.has(fallbacks[i].url)) {
+      picked.push(fallbacks[i]);
+      used.add(fallbacks[i].url);
+    }
+    i++;
+  }
+
+  return picked;
+};
+
+function ImpactImagesGrid() {
+  // Use lazy initialization for random images to avoid effect dependencies
+  const [imgs] = useState(() => getRandomImages(3));
 
   return (
     <>
@@ -135,23 +141,22 @@ function ImpactImagesGrid() {
 }
 
 export default function DonationPage() {
-  // Randomly select a background image from communityGallery (priority-weighted)
-  const heroBackground = useMemo(() => {
+  // State for backgrounds using lazy initialization
+  const [heroBackground] = useState(() => {
     if (!communityGallery?.length) return "";
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
+    const idx = Math.floor(seededRandom() * pool.length);
     return pool[idx]?.url || "";
-  }, []);
+  });
 
-  // Bottom hero background (randomized from communityGallery with BG_IMAGE as fallback)
-  const bottomHeroBackground = useMemo(() => {
+  const [bottomHeroBackground] = useState(() => {
     if (!communityGallery?.length) {
       return "https://ik.imagekit.io/nairobidevops/ndcAssets/IMG_9567.jpg?updatedAt=1764488001475";
     }
     const pool = communityGallery.flatMap((img) => (img.priority ? [img, img] : [img]));
-    const idx = Math.floor(Math.random() * pool.length);
+    const idx = Math.floor(seededRandom() * pool.length);
     return pool[idx]?.url || "";
-  }, []);
+  });
 
   // Helper: ensure background values are normalized to a string URL
   const normalizeBgUrl = (val: unknown): string => {
@@ -205,7 +210,7 @@ export default function DonationPage() {
                 className="flex flex-col items-start gap-2 sm:gap-3 group cursor-pointer p-4 sm:p-0 rounded-lg hover:bg-muted/50 sm:hover:bg-transparent transition-colors"
               >
                 <div className="flex items-center gap-2 text-primary font-semibold text-base sm:text-lg group-hover:underline">
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1 flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1 shrink-0" />
                   <span>{option.title}</span>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed pl-6 sm:pl-0">
@@ -297,7 +302,7 @@ export default function DonationPage() {
       </section>
 
       {/* Bottom Hero / Inspiring Image Section */}
-      <section className="w-full h-[400px] relative overflow-hidden">
+      <section className="w-full h-100 relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${normalizeBgUrl(bottomHeroBackground)}')` }}
@@ -307,7 +312,7 @@ export default function DonationPage() {
 
           <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
             <div className="max-w-4xl">
-              <h2 className="text-3xl md:text-5xl font-bold text-primary mb-6 text-blue-400">
+              <h2 className="text-3xl md:text-5xl font-bold text-primary mb-6 ">
                 What Your Gift Makes Possible
               </h2>
               <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto">
