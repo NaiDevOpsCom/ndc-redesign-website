@@ -66,11 +66,14 @@ async function updateVercelConfig(policy) {
     const fileContent = await fs.promises.readFile(VERCEL_CONFIG_PATH, "utf8");
     vercelConfig = JSON.parse(fileContent);
   } catch (error) {
-    if (error.code !== "ENOENT") {
+    if (error.code === "ENOENT") {
+      // Initialize with a default structure only if file doesn't exist
+      vercelConfig = { headers: [] };
+    } else {
+      // Fail fast on parse or other I/O errors to prevent data loss
       console.error(`Error reading or parsing ${VERCEL_CONFIG_PATH}:`, error);
+      process.exit(1);
     }
-    // Initialize with a default structure if file doesn't exist or parsing fails
-    vercelConfig = { headers: [] };
   }
 
   // eslint-disable-next-line security/detect-object-injection
