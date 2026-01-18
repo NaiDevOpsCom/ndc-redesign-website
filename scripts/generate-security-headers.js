@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import prettier from "prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,14 +60,18 @@ function generateCSPString(cspConfig) {
   return directives.join("; ") + ";";
 }
 
-function updateVercelConfig(policy) {
+async function updateVercelConfig(policy) {
   let vercelConfig = {};
-  if (fs.existsSync(VERCEL_CONFIG_PATH)) {
-    try {
-      vercelConfig = JSON.parse(fs.readFileSync(VERCEL_CONFIG_PATH, "utf8"));
-    } catch (error) {
-      console.error(`Error: Failed to parse Vercel config at ${VERCEL_CONFIG_PATH}`);
-      console.error(error.message);
+  try {
+    const fileContent = await fs.promises.readFile(VERCEL_CONFIG_PATH, "utf8");
+    vercelConfig = JSON.parse(fileContent);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      // Initialize with a default structure only if file doesn't exist
+      vercelConfig = { headers: [] };
+    } else {
+      // Fail fast on parse or other I/O errors to prevent data loss
+      console.error(`Error reading or parsing ${VERCEL_CONFIG_PATH}:`, error);
       process.exit(1);
     }
   }
@@ -114,7 +119,10 @@ function updateVercelConfig(policy) {
     });
   }
 
-  fs.writeFileSync(VERCEL_CONFIG_PATH, JSON.stringify(vercelConfig, null, 2));
+  const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
+    parser: "json",
+  });
+  await fs.promises.writeFile(VERCEL_CONFIG_PATH, formattedJson);
   console.log(`Updated Vercel config at ${VERCEL_CONFIG_PATH}`);
 }
 
@@ -153,11 +161,11 @@ function generateHtaccess(policy) {
   console.log(`Generated .htaccess at ${HTACCESS_PATH}`);
 }
 
-function main() {
+async function main() {
   console.log("Generating security headers...");
   const policy = loadPolicy();
 
-  updateVercelConfig(policy);
+  await updateVercelConfig(policy);
   generateHtaccess(policy);
 
   console.log("Done.");
