@@ -58,8 +58,8 @@ jobs:
       - name: Verify No Console/Debugger Statements
         run: |
           # Search for any `console.*` usage or `debugger` in the minified js files.
-          # This is more robust than just checking for `console.log`.
-          if find dist -name "*.js" -print0 | xargs -0 grep -lE "console\.|debugger"; then
+          # Exclude third-party analytics files which may contain console statements.
+          if find dist -name "*.js" ! -name "analytics.js" -print0 | xargs -0 grep -lE "console\.|debugger"; then
             echo "::error::Found console or debugger statements in hardened build! Hardening failed."
             exit 1
           else

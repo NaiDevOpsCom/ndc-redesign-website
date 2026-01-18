@@ -124,6 +124,7 @@ We use a branching model based on `main` and `pre-dev` (staging) branches:
     npm run format # Format code with Prettier
     npm run lint   # Check for code quality issues with ESLint
     npm run test   # Run automated tests with Vitest
+    npm run build  # Ensure a complete and successful build
     ```
 
 5.  **Commit Your Changes**: We follow the **Conventional Commits** specification. See [Commit Message Convention](#commit-message-convention) for details.
@@ -133,7 +134,7 @@ We use a branching model based on `main` and `pre-dev` (staging) branches:
     git commit -m "feat(auth): add password reset functionality"
     ```
 
-6.  **Push Your Branch**:
+6.  **Push Your Branch**: Once all checks pass locally (especially the `build` script), push your branch.
 
     ```bash
     git push origin feature/user-profile-card
@@ -196,7 +197,7 @@ chore(deps): bump react-query version
 
 1.  **Target the `pre-dev` Branch**: Ensure your Pull Request (PR) is targeting the `pre-dev` branch.
 2.  **Provide a Clear Description**: Fill out the PR template with a clear title and a detailed description of the changes.
-3.  **Pass CI Checks**: Automated checks (Qodana, Dependency Review, Build Verification) must pass before merging.
+3.  **Pass CI Checks**: All local checks (lint, test, build) **must** pass before pushing, and automated checks (Qodana, Dependency Review, Build Verification) must pass before merging.
 
 ### Required CI Checks
 

@@ -8,7 +8,11 @@ export default defineConfig(({ mode }) => {
   // Hardening: Apply to staging/production branches OR if running locally in production mode w/o branch info
   // This allows `npm run build:prod` locally to produce a hardened build even if env vars are missing
   // For PRs: use GITHUB_BASE_REF (target branch), for pushes: use GITHUB_REF_NAME
-  const branch = process.env.GITHUB_BASE_REF || process.env.GITHUB_REF_NAME || process.env.VERCEL_GIT_COMMIT_REF || "";
+  const branch =
+    process.env.GITHUB_BASE_REF ||
+    process.env.GITHUB_REF_NAME ||
+    process.env.VERCEL_GIT_COMMIT_REF ||
+    "";
 
   // Hardened branches:
   // 'main' -> Production
