@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import prettier from "prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,18 +60,23 @@ function generateCSPString(cspConfig) {
   return directives.join("; ") + ";";
 }
 
-function updateVercelConfig(policy) {
+async function updateVercelConfig(policy) {
   let vercelConfig = {};
-  if (fs.existsSync(VERCEL_CONFIG_PATH)) {
-    try {
-      vercelConfig = JSON.parse(fs.readFileSync(VERCEL_CONFIG_PATH, "utf8"));
-    } catch (error) {
-      console.error(`Error: Failed to parse Vercel config at ${VERCEL_CONFIG_PATH}`);
-      console.error(error.message);
+  try {
+    const fileContent = await fs.promises.readFile(VERCEL_CONFIG_PATH, "utf8");
+    vercelConfig = JSON.parse(fileContent);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      // Initialize with a default structure only if file doesn't exist
+      vercelConfig = { headers: [] };
+    } else {
+      // Fail fast on parse or other I/O errors to prevent data loss
+      console.error(`Error reading or parsing ${VERCEL_CONFIG_PATH}:`, error);
       process.exit(1);
     }
   }
 
+  // eslint-disable-next-line security/detect-object-injection
   const cspString = generateCSPString(policy.contentSecurityPolicy);
 
   const headers = [
@@ -78,6 +84,7 @@ function updateVercelConfig(policy) {
       key: "Content-Security-Policy",
       value: cspString,
     },
+    // eslint-disable-next-line security/detect-object-injection
     ...Object.entries(policy.headers).map(([key, value]) => ({
       key,
       value,
@@ -112,18 +119,23 @@ function updateVercelConfig(policy) {
     });
   }
 
-  fs.writeFileSync(VERCEL_CONFIG_PATH, JSON.stringify(vercelConfig, null, 2));
+  const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
+    parser: "json",
+  });
+  await fs.promises.writeFile(VERCEL_CONFIG_PATH, formattedJson);
   console.log(`Updated Vercel config at ${VERCEL_CONFIG_PATH}`);
 }
 
 const TEMPLATE_PATH = path.join(__dirname, ".htaccess.template");
 
 function generateHtaccess(policy) {
+  // eslint-disable-next-line security/detect-object-injection
   const cspString = generateCSPString(policy.contentSecurityPolicy);
 
   const rules = [
     "<IfModule mod_headers.c>",
     `  Header always set Content-Security-Policy "${cspString.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`,
+    // eslint-disable-next-line security/detect-object-injection
     ...Object.entries(policy.headers).map(
       ([key, value]) =>
         `  Header always set ${key} "${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`
@@ -149,11 +161,11 @@ function generateHtaccess(policy) {
   console.log(`Generated .htaccess at ${HTACCESS_PATH}`);
 }
 
-function main() {
+async function main() {
   console.log("Generating security headers...");
   const policy = loadPolicy();
 
-  updateVercelConfig(policy);
+  await updateVercelConfig(policy);
   generateHtaccess(policy);
 
   console.log("Done.");
