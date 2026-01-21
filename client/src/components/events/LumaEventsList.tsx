@@ -64,27 +64,36 @@ function EventCard({ event }: EventCardProps) {
               {(() => {
                 const start = new Date(event.startDate);
                 const end = new Date(event.endDate);
+
+                // Use the browser's local timezone for all visitors
+                const formatOptions: Intl.DateTimeFormatOptions = {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                };
+
+                const timeFormatter = new Intl.DateTimeFormat("en-US", formatOptions);
                 const startText = Number.isNaN(start.getTime())
                   ? event.startDate
-                  : format(start, "h:mm a");
-                const endText = Number.isNaN(end.getTime()) ? event.endDate : format(end, "h:mm a");
+                  : timeFormatter.format(start);
+                const endText = Number.isNaN(end.getTime())
+                  ? event.endDate
+                  : timeFormatter.format(end);
 
-                // Get timezone display - use explicit timezone or local abbreviation
-                let timezoneDisplay = "";
-                if (event.timezone && event.timezone !== "UTC" && event.timezone !== "Z") {
-                  timezoneDisplay = event.timezone.replace(/_/g, " ");
-                } else if (!Number.isNaN(start.getTime())) {
+                // Get the visitor's local timezone abbreviation (e.g., "EAT", "PST")
+                let timezoneLabel = "";
+                if (!Number.isNaN(start.getTime())) {
                   try {
                     const parts = new Intl.DateTimeFormat("en-US", {
                       timeZoneName: "short",
                     }).formatToParts(start);
-                    timezoneDisplay = parts.find((p) => p.type === "timeZoneName")?.value || "";
+                    timezoneLabel = parts.find((p) => p.type === "timeZoneName")?.value || "";
                   } catch {
-                    timezoneDisplay = "";
+                    timezoneLabel = "";
                   }
                 }
 
-                return `${startText} - ${endText}${timezoneDisplay ? ` ${timezoneDisplay}` : ""}`;
+                return `${startText} - ${endText}${timezoneLabel ? ` ${timezoneLabel}` : ""}`;
               })()}
             </span>
           </p>
@@ -121,8 +130,8 @@ function EventCard({ event }: EventCardProps) {
 }
 
 export default function LumaEventsList() {
-  const { events, loading, error } = useLumaEvents();
-  const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+  const { events, loading, error, refetch } = useLumaEvents();
+  const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
   if (loading) {
     return (
@@ -137,7 +146,7 @@ export default function LumaEventsList() {
     return (
       <div className="text-center py-12">
         <p className="text-red-500 mb-4">Error loading events. Please try again later.</p>
-        <Button variant="outline" onClick={() => window.location.reload()} className="mt-4">
+        <Button variant="outline" onClick={() => refetch()} className="mt-4">
           Retry
         </Button>
       </div>

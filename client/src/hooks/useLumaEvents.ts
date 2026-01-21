@@ -64,7 +64,8 @@ export function useLumaEvents() {
       events,
       loading,
       error,
-      refresh: loadEvents, // expose manual refresh
+      refetch: loadEvents, // expose manual refresh
+      refresh: loadEvents, // alias for refetch
     }),
     [events, loading, error, loadEvents]
   );
