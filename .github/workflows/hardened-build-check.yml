@@ -39,6 +39,7 @@ jobs:
         run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
 
       - name: Scan dependencies
+        if: github.event_name == 'pull_request'
         uses: actions/dependency-review-action@v4
 
       - name: Build Hardened App (Typecheck + Build)
