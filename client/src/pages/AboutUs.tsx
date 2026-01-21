@@ -11,6 +11,7 @@ import StatisticCounter from "@/components/ui/StatisticCounter";
 import { communityGallery, teamGallery } from "@/data/galleryData";
 import TeamGallery from "@/components/TeamGallery";
 import { getRandomItems, getRandomFrom } from "@/utils/getRandomItems";
+import { seededRandom } from "@/lib/random";
 import SocialIconLink from "@/components/SocialIconLink";
 
 // Objectives data
@@ -57,7 +58,7 @@ export default function AboutUs() {
 
   const [featuredId, setFeaturedId] = useState<string | null>(() => {
     if (!teamData || teamData.length === 0) return null;
-    const idx = Math.floor(Math.random() * teamData.length);
+    const idx = Math.floor(seededRandom() * teamData.length);
     return teamData[idx].id;
   });
   const [, navigate] = useLocation();

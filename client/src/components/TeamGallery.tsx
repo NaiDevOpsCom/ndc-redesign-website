@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
+import { seededRandom } from "@/lib/random";
 import { teamGallery } from "@/data/galleryData";
 
 const ANIMATION_VARIANTS = [
@@ -73,7 +74,7 @@ export default function TeamGallery() {
 
     // Set up new timers
     for (let slot = 0; slot < SLOT_COUNT; slot++) {
-      const randomInterval = 3000 + Math.floor(Math.random() * 4000); // 3-7s
+      const randomInterval = 3000 + Math.floor(seededRandom() * 4000); // 3-7s
 
       const id = setInterval(() => {
         setSlotIndexes((prev) => {
@@ -81,7 +82,7 @@ export default function TeamGallery() {
           // Pick a new random index for this slot, different from current
           let newIdx;
           do {
-            newIdx = Math.floor(Math.random() * totalImages);
+            newIdx = Math.floor(seededRandom() * totalImages);
             // Ensure we don't pick the same image if we have choices
           } while (newIdx === next[slot] && totalImages > 1);
 
@@ -91,7 +92,7 @@ export default function TeamGallery() {
 
         setSlotTransitions((prev) => {
           const next = [...prev];
-          next[slot] = Math.floor(Math.random() * ANIMATION_VARIANTS.length);
+          next[slot] = Math.floor(seededRandom() * ANIMATION_VARIANTS.length);
           return next;
         });
       }, randomInterval);

@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 import { Button } from "@/components/ui/button";
+import { seededRandom } from "@/lib/random";
 import faqImage from "@/assets/faq.png";
 import { faqDataByCategory } from "@/data/faqData";
 
 export default function FAQSection() {
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(() =>
-    Math.floor(Math.random() * faqDataByCategory.length)
+    Math.floor(seededRandom() * faqDataByCategory.length)
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
@@ -49,8 +50,9 @@ export default function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-faq-text">
-            Answers to the questions you're most likely to have—whether you're new to DevOps or
-            already deep in the game. We're here to make things clear, simple, and welcoming.
+            Answers to the questions you&apos;re most likely to have—whether you&apos;re new to
+            DevOps or already deep in the game. We&apos;re here to make things clear, simple, and
+            welcoming.
           </p>
         </div>
 
@@ -72,7 +74,9 @@ export default function FAQSection() {
               }`}
             >
               {activeCategory?.items.map((faq, index) => {
-                const id = `${activeCategory.title}-${index}`;
+                const id = `${activeCategory.title
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")}-${index}`;
                 const isExpanded = expandedQuestionId === id;
 
                 return (
@@ -81,28 +85,29 @@ export default function FAQSection() {
                     className="rounded-lg shadow-sm border overflow-hidden bg-white border-faq-text dark:text-background"
                     style={{ opacity: 0.9 }}
                   >
-                    <div
-                      className="flex items-center justify-between px-6 py-4 cursor-pointer transition-colors bg-faq text-faq-text"
+                    <button
+                      type="button"
+                      className="w-full flex items-center justify-between px-6 py-4 cursor-pointer transition-colors bg-faq text-faq-text text-left"
                       onClick={() => toggleQuestion(id)}
+                      aria-expanded={isExpanded}
+                      aria-controls={`faq-answer-${id}`}
                     >
                       <span className="font-medium flex-1 text-faq-text">{faq.question}</span>
-                      <button
-                        className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-[#023047] transition-colors ml-4"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleQuestion(id);
-                        }}
-                      >
+                      <span className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-[#023047] transition-colors ml-4">
                         <Plus
                           className={`w-4 h-4 transition-transform duration-200 ${
                             isExpanded ? "rotate-45" : ""
                           }`}
                         />
-                      </button>
-                    </div>
+                      </span>
+                    </button>
 
                     {isExpanded && (
-                      <div className="px-6 pb-4 border-t border-faq-text" style={{ opacity: 0.8 }}>
+                      <div
+                        id={`faq-answer-${id}`}
+                        className="px-6 pb-4 border-t border-faq-text"
+                        style={{ opacity: 0.8 }}
+                      >
                         <p className="leading-relaxed pt-4 text-faq-text/90">{faq.answer}</p>
                       </div>
                     )}
