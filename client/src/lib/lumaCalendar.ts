@@ -4,6 +4,9 @@ import ICAL from "ical.js";
 type ICALTime = {
   toJSDate: () => Date;
   timezone: string;
+  zone?: {
+    tzid: string;
+  };
 };
 
 export interface LumaEvent {
@@ -86,7 +89,7 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
         url,
         uid,
         categories,
-        timezone: startDate.timezone,
+        timezone: startDate.zone?.tzid || startDate.timezone,
       };
     })
     .filter((event: LumaEvent) => {
