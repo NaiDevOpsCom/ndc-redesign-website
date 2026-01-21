@@ -1,0 +1,14 @@
+# .git-blame-ignore-revs
+# This file lists commits that should be ignored by `git blame`.
+# These are typically large-scale formatting or automated refactoring commits
+# that do not change the logic of the code.
+#
+# To use this file, run:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# Or use it on a per-command basis:
+#   git blame --ignore-revs-file .git-blame-ignore-revs <file>
+
+# Formatting commit (Prettier/ESLint auto-fix)
+# TODO: Replace with the actual commit hash after merging this PR
+# <commit-hash-here>
