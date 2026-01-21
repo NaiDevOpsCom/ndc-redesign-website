@@ -2,7 +2,7 @@ declare module "vaul" {
   import * as React from "react";
 
   type AnyComponent<P = Record<string, unknown>> =
-    | React.ForwardRefExoticComponent<P & React.RefAttributes<any>>
+    | React.ForwardRefExoticComponent<P & React.RefAttributes<unknown>>
     | React.ComponentType<P>;
 
   interface DrawerRootProps {

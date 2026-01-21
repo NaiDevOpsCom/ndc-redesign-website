@@ -110,13 +110,16 @@ export default function FAQPage() {
                             }}
                           >
                             {/* Question Card */}
-                            <div
-                              className="flex items-center justify-between px-6 py-4 cursor-pointer transition-colors"
+                            <button
+                              type="button"
+                              className="w-full flex items-center justify-between px-6 py-4 cursor-pointer transition-colors text-left"
                               style={{
                                 backgroundColor: "var(--faq-bg)",
                                 color: "var(--faq-text)",
                               }}
                               onClick={() => toggleItem(id)}
+                              aria-expanded={isExpanded}
+                              aria-controls={`faq-answer-${id}`}
                             >
                               <span
                                 className="font-medium flex-1"
@@ -124,24 +127,19 @@ export default function FAQPage() {
                               >
                                 {faq.question}
                               </span>
-                              <button
-                                className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors ml-4"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleItem(id);
-                                }}
-                              >
+                              <span className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors ml-4">
                                 <Plus
                                   className={`w-4 h-4 transition-transform duration-200 ${
                                     isExpanded ? "rotate-45" : ""
                                   }`}
                                 />
-                              </button>
-                            </div>
+                              </span>
+                            </button>
 
                             {/* Answer Content */}
                             {isExpanded && (
                               <div
+                                id={`faq-answer-${id}`}
                                 className="px-6 pb-4 border-t"
                                 style={{ borderColor: "var(--faq-text)", opacity: 0.8 }}
                               >
