@@ -113,16 +113,33 @@ function EventCard({ event }: EventCardProps) {
 
         {/* Push button to bottom with margin-top auto */}
         <div className="mt-auto pt-3 sm:pt-4">
-          <Button
-            className="w-full bg-primary text-white hover:bg-[#023047] transition-colors duration-200 text-sm sm:text-base"
-            onClick={() => {
-              if (event.url) {
-                window.open(event.url, "_blank", "noopener,noreferrer");
+          {(() => {
+            const safeUrl = (() => {
+              if (!event.url) return null;
+              try {
+                const u = new URL(event.url);
+                return u.protocol === "http:" || u.protocol === "https:" ? u.toString() : null;
+              } catch {
+                return null;
               }
-            }}
-          >
-            View Details & Register
-          </Button>
+            })();
+
+            return (
+              <Button
+                asChild
+                className="w-full bg-primary text-white hover:bg-[#023047] transition-colors duration-200 text-sm sm:text-base"
+                disabled={!safeUrl}
+              >
+                {safeUrl ? (
+                  <a href={safeUrl} target="_blank" rel="noopener noreferrer">
+                    View Details & Register
+                  </a>
+                ) : (
+                  <span>View Details & Register</span>
+                )}
+              </Button>
+            );
+          })()}
         </div>
       </CardContent>
     </Card>
@@ -131,7 +148,7 @@ function EventCard({ event }: EventCardProps) {
 
 export default function LumaEventsList() {
   const { events, loading, error, refetch } = useLumaEvents();
-  const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
+  const autoplay = React.useMemo(() => Autoplay({ delay: 5000, stopOnInteraction: true }), []);
 
   if (loading) {
     return (
@@ -201,10 +218,10 @@ export default function LumaEventsList() {
   if (events.length > 3) {
     return (
       <Carousel
-        plugins={[plugin.current]}
+        plugins={[autoplay]}
         className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
+        onMouseEnter={() => autoplay.stop()}
+        onMouseLeave={() => autoplay.reset()}
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {events.map((event) => (
