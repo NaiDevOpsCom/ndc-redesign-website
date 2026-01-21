@@ -3,6 +3,7 @@ import ICAL from "ical.js";
 // Type for ICAL Time to avoid 'any' usage
 type ICALTime = {
   toJSDate: () => Date;
+  timezone: string;
 };
 
 export interface LumaEvent {
@@ -14,6 +15,7 @@ export interface LumaEvent {
   url?: string;
   uid: string;
   categories?: string[];
+  timezone?: string;
 }
 
 // webcal://api.luma.com/ics/get?entity=calendar&id=cal-fFX28aaHRNQkThJ
@@ -54,8 +56,8 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
     .map((event) => {
       const summary = event.getFirstPropertyValue("summary")?.toString() || "Untitled Event";
       const description = event.getFirstPropertyValue("description")?.toString() || "";
-      const startDate = event.getFirstPropertyValue("dtstart") as ICALTime;
-      const endDate = event.getFirstPropertyValue("dtend") as ICALTime | null;
+      const startDate = event.getFirstPropertyValue("dtstart") as unknown as ICALTime;
+      const endDate = event.getFirstPropertyValue("dtend") as unknown as ICALTime | null;
       const location = event.getFirstPropertyValue("location")?.toString();
       let url = event.getFirstPropertyValue("url")?.toString();
 
@@ -84,6 +86,7 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
         url,
         uid,
         categories,
+        timezone: startDate.timezone,
       };
     })
     .filter((event: LumaEvent) => {
