@@ -3,7 +3,7 @@ import ICAL from "ical.js";
 // Type for ICAL Time to avoid 'any' usage
 type ICALTime = {
   toJSDate: () => Date;
-  timezone: string;
+  timezone?: string;
   zone?: {
     tzid: string;
   };
@@ -56,18 +56,24 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
   const events = component.getAllSubcomponents("vevent");
 
   return events
-    .map((event) => {
+    .map((event): LumaEvent | null => {
       const summary = event.getFirstPropertyValue("summary")?.toString() || "Untitled Event";
       const description = event.getFirstPropertyValue("description")?.toString() || "";
-      const startDate = event.getFirstPropertyValue("dtstart") as unknown as ICALTime;
-      const endDate = event.getFirstPropertyValue("dtend") as unknown as ICALTime | null;
+
+      const start = event.getFirstPropertyValue("dtstart") as unknown as ICALTime | null;
+      if (!start || typeof start.toJSDate !== "function") return null;
+
+      const end = event.getFirstPropertyValue("dtend") as unknown as ICALTime | null;
+
+      const startJs = start.toJSDate();
+      const endJs = end && typeof end.toJSDate === "function" ? end.toJSDate() : startJs;
+
       const location = event.getFirstPropertyValue("location")?.toString();
       let url = event.getFirstPropertyValue("url")?.toString();
 
       // Use a deterministic fallback for the UID
       const uid =
-        event.getFirstPropertyValue("uid")?.toString() ||
-        `${summary}-${startDate.toJSDate().toISOString()}`;
+        event.getFirstPropertyValue("uid")?.toString() || `${summary}-${startJs.toISOString()}`;
 
       // Correctly get the ICAL.Property object to safely call getValues()
       const categoriesProperty = event.getFirstProperty("categories");
@@ -83,16 +89,18 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
       return {
         title: summary,
         description,
-        startDate: startDate.toJSDate().toISOString(),
-        endDate: endDate?.toJSDate().toISOString() || startDate.toJSDate().toISOString(),
+        startDate: startJs.toISOString(),
+        endDate: endJs.toISOString(),
         location,
         url,
         uid,
         categories,
-        timezone: startDate.zone?.tzid || startDate.timezone,
+        timezone:
+          start.zone?.tzid || (typeof start.timezone === "string" ? start.timezone : undefined),
       };
     })
-    .filter((event: LumaEvent) => {
+    .filter((event): event is LumaEvent => {
+      if (!event) return false;
       // Only include events that are currently active or in the future
       const eventEndDate = new Date(event.endDate);
       const now = new Date();
