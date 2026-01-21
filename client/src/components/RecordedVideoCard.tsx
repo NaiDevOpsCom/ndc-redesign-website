@@ -20,7 +20,6 @@ export interface RecordedVideoCardProps {
  * - Accessible link with proper ARIA labels
  */
 export const RecordedVideoCard: React.FC<RecordedVideoCardProps> = ({
-  id,
   title,
   videoUrl,
   className = "",

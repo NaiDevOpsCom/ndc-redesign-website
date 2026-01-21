@@ -83,7 +83,7 @@ export default function HeroCarousel() {
   };
 
   // Drag end handler
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const power = swipePower(info.offset.x, info.velocity.x);
     if (power > SWIPE_CONFIDENCE) {
       // user swiped right -> previous
@@ -105,11 +105,12 @@ export default function HeroCarousel() {
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      tabIndex={0}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
+      aria-roledescription="carousel"
+      aria-label="Hero Carousel"
     >
       {/* Slide area */}
       <div className="absolute inset-0">
@@ -152,23 +153,6 @@ export default function HeroCarousel() {
 
       {/* Thumbnails (optional) */}
       <div className="fixed right-6 bottom-6 z-30 flex items-center gap-3">
-        {/*<div className="flex gap-2">*/}
-        {/*    {heroSlidesData.map((slide, i) => (*/}
-        {/*        <button*/}
-        {/*            key={slide.id}*/}
-        {/*            onClick={() => goToSlide(i)}*/}
-        {/*            aria-label={`Preview slide ${i + 1}`}*/}
-        {/*            className="w-20 h-12 rounded overflow-hidden relative ring-0 focus:outline-none"*/}
-        {/*        >*/}
-        {/*            <img src={slide.bgImage} alt={slide.headlineMain} className="w-full h-full object-cover" />*/}
-        {/*            <span*/}
-        {/*                className={`absolute inset-0 transition-opacity duration-300 ${i === index ? "opacity-0" : "opacity-50"} bg-black`}*/}
-        {/*                aria-hidden*/}
-        {/*            />*/}
-        {/*        </button>*/}
-        {/*    ))}*/}
-        {/*</div>*/}
-
         {/* Counter */}
         <div className="text-xs md:text-sm tracking-wider text-white/90 ml-2">
           <span className="inline-block min-w-[1.2rem] text-right">
@@ -178,27 +162,6 @@ export default function HeroCarousel() {
           <span className="opacity-70"> / {slidesCount}</span>
         </div>
       </div>
-
-      {/* Optional: Prev/Next Buttons for keyboard accessibility */}
-      {/*<div className="absolute z-20 left-6 top-1/2 -translate-y-1/2">*/}
-      {/*    <button*/}
-      {/*        onClick={() => prev()}*/}
-      {/*        aria-label="Previous slide"*/}
-      {/*        className="p-2 bg-black/40 rounded text-white hover:bg-black/60"*/}
-      {/*    >*/}
-      {/*        Prev*/}
-      {/*    </button>*/}
-      {/*</div>*/}
-
-      {/*<div className="absolute z-20 right-6 top-1/2 -translate-y-1/2">*/}
-      {/*    <button*/}
-      {/*        onClick={() => next()}*/}
-      {/*        aria-label="Next slide"*/}
-      {/*        className="p-2 bg-black/40 rounded text-white hover:bg-black/60"*/}
-      {/*    >*/}
-      {/*        Next*/}
-      {/*    </button>*/}
-      {/*</div>*/}
     </section>
   );
 }

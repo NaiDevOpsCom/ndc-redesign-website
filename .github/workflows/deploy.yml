@@ -11,15 +11,15 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main  # Set this to your default branch (master or main)
+      - main # Set this to your default branch (master or main)
     paths:
-      - 'client/src/**'
-      - 'client/public/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'vite.config.ts'
-      - 'tsconfig.json'
-      - '.github/workflows/deploy.yml'
+      - "client/src/**"
+      - "client/public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.ts"
+      - "tsconfig.json"
+      - ".github/workflows/deploy.yml"
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: 20
-          cache: 'npm'
+          cache: "npm"
 
       # 3. Install dependencies and Build
       - name: Install and Build
@@ -109,14 +109,14 @@ jobs:
           port: ${{ secrets.REMOTE_PORT || 22 }}
           script: |
             set -euo pipefail
-            
+
             # Paths
             RELEASE_DIR="/home/${{ secrets.REMOTE_USER }}/releases/${{ env.RELEASE_TIMESTAMP }}"
             TARGET_LINK="${{ secrets.REMOTE_PATH }}"
             TMP_LINK="${TARGET_LINK}.tmp"
-            
+
             echo "Deploying release: ${{ env.RELEASE_TIMESTAMP }}"
-            
+
             # 1. Safety Check: If target is a directory and not a link, abort with instructions
             if [ -d "$TARGET_LINK" ] && [ ! -L "$TARGET_LINK" ]; then
               echo "CRITICAL ERROR: $TARGET_LINK is a physical directory."
@@ -124,14 +124,14 @@ jobs:
               echo "Please manually rename the existing directory: mv $TARGET_LINK ${TARGET_LINK}_old"
               exit 1
             fi
-            
+
             # 2. Atomic Switch
             ln -sfn "$RELEASE_DIR" "$TMP_LINK"
             mv -Tf "$TMP_LINK" "$TARGET_LINK"
-            
+
             # 3. Cleanup: Keep only last 5 releases
             echo "Cleaning up old releases..."
             cd "/home/${{ secrets.REMOTE_USER }}/releases"
             ls -1t | tail -n +6 | xargs rm -rf 2>/dev/null || true
-            
+
             echo "Deployment successful."

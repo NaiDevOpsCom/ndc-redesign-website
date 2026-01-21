@@ -1,3 +1,5 @@
+import { seededRandom } from "@/lib/random";
+
 /**
  * Selects a random item from an array with weighted probability.
  *
@@ -17,6 +19,6 @@ export function getWeightedRandomItem<T>(items: T[], getWeight: (item: T) => num
     return Array(weight).fill(item);
   });
 
-  const idx = Math.floor(Math.random() * pool.length);
+  const idx = Math.floor(seededRandom() * pool.length);
   return pool[idx];
 }
