@@ -2,7 +2,7 @@
 // client/public/api/luma.php
 
 // 1. Allow access from your own domain (adjust as needed or rely on same-origin)
-// header("Access-Control-Allow-Origin: https://yourdomain.com");
+header("Access-Control-Allow-Origin: https://nairobidevops.org");
 
 // 2. Prepare the destination URL
 $base_url = 'https://api.luma.com';

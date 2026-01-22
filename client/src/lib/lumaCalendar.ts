@@ -24,7 +24,6 @@ export interface LumaEvent {
 // webcal://api.luma.com/ics/get?entity=calendar&id=cal-fFX28aaHRNQkThJ
 
 const LUMA_CALENDAR_ID = "cal-fFX28aaHRNQkThJ";
-const LUMA_CALENDAR_URL = `/api/luma/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`;
 
 /**
  * Extract URL from Luma event description if not in URL field
@@ -45,80 +44,91 @@ function extractUrlFromDescription(description: string): string | undefined {
 }
 
 export async function fetchLumaEvents(): Promise<LumaEvent[]> {
-  let response: Response;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
   try {
-    response = await fetch(LUMA_CALENDAR_URL);
-    if (!response.ok) {
-      throw new Error(`Proxied fetch failed: ${response.status}`);
-    }
-  } catch (error) {
-    console.warn("Proxied Luma fetch failed, attempting direct fetch fallback...", error);
-    // Fallback to direct Luma API if the local proxy fails (404, etc.)
-    const directUrl = `https://api.luma.com/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`;
-    response = await fetch(directUrl);
-    if (!response.ok) {
-      throw new Error(`Direct fetch also failed: ${response.statusText}`);
-    }
-  }
+    const encodedId = encodeURIComponent(LUMA_CALENDAR_ID);
+    const proxiedUrl = `/api/luma/ics/get?entity=calendar&id=${encodedId}`;
+    let response: Response;
 
-  const icsData = await response.text();
-  const jcalData = ICAL.parse(icsData);
-  const component = new ICAL.Component(jcalData);
-  const events = component.getAllSubcomponents("vevent");
-
-  return events
-    .map((event): LumaEvent | null => {
-      const summary = event.getFirstPropertyValue("summary")?.toString() || "Untitled Event";
-      const description = event.getFirstPropertyValue("description")?.toString() || "";
-
-      const start = event.getFirstPropertyValue("dtstart") as unknown as ICALTime | null;
-      if (!start || typeof start.toJSDate !== "function") return null;
-
-      const end = event.getFirstPropertyValue("dtend") as unknown as ICALTime | null;
-
-      const startJs = start.toJSDate();
-      const endJs = end && typeof end.toJSDate === "function" ? end.toJSDate() : startJs;
-
-      const location = event.getFirstPropertyValue("location")?.toString();
-      let url = event.getFirstPropertyValue("url")?.toString();
-
-      // Use a deterministic fallback for the UID
-      const uid =
-        event.getFirstPropertyValue("uid")?.toString() || `${summary}-${startJs.toISOString()}`;
-
-      // Correctly get the ICAL.Property object to safely call getValues()
-      const categoriesProperty = event.getFirstProperty("categories");
-      const categories = categoriesProperty
-        ? categoriesProperty.getValues().map((v: unknown) => String(v))
-        : [];
-
-      // If no URL field, try to extract from description
-      if (!url && description) {
-        url = extractUrlFromDescription(description);
+    try {
+      response = await fetch(proxiedUrl, { signal: controller.signal });
+      if (!response.ok) {
+        throw new Error(`Proxy failed with status: ${response.status}`);
       }
+    } catch (error) {
+      console.warn("Proxied Luma fetch failed, attempting direct fetch fallback...", error);
+      const directUrl = `https://api.luma.com/ics/get?entity=calendar&id=${encodedId}`;
+      response = await fetch(directUrl, { signal: controller.signal });
 
-      return {
-        title: summary,
-        description,
-        startDate: startJs.toISOString(),
-        endDate: endJs.toISOString(),
-        location,
-        url,
-        uid,
-        categories,
-        timezone:
-          start.zone?.tzid || (typeof start.timezone === "string" ? start.timezone : undefined),
-      };
-    })
-    .filter((event): event is LumaEvent => {
-      if (!event) return false;
-      // Only include events that are currently active or in the future
-      const eventEndDate = new Date(event.endDate);
-      const now = new Date();
-      return eventEndDate >= now;
-    })
-    .sort((a: LumaEvent, b: LumaEvent) => {
-      // Sort by date, soonest first
-      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-    });
+      if (!response.ok) {
+        throw new Error(`Both proxied and direct fetch failed. Direct status: ${response.status}`);
+      }
+    }
+
+    const icsData = await response.text();
+    const jcalData = ICAL.parse(icsData);
+    const component = new ICAL.Component(jcalData);
+    const events = component.getAllSubcomponents("vevent");
+
+    return events
+      .map((event): LumaEvent | null => {
+        // ... rest of the map logic stays same ...
+        const summary = event.getFirstPropertyValue("summary")?.toString() || "Untitled Event";
+        const description = event.getFirstPropertyValue("description")?.toString() || "";
+
+        const start = event.getFirstPropertyValue("dtstart") as unknown as ICALTime | null;
+        if (!start || typeof start.toJSDate !== "function") return null;
+
+        const end = event.getFirstPropertyValue("dtend") as unknown as ICALTime | null;
+
+        const startJs = start.toJSDate();
+        const endJs = end && typeof end.toJSDate === "function" ? end.toJSDate() : startJs;
+
+        const location = event.getFirstPropertyValue("location")?.toString();
+        let url = event.getFirstPropertyValue("url")?.toString();
+
+        // Use a deterministic fallback for the UID
+        const uid =
+          event.getFirstPropertyValue("uid")?.toString() || `${summary}-${startJs.toISOString()}`;
+
+        // Correctly get the ICAL.Property object to safely call getValues()
+        const categoriesProperty = event.getFirstProperty("categories");
+        const categories = categoriesProperty
+          ? categoriesProperty.getValues().map((v: unknown) => String(v))
+          : [];
+
+        // If no URL field, try to extract from description
+        if (!url && description) {
+          url = extractUrlFromDescription(description);
+        }
+
+        return {
+          title: summary,
+          description,
+          startDate: startJs.toISOString(),
+          endDate: endJs.toISOString(),
+          location,
+          url,
+          uid,
+          categories,
+          timezone:
+            start.zone?.tzid || (typeof start.timezone === "string" ? start.timezone : undefined),
+        };
+      })
+      .filter((event): event is LumaEvent => {
+        if (!event) return false;
+        // Only include events that are currently active or in the future
+        const eventEndDate = new Date(event.endDate);
+        const now = new Date();
+        return eventEndDate >= now;
+      })
+      .sort((a: LumaEvent, b: LumaEvent) => {
+        // Sort by date, soonest first
+        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+      });
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }

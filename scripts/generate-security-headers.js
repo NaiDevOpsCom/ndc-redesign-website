@@ -119,6 +119,31 @@ async function updateVercelConfig(policy) {
     });
   }
 
+  // Update or add the rewrites section
+  if (policy.proxies && Array.isArray(policy.proxies)) {
+    vercelConfig.rewrites = vercelConfig.rewrites || [];
+    policy.proxies.forEach((proxy) => {
+      const existingRewriteIndex = vercelConfig.rewrites.findIndex(
+        (r) => r.source === proxy.source
+      );
+      const newRewrite = {
+        source: proxy.source,
+        destination: proxy.vercelDestination,
+      };
+      if (existingRewriteIndex >= 0) {
+        vercelConfig.rewrites[existingRewriteIndex] = newRewrite;
+      } else {
+        // Add before the catch-all if it exists
+        const catchAllIndex = vercelConfig.rewrites.findIndex((r) => r.source === "/(.*)");
+        if (catchAllIndex >= 0) {
+          vercelConfig.rewrites.splice(catchAllIndex, 0, newRewrite);
+        } else {
+          vercelConfig.rewrites.push(newRewrite);
+        }
+      }
+    });
+  }
+
   const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
     parser: "json",
   });
@@ -132,7 +157,7 @@ function generateHtaccess(policy) {
   // eslint-disable-next-line security/detect-object-injection
   const cspString = generateCSPString(policy.contentSecurityPolicy);
 
-  const rules = [
+  const headerRules = [
     "<IfModule mod_headers.c>",
     `  Header always set Content-Security-Policy "${cspString.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`,
     // eslint-disable-next-line security/detect-object-injection
@@ -143,13 +168,36 @@ function generateHtaccess(policy) {
     "</IfModule>",
   ];
 
+  const apacheConfigRules = [];
+  if (policy.apacheConfig && policy.apacheConfig.options) {
+    apacheConfigRules.push("  <IfModule mod_autoindex.c>");
+    apacheConfigRules.push(`    Options ${policy.apacheConfig.options.join(" ")}`);
+    apacheConfigRules.push("  </IfModule>");
+  }
+
+  const proxyRules = [];
+  if (policy.proxies && Array.isArray(policy.proxies)) {
+    policy.proxies.forEach((proxy) => {
+      // Ensure absolute path for apache rewrite destination
+      const destination = proxy.apacheRewrite.startsWith("/")
+        ? proxy.apacheRewrite
+        : `/${proxy.apacheRewrite}`;
+      proxyRules.push(`  # Proxy for ${proxy.source}`);
+      proxyRules.push(
+        `  RewriteRule ^/?${proxy.source.replace(/^\//, "")}$ ${destination} [QSA,L]`
+      );
+    });
+  }
+
   if (!fs.existsSync(TEMPLATE_PATH)) {
     console.error(`Error: Template file not found at ${TEMPLATE_PATH}`);
     process.exit(1);
   }
 
-  const template = fs.readFileSync(TEMPLATE_PATH, "utf8");
-  const content = template.replace("#{{SECURITY_HEADERS}}#", rules.join("\n"));
+  let content = fs.readFileSync(TEMPLATE_PATH, "utf8");
+  content = content.replace("#{{SECURITY_HEADERS}}#", headerRules.join("\n"));
+  content = content.replace("#{{APACHE_CONFIG}}#", apacheConfigRules.join("\n"));
+  content = content.replace("#{{PROXY_RULES}}#", proxyRules.join("\n"));
 
   // Ensure directory exists
   const dir = path.dirname(HTACCESS_PATH);
