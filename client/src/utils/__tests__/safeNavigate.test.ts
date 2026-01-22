@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect } from "vitest";
+
 import {
   validateInternalRoute,
   getSafeRoute,
@@ -42,112 +43,11 @@ describe("safeNavigate", () => {
         });
       });
 
-<<<<<<< HEAD
       it("normalizes paths without leading slash", () => {
         const result = validateInternalRoute("about");
         expect(result.isValid).toBe(true);
         expect(result.sanitizedUrl).toBe("/about");
       });
-=======
-        describe("protocol-relative URL blocking", () => {
-            it("blocks //evil.com", () => {
-                const result = validateInternalRoute("//evil.com");
-                expect(result.isValid).toBe(false);
-                expect(result.reason).toBe(
-                    "External URL not allowed for internal navigation"
-                );
-            });
-
-            it("blocks //evil.com/path", () => {
-                const result = validateInternalRoute("//evil.com/path");
-                expect(result.isValid).toBe(false);
-            });
-        });
-
-        describe("absolute URL blocking", () => {
-            it("blocks http:// URLs", () => {
-                const result = validateInternalRoute("http://evil.com");
-                expect(result.isValid).toBe(false);
-                expect(result.reason).toBe(
-                    "External URL not allowed for internal navigation"
-                );
-            });
-
-            it("blocks https:// URLs", () => {
-                const result = validateInternalRoute("https://evil.com");
-                expect(result.isValid).toBe(false);
-                expect(result.reason).toBe(
-                    "External URL not allowed for internal navigation"
-                );
-            });
-
-            it("blocks ftp:// URLs", () => {
-                const result = validateInternalRoute("ftp://evil.com");
-                expect(result.isValid).toBe(false);
-            });
-        });
-
-        describe("path traversal normalization", () => {
-            it("normalizes ../ sequences", () => {
-                const result = validateInternalRoute("/about/../admin");
-                expect(result.isValid).toBe(true);
-                expect(result.sanitizedUrl).toBe("/admin");
-            });
-
-            it("prevents escaping root", () => {
-                const result = validateInternalRoute("/../../../etc/passwd");
-                expect(result.isValid).toBe(true);
-                expect(result.sanitizedUrl).toBe("/etc/passwd");
-            });
-
-            it("normalizes ./ sequences", () => {
-                const result = validateInternalRoute("/about/./test");
-                expect(result.isValid).toBe(true);
-                expect(result.sanitizedUrl).toBe("/about/test");
-            });
-
-            it("handles query strings correctly without traversing", () => {
-                // Should NOT normalize away query params even if they look like traversal
-                // e.g. /page?redirect=../admin should ideally be /page?redirect=../admin in a raw sense,
-                // OR if we normalize the path part only, the query param stays as is.
-                // normalizePath implementation now separates path and query.
-                // Input: /page?param=../admin
-                // Path part: /page -> normalized /page
-                // Result: /page?param=../admin
-
-                const result = validateInternalRoute("/page?param=../admin");
-                expect(result.isValid).toBe(true);
-                // verify query string persists and '..' in query is not "resolved" against the path
-                expect(result.sanitizedUrl).toBe("/page?param=../admin");
-            });
-        });
-
-        describe("edge cases", () => {
-            it("handles empty string", () => {
-                const result = validateInternalRoute("");
-                expect(result.isValid).toBe(false);
-                expect(result.sanitizedUrl).toBe("/");
-            });
-
-            it("handles whitespace", () => {
-                // Whitespace-only strings should be considered invalid
-                const result = validateInternalRoute("   ");
-                expect(result.isValid).toBe(false);
-                expect(result.sanitizedUrl).toBe("/");
-            });
-
-            it("uses custom fallback", () => {
-                const result = validateInternalRoute("javascript:alert(1)", "/error");
-                expect(result.sanitizedUrl).toBe("/error");
-            });
-
-            it("handles null-ish values", () => {
-                // @ts-expect-error Testing runtime behavior
-                const result = validateInternalRoute(null);
-                expect(result.isValid).toBe(false);
-            });
-        });
->>>>>>> 6da56fd (fix: safe navigation, whitespace, documenation, test pass, removed unused routes)
     });
 
     describe("dangerous protocol blocking", () => {
@@ -253,6 +153,21 @@ describe("safeNavigate", () => {
         expect(result.isValid).toBe(true);
         expect(result.sanitizedUrl).toBe("/about/test");
       });
+
+      it("handles query strings correctly without traversing", () => {
+        // Should NOT normalize away query params even if they look like traversal
+        // e.g. /page?redirect=../admin should ideally be /page?redirect=../admin in a raw sense,
+        // OR if we normalize the path part only, the query param stays as is.
+        // normalizePath implementation now separates path and query.
+        // Input: /page?param=../admin
+        // Path part: /page -> normalized /page
+        // Result: /page?param=../admin
+
+        const result = validateInternalRoute("/page?param=../admin");
+        expect(result.isValid).toBe(true);
+        // verify query string persists and '..' in query is not "resolved" against the path
+        expect(result.sanitizedUrl).toBe("/page?param=../admin");
+      });
     });
 
     describe("edge cases", () => {
@@ -263,9 +178,9 @@ describe("safeNavigate", () => {
       });
 
       it("handles whitespace", () => {
-        // Whitespace-only strings normalize to "/" which is a valid path
+        // Whitespace-only strings should be considered invalid
         const result = validateInternalRoute("   ");
-        expect(result.isValid).toBe(true);
+        expect(result.isValid).toBe(false);
         expect(result.sanitizedUrl).toBe("/");
       });
 

@@ -18,7 +18,7 @@ This document captures practical, project‑specific notes for developing, build
     - @ → client/src
     - @shared → shared
     - @assets → attached_assets
-    These are defined in both vite.config.ts (for runtime/build) and tsconfig.json (for type‑checking). If you add a new alias, update both files.
+      These are defined in both vite.config.ts (for runtime/build) and tsconfig.json (for type‑checking). If you add a new alias, update both files.
 
 - Install and run
   - Install dependencies: npm ci (or npm install for local iteration).
@@ -39,7 +39,7 @@ This document captures practical, project‑specific notes for developing, build
     - npm run lint:fix — forces TS/TSX ext resolution and applies fixes.
   - Selected project rules:
     - react/react-in-jsx-scope off; prop-types off (TypeScript preferred).
-    - @typescript-eslint/no-unused-vars warns; ignore patterns for _args/_vars are allowed.
+    - @typescript-eslint/no-unused-vars warns; ignore patterns for \_args/\_vars are allowed.
     - security/detect-object-injection is disabled due to common React prop/object usage.
 
 2. Testing information
@@ -48,9 +48,9 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
 
 - One‑off smoke test (no repo changes required)
   - From the repository root, you can execute small TypeScript scripts on demand using npx tsx. Example:
-    1) Create a temporary file tests/smoke.test.ts with content similar to the snippet below.
-    2) Run: npx tsx tests/smoke.test.ts
-    3) Remove the temporary file when done.
+    1. Create a temporary file tests/smoke.test.ts with content similar to the snippet below.
+    2. Run: npx tsx tests/smoke.test.ts
+    3. Remove the temporary file when done.
 
   Example content that imports a real project module and asserts behavior:
 
@@ -63,7 +63,6 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
   // Tailwind merge should dedupe px-2 and text-sm
   assert.equal(out, "px-2 text-sm");
   console.log("Smoke test passed: cn() outputs:", JSON.stringify(out));
-
   - Notes:
     - We purposely avoid @ alias at runtime for Node scripts; path aliases are resolved by Vite during app execution, not by Node. For tests run via Node, prefer relative imports or introduce tsconfig‑paths if needed.
     - The repository’s tsconfig.json allows importing .ts extensions; the sample leverages that to run under tsx without extra config.
@@ -74,8 +73,8 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
     - npm i -D vitest @vitest/ui @testing-library/react @testing-library/jest-dom jsdom
     - Add "test": "vitest" and optionally "test:ui": "vitest --ui" to package.json.
     - Create vitest.config.ts that extends Vite config and sets test.environment = "jsdom"; include alias resolution via Vite.
-    - Add a sample test in client/src/__tests__/ e.g., utils.test.ts that imports from @/lib/utils and uses expect from Vitest.
-  - Keep test files out of production builds by placing them under __tests__ or using *.test.ts(x) patterns ignored by tsconfig exclude.
+    - Add a sample test in `client/src/__tests__/` e.g., utils.test.ts that imports from @/lib/utils and uses expect from Vitest.
+  - Keep test files out of production builds by placing them under `__tests__` or using `*.test.ts(x)` patterns ignored by tsconfig exclude.
 
 3. Additional development notes
 
@@ -90,7 +89,7 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
   - Tailwind is configured via tailwind.config.ts and postcss.config.js. Prefer class composition via the cn helper in client/src/lib/utils.ts. Avoid bespoke string concatenation that defeats Tailwind’s merge behavior.
 
 - Linting and quality
-  - Run npm run lint before committing. Address warnings where practical; do not broadly disable rules without justification.
+  - Run `npm run lint` and `npm run build` before committing or pushing. A complete and successful build is **mandatory** to ensure no regressions are introduced. Address warnings where practical; do not broadly disable rules without justification.
 
 - Accessibility and icons
   - lucide-react is used extensively; ensure icons have aria-hidden when decorative and provide labels when interactive.
@@ -103,7 +102,7 @@ This repository does not include a full test framework (e.g., Vitest/Jest) by de
   - If aliases act inconsistently between IDE and runtime, ensure both tsconfig.json and vite.config.ts are aligned and the IDE uses the workspace TypeScript version (5.6.x).
 
 - CI/CD and environments
-  - The project includes vercel.json for deployment previews. Ensure environment variables (if introduced) are prefixed with VITE_ and consumed via import.meta.env in client code.
+  - The project includes vercel.json for deployment previews. Ensure environment variables (if introduced) are prefixed with VITE\_ and consumed via import.meta.env in client code.
 
 Change control
 
