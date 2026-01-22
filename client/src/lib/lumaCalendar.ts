@@ -45,9 +45,20 @@ function extractUrlFromDescription(description: string): string | undefined {
 }
 
 export async function fetchLumaEvents(): Promise<LumaEvent[]> {
-  const response = await fetch(LUMA_CALENDAR_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch calendar: ${response.statusText}`);
+  let response: Response;
+  try {
+    response = await fetch(LUMA_CALENDAR_URL);
+    if (!response.ok) {
+      throw new Error(`Proxied fetch failed: ${response.status}`);
+    }
+  } catch (error) {
+    console.warn("Proxied Luma fetch failed, attempting direct fetch fallback...", error);
+    // Fallback to direct Luma API if the local proxy fails (404, etc.)
+    const directUrl = `https://api.luma.com/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`;
+    response = await fetch(directUrl);
+    if (!response.ok) {
+      throw new Error(`Direct fetch also failed: ${response.statusText}`);
+    }
   }
 
   const icsData = await response.text();
