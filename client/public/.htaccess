@@ -27,7 +27,10 @@
   
   # Prevent directory indexing and folder name conflicts
   <IfModule mod_autoindex.c>
-    Options -Indexes -MultiViews
+    Options -Indexes
+  </IfModule>
+  <IfModule mod_negotiation.c>
+    Options -MultiViews
   </IfModule>
 
   RewriteRule ^index\.html$ - [L]

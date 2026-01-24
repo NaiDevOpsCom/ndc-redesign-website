@@ -170,9 +170,19 @@ function generateHtaccess(policy) {
 
   const apacheConfigRules = [];
   if (policy.apacheConfig && policy.apacheConfig.options) {
-    apacheConfigRules.push("  <IfModule mod_autoindex.c>");
-    apacheConfigRules.push(`    Options ${policy.apacheConfig.options.join(" ")}`);
-    apacheConfigRules.push("  </IfModule>");
+    policy.apacheConfig.options.forEach((option) => {
+      if (option === "-Indexes") {
+        apacheConfigRules.push("  <IfModule mod_autoindex.c>");
+        apacheConfigRules.push(`    Options ${option}`);
+        apacheConfigRules.push("  </IfModule>");
+      } else if (option === "-MultiViews") {
+        apacheConfigRules.push("  <IfModule mod_negotiation.c>");
+        apacheConfigRules.push(`    Options ${option}`);
+        apacheConfigRules.push("  </IfModule>");
+      } else {
+        apacheConfigRules.push(`  Options ${option}`);
+      }
+    });
   }
 
   const proxyRules = [];
