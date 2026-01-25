@@ -17,10 +17,14 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  
+  # Prevent directory indexing and folder name conflicts
+#{{APACHE_CONFIG}}#
+
   RewriteRule ^index\.html$ - [L]
 
   # API Proxy - Must come before SPA catch-all
-  RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]
+#{{PROXY_RULES}}#
 
   # SPA Routing - Only fallback if file doesn't exist
   RewriteCond %{REQUEST_FILENAME} !-f

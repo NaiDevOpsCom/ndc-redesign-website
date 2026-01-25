@@ -23,6 +23,7 @@
     "connect-src": [
       "'self'",
       "https://lu.ma",
+      "https://api.luma.com",
       "https://web.mypayd.app",
       "https://www.googleapis.com",
       "https://www.google-analytics.com",
@@ -39,5 +40,15 @@
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()"
+  },
+  "proxies": [
+    {
+      "source": "/api/luma/:path*",
+      "vercelDestination": "https://api.luma.com/:path*",
+      "apacheRewrite": "/api/luma.php?path=$1"
+    }
+  ],
+  "apacheConfig": {
+    "options": ["-Indexes", "-MultiViews"]
   }
 }

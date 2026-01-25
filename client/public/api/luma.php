@@ -1,8 +1,26 @@
 <?php
 // client/public/api/luma.php
 
-// 1. Allow access from your own domain (adjust as needed or rely on same-origin)
-// header("Access-Control-Allow-Origin: https://yourdomain.com");
+// 1. Robust CORS handling
+$allowed_origins = [
+    "https://nairobidevops.org",
+    "https://www.nairobidevops.org",
+];
+
+$origin = $_SERVER["HTTP_ORIGIN"] ?? "";
+if (in_array($origin, $allowed_origins, true)) {
+    header("Access-Control-Allow-Origin: " . $origin);
+    header("Vary: Origin");
+}
+
+// Handle preflight requests
+if (($_SERVER["REQUEST_METHOD"] ?? "GET") === "OPTIONS") {
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Access-Control-Max-Age: 86400"); // 24 hours
+    http_response_code(204);
+    exit;
+}
 
 // 2. Prepare the destination URL
 $base_url = 'https://api.luma.com';
