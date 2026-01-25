@@ -60,7 +60,7 @@ export function getYouTubeThumbnail(
 
 export const YOUTUBE_THUMBNAIL_PLACEHOLDER_SVG = YOUTUBE_THUMBNAIL_PLACEHOLDER;
 
-// export default {
-//   extractYouTubeId,
-//   getYouTubeThumbnail,
-// };
+export default {
+  extractYouTubeId,
+  getYouTubeThumbnail,
+};

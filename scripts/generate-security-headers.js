@@ -57,7 +57,7 @@ function generateCSPString(cspConfig) {
     })
     .filter(Boolean);
 
-  return directives.join("; ") + ";";
+  return directives.join("; ");
 }
 
 async function updateVercelConfig(policy) {

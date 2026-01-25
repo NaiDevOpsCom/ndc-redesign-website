@@ -5,7 +5,8 @@
       "'self'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
-      "https://www.youtube.com"
+      "https://www.youtube.com",
+      "https://va.vercel-scripts.com"
     ],
     "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
     "img-src": [
@@ -27,7 +28,8 @@
       "https://web.mypayd.app",
       "https://www.googleapis.com",
       "https://www.google-analytics.com",
-      "https://region1.google-analytics.com"
+      "https://region1.google-analytics.com",
+      "https://vitals.vercel-insights.com"
     ],
     "frame-ancestors": ["'none'"],
     "base-uri": ["'self'"],

@@ -15,7 +15,7 @@ if (in_array($origin, $allowed_origins, true)) {
 
 // Handle preflight requests
 if (($_SERVER["REQUEST_METHOD"] ?? "GET") === "OPTIONS") {
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD");
     header("Access-Control-Allow-Headers: Content-Type, Authorization");
     header("Access-Control-Max-Age: 86400"); // 24 hours
     http_response_code(204);
