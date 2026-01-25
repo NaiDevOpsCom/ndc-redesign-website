@@ -1,37 +1,10 @@
-#######################################################################################################################
+####################################################################################################################
 # WARNING: Do not store sensitive information in this file, as its contents will be included in the Qodana report. #
 ####################################################################################################################
 
 version: "1.0"
-
+linter: jetbrains/qodana-jvm-community:2025.2
 profile:
   name: qodana.recommended
-
-bootstrap: npm ci
-
 include:
   - name: CheckDependencyLicenses
-  - name: QodanaDuplicatedCode
-  - name: JSUnusedGlobalSymbols
-  - name: TSInconsistentTypeChecking
-  - name: Security
-  - name: CheckDependencySecurity
-
-exclude:
-  - name: GeneratedFiles
-    paths:
-      - "**/node_modules/**"
-      - "**/dist/**"
-      - "**/build/**"
-      - "**/coverage/**"
-      - "**/.vite/**"
-      - "**/*.d.ts"
-      - "**/*.min.js"
-      - "**/*.bundle.js"
-  - name: All
-    paths:
-      - client/public/analytics.js
-
-failThreshold: 1
-
-fixesStrategy: apply # Keep auto-fix behavior
