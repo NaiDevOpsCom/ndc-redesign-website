@@ -122,13 +122,16 @@ async function updateVercelConfig(policy) {
   // Update or add the rewrites section
   if (policy.proxies && Array.isArray(policy.proxies)) {
     vercelConfig.rewrites = vercelConfig.rewrites || [];
+    const toVercelSplat = (p) => p.replace(/\(\.\*\)/g, ":path*");
+    const toVercelDest = (d) => d.replace(/\$1/g, ":path*");
+
     policy.proxies.forEach((proxy) => {
       const existingRewriteIndex = vercelConfig.rewrites.findIndex(
         (r) => r.source === proxy.source
       );
       const newRewrite = {
-        source: proxy.source,
-        destination: proxy.vercelDestination,
+        source: toVercelSplat(proxy.source),
+        destination: toVercelDest(proxy.vercelDestination),
       };
       if (existingRewriteIndex >= 0) {
         vercelConfig.rewrites[existingRewriteIndex] = newRewrite;
@@ -197,7 +200,16 @@ function generateHtaccess(policy) {
 
   const proxyRules = [];
   if (policy.proxies && Array.isArray(policy.proxies)) {
-    policy.proxies.forEach((proxy) => {
+    policy.proxies.forEach((proxy, index) => {
+      // Validate apacheRewrite
+      if (typeof proxy.apacheRewrite !== "string" || !proxy.apacheRewrite.trim()) {
+        const identifier = proxy.source || `at index ${index}`;
+        throw new Error(
+          `Invalid or missing "apacheRewrite" for proxy "${identifier}". ` +
+            `Expected non-empty string, received: ${JSON.stringify(proxy.apacheRewrite)}`
+        );
+      }
+
       // Ensure absolute path for apache rewrite destination
       const destination = proxy.apacheRewrite.startsWith("/")
         ? proxy.apacheRewrite

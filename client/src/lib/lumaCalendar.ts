@@ -62,19 +62,25 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
     // If it's a real error (not just a proxy 404/500), or if it's the proxy failing, try fallback
     console.warn("Proxied Luma fetch failed, attempting direct fetch fallback...", error);
 
-    // 2. Try Direct Fetch Fallback
-    const directUrl = `https://api.luma.com/ics/get?entity=calendar&id=${encodedId}`;
-    const directController = new AbortController();
-    const directTimeoutId = setTimeout(() => directController.abort(), 10000); // 10s timeout
+    // 2. Try Direct Fetch Fallback (only when not running in a browser)
+    if (typeof window === "undefined") {
+      const directUrl = `https://api.luma.com/ics/get?entity=calendar&id=${encodedId}`;
+      const directController = new AbortController();
+      const directTimeoutId = setTimeout(() => directController.abort(), 10000); // 10s timeout
 
-    try {
-      response = await fetch(directUrl, { signal: directController.signal });
+      try {
+        response = await fetch(directUrl, { signal: directController.signal });
 
-      if (!response.ok) {
-        throw new Error(`Both proxied and direct fetch failed. Direct status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(
+            `Both proxied and direct fetch failed. Direct status: ${response.status}`
+          );
+        }
+      } finally {
+        clearTimeout(directTimeoutId);
       }
-    } finally {
-      clearTimeout(directTimeoutId);
+    } else {
+      throw new Error("Failed to fetch Luma events via proxy (direct fetch is blocked by CORS).");
     }
   } finally {
     clearTimeout(proxyTimeoutId);
