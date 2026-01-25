@@ -43,8 +43,8 @@
   },
   "proxies": [
     {
-      "source": "/api/luma/(.*)",
-      "vercelDestination": "https://api.luma.com/$1",
+      "source": "/api/luma/:path*",
+      "vercelDestination": "https://api.luma.com/:path*",
       "apacheRewrite": "/api/luma.php?path=$1"
     }
   ],

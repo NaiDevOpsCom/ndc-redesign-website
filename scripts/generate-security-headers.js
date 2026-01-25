@@ -142,6 +142,13 @@ async function updateVercelConfig(policy) {
         }
       }
     });
+
+    // Ensure unique rewrites per source (keep last occurrence for deterministic overriding)
+    const bySource = new Map();
+    for (const rewrite of vercelConfig.rewrites) {
+      bySource.set(rewrite.source, rewrite);
+    }
+    vercelConfig.rewrites = Array.from(bySource.values());
   }
 
   const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
@@ -170,14 +177,17 @@ function generateHtaccess(policy) {
 
   const apacheConfigRules = [];
   if (policy.apacheConfig && policy.apacheConfig.options) {
-    policy.apacheConfig.options.forEach((option) => {
+    const options = policy.apacheConfig.options;
+    const hasIndexes = options.includes("-Indexes");
+
+    options.forEach((option) => {
       if (option === "-Indexes") {
         apacheConfigRules.push("  <IfModule mod_autoindex.c>");
         apacheConfigRules.push(`    Options ${option}`);
         apacheConfigRules.push("  </IfModule>");
       } else if (option === "-MultiViews") {
         apacheConfigRules.push("  <IfModule mod_negotiation.c>");
-        apacheConfigRules.push(`    Options ${option}`);
+        apacheConfigRules.push(`    Options ${hasIndexes ? "-Indexes " : ""}${option}`);
         apacheConfigRules.push("  </IfModule>");
       } else {
         apacheConfigRules.push(`  Options ${option}`);
@@ -192,10 +202,16 @@ function generateHtaccess(policy) {
       const destination = proxy.apacheRewrite.startsWith("/")
         ? proxy.apacheRewrite
         : `/${proxy.apacheRewrite}`;
+      // Prefer an Apache-specific source pattern; otherwise convert Vercel splat syntax to Apache regex.
+      const apacheSource =
+        proxy.apacheSource ??
+        proxy.source
+          .replace(/^\//, "")
+          .replace(/:path\*/g, "(.*)")
+          .replace(/:(\w+)\*/g, "(.*)");
+
       proxyRules.push(`  # Proxy for ${proxy.source}`);
-      proxyRules.push(
-        `  RewriteRule ^/?${proxy.source.replace(/^\//, "")}$ ${destination} [QSA,L]`
-      );
+      proxyRules.push(`  RewriteRule ^/?${apacheSource}$ ${destination} [QSA,L]`);
     });
   }
 

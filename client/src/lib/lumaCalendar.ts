@@ -54,14 +54,11 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
 
   try {
     response = await fetch(proxiedUrl, { signal: proxyController.signal });
-    clearTimeout(proxyTimeoutId);
 
     if (!response.ok) {
       throw new Error(`Proxy failed with status: ${response.status}`);
     }
   } catch (error) {
-    clearTimeout(proxyTimeoutId);
-
     // If it's a real error (not just a proxy 404/500), or if it's the proxy failing, try fallback
     console.warn("Proxied Luma fetch failed, attempting direct fetch fallback...", error);
 
@@ -72,15 +69,15 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
 
     try {
       response = await fetch(directUrl, { signal: directController.signal });
-      clearTimeout(directTimeoutId);
 
       if (!response.ok) {
         throw new Error(`Both proxied and direct fetch failed. Direct status: ${response.status}`);
       }
-    } catch (fallbackError) {
+    } finally {
       clearTimeout(directTimeoutId);
-      throw fallbackError;
     }
+  } finally {
+    clearTimeout(proxyTimeoutId);
   }
 
   const icsData = await response.text();

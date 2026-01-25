@@ -32,8 +32,8 @@
   ],
   "rewrites": [
     {
-      "source": "/api/luma/(.*)",
-      "destination": "https://api.luma.com/$1"
+      "source": "/api/luma/:path*",
+      "destination": "https://api.luma.com/:path*"
     },
     {
       "source": "/(.*)",
