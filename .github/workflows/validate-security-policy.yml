@@ -2,9 +2,9 @@ name: Validate Security Policy Generation
 
 on:
   push:
-    branches: [main, production, staging]
+    branches: [main, pre-dev, production, staging]
   pull_request:
-    branches: [main, production, staging]
+    branches: [main, pre-dev, production, staging]
 
 jobs:
   validate-policy:
@@ -13,24 +13,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Scan dependencies
-        if: github.event_name == 'pull_request'
-        uses: actions/dependency-review-action@v4
-
-      - name: Lint lockfile (registry/https)
-        run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
+      - name: Setup Node.js Environment
+        uses: ./.github/actions/node-setup
 
       - name: Generate Security Configuration
         run: npm run security:generate
