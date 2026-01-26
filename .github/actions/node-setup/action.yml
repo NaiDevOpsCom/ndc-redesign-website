@@ -1,0 +1,31 @@
+name: "Node.js Setup"
+description: "Checkout, setup Node.js, install dependencies, and lint lockfile"
+inputs:
+  node-version:
+    description: "Node.js version to use"
+    required: false
+    default: "20"
+  skip-lockfile-lint:
+    description: "Skip lockfile linting"
+    required: false
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v4.2.2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
+
+    - name: Lint lockfile
+      if: inputs.skip-lockfile-lint != 'true'
+      run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
+      shell: bash

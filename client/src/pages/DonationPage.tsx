@@ -302,7 +302,7 @@ export default function DonationPage() {
       </section>
 
       {/* Bottom Hero / Inspiring Image Section */}
-      <section className="w-full h-100 relative overflow-hidden">
+      <section className="w-full h-[400px] relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${normalizeBgUrl(bottomHeroBackground)}')` }}

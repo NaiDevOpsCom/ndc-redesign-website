@@ -24,7 +24,6 @@ export interface LumaEvent {
 // webcal://api.luma.com/ics/get?entity=calendar&id=cal-fFX28aaHRNQkThJ
 
 const LUMA_CALENDAR_ID = "cal-fFX28aaHRNQkThJ";
-const LUMA_CALENDAR_URL = `/api/luma/ics/get?entity=calendar&id=${LUMA_CALENDAR_ID}`;
 
 /**
  * Extract URL from Luma event description if not in URL field
@@ -45,13 +44,61 @@ function extractUrlFromDescription(description: string): string | undefined {
 }
 
 export async function fetchLumaEvents(): Promise<LumaEvent[]> {
-  const response = await fetch(LUMA_CALENDAR_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch calendar: ${response.statusText}`);
+  const encodedId = encodeURIComponent(LUMA_CALENDAR_ID);
+  const proxiedUrl = `/api/luma/ics/get?entity=calendar&id=${encodedId}`;
+  let response: Response;
+
+  // 1. Try Proxied Fetch
+  const proxyController = new AbortController();
+  const proxyTimeoutId = setTimeout(() => proxyController.abort(), 10000); // 10s timeout
+
+  try {
+    response = await fetch(proxiedUrl, { signal: proxyController.signal });
+
+    if (!response.ok) {
+      throw new Error(`Proxy failed with status: ${response.status}`);
+    }
+  } catch (error) {
+    // If it's a real error (not just a proxy 404/500), or if it's the proxy failing, try fallback
+    console.warn("Proxied Luma fetch failed, attempting direct fetch fallback...", error);
+
+    // 2. Try Direct Fetch Fallback (only when not running in a browser)
+    if (typeof window === "undefined") {
+      const directUrl = `https://api.luma.com/ics/get?entity=calendar&id=${encodedId}`;
+      const directController = new AbortController();
+      const directTimeoutId = setTimeout(() => directController.abort(), 10000); // 10s timeout
+
+      try {
+        response = await fetch(directUrl, { signal: directController.signal });
+
+        if (!response.ok) {
+          throw new Error(
+            `Both proxied and direct fetch failed. Direct status: ${response.status}`
+          );
+        }
+      } finally {
+        clearTimeout(directTimeoutId);
+      }
+    } else {
+      throw new Error("Failed to fetch Luma events via proxy (direct fetch is blocked by CORS).");
+    }
+  } finally {
+    clearTimeout(proxyTimeoutId);
   }
 
   const icsData = await response.text();
-  const jcalData = ICAL.parse(icsData);
+
+  if (!icsData || !icsData.includes("BEGIN:VCALENDAR")) {
+    throw new Error("Invalid ICS response (missing VCALENDAR)");
+  }
+
+  let jcalData: unknown;
+  try {
+    jcalData = ICAL.parse(icsData);
+  } catch {
+    throw new Error("Failed to parse ICS response");
+  }
+  // @ts-expect-error - ICAL.parse returns a jCal object which Component expects
   const component = new ICAL.Component(jcalData);
   const events = component.getAllSubcomponents("vevent");
 

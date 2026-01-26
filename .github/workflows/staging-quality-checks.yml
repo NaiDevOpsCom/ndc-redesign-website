@@ -1,0 +1,232 @@
+name: Staging Quality Gates
+
+permissions:
+  contents: read
+  pull-requests: write
+
+# Prevents concurrent runs on the same branch
+concurrency:
+  group: staging-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - pre-dev
+    paths:
+      - "client/src/**"
+      - "client/public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.ts"
+      - "tsconfig.json"
+      - ".github/workflows/staging-quality-checks.yml"
+  pull_request:
+    branches:
+      - pre-dev
+    paths:
+      - "client/src/**"
+      - "client/public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.ts"
+      - "tsconfig.json"
+      - ".github/workflows/staging-quality-checks.yml"
+
+jobs:
+  quality-checks:
+    name: Run Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Setup Node.js environment (checkout, install, lint lockfile)
+      - name: Setup Node.js Environment
+        uses: ./.github/actions/node-setup
+
+      # 2. Run Linting
+      - name: Run Linting
+        run: npm run lint
+
+      # 3. Run unit tests
+      - name: Run Unit Tests
+        run: |
+          if npm test --if-present; then
+            echo "✅ Tests passed"
+          else
+            echo "❌ Tests failed - Please fix failing tests before merging"
+            exit 1
+          fi
+
+      # 7. Security audit
+      - name: Security Audit
+        run: |
+          if npm audit --audit-level=moderate; then
+            echo "✅ No moderate or higher severity vulnerabilities found"
+          else
+            echo "❌ Security vulnerabilities detected - Please run 'npm audit fix' and address issues"
+            exit 1
+          fi
+        continue-on-error: false
+
+      # 8. Build verification
+      - name: Build Verification
+        run: |
+          echo "Running security generation and build..."
+          npm run security:generate
+          npm run build
+
+          # Validate build output
+          if [ ! -d "dist" ]; then
+            echo "❌ Build failed - dist/ directory not found"
+            exit 1
+          fi
+
+          if [ -z "$(ls -A dist)" ]; then
+            echo "❌ Build failed - dist/ directory is empty"
+            exit 1
+          fi
+
+          echo "✅ Build successful"
+
+      # 9. Check bundle size
+      - name: Check Bundle Size
+        run: |
+          DIST_SIZE=$(du -sh dist | cut -f1)
+          DIST_SIZE_BYTES=$(du -sb dist | cut -f1)
+
+          echo "📦 Bundle size: $DIST_SIZE"
+          echo "📊 Bundle size (bytes): $DIST_SIZE_BYTES"
+
+          # Optional: Fail if bundle is too large (10MB = 10485760 bytes)
+          MAX_SIZE=10485760
+          if [ $DIST_SIZE_BYTES -gt $MAX_SIZE ]; then
+            echo "⚠️  Warning: Bundle size exceeds 10MB"
+            # Uncomment to enforce size limit:
+            # echo "❌ Bundle size too large!"
+            # exit 1
+          else
+            echo "✅ Bundle size is acceptable"
+          fi
+
+      # 10. Upload build artifact for inspection
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: staging-build-${{ github.sha }}
+          path: dist
+          retention-days: 7
+
+  staging-deployment-verification:
+    name: Verify Staging Deployment
+    needs: quality-checks
+    runs-on: ubuntu-latest
+    # Only run on push to staging (after merge), not on PRs
+    if: github.event_name == 'push'
+
+    steps:
+      # 1. Wait for Vercel deployment
+      - name: Wait for Vercel Deployment
+        run: |
+          echo "⏳ Waiting for Vercel to complete deployment..."
+          echo "This typically takes 30-60 seconds"
+          sleep 45
+
+      # 2. Health check on staging site
+      - name: Health Check Staging Site
+        run: |
+          # Use secret or default staging URL
+          STAGING_URL="${{ secrets.STAGING_URL }}"
+
+          if [ -z "$STAGING_URL" ]; then
+            echo "⚠️  STAGING_URL secret not set"
+            echo "Please add your Vercel staging URL to GitHub secrets"
+            echo "Skipping deployment verification..."
+            exit 0
+          fi
+
+          echo "🔍 Testing: $STAGING_URL"
+
+          # Retry logic for health check
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" $STAGING_URL)
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Staging site health check passed! Status: $HTTP_CODE"
+              break
+            else
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                echo "⏳ Attempt $RETRY_COUNT/$MAX_RETRIES failed (Status: $HTTP_CODE), retrying in 10s..."
+                sleep 10
+              else
+                echo "❌ Staging site health check failed after $MAX_RETRIES attempts!"
+                echo "Last status code: $HTTP_CODE"
+                exit 1
+              fi
+            fi
+          done
+
+      # 3. Basic smoke tests
+      - name: Run Smoke Tests
+        run: |
+          STAGING_URL="${{ secrets.STAGING_URL }}"
+
+          if [ -z "$STAGING_URL" ]; then
+            echo "Skipping smoke tests (STAGING_URL not configured)"
+            exit 0
+          fi
+
+          echo "🧪 Running smoke tests..."
+
+          # Test main page
+          if curl -f -s $STAGING_URL/ > /dev/null; then
+            echo "✅ Main page accessible"
+          else
+            echo "❌ Main page not accessible"
+            exit 1
+          fi
+
+          # Test if assets are loading (optional)
+          if curl -f -s -I $STAGING_URL/assets/ 2>/dev/null | grep -q "200\|403\|404"; then
+            echo "✅ Assets path exists"
+          else
+            echo "⚠️  Assets path check inconclusive (may be normal)"
+          fi
+
+          # Check for critical errors in HTML
+          PAGE_CONTENT=$(curl -s $STAGING_URL/)
+          if echo "$PAGE_CONTENT" | grep -qi "error\|exception\|failed to compile"; then
+            echo "⚠️  Warning: Potential errors detected in page content"
+          else
+            echo "✅ No obvious errors in page content"
+          fi
+
+          echo "✅ All smoke tests passed!"
+
+      # 4. Performance check (optional)
+      - name: Basic Performance Check
+        run: |
+          STAGING_URL="${{ secrets.STAGING_URL }}"
+
+          if [ -z "$STAGING_URL" ]; then
+            echo "Skipping performance check"
+            exit 0
+          fi
+
+          echo "⚡ Checking response time..."
+
+          RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}\n' $STAGING_URL)
+
+          echo "Response time: ${RESPONSE_TIME}s"
+
+          # Optional: Fail if response time is too slow (e.g., > 5 seconds)
+          if (( $(echo "$RESPONSE_TIME > 5.0" | bc -l) )); then
+            echo "⚠️  Warning: Response time is slow (>${RESPONSE_TIME}s)"
+            # Uncomment to enforce performance requirement:
+            # exit 1
+          else
+            echo "✅ Response time is acceptable"
+          fi

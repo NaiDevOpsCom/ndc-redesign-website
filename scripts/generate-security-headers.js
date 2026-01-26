@@ -57,7 +57,7 @@ function generateCSPString(cspConfig) {
     })
     .filter(Boolean);
 
-  return directives.join("; ") + ";";
+  return directives.join("; ");
 }
 
 async function updateVercelConfig(policy) {
@@ -119,6 +119,41 @@ async function updateVercelConfig(policy) {
     });
   }
 
+  // Update or add the rewrites section
+  if (policy.proxies && Array.isArray(policy.proxies)) {
+    vercelConfig.rewrites = vercelConfig.rewrites || [];
+    const toVercelSplat = (p) => p.replace(/\(\.\*\)/g, ":path*");
+    const toVercelDest = (d) => d.replace(/\$1/g, ":path*");
+
+    policy.proxies.forEach((proxy) => {
+      const existingRewriteIndex = vercelConfig.rewrites.findIndex(
+        (r) => r.source === proxy.source
+      );
+      const newRewrite = {
+        source: toVercelSplat(proxy.source),
+        destination: toVercelDest(proxy.vercelDestination),
+      };
+      if (existingRewriteIndex >= 0) {
+        vercelConfig.rewrites[existingRewriteIndex] = newRewrite;
+      } else {
+        // Add before the catch-all if it exists
+        const catchAllIndex = vercelConfig.rewrites.findIndex((r) => r.source === "/(.*)");
+        if (catchAllIndex >= 0) {
+          vercelConfig.rewrites.splice(catchAllIndex, 0, newRewrite);
+        } else {
+          vercelConfig.rewrites.push(newRewrite);
+        }
+      }
+    });
+
+    // Ensure unique rewrites per source (keep last occurrence for deterministic overriding)
+    const bySource = new Map();
+    for (const rewrite of vercelConfig.rewrites) {
+      bySource.set(rewrite.source, rewrite);
+    }
+    vercelConfig.rewrites = Array.from(bySource.values());
+  }
+
   const formattedJson = await prettier.format(JSON.stringify(vercelConfig, null, 2), {
     parser: "json",
   });
@@ -132,7 +167,7 @@ function generateHtaccess(policy) {
   // eslint-disable-next-line security/detect-object-injection
   const cspString = generateCSPString(policy.contentSecurityPolicy);
 
-  const rules = [
+  const headerRules = [
     "<IfModule mod_headers.c>",
     `  Header always set Content-Security-Policy "${cspString.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`,
     // eslint-disable-next-line security/detect-object-injection
@@ -143,13 +178,64 @@ function generateHtaccess(policy) {
     "</IfModule>",
   ];
 
+  const apacheConfigRules = [];
+  if (policy.apacheConfig && policy.apacheConfig.options) {
+    const options = policy.apacheConfig.options;
+    const hasIndexes = options.includes("-Indexes");
+
+    options.forEach((option) => {
+      if (option === "-Indexes") {
+        apacheConfigRules.push("  <IfModule mod_autoindex.c>");
+        apacheConfigRules.push(`    Options ${option}`);
+        apacheConfigRules.push("  </IfModule>");
+      } else if (option === "-MultiViews") {
+        apacheConfigRules.push("  <IfModule mod_negotiation.c>");
+        apacheConfigRules.push(`    Options ${hasIndexes ? "-Indexes " : ""}${option}`);
+        apacheConfigRules.push("  </IfModule>");
+      } else {
+        apacheConfigRules.push(`  Options ${option}`);
+      }
+    });
+  }
+
+  const proxyRules = [];
+  if (policy.proxies && Array.isArray(policy.proxies)) {
+    policy.proxies.forEach((proxy, index) => {
+      // Validate apacheRewrite
+      if (typeof proxy.apacheRewrite !== "string" || !proxy.apacheRewrite.trim()) {
+        const identifier = proxy.source || `at index ${index}`;
+        throw new Error(
+          `Invalid or missing "apacheRewrite" for proxy "${identifier}". ` +
+            `Expected non-empty string, received: ${JSON.stringify(proxy.apacheRewrite)}`
+        );
+      }
+
+      // Ensure absolute path for apache rewrite destination
+      const destination = proxy.apacheRewrite.startsWith("/")
+        ? proxy.apacheRewrite
+        : `/${proxy.apacheRewrite}`;
+      // Prefer an Apache-specific source pattern; otherwise convert Vercel splat syntax to Apache regex.
+      const apacheSource =
+        proxy.apacheSource ??
+        proxy.source
+          .replace(/^\//, "")
+          .replace(/:path\*/g, "(.*)")
+          .replace(/:(\w+)\*/g, "(.*)");
+
+      proxyRules.push(`  # Proxy for ${proxy.source}`);
+      proxyRules.push(`  RewriteRule ^/?${apacheSource}$ ${destination} [QSA,L]`);
+    });
+  }
+
   if (!fs.existsSync(TEMPLATE_PATH)) {
     console.error(`Error: Template file not found at ${TEMPLATE_PATH}`);
     process.exit(1);
   }
 
-  const template = fs.readFileSync(TEMPLATE_PATH, "utf8");
-  const content = template.replace("#{{SECURITY_HEADERS}}#", rules.join("\n"));
+  let content = fs.readFileSync(TEMPLATE_PATH, "utf8");
+  content = content.replace("#{{SECURITY_HEADERS}}#", headerRules.join("\n"));
+  content = content.replace("#{{APACHE_CONFIG}}#", apacheConfigRules.join("\n"));
+  content = content.replace("#{{PROXY_RULES}}#", proxyRules.join("\n"));
 
   // Ensure directory exists
   const dir = path.dirname(HTACCESS_PATH);
