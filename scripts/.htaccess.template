@@ -20,6 +20,10 @@ Options -MultiViews
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  
+  # Prevent directory indexing and folder name conflicts
+#{{APACHE_CONFIG}}#
+
   RewriteRule ^index\.html$ - [L]
 
   # API Proxy - Explicitly forward to luma.php

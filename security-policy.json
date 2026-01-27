@@ -5,7 +5,8 @@
       "'self'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
-      "https://www.youtube.com"
+      "https://www.youtube.com",
+      "https://va.vercel-scripts.com"
     ],
     "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
     "img-src": [
@@ -23,10 +24,12 @@
     "connect-src": [
       "'self'",
       "https://lu.ma",
+      "https://api.luma.com",
       "https://web.mypayd.app",
       "https://www.googleapis.com",
       "https://www.google-analytics.com",
-      "https://region1.google-analytics.com"
+      "https://region1.google-analytics.com",
+      "https://vitals.vercel-insights.com"
     ],
     "frame-ancestors": ["'none'"],
     "base-uri": ["'self'"],
@@ -39,5 +42,15 @@
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()"
+  },
+  "proxies": [
+    {
+      "source": "/api/luma/:path*",
+      "vercelDestination": "https://api.luma.com/:path*",
+      "apacheRewrite": "/api/luma.php?path=$1"
+    }
+  ],
+  "apacheConfig": {
+    "options": ["-Indexes", "-MultiViews"]
   }
 }
