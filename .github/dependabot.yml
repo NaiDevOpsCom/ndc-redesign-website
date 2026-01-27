@@ -4,7 +4,7 @@ updates:
   # 1. React / TypeScript dependencies (npm)
   - package-ecosystem: "npm"
     directory: "/"
-    target-branch: "pre-dev"
+    target-branch: "pre-staging"
     schedule:
       interval: "daily"
       time: "09:00"
@@ -58,7 +58,7 @@ updates:
   # 2. GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
-    target-branch: "pre-dev"
+    target-branch: "pre-staging"
     schedule:
       interval: "weekly"
       time: "09:00"

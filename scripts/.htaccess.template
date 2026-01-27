@@ -13,13 +13,17 @@
 
 #{{SECURITY_HEADERS}}#
 
+# Avoid conflicts with MultiViews
+Options -MultiViews
+
 # SPA Routing Rules
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
 
-  # API Proxy - Must come before SPA catch-all
+  # API Proxy - Explicitly forward to luma.php
+  # Use [L] to stop further processing if matched
   RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]
 
   # SPA Routing - Only fallback if file doesn't exist

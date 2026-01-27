@@ -10,11 +10,11 @@ on:
   push:
     branches:
       - main
-      - pre-dev
+      - pre-staging
   pull_request:
     branches:
       - main
-      - pre-dev
+      - pre-staging
 
 jobs:
   verify-hardening:
