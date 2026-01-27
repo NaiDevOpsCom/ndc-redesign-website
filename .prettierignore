@@ -4,7 +4,5 @@ build
 coverage
 .vite
 *.min.js
-scripts/
 vercel.json
-luma.ics
-*.log
+client/public/.htaccess
