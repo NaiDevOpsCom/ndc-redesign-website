@@ -27,7 +27,13 @@ export default [
       "coverage",
       "**/.vite",
       "client/public/analytics.js",
-      "scripts/generate-security-headers.js",
+      "**/*.min.js",
+      "vercel.json",
+      "luma.ics",
+      "qodana.sarif.json",
+      ".git-blame-ignore-revs",
+      ".deepsource.toml",
+      ".github/dependabot.yml",
     ],
   },
 
@@ -139,7 +145,29 @@ export default [
     },
   },
 
-  // 11b. Config files (vite, tailwind, etc.) - Node environment
+  // 11b. Scripts directory - Node environment with relaxed rules
+  {
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      globals: globals.node,
+    },
+    rules: {
+      // Allow console/process in scripts
+      "no-console": "off",
+      "no-process-exit": "off",
+      "no-redeclare": "off",
+      // Security rules that might conflict with scripts
+      "security/detect-object-injection": "off",
+      "security/detect-non-literal-fs-filename": "off",
+      // Import rules that might not apply to build scripts
+      "import/order": "off",
+      // React rules (not needed for scripts)
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+    },
+  },
+
+  // 11c. Config files (vite, tailwind, etc.) - Node environment
   {
     files: ["*.config.ts", "*.config.js"],
     languageOptions: {
