@@ -4,3 +4,5 @@ build
 coverage
 .vite
 *.min.js
+vercel.json
+client/public/.htaccess

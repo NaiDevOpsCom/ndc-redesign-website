@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, KeyboardEvent } from "react";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 
 import HeroSlide from "./HeroSlide";
@@ -101,14 +101,27 @@ export default function HeroCarousel() {
     goTo(i, dir);
   };
 
+  // keyboard navigation
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      prev();
+    } else if (e.key === "ArrowRight") {
+      next();
+    }
+  };
+
+  /* eslint-disable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-static-element-interactions, jsx-a11y/no-noninteractive-tabindex */
   return (
-    <section
+    <div
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      tabIndex={0}
+      role="region"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary/50"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
+      onKeyDown={handleKeyDown}
       aria-roledescription="carousel"
       aria-label="Hero Carousel"
     >
@@ -162,6 +175,6 @@ export default function HeroCarousel() {
           <span className="opacity-70"> / {slidesCount}</span>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
