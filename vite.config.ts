@@ -17,7 +17,9 @@ export default defineConfig(({ mode }) => {
   // Hardened branches:
   // 'main' -> Production
   // 'pre-dev' -> Staging
-  const isHardenedBranch = ["production", "staging", "main", "pre-dev", "pre-staging"].includes(branch);
+  const isHardenedBranch = ["production", "staging", "main", "pre-dev", "pre-staging"].includes(
+    branch
+  );
   const isHardenedMode = ["production", "staging"].includes(mode);
 
   // If we have explicit branch info, trust it (must be on prod/staging branch AND mode).
