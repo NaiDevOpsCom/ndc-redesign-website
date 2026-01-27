@@ -2,9 +2,9 @@ name: Validate Security Policy Generation
 
 on:
   push:
-    branches: [main, production, staging]
+    branches: [main, pre-staging, production, staging]
   pull_request:
-    branches: [main, production, staging]
+    branches: [main, pre-staging, production, staging]
 
 jobs:
   validate-policy:

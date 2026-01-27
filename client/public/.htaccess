@@ -20,6 +20,9 @@
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
 </IfModule>
 
+# Avoid conflicts with MultiViews
+Options -MultiViews
+
 # SPA Routing Rules
 <IfModule mod_rewrite.c>
   RewriteEngine On
@@ -35,9 +38,9 @@
 
   RewriteRule ^index\.html$ - [L]
 
-  # API Proxy - Must come before SPA catch-all
-  # Proxy for /api/luma/:path*
-  RewriteRule ^/?api/luma/(.*)$ /api/luma.php?path=$1 [QSA,L]
+  # API Proxy - Explicitly forward to luma.php
+  # Use [L] to stop further processing if matched
+  RewriteRule ^api/luma/(.*)$ api/luma.php?path=$1 [QSA,L]
 
   # SPA Routing - Only fallback if file doesn't exist
   RewriteCond %{REQUEST_FILENAME} !-f

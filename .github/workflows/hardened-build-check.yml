@@ -10,11 +10,11 @@ on:
   push:
     branches:
       - main
-      - pre-dev
+      - pre-staging
   pull_request:
     branches:
       - main
-      - pre-dev
+      - pre-staging
 
 jobs:
   verify-hardening:
@@ -43,7 +43,7 @@ jobs:
         uses: actions/dependency-review-action@v4
 
       - name: Build Hardened App (Typecheck + Build)
-        run: npm run build
+        run: npm run build -- --mode production
         env:
           GITHUB_REF_NAME: ${{ github.ref_name }}
 
