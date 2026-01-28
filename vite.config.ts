@@ -39,6 +39,8 @@ export default defineConfig(({ mode }) => {
     root: path.resolve(import.meta.dirname, "client"),
     build: {
       outDir: path.resolve(import.meta.dirname, "dist"),
+      // Copy API files to root of dist for cPanel
+      copyPublicDir: true,
       emptyOutDir: true,
       // Hardening: Disable source maps in production/staging to prevent source code exposure
       sourcemap: !isHardened,
@@ -50,6 +52,8 @@ export default defineConfig(({ mode }) => {
             vendor: ["react", "react-dom", "react-router-dom"],
           },
         },
+        // Ensure API files are copied correctly
+        external: [],
       },
     },
     // Hardening: Strip console and debugger statements from production/staging builds
