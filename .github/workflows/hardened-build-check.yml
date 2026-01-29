@@ -30,8 +30,17 @@ on:
       - pre-staging
 
 jobs:
+  security-scan:
+    name: Security Scan
+    uses: ./.github/workflows/security-validation.yml
+    with:
+      node-version: "20"
+      fail-level: "moderate"
+    secrets: inherit
+
   verify-hardening:
     name: Verify Hardening
+    needs: security-scan
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -51,12 +60,6 @@ jobs:
 
       - name: Lint lockfile (registry/https)
         run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
-
-      - name: Security Validation
-        uses: ./.github/workflows/security-validation.yml
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          fail-level: "moderate"
 
       - name: Build Hardened App (Typecheck + Build)
         run: npm run build -- --mode production

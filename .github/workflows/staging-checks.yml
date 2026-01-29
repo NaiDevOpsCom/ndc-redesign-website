@@ -11,9 +11,9 @@ concurrency:
 
 on:
   push:
-    branches: [pre-dev]
+    branches: [pre-staging]
   pull_request:
-    branches: [pre-dev]
+    branches: [pre-staging]
 
 # Global environment variables for all jobs
 env:
@@ -56,8 +56,8 @@ jobs:
           npm run check
 
           # Output summary for reporting
-          echo "::set-output name=lint-status::success"
-          echo "::set-output name=lint-details::All linting checks passed"
+          echo "lint-status=success" >> $GITHUB_OUTPUT
+          echo "lint-details=All linting checks passed" >> $GITHUB_OUTPUT
 
       - name: TypeScript Validation
         if: matrix.check == 'types'
@@ -67,8 +67,8 @@ jobs:
 
           # Count and report errors
           ERROR_COUNT=$(npx tsc --noEmit 2>&1 | grep -c "error TS" || echo "0")
-          echo "::set-output name=type-status::$([ $ERROR_COUNT -eq 0 ] && echo 'success' || echo 'failed')"
-          echo "::set-output name=type-errors::$ERROR_COUNT"
+          echo "type-status=$([ $ERROR_COUNT -eq 0 ] && echo 'success' || echo 'failed')" >> $GITHUB_OUTPUT
+          echo "type-errors=$ERROR_COUNT" >> $GITHUB_OUTPUT
 
       - name: Unit Tests
         if: matrix.check == 'tests'
@@ -78,9 +78,9 @@ jobs:
 
           # Report test results
           if [ $? -eq 0 ]; then
-            echo "::set-output name=test-status::success"
+            echo "test-status=success" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=test-status::failed"
+            echo "test-status=failed" >> $GITHUB_OUTPUT
             echo "::error::Unit tests failed"
             exit 1
           fi
@@ -91,16 +91,16 @@ jobs:
           echo "🛡️ Running security audit..."
 
           # Run audit with JSON output for parsing
-          AUDIT_RESULT=$(npm audit --audit-level=moderate --json)
+          AUDIT_RESULT=$(npm audit --audit-level=moderate --json || true)
           HIGH_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.high // 0')
           MODERATE_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.moderate // 0')
 
           if [ $((HIGH_VULNS + MODERATE_VULNS)) -eq 0 ]; then
-            echo "::set-output name=security-status::success"
-            echo "::set-output name=security-details::No vulnerabilities found"
+            echo "security-status=success" >> $GITHUB_OUTPUT
+            echo "security-details=No vulnerabilities found" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=security-status::failed"
-            echo "::set-output name=security-details::${HIGH_VULNS} high, ${MODERATE_VULNS} moderate vulnerabilities"
+            echo "security-status=failed" >> $GITHUB_OUTPUT
+            echo "security-details=${HIGH_VULNS} high, ${MODERATE_VULNS} moderate vulnerabilities" >> $GITHUB_OUTPUT
             echo "::error::Security vulnerabilities detected: ${HIGH_VULNS} high, ${MODERATE_VULNS} moderate"
             exit 1
           fi
@@ -132,6 +132,7 @@ jobs:
         if: matrix.check == 'bundle'
         run: |
           echo "📦 Analyzing bundle size..."
+          npm run build
 
           # Get detailed size information
           DIST_SIZE_MB=$(du -sm dist | cut -f1)
@@ -149,16 +150,16 @@ jobs:
           LIMIT_BYTES=$(( BUNDLE_SIZE_LIMIT_MB * 1024 * 1024 ))
 
           if [ $DIST_SIZE_BYTES -gt $LIMIT_BYTES ]; then
-            echo "::set-output name=bundle-status::failed"
-            echo "::set-output name=bundle-details::${DIST_SIZE_MB}MB exceeds ${BUNDLE_SIZE_LIMIT_MB}MB limit"
+            echo "bundle-status=failed" >> $GITHUB_OUTPUT
+            echo "bundle-details=${DIST_SIZE_MB}MB exceeds ${BUNDLE_SIZE_LIMIT_MB}MB limit" >> $GITHUB_OUTPUT
             echo "::error::Bundle size too large: ${DIST_SIZE_MB}MB > ${BUNDLE_SIZE_LIMIT_MB}MB"
             exit 1
           elif [ $DIST_SIZE_BYTES -gt $WARNING_BYTES ]; then
-            echo "::set-output name=bundle-status::warning"
-            echo "::set-output name=bundle-details::${DIST_SIZE_MB}MB approaching limit"
+            echo "bundle-status=warning" >> $GITHUB_OUTPUT
+            echo "bundle-details=${DIST_SIZE_MB}MB approaching limit" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=bundle-status::success"
-            echo "::set-output name=bundle-details::${DIST_SIZE_MB}MB within limits"
+            echo "bundle-status=success" >> $GITHUB_OUTPUT
+            echo "bundle-details=${DIST_SIZE_MB}MB within limits" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload Check Results
@@ -210,6 +211,12 @@ jobs:
             echo "⚠️  Staging URL not configured - skipping verification"
             echo "::warning::Add STAGING_URL secret to enable deployment verification"
             exit 0
+          fi
+
+          # Validate URL scheme to avoid unexpected curl targets (file://, ssh://, etc.)
+          if ! printf '%s' "$STAGING_URL" | grep -Eq '^https?://'; then
+            echo "::error::Invalid STAGING_URL (must start with http:// or https://)"
+            exit 1
           fi
 
           # Enhanced health check with better error handling

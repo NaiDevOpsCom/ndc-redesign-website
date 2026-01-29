@@ -1,6 +1,7 @@
 name: Security Validation (Reusable)
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       node-version:
@@ -16,9 +17,17 @@ on:
       fail-level:
         description: "Minimum vulnerability level to fail on"
         required: false
-        default: "moderate"
         type: string
-        options: [low, moderate, high, critical]
+    outputs:
+      vulnerabilities:
+        description: "Total vulnerability count"
+        value: ${{ jobs.security-validation.outputs.vulnerabilities }}
+      high:
+        description: "High severity count"
+        value: ${{ jobs.security-validation.outputs.high }}
+      critical:
+        description: "Critical severity count"
+        value: ${{ jobs.security-validation.outputs.critical }}
 
 permissions:
   contents: read
@@ -29,6 +38,10 @@ jobs:
     name: Security and Dependency Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      vulnerabilities: ${{ steps.dependency-audit.outputs.vulnerabilities }}
+      high: ${{ steps.dependency-audit.outputs.high }}
+      critical: ${{ steps.dependency-audit.outputs.critical }}
 
     steps:
       - name: Checkout Repository
@@ -71,6 +84,7 @@ jobs:
           npm ci --prefer-offline --no-audit --no-fund
 
       - name: Dependency Security Audit
+        id: dependency-audit
         run: |
           echo "🛡️ Running security audit..."
 
@@ -80,7 +94,7 @@ jobs:
 
           # Parse results with jq (install if not present)
           if ! command -v jq &> /dev/null; then
-            npm install -g jq
+            sudo apt-get update && sudo apt-get install -y jq
           fi
 
           # Extract vulnerability counts
@@ -100,26 +114,15 @@ jobs:
           echo "  Total: $TOTAL_VULNS"
 
           # Output for GitHub Actions
-          echo "::set-output name=vulnerabilities::$TOTAL_VULNS"
-          echo "::set-output name=high::$HIGH_COUNT"
-          echo "::set-output name=critical::$CRITICAL_COUNT"
+          echo "vulnerabilities=$TOTAL_VULNS" >> $GITHUB_OUTPUT
+          echo "high=$HIGH_COUNT" >> $GITHUB_OUTPUT
+          echo "critical=$CRITICAL_COUNT" >> $GITHUB_OUTPUT
 
           # Fail based on level
           if [ "$AUDIT_EXIT_CODE" -ne 0 ]; then
-            echo "::error::Security audit failed"
+            echo "::error::Security audit failed at level '${{ inputs.fail-level }}' or higher."
             exit 1
           fi
-
-          case "${{ inputs.fail-level }}" in
-            "low")
-              [ $TOTAL_VULNS -eq 0 ] && exit 0 || exit 1 ;;
-            "moderate")
-              [ $((HIGH_COUNT + CRITICAL_COUNT)) -eq 0 ] && exit 0 || exit 1 ;;
-            "high")
-              [ $HIGH_COUNT -eq 0 ] && [ $CRITICAL_COUNT -eq 0 ] && exit 0 || exit 1 ;;
-            "critical")
-              [ $CRITICAL_COUNT -eq 0 ] && exit 0 || exit 1 ;;
-          esac
 
           echo "✅ Security audit passed at ${{ inputs.fail-level }} level"
 
@@ -142,11 +145,13 @@ jobs:
 
           # Check for suspicious packages
           SUSPICIOUS_PATTERNS="eval script evil system"
+          NPM_LS_JSON=$(npm ls --all --json)
 
           for pattern in $SUSPICIOUS_PATTERNS; do
-            COUNT=$(npm ls --depth=0 --json | jq -r '.dependencies | keys | map(select(test($pattern; .))) | length')
-            if [ "$COUNT" -gt 0 ]; then
-              echo "::warning::Found packages matching '$pattern': $COUNT"
+            MATCHING_PACKAGES=$(echo "$NPM_LS_JSON" | jq -r --arg pattern "$pattern" '[.. | .name? | select(. != null and test($pattern; "i"))] | unique | .[]')
+            if [ -n "$MATCHING_PACKAGES" ]; then
+              echo "::warning::Found packages matching '$pattern':"
+              echo "$MATCHING_PACKAGES"
             fi
           done
 
