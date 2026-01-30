@@ -74,7 +74,7 @@ async function updateVercelConfig(policy) {
     }
   }
 
-  // eslint-disable-next-line security/detect-object-injection
+   
   const cspString = generateCSPString(policy.contentSecurityPolicy);
 
   const headers = [
@@ -82,7 +82,7 @@ async function updateVercelConfig(policy) {
       key: "Content-Security-Policy",
       value: cspString,
     },
-    // eslint-disable-next-line security/detect-object-injection
+     
     ...Object.entries(policy.headers).map(([key, value]) => ({
       key,
       value,
@@ -162,13 +162,13 @@ async function updateVercelConfig(policy) {
 const TEMPLATE_PATH = path.join(__dirname, ".htaccess.template");
 
 function generateHtaccess(policy) {
-  // eslint-disable-next-line security/detect-object-injection
+   
   const cspString = generateCSPString(policy.contentSecurityPolicy);
 
   const headerRules = [
     "<IfModule mod_headers.c>",
     `  Header always set Content-Security-Policy "${cspString.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`,
-    // eslint-disable-next-line security/detect-object-injection
+     
     ...Object.entries(policy.headers).map(
       ([key, value]) =>
         `  Header always set ${key} "${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`

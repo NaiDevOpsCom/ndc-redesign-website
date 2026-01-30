@@ -4,7 +4,23 @@
 
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2025.2
+bootstrap: npm ci
+failThreshold: 1
 profile:
   name: qodana.recommended
 include:
   - name: CheckDependencyLicenses
+exclude:
+  - name: GeneratedFiles
+    paths:
+      - "**/node_modules/**"
+      - "**/dist/**"
+      - "**/build/**"
+      - "**/coverage/**"
+      - "**/.vite/**"
+      - "**/*.d.ts"
+      - "**/*.min.js"
+      - "**/*.bundle.js"
+  - name: All
+    paths:
+      - client/public/analytics.js

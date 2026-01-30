@@ -30,7 +30,14 @@ jobs:
         uses: actions/dependency-review-action@v4
 
       - name: Lint lockfile (registry/https)
-        run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
+        run: |
+          npx lockfile-lint \
+            --path package-lock.json \
+            --type npm \
+            --validate-https \
+            --allowed-hosts npm \
+            --validate-integrity \
+            --validate-package-names
 
       - name: Generate Security Configuration
         run: npm run security:generate
