@@ -332,9 +332,12 @@ jobs:
               --max-time 30 \
               "$STAGING_URL" 2>/dev/null || echo "$STAGING_URL")
             
-            # Accept both 200 (OK) and 3xx redirects as success
-            # Some deployments intentionally redirect and that's okay
-            if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ] || [ "$HTTP_CODE" = "307" ] || [ "$HTTP_CODE" = "308" ]; then
+            STAGING_HOST="$(printf '%s' "$STAGING_URL" | awk -F/ '{print $3}')"
+            FINAL_HOST="$(printf '%s' "$FINAL_URL" | awk -F/ '{print $3}')"
+            
+            # Accept both 200 (OK) and 3xx redirects as success, but only if redirect stays on expected host
+            if { [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ] || [ "$HTTP_CODE" = "307" ] || [ "$HTTP_CODE" = "308" ]; } \
+              && [ -n "$FINAL_HOST" ] && [ "$FINAL_HOST" = "$STAGING_HOST" ]; then
               echo "✅ Health check passed (HTTP $HTTP_CODE)"
               if [ "$FINAL_URL" != "$STAGING_URL" ]; then
                 echo "   Redirected to: $FINAL_URL"
@@ -358,6 +361,7 @@ jobs:
                 echo "   HTTP Code: $HTTP_CODE"
                 echo ""
                 echo "💡 Common issues:"
+                echo "   - Host mismatch: Redirected to external site (security risk or misconfiguration)"
                 echo "   - 307/308: Redirect configured (might be intentional)"
                 echo "   - 404: Deployment not complete or wrong URL"
                 echo "   - 502/503: Server starting up or down"

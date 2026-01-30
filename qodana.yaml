@@ -5,16 +5,9 @@ version: "1.0"
 
 linter: jetbrains/qodana-jvm-community:2025.2
 
-# Bootstrap: Install Node.js and dependencies before analysis
+# Bootstrap: Install project dependencies before analysis
 bootstrap: |
-  echo "Installing Node.js and npm..."
-  apt-get update -qq
-  apt-get install -y -qq curl
-  curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-  apt-get install -y -qq nodejs
-  echo "Node.js version: $(node --version)"
-  echo "npm version: $(npm --version)"
-  echo "Installing project dependencies..."
+  set -euo pipefail
   npm ci
   echo "✓ Bootstrap completed successfully"
 
