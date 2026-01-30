@@ -1,16 +1,38 @@
 ####################################################################################################################
 # WARNING: Do not store sensitive information in this file, as its contents will be included in the Qodana report. #
 ####################################################################################################################
-
 version: "1.0"
+
 linter: jetbrains/qodana-jvm-community:2025.2
-bootstrap: npm ci
+
+# Bootstrap: Install Node.js and dependencies before analysis
+bootstrap: |
+  echo "Installing Node.js and npm..."
+  apt-get update -qq
+  apt-get install -y -qq curl
+  curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+  apt-get install -y -qq nodejs
+  echo "Node.js version: $(node --version)"
+  echo "npm version: $(npm --version)"
+  echo "Installing project dependencies..."
+  npm ci
+  echo "✓ Bootstrap completed successfully"
+
+# Fail threshold for quality gate
 failThreshold: 1
+
+# Analysis profile configuration
 profile:
   name: qodana.recommended
+
+# Include specific inspections
 include:
+  # Check dependency licenses (community/open-source compliance)
   - name: CheckDependencyLicenses
+
+# Exclude specific inspections or paths
 exclude:
+  # Exclude generated and build artifacts
   - name: GeneratedFiles
     paths:
       - "**/node_modules/**"
@@ -21,6 +43,12 @@ exclude:
       - "**/*.d.ts"
       - "**/*.min.js"
       - "**/*.bundle.js"
+      - "**/target/**"
+      - "**/.gradle/**"
+      - "**/out/**"
+  
+  # Exclude specific files from all inspections
   - name: All
     paths:
       - client/public/analytics.js
+
