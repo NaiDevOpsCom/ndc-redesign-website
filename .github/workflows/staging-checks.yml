@@ -91,27 +91,27 @@ jobs:
           # Debug: Check if test files exist
           echo "🔍 Looking for test files..."
           TEST_FILES=$(find client -type f \( -name "*.test.ts" -o -name "*.test.tsx" -o -name "*.spec.ts" -o -name "*.spec.tsx" \) 2>/dev/null || true)
-          
+
           if [ -z "$TEST_FILES" ]; then
             echo "::warning::No test files found in client directory"
             echo "::warning::Expected patterns: **/*.test.ts, **/*.spec.ts, **/__tests__/*.ts"
             echo "test-status=skipped" >> $GITHUB_ENV
             exit 0
           fi
-          
+
           echo "Found test files:"
           echo "$TEST_FILES"
-          
+
           # Count test files
           TEST_COUNT=$(echo "$TEST_FILES" | wc -l)
           echo "📊 Total test files: $TEST_COUNT"
 
           # Run actual tests with coverage
           echo "⏳ Running test suite with coverage..."
-          
+
           # Run tests - using the exact command that works locally
           npm test -- --coverage
-          
+
           TEST_EXIT_CODE=$?
 
           # Report test results
@@ -132,12 +132,12 @@ jobs:
 
           # Run audit with JSON output for parsing
           AUDIT_RESULT=$(npm audit --audit-level=moderate --json || true)
-          
+
           # Extract vulnerability counts
           CRITICAL_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.critical // 0')
           HIGH_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.high // 0')
           MODERATE_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.moderate // 0')
-          
+
           echo "📊 Vulnerability Summary:"
           echo "  Critical: $CRITICAL_VULNS"
           echo "  High: $HIGH_VULNS"
@@ -150,7 +150,7 @@ jobs:
             echo "::error::CRITICAL/HIGH security vulnerabilities detected: ${CRITICAL_VULNS} critical, ${HIGH_VULNS} high"
             exit 1
           fi
-          
+
           # LENIENT: Warn on moderate vulnerabilities but don't fail
           # This allows dev dependencies like ESLint to have moderate issues
           if [ $MODERATE_VULNS -gt 0 ]; then
@@ -170,10 +170,10 @@ jobs:
         if: matrix.check == 'build'
         run: |
           echo "🏗️ Running hardened build for staging..."
-          
+
           # Generate security headers first
           npm run security:generate
-          
+
           # Build with environment-specific flags (CI mode - skips duplicate checks)
           # Use build:ci:staging if you added it, otherwise just run vite directly
           if npm run | grep -q "build:ci:staging"; then
@@ -190,11 +190,11 @@ jobs:
           fi
 
           echo "✅ Build directory created: dist/"
-          
+
           # List generated files for verification
           echo "📁 Build artifacts:"
           ls -lh dist/ || true
-          
+
           # Security hardening validation - no source maps in production builds
           if find dist -name "*.map" | grep -q .; then
             echo "::warning::Source maps found in build (may be okay for staging)"
@@ -207,7 +207,7 @@ jobs:
         if: matrix.check == 'bundle'
         run: |
           echo "📦 Analyzing bundle size..."
-          
+
           # Build for production without running checks (they already ran in other jobs)
           # Use CI build script if available, otherwise run vite directly
           if npm run | grep -q "build:ci"; then

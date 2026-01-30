@@ -46,9 +46,8 @@ exclude:
       - "**/target/**"
       - "**/.gradle/**"
       - "**/out/**"
-  
+
   # Exclude specific files from all inspections
   - name: All
     paths:
       - client/public/analytics.js
-
