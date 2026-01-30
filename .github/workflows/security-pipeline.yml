@@ -76,7 +76,9 @@ jobs:
             --path package-lock.json \
             --type npm \
             --validate-https \
-            --allowed-hosts npm
+            --allowed-hosts npm \
+            --validate-integrity \
+            --validate-package-names
 
       # ------------------------------------------------------------
       # Dependency Review (PRs only)

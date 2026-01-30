@@ -1,10 +1,46 @@
 ####################################################################################################################
 # WARNING: Do not store sensitive information in this file, as its contents will be included in the Qodana report. #
 ####################################################################################################################
-
 version: "1.0"
+
 linter: jetbrains/qodana-jvm-community:2025.2
+
+# Bootstrap: Install project dependencies before analysis
+bootstrap: |
+  set -euo pipefail
+  npm ci
+  echo "✓ Bootstrap completed successfully"
+
+# Fail threshold for quality gate
+failThreshold: 1
+
+# Analysis profile configuration
 profile:
   name: qodana.recommended
+
+# Include specific inspections
 include:
+  # Check dependency licenses (community/open-source compliance)
   - name: CheckDependencyLicenses
+
+# Exclude specific inspections or paths
+exclude:
+  # Exclude generated and build artifacts
+  - name: GeneratedFiles
+    paths:
+      - "**/node_modules/**"
+      - "**/dist/**"
+      - "**/build/**"
+      - "**/coverage/**"
+      - "**/.vite/**"
+      - "**/*.d.ts"
+      - "**/*.min.js"
+      - "**/*.bundle.js"
+      - "**/target/**"
+      - "**/.gradle/**"
+      - "**/out/**"
+
+  # Exclude specific files from all inspections
+  - name: All
+    paths:
+      - client/public/analytics.js

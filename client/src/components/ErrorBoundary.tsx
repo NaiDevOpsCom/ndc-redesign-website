@@ -135,13 +135,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       this.setState({ errorInfo });
 
       // Development: Log full error details to console for debugging
-      // eslint-disable-next-line no-console
+
       console.group("🚨 Error Boundary Caught an Error");
-      // eslint-disable-next-line no-console
+
       console.error("Error:", error);
-      // eslint-disable-next-line no-console
+
       console.error("Component Stack:", errorInfo.componentStack);
-      // eslint-disable-next-line no-console
+
       console.groupEnd();
     }
 
@@ -174,7 +174,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           return this.props.fallback;
         } catch (e) {
           if (isDevelopment()) {
-            // eslint-disable-next-line no-console
             console.error("Error in custom fallback:", e);
           }
           // proceed to default fallback UI

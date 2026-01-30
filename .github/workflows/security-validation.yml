@@ -1,0 +1,96 @@
+name: Security Validation (Reusable)
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version"
+        required: false
+        default: "20"
+        type: string
+      check-only:
+        description: "Run checks only (no fixes)"
+        required: false
+        default: false
+        type: boolean
+      fail-level:
+        description: "Minimum vulnerability level to fail on"
+        required: false
+        type: string
+    outputs:
+      vulnerabilities:
+        description: "Total vulnerability count"
+        value: ${{ jobs.security-validation.outputs.vulnerabilities }}
+      high:
+        description: "High severity count"
+        value: ${{ jobs.security-validation.outputs.high }}
+      critical:
+        description: "Critical severity count"
+        value: ${{ jobs.security-validation.outputs.critical }}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  security-validation:
+    name: Security and Dependency Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      vulnerabilities: ${{ steps.dependency-audit.outputs.vulnerabilities }}
+      high: ${{ steps.dependency-audit.outputs.high_severity_vulnerabilities }}
+      critical: ${{ steps.dependency-audit.outputs.critical_severity_vulnerabilities }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 # Shallow for performance
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+
+      - name: Validate Lockfile Integrity
+        run: |
+          echo "🔒 Validating lockfile with lockfile-lint..."
+
+          # Ensure lockfile exists
+          if [ ! -f package-lock.json ]; then
+            echo "::error::package-lock.json is required"
+            exit 1
+          fi
+
+          # Use lockfile-lint for comprehensive validation
+          npx lockfile-lint \
+            --path package-lock.json \
+            --type npm \
+            --validate-https \
+            --allowed-hosts npm \
+            --validate-integrity \
+            --validate-package-names
+
+          echo "✅ Lockfile validation passed"
+
+      - name: Install Dependencies
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Dependency Security Audit
+        id: dependency-audit
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: ${{ inputs.fail-level }}
+          output-format: "json"
+          fail-on-conditions: ">=moderate"
+          allow-licenses: "MIT, ISC, Apache-2.0, BSD-2-Clause, BSD-3-Clause, Unlicense, CC0-1.0"
+          deny-packages: ""
+          deny-licenses: ""
+
+      # NOTE: License compliance and package integrity checks are now handled
+      # by the dependency-review-action with the allow-licenses configuration
