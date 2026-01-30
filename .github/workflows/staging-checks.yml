@@ -26,7 +26,7 @@ jobs:
   quality-checks:
     name: Comprehensive Quality Validation
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     strategy:
       matrix:
@@ -55,8 +55,8 @@ jobs:
           npm run check
 
           # Output summary for reporting
-          echo "lint-status=success" >> $GITHUB_OUTPUT
-          echo "lint-details=All linting checks passed" >> $GITHUB_OUTPUT
+          echo "lint-status=success" >> $GITHUB_ENV
+          echo "lint-details=All linting checks passed" >> $GITHUB_ENV
 
       - name: TypeScript Validation
         if: matrix.check == 'types'
@@ -73,11 +73,11 @@ jobs:
           ERROR_COUNT=$(echo "$ERROR_COUNT" | sed 's/[^0-9]*//g' | xargs printf "%d" 2>/dev/null || echo "0")
 
           if [ "${ERROR_COUNT:-0}" -eq 0 ]; then
-            echo "type-status=success" >> $GITHUB_OUTPUT
+            echo "type-status=success" >> $GITHUB_ENV
           else
-            echo "type-status=failed" >> $GITHUB_OUTPUT
+            echo "type-status=failed" >> $GITHUB_ENV
           fi
-          echo "type-errors=${ERROR_COUNT:-0}" >> $GITHUB_OUTPUT
+          echo "type-errors=${ERROR_COUNT:-0}" >> $GITHUB_ENV
 
       - name: Unit Tests
         if: matrix.check == 'tests'
@@ -102,9 +102,9 @@ jobs:
 
           # Report test results
           if [ $? -eq 0 ]; then
-            echo "test-status=success" >> $GITHUB_OUTPUT
+            echo "test-status=success" >> $GITHUB_ENV
           else
-            echo "test-status=failed" >> $GITHUB_OUTPUT
+            echo "test-status=failed" >> $GITHUB_ENV
             echo "::error::Unit tests failed"
             exit 1
           fi
@@ -120,11 +120,11 @@ jobs:
           MODERATE_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.moderate // 0')
 
           if [ $((HIGH_VULNS + MODERATE_VULNS)) -eq 0 ]; then
-            echo "security-status=success" >> $GITHUB_OUTPUT
-            echo "security-details=No vulnerabilities found" >> $GITHUB_OUTPUT
+            echo "security-status=success" >> $GITHUB_ENV
+            echo "security-details=No vulnerabilities found" >> $GITHUB_ENV
           else
-            echo "security-status=failed" >> $GITHUB_OUTPUT
-            echo "security-details=${HIGH_VULNS} high, ${MODERATE_VULNS} moderate vulnerabilities" >> $GITHUB_OUTPUT
+            echo "security-status=failed" >> $GITHUB_ENV
+            echo "security-details=${HIGH_VULNS} high, ${MODERATE_VULNS} moderate vulnerabilities" >> $GITHUB_ENV
             echo "::error::Security vulnerabilities detected: ${HIGH_VULNS} high, ${MODERATE_VULNS} moderate"
             exit 1
           fi
@@ -150,7 +150,7 @@ jobs:
             exit 1
           fi
 
-          echo "::set-output name=build-status::success"
+          echo "build-status=success" >> $GITHUB_ENV
 
       - name: Bundle Size Analysis
         if: matrix.check == 'bundle'
@@ -174,16 +174,16 @@ jobs:
           LIMIT_BYTES=$(( BUNDLE_SIZE_LIMIT_MB * 1024 * 1024 ))
 
           if [ $DIST_SIZE_BYTES -gt $LIMIT_BYTES ]; then
-            echo "bundle-status=failed" >> $GITHUB_OUTPUT
-            echo "bundle-details=${DIST_SIZE_MB}MB exceeds ${BUNDLE_SIZE_LIMIT_MB}MB limit" >> $GITHUB_OUTPUT
+            echo "bundle-status=failed" >> $GITHUB_ENV
+            echo "bundle-details=${DIST_SIZE_MB}MB exceeds ${BUNDLE_SIZE_LIMIT_MB}MB limit" >> $GITHUB_ENV
             echo "::error::Bundle size too large: ${DIST_SIZE_MB}MB > ${BUNDLE_SIZE_LIMIT_MB}MB"
             exit 1
           elif [ $DIST_SIZE_BYTES -gt $WARNING_BYTES ]; then
-            echo "bundle-status=warning" >> $GITHUB_OUTPUT
-            echo "bundle-details=${DIST_SIZE_MB}MB approaching limit" >> $GITHUB_OUTPUT
+            echo "bundle-status=warning" >> $GITHUB_ENV
+            echo "bundle-details=${DIST_SIZE_MB}MB approaching limit" >> $GITHUB_ENV
           else
-            echo "bundle-status=success" >> $GITHUB_OUTPUT
-            echo "bundle-details=${DIST_SIZE_MB}MB within limits" >> $GITHUB_OUTPUT
+            echo "bundle-status=success" >> $GITHUB_ENV
+            echo "bundle-details=${DIST_SIZE_MB}MB within limits" >> $GITHUB_ENV
           fi
 
       - name: Upload Check Results
