@@ -14,7 +14,7 @@
     "build:staging": "npm run security:generate && vite build --mode staging && node scripts/setup-cpanel.js",
     "build:prod": "npm run security:generate && vite build --mode production && node scripts/setup-cpanel.js",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run --root client",
     "test:watch": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
