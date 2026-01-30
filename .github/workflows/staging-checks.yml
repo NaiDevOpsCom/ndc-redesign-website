@@ -320,22 +320,50 @@ jobs:
           RETRY_COUNT=0
 
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-              --connect-timeout 10 \
-              --max-time 30 \
-              "$STAGING_URL" || echo "000")
+            # Capture both the HTTP status and the final URL in a single request
+            read -r HTTP_CODE FINAL_URL <<< $(
+              curl -L -s -o /dev/null \
+                -w "%{http_code} %{url_effective}" \
+                --connect-timeout 10 \
+                --max-time 30 \
+                "$STAGING_URL" || echo "000 $STAGING_URL"
+            )
             
-            if [ "$HTTP_CODE" = "200" ]; then
-              echo "✅ Health check passed (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)"
+            STAGING_HOST="$(printf '%s' "$STAGING_URL" | awk -F/ '{print $3}')"
+            FINAL_HOST="$(printf '%s' "$FINAL_URL" | awk -F/ '{print $3}')"
+            
+            # Accept both 200 (OK) and 3xx redirects as success, but only if redirect stays on expected host
+            if { [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ] || [ "$HTTP_CODE" = "307" ] || [ "$HTTP_CODE" = "308" ]; } \
+              && [ -n "$FINAL_HOST" ] && [ "$FINAL_HOST" = "$STAGING_HOST" ]; then
+              echo "✅ Health check passed (HTTP $HTTP_CODE)"
+              if [ "$FINAL_URL" != "$STAGING_URL" ]; then
+                echo "   Redirected to: $FINAL_URL"
+              fi
               break
             else
               RETRY_COUNT=$((RETRY_COUNT + 1))
               if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
                 SLEEP_TIME=$((2 ** RETRY_COUNT))
-                echo "⏳ Attempt failed ($HTTP_CODE), retrying in ${SLEEP_TIME}s..."
+                echo "⏳ Attempt failed (HTTP $HTTP_CODE), retrying in ${SLEEP_TIME}s..."
                 sleep $SLEEP_TIME
               else
-                echo "::error::Health check failed after $MAX_RETRIES attempts (last code: $HTTP_CODE)"
+                echo "::error::Health check failed after $MAX_RETRIES attempts (HTTP $HTTP_CODE)"
+                echo "::error::Final URL attempted: $FINAL_URL"
+                
+                # Additional debugging info
+                echo ""
+                echo "🔍 Debug information:"
+                echo "   Original URL: $STAGING_URL"
+                echo "   Final URL: $FINAL_URL"
+                echo "   HTTP Code: $HTTP_CODE"
+                echo ""
+                echo "💡 Common issues:"
+                echo "   - Host mismatch: Redirected to external site (security risk or misconfiguration)"
+                echo "   - 307/308: Redirect configured (might be intentional)"
+                echo "   - 404: Deployment not complete or wrong URL"
+                echo "   - 502/503: Server starting up or down"
+                echo "   - 000: Network/DNS/SSL issues"
+                
                 exit 1
               fi
             fi

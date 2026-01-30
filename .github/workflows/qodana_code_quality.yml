@@ -1,4 +1,4 @@
-name: Qodana
+name: Qodana Code Quality
 
 on:
   workflow_dispatch:
@@ -12,31 +12,83 @@ on:
 jobs:
   qodana:
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
       pull-requests: write
       checks: write
+      actions: read
 
     steps:
-      - uses: actions/checkout@v4
+      # Checkout code with full history for accurate analysis
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
-      # ✅ REQUIRED: Node for npm-based projects
+      # Setup Node.js environment (for GitHub Actions runner)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
+      # Install dependencies (pre-installs for faster workflow, though Qodana will also run npm ci)
       - name: Install dependencies
-        run: npm ci
+        run: |
+          echo "Installing project dependencies..."
+          npm ci
+          echo "✓ Dependencies installed successfully"
+          echo "Node.js version: $(node --version)"
+          echo "npm version: $(npm --version)"
 
+      # Verify installation
+      - name: Verify Node.js and npm
+        run: |
+          which node
+          which npm
+          npm list --depth=0 || true
+
+      # Run Qodana code quality scan
       - name: Qodana Scan
         uses: JetBrains/qodana-action@v2025.2
         with:
+          # Enable PR mode for pull request analysis
           pr-mode: ${{ github.event_name == 'pull_request' }}
+
+          # Enable caching for faster subsequent runs
+          use-caches: true
+
+          # Cache for all branches, not just default
+          cache-default-branch-only: false
+
+          # Additional arguments (optional)
+          # args: --baseline,qodana.sarif.json
+
         env:
+          # Qodana Cloud token for report upload
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1786379940 }}
+
+          # Qodana Cloud endpoint
           QODANA_ENDPOINT: https://qodana.cloud
+
+      # Upload results as artifacts (for debugging if needed)
+      - name: Upload Qodana results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qodana-results-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/qodana/results/
+            !${{ runner.temp }}/qodana/results/projectStructure/
+          retention-days: 30
+
+      # Upload logs if failed (for troubleshooting)
+      - name: Upload Qodana logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qodana-logs-${{ github.run_number }}
+          path: ${{ runner.temp }}/qodana/results/log/
+          retention-days: 7
