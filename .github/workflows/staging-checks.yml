@@ -320,17 +320,14 @@ jobs:
           RETRY_COUNT=0
 
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            # Follow redirects with -L flag and get final HTTP code
-            HTTP_CODE=$(curl -L -s -o /dev/null -w "%{http_code}" \
-              --connect-timeout 10 \
-              --max-time 30 \
-              "$STAGING_URL" || echo "000")
-            
-            # Also capture the redirect URL to show where it went
-            FINAL_URL=$(curl -Ls -o /dev/null -w "%{url_effective}" \
-              --connect-timeout 10 \
-              --max-time 30 \
-              "$STAGING_URL" 2>/dev/null || echo "$STAGING_URL")
+            # Capture both the HTTP status and the final URL in a single request
+            read -r HTTP_CODE FINAL_URL <<< $(
+              curl -L -s -o /dev/null \
+                -w "%{http_code} %{url_effective}" \
+                --connect-timeout 10 \
+                --max-time 30 \
+                "$STAGING_URL" || echo "000 $STAGING_URL"
+            )
             
             STAGING_HOST="$(printf '%s' "$STAGING_URL" | awk -F/ '{print $3}')"
             FINAL_HOST="$(printf '%s' "$FINAL_URL" | awk -F/ '{print $3}')"
