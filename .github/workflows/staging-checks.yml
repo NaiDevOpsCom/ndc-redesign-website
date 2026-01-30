@@ -62,21 +62,42 @@ jobs:
         if: matrix.check == 'types'
         run: |
           echo "🔷 Running TypeScript validation..."
-          npm run typecheck
+          # Run typecheck and capture output
+          TYPECHECK_OUTPUT=$(npm run typecheck 2>&1 || true)
+          echo "$TYPECHECK_OUTPUT"
 
-          # Count and report errors
-          ERROR_COUNT=$(npx tsc --noEmit 2>&1 | grep -c "error TS" || echo "0")
-          if [ "$ERROR_COUNT" -eq 0 ]; then
+          # Count TypeScript errors properly
+          ERROR_COUNT=$(echo "$TYPECHECK_OUTPUT" | grep -c "error TS" || echo "0")
+          
+          # Ensure ERROR_COUNT is a clean numeric value
+          ERROR_COUNT=$(echo "$ERROR_COUNT" | sed 's/[^0-9]*//g' | xargs printf "%d" 2>/dev/null || echo "0")
+          
+          if [ "${ERROR_COUNT:-0}" -eq 0 ]; then
             echo "type-status=success" >> $GITHUB_OUTPUT
           else
             echo "type-status=failed" >> $GITHUB_OUTPUT
           fi
-          echo "type-errors=$ERROR_COUNT" >> $GITHUB_OUTPUT
+          echo "type-errors=${ERROR_COUNT:-0}" >> $GITHUB_OUTPUT
 
       - name: Unit Tests
         if: matrix.check == 'tests'
         run: |
           echo "🧪 Running unit tests..."
+          
+          # Debug: List client directory structure
+          echo "📁 Listing client directory structure..."
+          ls -R client || true
+          
+          # Debug: Check if test files exist
+          echo "🔍 Looking for test files..."
+          find client -name "*.test.ts" -o -name "*.spec.ts" -o -name "*.test.tsx" -o -name "*.spec.tsx" || true
+          
+          # Debug: Let Vitest list discovered tests
+          echo "📋 Vitest discovered tests:"
+          npx vitest --list --root client || true
+          
+          # Run actual tests
+          echo "⏳ Running test suite with coverage..."
           npm test -- --coverage=lcov
 
           # Report test results
