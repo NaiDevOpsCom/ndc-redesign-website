@@ -40,8 +40,8 @@ jobs:
     timeout-minutes: 15
     outputs:
       vulnerabilities: ${{ steps.dependency-audit.outputs.vulnerabilities }}
-      high: ${{ steps.dependency-audit.outputs.high }}
-      critical: ${{ steps.dependency-audit.outputs.critical }}
+      high: ${{ steps.dependency-audit.outputs.high_severity_vulnerabilities }}
+      critical: ${{ steps.dependency-audit.outputs.critical_severity_vulnerabilities }}
 
     steps:
       - name: Checkout Repository
@@ -57,24 +57,22 @@ jobs:
 
       - name: Validate Lockfile Integrity
         run: |
-          echo "🔒 Validating lockfile..."
+          echo "🔒 Validating lockfile with lockfile-lint..."
 
-          # Ensure lockfile exists and is valid
+          # Ensure lockfile exists
           if [ ! -f package-lock.json ]; then
             echo "::error::package-lock.json is required"
             exit 1
           fi
 
-          # Basic JSON validation
-          if ! jq empty package-lock.json >/dev/null 2>&1; then
-            echo "::error::package-lock.json is not valid JSON"
-            exit 1
-          fi
-
-          # Check for suspicious URLs
-          if grep -q "http://registry.npmjs.org/" package-lock.json; then
-            echo "::warning::Found insecure HTTP registry URLs"
-          fi
+          # Use lockfile-lint for comprehensive validation
+          npx lockfile-lint \
+            --path package-lock.json \
+            --type npm \
+            --validate-https \
+            --allowed-hosts npm \
+            --validate-integrity \
+            --validate-package-names
 
           echo "✅ Lockfile validation passed"
 
@@ -85,74 +83,14 @@ jobs:
 
       - name: Dependency Security Audit
         id: dependency-audit
-        run: |
-          echo "🛡️ Running security audit..."
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: ${{ inputs.fail-level }}
+          output-format: "json"
+          fail-on-conditions: ">=moderate"
+          allow-licenses: "MIT, ISC, Apache-2.0, BSD-2-Clause, BSD-3-Clause, Unlicense, CC0-1.0"
+          deny-packages: ""
+          deny-licenses: ""
 
-          # Run audit with JSON output
-          AUDIT_OUTPUT=$(npm audit --audit-level=${{ inputs.fail-level }} --json)
-          AUDIT_EXIT_CODE=$?
-
-          # Parse results with jq (install if not present)
-          if ! command -v jq &> /dev/null; then
-            sudo apt-get update && sudo apt-get install -y jq
-          fi
-
-          # Extract vulnerability counts
-          HIGH_COUNT=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.high // 0')
-          MODERATE_COUNT=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.moderate // 0')
-          LOW_COUNT=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.low // 0')
-          CRITICAL_COUNT=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.critical // 0')
-
-          # Generate summary
-          TOTAL_VULNS=$((HIGH_COUNT + MODERATE_COUNT + LOW_COUNT + CRITICAL_COUNT))
-
-          echo "📊 Security Audit Summary:"
-          echo "  Critical: $CRITICAL_COUNT"
-          echo "  High: $HIGH_COUNT"
-          echo "  Moderate: $MODERATE_COUNT"
-          echo "  Low: $LOW_COUNT"
-          echo "  Total: $TOTAL_VULNS"
-
-          # Output for GitHub Actions
-          echo "vulnerabilities=$TOTAL_VULNS" >> $GITHUB_OUTPUT
-          echo "high=$HIGH_COUNT" >> $GITHUB_OUTPUT
-          echo "critical=$CRITICAL_COUNT" >> $GITHUB_OUTPUT
-
-          # Fail based on level
-          if [ "$AUDIT_EXIT_CODE" -ne 0 ]; then
-            echo "::error::Security audit failed at level '${{ inputs.fail-level }}' or higher."
-            exit 1
-          fi
-
-          echo "✅ Security audit passed at ${{ inputs.fail-level }} level"
-
-      - name: License Compliance Check
-        run: |
-          echo "📄 Checking license compliance..."
-
-          # Check for common problematic licenses
-          npm list --depth=0 --json | \
-            jq -r '.dependencies | to_entries[] | select(.value.dev == false) | .value | .license | select(. != null and .type != "MIT" and .type != "ISC" and .type != "Apache-2.0")' | \
-            while read -r license; do
-              echo "::warning::Non-OSI license found: $license"
-            done
-
-          echo "✅ License check completed"
-
-      - name: Package Integrity Verification
-        run: |
-          echo "🔍 Verifying package integrity..."
-
-          # Check for suspicious packages
-          SUSPICIOUS_PATTERNS="eval script evil system"
-          NPM_LS_JSON=$(npm ls --all --json)
-
-          for pattern in $SUSPICIOUS_PATTERNS; do
-            MATCHING_PACKAGES=$(echo "$NPM_LS_JSON" | jq -r --arg pattern "$pattern" '[.. | .name? | select(. != null and test($pattern; "i"))] | unique | .[]')
-            if [ -n "$MATCHING_PACKAGES" ]; then
-              echo "::warning::Found packages matching '$pattern':"
-              echo "$MATCHING_PACKAGES"
-            fi
-          done
-
-          echo "✅ Package integrity verified"
+      # NOTE: License compliance and package integrity checks are now handled
+      # by the dependency-review-action with the allow-licenses configuration

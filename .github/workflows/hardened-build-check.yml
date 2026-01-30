@@ -55,11 +55,21 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - name: Install dependencies (lockfile integrity)
-        run: npm ci
+      - name: Install and Validate Dependencies
+        run: |
+          echo "📦 Installing dependencies with lockfile validation..."
+          npm ci
 
-      - name: Lint lockfile (registry/https)
-        run: npx lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm
+          echo "🔒 Validating lockfile integrity..."
+          npx lockfile-lint \
+            --path package-lock.json \
+            --type npm \
+            --validate-https \
+            --allowed-hosts npm \
+            --validate-integrity \
+            --validate-package-names
+
+          echo "✅ Dependencies installed and validated successfully"
 
       - name: Build Hardened App (Typecheck + Build)
         run: npm run build -- --mode production
