@@ -73,6 +73,7 @@
     "react-countup": "^6.5.3",
     "react-day-picker": "^9.13.0",
     "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.71.1",
     "react-intersection-observer": "^10.0.2",
     "react-player": "^3.3.1",
