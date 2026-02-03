@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { describe, it, expect } from "vitest";
 
-const CONSOLE_OR_DEBUGGER_RE = /console\.|debugger/;
+const CONSOLE_OR_DEBUGGER_RE = /\bconsole\.|\bdebugger\b/;
 
 const listJsFiles = (dir: string): string[] => {
   const entries = readdirSync(dir, { withFileTypes: true });
@@ -20,6 +20,7 @@ const listJsFiles = (dir: string): string[] => {
       continue;
     }
 
+    // analytics.js legitimately uses console for error reporting
     if (entry.name === "analytics.js") {
       continue;
     }
@@ -38,7 +39,7 @@ describe("hardened build artifact checks", () => {
     const distDir = path.join(repoRoot, "dist");
 
     if (!existsSync(distDir) || !statSync(distDir).isDirectory()) {
-      // Skip when dist is not present (e.g., local unit tests without build)
+      console.warn("Skipping hardened build check: dist directory not found");
       return;
     }
 

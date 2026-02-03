@@ -177,13 +177,14 @@ export default [
 
   // 11d. Test files - include vitest globals and allow dynamic file system access
   {
-    files: ["**/__tests__/*.test.{ts,tsx}"],
+    files: ["**/__tests__/**/*.test.{ts,tsx}"],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
         describe: "readonly",
         it: "readonly",
+        test: "readonly",
         expect: "readonly",
         vi: "readonly",
         beforeEach: "readonly",

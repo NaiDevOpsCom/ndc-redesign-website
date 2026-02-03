@@ -1,59 +1,20 @@
 import { Link } from "wouter";
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 
 export default function NotFound() {
-  useEffect(() => {
-    // Set page title
-    const originalTitle = document.title;
-    document.title = "404 - Page Not Found | Nairobi DevOps";
-
-    // Manage robots and description meta tags
-    const metaTags = [
-      { name: "robots", content: "noindex, follow" },
-      {
-        name: "description",
-        content: "Page not found. The page you are looking for does not exist.",
-      },
-    ];
-
-    const originalValues: Record<string, string | null> = {};
-
-    metaTags.forEach(({ name, content }) => {
-      let element = document.head.querySelector(`meta[name="${name}"]`);
-      if (element) {
-        originalValues[name] = element.getAttribute("content");
-        element.setAttribute("content", content);
-      } else {
-        originalValues[name] = null;
-        element = document.createElement("meta");
-        element.setAttribute("name", name);
-        element.setAttribute("content", content);
-        document.head.appendChild(element);
-      }
-    });
-
-    // Cleanup function to restore original values
-    return () => {
-      document.title = originalTitle;
-      metaTags.forEach(({ name }) => {
-        const element = document.head.querySelector(`meta[name="${name}"]`);
-        const originalValue = originalValues[name];
-        if (element) {
-          if (originalValue === null) {
-            document.head.removeChild(element);
-          } else {
-            element.setAttribute("content", originalValue);
-          }
-        }
-      });
-    };
-  }, []);
-
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>404 - Page Not Found | Nairobi DevOps</title>
+        <meta name="robots" content="noindex, follow" />
+        <meta
+          name="description"
+          content="Page not found. The page you are looking for does not exist."
+        />
+      </Helmet>
       <Navbar />
       <main className="w-full flex items-center justify-center bg-background py-20">
         <div className="text-center px-4 max-w-3xl">
