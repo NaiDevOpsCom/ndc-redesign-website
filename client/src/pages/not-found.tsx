@@ -1,9 +1,33 @@
 import { Link } from "wouter";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 
 export default function NotFound() {
+  useEffect(() => {
+    // Set page title
+    document.title = "404 - Page Not Found | Nairobi DevOps";
+
+    // noindex meta tag
+    const metaRobots = document.createElement("meta");
+    metaRobots.name = "robots";
+    metaRobots.content = "noindex, follow";
+    document.head.appendChild(metaRobots);
+
+    // description meta tag
+    const metaDescription = document.createElement("meta");
+    metaDescription.name = "description";
+    metaDescription.content = "Page not found. The page you are looking for does not exist.";
+    document.head.appendChild(metaDescription);
+
+    // Cleanup function to remove meta tags when component unmounts
+    return () => {
+      document.head.removeChild(metaRobots);
+      document.head.removeChild(metaDescription);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -13,7 +37,6 @@ export default function NotFound() {
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-foreground">
             Oops! <span className="font-normal">This pipeline hit a dead end...</span>
           </h1>
-
           {/* Error 404 */}
           <div className="mb-8">
             <div className="flex items-baseline justify-center gap-3 md:gap-4">
@@ -23,13 +46,11 @@ export default function NotFound() {
               </span>
             </div>
           </div>
-
           {/* Description */}
           <p className="text-base md:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
             Looks like the page you&apos;re searching for didn&apos;t deploy correctly. Don&apos;t
             worry, even the best DevOps angels sometimes miss a commit.
           </p>
-
           {/* Navigation Links */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-base md:text-lg">
             <Button
@@ -39,7 +60,6 @@ export default function NotFound() {
             >
               <Link href="/">Back to Home</Link>
             </Button>
-
             <Button
               asChild
               variant="outline"
