@@ -8,6 +8,7 @@ name: Hardened Build Verification
 
 permissions:
   contents: read
+  pull-requests: read
 
 # Optimized concurrency - branch-based with global limit
 concurrency:
