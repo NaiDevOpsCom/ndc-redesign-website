@@ -69,34 +69,28 @@ jobs:
         id: npm-audit
         run: |
           echo "🔍 Running npm audit..."
-          npm audit --audit-level=${{ inputs.fail-level }} --json > audit-results.json || true
 
-          # Parse results
-          TOTAL=$(jq '.metadata.vulnerabilities | to_entries | map(.value) | add // 0' audit-results.json)
-          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-results.json)
-          HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-results.json)
-          MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' audit-results.json)
+          # Validate fail-level input
+          case "${{ inputs.fail-level }}" in
+            critical|high|moderate) ;;
+            *) echo "::error::Invalid fail-level: ${{ inputs.fail-level }} (expected: critical|high|moderate)"; exit 2 ;;
+          esac
 
-          echo "Total vulnerabilities: $TOTAL"
-          echo "Critical: $CRITICAL, High: $HIGH, Moderate: $MODERATE"
+          # First, generate the JSON report for the artifact upload step.
+          # The `|| true` ensures this command doesn't fail the step,
+          # allowing the artifact to be created even if vulnerabilities are found.
+          npm audit --json > audit-results.json || true
 
-          # Set outputs
-          echo "vulnerabilities=$TOTAL" >> $GITHUB_OUTPUT
-          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
-          echo "high=$HIGH" >> $GITHUB_OUTPUT
-          echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
-
-          # Fail based on fail-level
-          if [ "${{ inputs.fail-level }}" = "critical" ] && [ "$CRITICAL" -gt 0 ]; then
-            echo "::error::Found $CRITICAL critical vulnerabilities"
-            exit 1
-          elif [ "${{ inputs.fail-level }}" = "high" ] && [ "$((CRITICAL + HIGH))" -gt 0 ]; then
-            echo "::error::Found critical/high vulnerabilities"
-            exit 1
-          elif [ "${{ inputs.fail-level }}" = "moderate" ] && [ "$TOTAL" -gt 0 ]; then
-            echo "::error::Found vulnerabilities at moderate or higher"
+          # Verify report exists and is not empty
+          if [ ! -s audit-results.json ]; then
+            echo "::error::npm audit failed to generate a report. The command may have failed."
             exit 1
           fi
+
+          # Now, run npm audit again, this time allowing it to fail the step
+          # based on its native exit code and the specified audit level.
+          # This simplifies the logic by removing manual parsing and failure checks.
+          npm audit --audit-level=${{ inputs.fail-level }}
 
           echo "✅ No vulnerabilities found at ${{ inputs.fail-level }} level or above"
 

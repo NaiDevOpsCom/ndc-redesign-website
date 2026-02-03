@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
   );
   const isHardenedMode = ["production", "staging"].includes(mode);
   const hasBranchInfo = !!branch;
-  const isHardened = hasBranchInfo ? isHardenedBranch && isHardenedMode : isHardenedMode;
+  const isHardened = isHardenedMode && (!hasBranchInfo || isHardenedBranch);
 
   return {
     plugins: [tailwindcss(), react()],
