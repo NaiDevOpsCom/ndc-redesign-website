@@ -29,12 +29,12 @@ jobs:
     name: Security and Dependency Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Need full history for dependency review on PRs
+          fetch-depth: 0 # Need full history for dependency review on PRs
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -70,22 +70,22 @@ jobs:
         run: |
           echo "🔍 Running npm audit..."
           npm audit --audit-level=${{ inputs.fail-level }} --json > audit-results.json || true
-          
+
           # Parse results
           TOTAL=$(jq '.metadata.vulnerabilities | to_entries | map(.value) | add // 0' audit-results.json)
           CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-results.json)
           HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-results.json)
           MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' audit-results.json)
-          
+
           echo "Total vulnerabilities: $TOTAL"
           echo "Critical: $CRITICAL, High: $HIGH, Moderate: $MODERATE"
-          
+
           # Set outputs
           echo "vulnerabilities=$TOTAL" >> $GITHUB_OUTPUT
           echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
           echo "high=$HIGH" >> $GITHUB_OUTPUT
           echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
-          
+
           # Fail based on fail-level
           if [ "${{ inputs.fail-level }}" = "critical" ] && [ "$CRITICAL" -gt 0 ]; then
             echo "::error::Found $CRITICAL critical vulnerabilities"
@@ -97,7 +97,7 @@ jobs:
             echo "::error::Found vulnerabilities at moderate or higher"
             exit 1
           fi
-          
+
           echo "✅ No vulnerabilities found at ${{ inputs.fail-level }} level or above"
 
       - name: Dependency Review (PR only)
