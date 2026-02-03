@@ -22,7 +22,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   security-validation:
@@ -87,6 +87,9 @@ jobs:
             exit 1
           fi
 
+          # Verify report is valid JSON (guard against registry/auth/network errors producing non-JSON output)
+          node -e "JSON.parse(require('fs').readFileSync('audit-results.json','utf8'))"
+
           # Now, run npm audit again, this time allowing it to fail the step
           # based on its native exit code and the specified audit level.
           # This simplifies the logic by removing manual parsing and failure checks.
@@ -95,7 +98,7 @@ jobs:
           echo "✅ No vulnerabilities found at ${{ inputs.fail-level }} level or above"
 
       - name: Dependency Review (PR only)
-        if: github.event_name == 'pull_request'
+        if: startsWith(github.ref, 'refs/pull/')
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: ${{ inputs.fail-level }}

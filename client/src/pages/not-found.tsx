@@ -7,24 +7,48 @@ import Navbar from "@/components/Navbar";
 export default function NotFound() {
   useEffect(() => {
     // Set page title
+    const originalTitle = document.title;
     document.title = "404 - Page Not Found | Nairobi DevOps";
 
-    // noindex meta tag
-    const metaRobots = document.createElement("meta");
-    metaRobots.name = "robots";
-    metaRobots.content = "noindex, follow";
-    document.head.appendChild(metaRobots);
+    // Manage robots and description meta tags
+    const metaTags = [
+      { name: "robots", content: "noindex, follow" },
+      {
+        name: "description",
+        content: "Page not found. The page you are looking for does not exist.",
+      },
+    ];
 
-    // description meta tag
-    const metaDescription = document.createElement("meta");
-    metaDescription.name = "description";
-    metaDescription.content = "Page not found. The page you are looking for does not exist.";
-    document.head.appendChild(metaDescription);
+    const originalValues: Record<string, string | null> = {};
 
-    // Cleanup function to remove meta tags when component unmounts
+    metaTags.forEach(({ name, content }) => {
+      let element = document.head.querySelector(`meta[name="${name}"]`);
+      if (element) {
+        originalValues[name] = element.getAttribute("content");
+        element.setAttribute("content", content);
+      } else {
+        originalValues[name] = null;
+        element = document.createElement("meta");
+        element.setAttribute("name", name);
+        element.setAttribute("content", content);
+        document.head.appendChild(element);
+      }
+    });
+
+    // Cleanup function to restore original values
     return () => {
-      document.head.removeChild(metaRobots);
-      document.head.removeChild(metaDescription);
+      document.title = originalTitle;
+      metaTags.forEach(({ name }) => {
+        const element = document.head.querySelector(`meta[name="${name}"]`);
+        const originalValue = originalValues[name];
+        if (element) {
+          if (originalValue === null) {
+            document.head.removeChild(element);
+          } else {
+            element.setAttribute("content", originalValue);
+          }
+        }
+      });
     };
   }, []);
 

@@ -175,6 +175,28 @@ export default [
     },
   },
 
+  // 11d. Test files - include vitest globals and allow dynamic file system access
+  {
+    files: ["**/__tests__/*.test.{ts,tsx}"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        describe: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        vi: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+      },
+    },
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+
   // 12. Prettier config (must be last to disable conflicting formatting rules)
   prettierConfig,
 ];
