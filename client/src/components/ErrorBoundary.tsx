@@ -8,7 +8,6 @@
  * - Logs detailed error information only in development for debugging.
  *
  * SCANNER COMPLIANCE:
- * - Qodana: No unsafe string interpolation of errors in UI
  * - DeepSource: Proper try-catch patterns, no console.log in production paths
  * - Dependabot: No external dependencies introduced
  *

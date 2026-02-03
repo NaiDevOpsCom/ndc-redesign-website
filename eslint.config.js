@@ -30,7 +30,6 @@ export default [
       "**/*.min.js",
       "vercel.json",
       "luma.ics",
-      "qodana.sarif.json",
       ".git-blame-ignore-revs",
       ".deepsource.toml",
       ".github/dependabot.yml",
