@@ -18,6 +18,8 @@ export default defineConfig(({ mode }) => {
   const hasBranchInfo = !!branch;
   const isHardened = isHardenedMode && (!hasBranchInfo || isHardenedBranch);
 
+
+
   return {
     plugins: [tailwindcss(), react()],
     resolve: {
@@ -41,6 +43,13 @@ export default defineConfig(({ mode }) => {
             compress: {
               drop_console: true,
               drop_debugger: true,
+              pure_funcs: [
+                "console.log",
+                "console.info",
+                "console.warn",
+                "console.error",
+                "console.debug",
+              ],
             },
           }
         : undefined,
@@ -53,7 +62,9 @@ export default defineConfig(({ mode }) => {
         external: [],
       },
     },
-    // Keep esbuild drop as double protection
+    // Keep esbuild.drop as double protection: it runs during the transpilation phase
+    // to remove console/debugger before any minification. This ensures stripping
+    // even if minify: "terser" (used for hardening) is active.
     esbuild: {
       drop: isHardened ? ["console", "debugger"] : [],
     },

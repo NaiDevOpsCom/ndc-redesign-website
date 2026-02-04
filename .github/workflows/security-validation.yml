@@ -88,7 +88,7 @@ jobs:
           fi
 
           # Verify report is valid JSON (guard against registry/auth/network errors producing non-JSON output)
-          node -e "JSON.parse(require('fs').readFileSync('audit-results.json','utf8'))"
+          node -e "try { JSON.parse(require('fs').readFileSync('audit-results.json','utf8')) } catch (e) { console.error('::error::Failed to parse audit-results.json. This usually indicates a registry or network issue on the runner.'); console.error(e.message); process.exit(1) }"
 
           # Now, run npm audit again, this time allowing it to fail the step
           # based on its native exit code and the specified audit level.
@@ -99,7 +99,7 @@ jobs:
 
       - name: Dependency Review (PR only)
         if: github.event.pull_request != null
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@1231f4967390f757279815049b49b254c747863f # v4.8.2
         with:
           fail-on-severity: ${{ inputs.fail-level }}
           allow-licenses: MIT, ISC, Apache-2.0, BSD-2-Clause, BSD-3-Clause, Unlicense, CC0-1.0

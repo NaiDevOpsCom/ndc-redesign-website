@@ -3,7 +3,8 @@ import path from "node:path";
 
 import { describe, it, expect } from "vitest";
 
-const CONSOLE_OR_DEBUGGER_RE = /\bconsole\.|\bdebugger\b/;
+// Match actual calls like console.log(...) but skip defensive checks like typeof console.warn
+const CONSOLE_OR_DEBUGGER_RE = /\bconsole\.(?:log|warn|error|info|debug)\s*\(|\bdebugger\b/;
 
 const listJsFiles = (dir: string): string[] => {
   const entries = readdirSync(dir, { withFileTypes: true });
@@ -25,7 +26,7 @@ const listJsFiles = (dir: string): string[] => {
       continue;
     }
 
-    if (entry.name.endsWith(".js")) {
+    if (/\.(?:m|c)?js$/i.test(entry.name)) {
       files.push(fullPath);
     }
   }
@@ -33,16 +34,12 @@ const listJsFiles = (dir: string): string[] => {
   return files;
 };
 
-describe("hardened build artifact checks", () => {
+const repoRoot = path.resolve(import.meta.dirname, "../../../..");
+const distDir = path.join(repoRoot, "dist");
+const distExists = existsSync(distDir) && statSync(distDir).isDirectory();
+
+describe.skipIf(!distExists)("hardened build artifact checks", () => {
   it("has no console/debugger statements in dist JS bundles", () => {
-    const repoRoot = path.resolve(import.meta.dirname, "../../../..");
-    const distDir = path.join(repoRoot, "dist");
-
-    if (!existsSync(distDir) || !statSync(distDir).isDirectory()) {
-      console.warn("Skipping hardened build check: dist directory not found");
-      return;
-    }
-
     const jsFiles = listJsFiles(distDir);
     const violations: string[] = [];
 
