@@ -85,8 +85,7 @@ jobs:
             vitest-${{ runner.os }}-${{ env.NODE_VERSION }}-
 
       - name: Hardened Build Unit Test (CI enforcement)
-        working-directory: client
-        run: npx vitest run src/utils/__tests__/hardenedBuildCheck.test.ts --cache --cacheDir .vitest-cache
+        run: npx vitest run client/src/utils/__tests__/hardenedBuildCheck.test.ts --cache --cacheDir client/.vitest-cache
 
       - name: Verify No Source Maps
         run: |
