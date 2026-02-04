@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { describe, it, expect } from "vitest";
 
@@ -22,7 +23,8 @@ const listJsFiles = (dir: string): string[] => {
     }
 
     // analytics bundles may be emitted as analytics.js or analytics.<hash>.js and can legitimately use console
-    if (/^analytics(?:\.[\w-]+)?\.js$/i.test(entry.name)) {
+    const isAnalytics = entry.name === "analytics.js" || /^analytics\.[a-zA-Z0-9-]+\.js$/i.test(entry.name);
+    if (isAnalytics) {
       continue;
     }
 
@@ -34,7 +36,7 @@ const listJsFiles = (dir: string): string[] => {
   return files;
 };
 
-const repoRoot = path.resolve(new URL("../../../..", import.meta.url).pathname);
+const repoRoot = path.resolve(fileURLToPath(import.meta.url), "../../../..");
 const distDir = path.join(repoRoot, "dist");
 const distExists = existsSync(distDir) && statSync(distDir).isDirectory();
 
