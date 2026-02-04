@@ -197,11 +197,10 @@ chore(deps): bump react-query version
 
 1.  **Target the `pre-dev` Branch**: Ensure your Pull Request (PR) is targeting the `pre-dev` branch.
 2.  **Provide a Clear Description**: Fill out the PR template with a clear title and a detailed description of the changes.
-3.  **Pass CI Checks**: All local checks (lint, test, build) **must** pass before pushing, and automated checks (Qodana, Dependency Review, Build Verification) must pass before merging.
+3.  **Pass CI Checks**: All local checks (lint, test, build) **must** pass before pushing, and automated checks (Dependency Review, Build Verification) must pass before merging.
 
 ### Required CI Checks
 
-- **Qodana Code Quality**: Static analysis for bugs and security.
 - **Dependency Review**: Scans for vulnerable dependencies.
 - **Hardened Build Verification**: Ensures production readiness (no source maps, no console logs).
 - **Lint/Test/Build**: Verifies code integrity.

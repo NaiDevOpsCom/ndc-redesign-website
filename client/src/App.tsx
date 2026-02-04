@@ -9,6 +9,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import SEO from "@/components/SEO";
 import Home from "@/pages/Home";
 import AboutUs from "@/pages/AboutUs";
 import FAQPage from "@/pages/FAQPage";

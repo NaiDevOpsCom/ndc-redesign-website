@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 
