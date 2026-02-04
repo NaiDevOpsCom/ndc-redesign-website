@@ -41,6 +41,10 @@ const repoRoot = path.resolve(fileURLToPath(import.meta.url), "../../../..");
 const distDir = path.join(repoRoot, "dist");
 const distExists = existsSync(distDir) && statSync(distDir).isDirectory();
 
+if (process.env.GITHUB_ACTIONS && !distExists) {
+  throw new Error(`Expected build artifacts at ${distDir}, but directory does not exist.`);
+}
+
 describe.skipIf(!distExists)("hardened build artifact checks", () => {
   it("has no console/debugger statements in dist JS bundles", () => {
     const jsFiles = listJsFiles(distDir);
