@@ -103,7 +103,7 @@ jobs:
           # Search for actual console.* calls (not just references like typeof console)
           # Pattern matches: console.log(, console.warn(, console.error(, console.info(, console.debug(, or debugger
           # Exclude analytics files which may legitimately use console
-          FOUND_FILES=$(find dist -name "*.js" ! -name "analytics*.js" -exec grep -lE 'console\.(log|warn|error|info|debug)\s*\(|[^a-zA-Z0-9_]debugger[^a-zA-Z0-9_]' {} \; 2>/dev/null || true)
+          FOUND_FILES=$(find dist -name "*.js" ! -name "analytics*.js" -exec grep -lE 'console\.(log|warn|error|info|debug)[[:space:]]*\(|(^|[^a-zA-Z0-9_])debugger([^a-zA-Z0-9_]|$)' {} \; 2>/dev/null || true)
 
           if [ -n "$FOUND_FILES" ]; then
             echo "::error::Found console or debugger statements in hardened build! Hardening failed."
