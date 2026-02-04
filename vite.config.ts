@@ -18,8 +18,6 @@ export default defineConfig(({ mode }) => {
   const hasBranchInfo = !!branch;
   const isHardened = isHardenedMode && (!hasBranchInfo || isHardenedBranch);
 
-
-
   return {
     plugins: [tailwindcss(), react()],
     resolve: {
