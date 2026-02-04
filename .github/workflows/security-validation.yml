@@ -108,7 +108,7 @@ jobs:
 
       - name: Dependency Review (PR only)
         if: github.event.pull_request != null
-        uses: actions/dependency-review-action@1231f4967390f757279815049b49b254c747863f # v4.8.2
+        uses: actions/dependency-review-action@3c4e3dcb1aa7874d2c16be7d79418e9b7efd6261 # v4.8.2
         with:
           base-ref: ${{ github.event.pull_request.base.sha }}
           head-ref: ${{ github.event.pull_request.head.sha }}
@@ -120,7 +120,7 @@ jobs:
 
       - name: Upload Audit Results
         if: always()
-        uses: actions/upload-artifact@4cea1031d082c3c4f24ef54ea239513075674720 # v4.4.0
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: security-audit-results
           path: audit-results.json
