@@ -23,7 +23,8 @@ const listJsFiles = (dir: string): string[] => {
     }
 
     // analytics bundles may be emitted as analytics.js or analytics.<hash>.js and can legitimately use console
-    const isAnalytics = entry.name === "analytics.js" || /^analytics\.[a-zA-Z0-9-]+\.js$/i.test(entry.name);
+    const isAnalytics =
+      entry.name === "analytics.js" || /^analytics\.[a-zA-Z0-9-]+\.js$/i.test(entry.name);
     if (isAnalytics) {
       continue;
     }
