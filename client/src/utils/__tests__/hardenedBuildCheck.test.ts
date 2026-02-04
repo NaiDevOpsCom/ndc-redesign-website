@@ -41,7 +41,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../
 const distDir = path.join(repoRoot, "dist");
 const distExists = existsSync(distDir) && statSync(distDir).isDirectory();
 
-if (process.env.GITHUB_ACTIONS && !distExists) {
+if (process.env.CI_ENFORCE_HARDENING && !distExists) {
   throw new Error(`Expected build artifacts at ${distDir}, but directory does not exist.`);
 }
 

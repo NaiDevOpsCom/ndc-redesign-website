@@ -289,7 +289,6 @@ jobs:
     name: Deploy Verification
     needs: [quality-checks, quality-summary]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
 
     steps:
       - name: Verify Staging Deployment

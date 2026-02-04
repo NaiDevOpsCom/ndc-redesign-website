@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import { Helmet } from "react-helmet-async";
 
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -8,14 +7,11 @@ import Navbar from "@/components/Navbar";
 export default function NotFound() {
   return (
     <div className="min-h-screen">
-      <Helmet>
-        <title>404 - Page Not Found | Nairobi DevOps</title>
-        <meta name="robots" content="noindex, follow" />
-        <meta
-          name="description"
-          content="Page not found. The page you are looking for does not exist."
-        />
-      </Helmet>
+      <SEO
+        title="404 - Page Not Found"
+        description="Page not found. The page you are looking for does not exist."
+        robots="noindex, follow"
+      />
       <Navbar />
       <main className="w-full flex items-center justify-center bg-background py-20">
         <div className="text-center px-4 max-w-3xl">
