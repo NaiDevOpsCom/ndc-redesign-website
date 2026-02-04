@@ -178,7 +178,7 @@ export default [
 
   // 11d. Test files - use vitest plugin and allow dynamic file system access
   {
-    files: ["**/__tests__/**/*.{test,spec}.{ts,tsx}", "**/*.{test,spec}.{ts,tsx}"],
+    files: ["**/__tests__/**/*.{ts,tsx}", "**/*.{test,spec}.{ts,tsx}"],
     plugins: {
       vitest,
     },

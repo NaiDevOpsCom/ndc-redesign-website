@@ -79,13 +79,14 @@ jobs:
       - name: Cache Vitest
         uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         with:
-          path: .vitest-cache
+          path: client/.vitest-cache
           key: vitest-${{ runner.os }}-${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json', 'client/src/utils/__tests__/hardenedBuildCheck.test.ts') }}
           restore-keys: |
             vitest-${{ runner.os }}-${{ env.NODE_VERSION }}-
 
       - name: Hardened Build Unit Test (CI enforcement)
-        run: npx vitest run client/src/utils/__tests__/hardenedBuildCheck.test.ts --root client --cache --cacheDir .vitest-cache
+        working-directory: client
+        run: npx vitest run src/utils/__tests__/hardenedBuildCheck.test.ts --cache --cacheDir .vitest-cache
 
       - name: Verify No Source Maps
         run: |

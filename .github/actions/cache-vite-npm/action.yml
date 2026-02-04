@@ -14,7 +14,6 @@ runs:
         cache: "npm"
         cache-dependency-path: |
           package-lock.json
-          client/package-lock.json
 
     - name: Cache Vite build cache
       uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
@@ -22,6 +21,6 @@ runs:
         path: |
           node_modules/.vite
           client/node_modules/.vite
-        key: vite-cache-${{ runner.os }}-${{ inputs.node-version }}-${{ hashFiles('package-lock.json', 'client/package-lock.json', 'vite.config.ts', 'client/vite.config.ts') }}
+        key: vite-cache-${{ runner.os }}-${{ inputs.node-version }}-${{ hashFiles('package-lock.json', 'vite.config.ts') }}
         restore-keys: |
           vite-cache-${{ runner.os }}-${{ inputs.node-version }}-

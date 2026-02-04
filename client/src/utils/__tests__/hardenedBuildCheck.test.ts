@@ -21,8 +21,8 @@ const listJsFiles = (dir: string): string[] => {
       continue;
     }
 
-    // analytics.js legitimately uses console for error reporting
-    if (entry.name === "analytics.js") {
+    // analytics bundles may be emitted as analytics.js or analytics.<hash>.js and can legitimately use console
+    if (/^analytics(?:\.[\w-]+)?\.js$/i.test(entry.name)) {
       continue;
     }
 
@@ -34,7 +34,7 @@ const listJsFiles = (dir: string): string[] => {
   return files;
 };
 
-const repoRoot = path.resolve(import.meta.dirname, "../../../..");
+const repoRoot = path.resolve(new URL("../../../..", import.meta.url).pathname);
 const distDir = path.join(repoRoot, "dist");
 const distExists = existsSync(distDir) && statSync(distDir).isDirectory();
 
