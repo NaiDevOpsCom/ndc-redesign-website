@@ -2,13 +2,13 @@ import { Switch, Route, useLocation } from "wouter";
 import { useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
+import { HelmetProvider } from "react-helmet-async";
 
 import { queryClient } from "./lib/queryClient";
 
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import SEO from "@/components/SEO";
 import Home from "@/pages/Home";
 import AboutUs from "@/pages/AboutUs";
 import FAQPage from "@/pages/FAQPage";
@@ -58,20 +58,15 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <TooltipProvider>
-          <SEO
-            description="A dynamic, inclusive, and growing collective focused on DevOps practices in Nairobi, Kenya, and beyond. Over 3,000 members, 50+ events, and 20+ partners."
-            keywords="Nairobi DevOps, Africa DevOps Summit, DevOps Kenya, DevOps Community, DevOpsDays Nairobi"
-            ogImage="https://res.cloudinary.com/nairobidevops/image/upload/v1752909744/ndc-favicon_iyxltg.svg"
-            twitterSite="@nairobidevops"
-            twitterCreator="@nairobidevops"
-          />
-          <Toaster />
-          <Router />
-          <Analytics />
-        </TooltipProvider>
-      </ThemeProvider>
+      <HelmetProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+            <Analytics />
+          </TooltipProvider>
+        </ThemeProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 }

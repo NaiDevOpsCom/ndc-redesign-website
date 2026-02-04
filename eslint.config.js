@@ -12,6 +12,7 @@ import promisePlugin from "eslint-plugin-promise";
 import importPlugin from "eslint-plugin-import";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import prettierConfig from "eslint-config-prettier";
+import vitest from "@vitest/eslint-plugin";
 import globals from "globals";
 
 // Recreate __dirname for ESM context
@@ -171,6 +172,25 @@ export default [
     files: ["*.config.ts", "*.config.js"],
     languageOptions: {
       globals: globals.node,
+    },
+  },
+
+  // 11d. Test files - use vitest plugin and allow dynamic file system access
+  {
+    files: ["**/__tests__/**/*.{ts,tsx}", "**/*.{test,spec}.{ts,tsx}"],
+    plugins: {
+      vitest,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...vitest.environments.env.globals,
+      },
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      "security/detect-non-literal-fs-filename": "off",
     },
   },
 

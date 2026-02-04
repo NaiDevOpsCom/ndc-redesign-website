@@ -9,10 +9,9 @@ export default function NotFound() {
     <div className="min-h-screen">
       <SEO
         title="404 - Page Not Found"
-        robots="noindex, follow"
         description="Page not found. The page you are looking for does not exist."
+        robots="noindex, follow"
       />
-
       <Navbar />
       <main className="w-full flex items-center justify-center bg-background py-20">
         <div className="text-center px-4 max-w-3xl">
