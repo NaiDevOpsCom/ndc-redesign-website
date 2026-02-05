@@ -5,27 +5,18 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig(({ mode }) => {
-  // Hardening: Apply to staging/production branches OR if running locally in production mode w/o branch info
-  // This allows `npm run build:prod` locally to produce a hardened build even if env vars are missing
-  // For PRs: use GITHUB_BASE_REF (target branch), for pushes: use GITHUB_REF_NAME
   const branch =
     process.env.GITHUB_BASE_REF ||
     process.env.GITHUB_REF_NAME ||
     process.env.VERCEL_GIT_COMMIT_REF ||
     "";
 
-  // Hardened branches:
-  // 'main' -> Production
-  // 'pre-dev' -> Staging
   const isHardenedBranch = ["production", "staging", "main", "pre-dev", "pre-staging"].includes(
     branch
   );
   const isHardenedMode = ["production", "staging"].includes(mode);
-
-  // If we have explicit branch info, trust it (must be on prod/staging branch AND mode).
-  // If we DO NOT have branch info (local), fall back to mode check.
   const hasBranchInfo = !!branch;
-  const isHardened = hasBranchInfo ? isHardenedBranch && isHardenedMode : isHardenedMode;
+  const isHardened = isHardenedMode && (!hasBranchInfo || isHardenedBranch);
 
   return {
     plugins: [tailwindcss(), react()],
@@ -39,24 +30,40 @@ export default defineConfig(({ mode }) => {
     root: path.resolve(import.meta.dirname, "client"),
     build: {
       outDir: path.resolve(import.meta.dirname, "dist"),
-      // Copy API files to root of dist for cPanel
       copyPublicDir: true,
       emptyOutDir: true,
-      // Hardening: Disable source maps in production/staging to prevent source code exposure
       sourcemap: !isHardened,
-      // Hardening: Ensure minification is enabled
-      minify: "esbuild",
+      // Use terser for hardened builds (better at removing console)
+      minify: isHardened ? "terser" : "esbuild",
+      // Terser options for aggressive console/debugger removal
+      terserOptions: isHardened
+        ? {
+            compress: {
+              drop_console: false,
+              drop_debugger: true,
+              pure_funcs: [
+                "console.log",
+                "console.info",
+                "console.debug",
+                "console.warn",
+                "console.group",
+                "console.groupEnd",
+              ],
+            },
+          }
+        : undefined,
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ["react", "react-dom", "react-router-dom"],
+            vendor: ["react", "react-dom"],
           },
         },
-        // Ensure API files are copied correctly
         external: [],
       },
     },
-    // Hardening: Strip console and debugger statements from production/staging builds
+    // Keep esbuild.drop as double protection: it runs during the transpilation phase
+    // to remove console/debugger before any minification. This ensures stripping
+    // even if minify: "terser" (used for hardening) is active.
     esbuild: {
       drop: isHardened ? ["console", "debugger"] : [],
     },

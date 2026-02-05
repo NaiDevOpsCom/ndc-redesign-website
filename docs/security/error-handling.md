@@ -145,11 +145,6 @@ Get-ChildItem -Path dist/assets -Filter *.map -Recurse
 
 ## Security Scanner Compliance
 
-### Qodana
-
-- ✅ No unsafe error interpolation in UI
-- ✅ Environment checks use standard Vite patterns
-
 ### DeepSource
 
 - ✅ Console statements have ESLint disable comments with justification
