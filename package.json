@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": "^20.19.0 || >=22.13.0"
+  },
   "scripts": {
     "security:generate": "node scripts/generate-security-headers.js",
     "dev": "npm run security:generate && vite",
