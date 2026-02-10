@@ -120,7 +120,7 @@ jobs:
 
       - name: Upload Audit Results
         if: always()
-        uses: actions/upload-artifact@4cea1031cdc97711ad187883d30bda9d3fcad3ef # v4.6.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: security-audit-results
           path: audit-results.json
