@@ -72,13 +72,8 @@ export async function fetchLumaEvents(): Promise<LumaEvent[]> {
         response = await fetch(directUrl, { signal: directController.signal });
 
         if (!response.ok) {
-          const directError = new Error(
-            `Direct fetch failed with status: ${response.status}`
-          );
-          throw new Error(
-            "Both proxied and direct fetch failed.",
-            { cause: directError }
-          );
+          const directError = new Error(`Direct fetch failed with status: ${response.status}`);
+          throw new Error("Both proxied and direct fetch failed.", { cause: directError });
         }
       } finally {
         clearTimeout(directTimeoutId);
